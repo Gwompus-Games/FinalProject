@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
         Running
     }
 
+    [Header("Debug Settings")]
+    [SerializeField] private bool debugMode = false;
+    [SerializeField] private bool infiniteStamina = false;
+
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float runSpeed = 5f;
@@ -22,14 +26,15 @@ public class PlayerController : MonoBehaviour
     [Header("Stamina Settings")]
     [SerializeField] private float maxStamina = 100;
     [SerializeField] private float staminaLossSpeed = 10f;
-    [SerializeField] private float staminaRegenSpeed = 12f;
     [SerializeField] private float staminaJumpCost = 20f;
-    [SerializeField] private Slider staminaBar;
+    [SerializeField] private float staminaRegenSpeed = 12f;
+    [SerializeField] private float staminaRegenDelay = 1f;
+    [SerializeField] private Image staminaBar;
 
     [Header("Grounded Settings")]
-    [SerializeField] private float groundCheckRadius = 0.4f;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.4f;
 
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
@@ -42,6 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private float defaultStepOffset;
     private float stamina;
+    private float staminaRegenDelayTimer;
 
     private void Start()
     {
@@ -50,12 +56,14 @@ public class PlayerController : MonoBehaviour
         defaultStepOffset = controller.stepOffset;
         moveSpeed = walkSpeed;
 
-        staminaBar.maxValue = maxStamina;
         UpdateStamina(maxStamina);
     }
 
     private void Update()
     {
+        // Update timers
+        UpdateTimers();
+
         // Take player inputs
         MovementInput();
         JumpInput();
@@ -125,6 +133,9 @@ public class PlayerController : MonoBehaviour
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
 
+        if (velocity.y > 0.2f)
+            isGrounded = false;
+
         if (isGrounded != oldIsGrounded)
         {
             IsGroundedChanged();
@@ -132,7 +143,7 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded && velocity.y < 0.5f)
         {
-            velocity.y = -2f;
+            velocity.y = -5f;
         }
 
         Vector2 movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
@@ -188,6 +199,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void UpdateTimers()
+    {
+        if (isGrounded)
+            staminaRegenDelayTimer += Time.deltaTime;
+    }
+
     private void DecreaseStamina(float multiplier = 1)
     {
         if (stamina == 0 || !isGrounded)
@@ -201,7 +218,7 @@ public class PlayerController : MonoBehaviour
 
     private void RegenerateStamina(float multiplier = 1)
     {
-        if (stamina >= maxStamina || !isGrounded)
+        if (stamina >= maxStamina || !isGrounded || staminaRegenDelayTimer < staminaRegenDelay)
             return;
 
         UpdateStamina(stamina + (staminaRegenSpeed * multiplier * Time.deltaTime));
@@ -209,7 +226,15 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateStamina(float newStamina)
     {
+        if (newStamina < stamina)
+        {
+            if (infiniteStamina)
+                return;
+
+            staminaRegenDelayTimer = 0;
+        }
+
         stamina = Mathf.Clamp(newStamina, 0, maxStamina);
-        staminaBar.value = stamina;
+        staminaBar.fillAmount = stamina / maxStamina;
     }
 }
