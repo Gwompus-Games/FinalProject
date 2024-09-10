@@ -9,5 +9,4 @@ public class ItemDataSO : ScriptableObject
     public Vector2Int minMaxItemValueBase;
     public Mesh model;
     public Sprite inventoryIcon;
-
 }
