@@ -6,13 +6,44 @@ public class InventoryController : MonoBehaviour
 {
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
-    [SerializeField] private InventoryItem _itemToPlace;
+    private InventoryItem _itemToPlace;
+
+    [SerializeField] GameObject testInventoryItemPrefab;
+    [SerializeField] GameObject testInventoryItemPrefab2;
 
     private void Update()
     {
+        if (_itemToPlace == null)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _itemToPlace = Instantiate(testInventoryItemPrefab).GetComponent<InventoryItem>();
+                _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryGrid>().GetComponent<RectTransform>());
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                _itemToPlace = Instantiate(testInventoryItemPrefab2).GetComponent<InventoryItem>();
+                _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryGrid>().GetComponent<RectTransform>());
+            }
+        }
+
         if (_itemToPlace != null)
         {
-            _itemToPlace.GetComponent<RectTransform>().position = Input.mousePosition - new Vector3(InventoryGrid.tileSizeWidth / 2f, -InventoryGrid.tileSizeHeight / 2f, 0);
+            _itemToPlace.GetComponent<RectTransform>().position = Input.mousePosition;
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                _itemToPlace.RotateClockwise();
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                _itemToPlace.RotateCounterClockwise();
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                Destroy(_itemToPlace.gameObject);
+                _itemToPlace = null;
+            }
         }
 
         if (selectedItemGrid == null)
@@ -29,7 +60,11 @@ public class InventoryController : MonoBehaviour
         {
             if (_itemToPlace == null)
             {
-                SwapItemInHand(selectedItemGrid.PickupItem(Input.mousePosition));
+                InventoryItem item = selectedItemGrid.PickupItem(Input.mousePosition);
+                if (item != null)
+                {
+                    SwapItemInHand(item);
+                }
             }
             else
             {

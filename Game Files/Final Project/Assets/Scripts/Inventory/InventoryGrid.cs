@@ -18,15 +18,10 @@ public class InventoryGrid : MonoBehaviour
     [SerializeField] int gridSizeWidth;
     [SerializeField] int gridSizeHeight;
 
-    [SerializeField] GameObject testInventoryItemPrefab;
-
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         Init(gridSizeWidth, gridSizeHeight);
-
-        InventoryItem item = Instantiate(testInventoryItemPrefab).GetComponent<InventoryItem>();
-        PlaceItem(item, new Vector2Int(3, 3));
     }
 
     private void Init(int width, int height)
@@ -78,10 +73,7 @@ public class InventoryGrid : MonoBehaviour
     
     public InventoryItem PickupItem(Vector2Int gridPosition)
     {
-        Vector2Int[] gridPositions = new Vector2Int[1];
-        gridPositions[0] = gridPosition;
-
-        if (CheckIfSlotsAvailable(gridPosition, gridPositions))
+        if (CheckIfSlotAvailable(gridPosition))
         {
             return null;
         }
@@ -141,8 +133,8 @@ public class InventoryGrid : MonoBehaviour
         inventoryItem.originTile = gridPosition;
 
         Vector2 position = new Vector2();
-        position.x = (float)gridPosition.x * tileSizeWidth;
-        position.y = -((float)gridPosition.y * tileSizeHeight);
+        position.x = (float)gridPosition.x * tileSizeWidth + tileSizeWidth / 2f;
+        position.y = -((float)gridPosition.y * tileSizeHeight + tileSizeHeight / 2f);
 
         rectTransform.localPosition = position;
         return true;
