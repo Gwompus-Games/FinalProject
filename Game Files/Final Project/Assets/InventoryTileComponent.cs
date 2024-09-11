@@ -7,7 +7,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class InventoryTileComponent : MonoBehaviour
 {
-    public static float imageAlpha = 0.25f;
     private RectTransform _myRectTransform;
     private Image _myTileImage;
     [HideInInspector]
@@ -18,11 +17,7 @@ public class InventoryTileComponent : MonoBehaviour
         _myRectTransform = GetComponent<RectTransform>();
         _myTileImage = GetComponent<Image>();
 
-        Color colour = _myTileImage.color;
-        colour.a = imageAlpha;
-        _myTileImage.color = colour;
-
-        Vector2 size = new Vector2(InventoryGrid.tileSizeWidth, InventoryGrid.tileSizeHeight);
+        Vector2 size = new Vector2(InventoryGrid.globalItemData.tileWidth, InventoryGrid.globalItemData.tileHeight);
         _myRectTransform.sizeDelta = size;
 
         Vector2 snappedPos = _myRectTransform.localPosition;

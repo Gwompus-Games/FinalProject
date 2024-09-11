@@ -18,13 +18,13 @@ public class InventoryController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _itemToPlace = Instantiate(testInventoryItemPrefab).GetComponent<InventoryItem>();
-                _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryGrid>().GetComponent<RectTransform>());
+                _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 _itemToPlace = Instantiate(testInventoryItemPrefab2).GetComponent<InventoryItem>();
-                _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryGrid>().GetComponent<RectTransform>());
+                _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
             }
         }
 
@@ -55,7 +55,6 @@ public class InventoryController : MonoBehaviour
             return;
         }
 
-        //Debug.Log(selectedItemGrid.GetTileGridPosition(Input.mousePosition));
         if (Input.GetMouseButtonDown(0))
         {
             if (_itemToPlace == null)
@@ -71,6 +70,10 @@ public class InventoryController : MonoBehaviour
                 if(selectedItemGrid.PlaceItem(_itemToPlace, Input.mousePosition, out InventoryItem returnItem))
                 {
                     SwapItemInHand(returnItem);
+                }
+                else
+                {
+                    _itemToPlace.InvalidPlacementFlash();
                 }
             }
         }

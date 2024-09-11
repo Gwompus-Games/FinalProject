@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class InventoryGrid : MonoBehaviour
 {
-    public static float tileSizeWidth { get; private set; } = 50f;
-    public static float tileSizeHeight { get; private set; } = 50f;
+    [SerializeField] private InventoryGlobalDataSO _globalData;
+    public static InventoryGlobalDataSO globalItemData;
 
     InventoryItem[,] inventoryItemSlot;
 
@@ -17,6 +17,11 @@ public class InventoryGrid : MonoBehaviour
 
     [SerializeField] int gridSizeWidth;
     [SerializeField] int gridSizeHeight;
+
+    private void Awake()
+    {
+        globalItemData = _globalData;
+    }
 
     private void Start()
     {
@@ -41,7 +46,7 @@ public class InventoryGrid : MonoBehaviour
                 inventoryItemSlot[x, y] = null;
             }
         }
-        Vector2 size = new Vector2(width * tileSizeWidth, height * tileSizeHeight);
+        Vector2 size = new Vector2(width * globalItemData.tileWidth, height * globalItemData.tileHeight);
         rectTransform.sizeDelta = size;
 
         Vector2 position = Vector2.zero;
@@ -63,8 +68,8 @@ public class InventoryGrid : MonoBehaviour
         positionOnTheGrid.x = worldPosition.x - rectTransform.position.x;
         positionOnTheGrid.y = rectTransform.position.y - worldPosition.y;
 
-        tileGridPosition.x = (int)(positionOnTheGrid.x / tileSizeWidth);
-        tileGridPosition.y = (int)(positionOnTheGrid.y / tileSizeHeight);
+        tileGridPosition.x = (int)(positionOnTheGrid.x / globalItemData.tileWidth);
+        tileGridPosition.y = (int)(positionOnTheGrid.y / globalItemData.tileHeight);
 
         Debug.Log(tileGridPosition);
 
@@ -79,6 +84,7 @@ public class InventoryGrid : MonoBehaviour
         }
         InventoryItem item = GetItemInSlot(gridPosition);
         ClearItemInSlot(gridPosition);
+        item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
         return item;
     }
 
@@ -127,14 +133,15 @@ public class InventoryGrid : MonoBehaviour
             ClearSlotsWithItem(returnItem);
         }
 
+        inventoryItem.StopInvalidPlacementFlashing();
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
         rectTransform.SetParent(this.rectTransform);
         SetItemSlots(gridPosition, inventoryItem.tilesUsed.ToArray(), inventoryItem);
         inventoryItem.originTile = gridPosition;
 
         Vector2 position = new Vector2();
-        position.x = (float)gridPosition.x * tileSizeWidth + tileSizeWidth / 2f;
-        position.y = -((float)gridPosition.y * tileSizeHeight + tileSizeHeight / 2f);
+        position.x = (float)gridPosition.x * globalItemData.tileWidth + globalItemData.tileWidth / 2f;
+        position.y = -((float)gridPosition.y * globalItemData.tileHeight + globalItemData.tileHeight / 2f);
 
         rectTransform.localPosition = position;
         return true;
