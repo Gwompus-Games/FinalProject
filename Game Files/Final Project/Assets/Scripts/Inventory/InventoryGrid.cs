@@ -84,7 +84,6 @@ public class InventoryGrid : MonoBehaviour
         }
         InventoryItem item = GetItemInSlot(gridPosition);
         ClearItemInSlot(gridPosition);
-        item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
         return item;
     }
 

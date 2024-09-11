@@ -82,6 +82,10 @@ public class InventoryController : MonoBehaviour
     public void SwapItemInHand(InventoryItem item)
     {
         Debug.Log(item);
+        if (item != null)
+        {
+            item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
+        }
         _itemToPlace = item;
     }
 }
