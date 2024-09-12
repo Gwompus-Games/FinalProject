@@ -16,6 +16,9 @@ public class MouseLook : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (GameManager.Instance.isPaused)
+            return;
+
         Vector2 mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * mouseSensitivity * Time.deltaTime * 10;
 
         xRotation -= mouseInput.y;
