@@ -22,7 +22,7 @@ public class DungeonPart : MonoBehaviour
     private void Awake()
     {
         boxCollider = GetComponent<BoxCollider>();
-        FixBoxCollider();
+        //FixBoxCollider();
     }
 
     public bool HasAvailableEntryPoint(out Transform entryPoint)
@@ -101,9 +101,27 @@ public class DungeonPart : MonoBehaviour
         });
     }
 
+    public List<EntryPoint> GetAvailableEntryPoints()
+    {
+        List<EntryPoint> availableEntryPoints = new List<EntryPoint>();
+
+        foreach (Transform entryTransform in entryPoints)
+        {
+            if (entryTransform.gameObject.TryGetComponent(out EntryPoint entryPoint))
+            {
+                if (entryPoint.IsOccupied())
+                    continue;
+
+                availableEntryPoints.Add(entryPoint);
+            }
+        }
+
+        return availableEntryPoints;
+    }
+
     private void FixBoxCollider()
     {
-        boxCollider.size = new Vector3(boxCollider.size.x - 0.1f, boxCollider.size.y - 0.1f, boxCollider.size.z - 0.1f);
+        boxCollider.size = new Vector3(boxCollider.size.x - 0.2f, boxCollider.size.y - 0.2f, boxCollider.size.z - 0.2f);
     }
 
     private void OnDrawGizmos()

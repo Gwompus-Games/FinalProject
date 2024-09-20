@@ -850,7 +850,7 @@ Transform:
   m_GameObject: {fileID: 518118201}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.686, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -914,7 +914,7 @@ Transform:
   m_GameObject: {fileID: 709854212}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -936,17 +936,17 @@ MonoBehaviour:
     type: 3}
   rooms:
   - {fileID: 8857224470717509373, guid: bbd5bf36c85d54147a6f119b9c3effd1, type: 3}
+  - {fileID: 8857224470717509373, guid: cef1c940bc85e5045a7aa9f327ac393a, type: 3}
+  - {fileID: 8857224470717509373, guid: e2f4706fad8c1f44198cdeb5b5b5072d, type: 3}
   specialRooms: []
   alternateEntrances: []
   hallways:
   - {fileID: 8857224470717509373, guid: d3185d187e378ce4da8d2f637f273260, type: 3}
   - {fileID: 8857224470717509373, guid: 93403caec56b4f64680a918c811b63f6, type: 3}
   - {fileID: 8857224470717509373, guid: 393c0ec6480d0174c8802f4ae4ba1aa0, type: 3}
-  - {fileID: 8857224470717509373, guid: f467372ba67312f4eb5ad8bfcdb64e34, type: 3}
-  - {fileID: 8857224470717509373, guid: 108a22375228d8048ad4311992fdf5fc, type: 3}
-  - {fileID: 8857224470717509373, guid: 13dba9a4dbd4f324d8924ae8f3da7479, type: 3}
+  - {fileID: 8857224470717509373, guid: 0f0473378537cad48a4a203c9fd0149b, type: 3}
   door: {fileID: 1293551178090617148, guid: b1e3ecf6bc301f0429ce124d301592be, type: 3}
-  numOfRooms: 10
+  numOfRooms: 80
   roomLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -1811,7 +1811,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 247
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

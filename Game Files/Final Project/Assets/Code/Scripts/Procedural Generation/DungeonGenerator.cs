@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class DungeonGenerator : MonoBehaviour
 
     private void Update()
     {
-        // Only for testing in editor
+        // Only for testing in editor play mode
         if (Input.GetKeyDown(KeyCode.G))
         {
             StartGeneration();
@@ -40,10 +41,28 @@ public class DungeonGenerator : MonoBehaviour
 
     public void StartGeneration()
     {
+        if (isGenerated == true)
+        {
+            Despawn();
+        }
+
         Generate();
-        GenerateAlternateEntrances();
+        //GenerateAlternateEntrances();
         FillEmptyEntrances();
         isGenerated = true;
+
+        Debug.Log($"Room Count: {generatedRooms.Count}");
+    }
+
+    private void Despawn()
+    {
+        foreach (DungeonPart room in generatedRooms)
+        {
+            Destroy(room.gameObject);
+        }
+
+        generatedRooms.Clear();
+        isGenerated = false;
     }
 
     private void Generate()
@@ -63,10 +82,10 @@ public class DungeonGenerator : MonoBehaviour
             }
             else
             {
-                bool shouldPlaceHallway = Random.Range(0f, 1f) > 0.2f;
+                bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.9f;
                 DungeonPart randomGeneratedRoom = null;
                 Transform room1EntryPoint = null;
-                int totalRetries = 100;
+                int totalRetries = 1000;
                 int retryIndex = 0;
 
                 while (randomGeneratedRoom == null && retryIndex < totalRetries)
@@ -79,11 +98,6 @@ public class DungeonGenerator : MonoBehaviour
                         break;
                     }
                     retryIndex++;
-
-                    if (retryIndex >= totalRetries)
-                    {
-                        Debug.Log("Test1");
-                    }
                 }
 
                 GameObject doorToAlign = Instantiate(door, transform.position, transform.rotation);
@@ -105,11 +119,20 @@ public class DungeonGenerator : MonoBehaviour
 
                             if (HandleIntersection(dungeonPart))
                             {
-                                dungeonPart.UnuseEntryPoint(room2EntryPoint);
                                 randomGeneratedRoom.UnuseEntryPoint(room1EntryPoint);
-                                RetryPlacement(generatedHallway, doorToAlign);
+                                generatedRooms.Remove(dungeonPart);
+                                Destroy(generatedHallway);
+                                Destroy(doorToAlign);
                                 continue;
                             }
+
+                            //if (HandleIntersection(dungeonPart))
+                            //{
+                            //    dungeonPart.UnuseEntryPoint(room2EntryPoint);
+                            //    randomGeneratedRoom.UnuseEntryPoint(room1EntryPoint);
+                            //    RetryPlacement(generatedHallway, doorToAlign);
+                            //    continue;
+                            //}
                         }
                     }
                 }
@@ -151,17 +174,15 @@ public class DungeonGenerator : MonoBehaviour
 
                             if (HandleIntersection(dungeonPart))
                             {
-                                dungeonPart.UnuseEntryPoint(room2EntryPoint);
-                                randomGeneratedRoom.UnuseEntryPoint(room1EntryPoint);
-                                RetryPlacement(generatedRoom, doorToAlign);
+                                generatedRooms.Remove(dungeonPart);
+                                Destroy(generatedRoom);
+                                Destroy(doorToAlign);
                                 continue;
                             }
                         }
                     }
                 }
             }
-
-            Debug.Log("Test2");
         }
     }
 
@@ -218,6 +239,46 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+    //private void TryNewRoom(GameObject roomToIgnore, GameObject doorToPlace)
+    //{
+    //    DungeonPart randomGeneratedRoom = null;
+    //    Transform room1EntryPoint = null;
+    //    int totalRetries = 100;
+    //    int retryIndex = 0;
+
+    //    while (randomGeneratedRoom == null && retryIndex < totalRetries)
+    //    {
+    //        int randomLinkRoomIndex = Random.Range(0, generatedRooms.Count - 1);
+    //        DungeonPart roomToTest = generatedRooms[randomLinkRoomIndex];
+
+    //        if (roomToTest.HasAvailableEntryPoint(out room1EntryPoint))
+    //        {
+    //            randomGeneratedRoom = roomToTest;
+    //            Debug.Log(randomLinkRoomIndex);
+    //            break;
+    //        }
+    //        retryIndex++;
+    //    }
+
+    //    if (itemToPlace.TryGetComponent(out DungeonPart dungeonPart))
+    //    {
+    //        if (dungeonPart.HasAvailableEntryPoint(out Transform room2EntryPoint))
+    //        {
+    //            doorToPlace.transform.position = room1EntryPoint.transform.position;
+    //            doorToPlace.transform.rotation = room1EntryPoint.transform.rotation;
+    //            AlignRooms(randomGeneratedRoom.transform, itemToPlace.transform, room1EntryPoint, room2EntryPoint);
+
+    //            if (HandleIntersection(dungeonPart))
+    //            {
+    //                dungeonPart.UnuseEntryPoint(room2EntryPoint);
+    //                randomGeneratedRoom.UnuseEntryPoint(room1EntryPoint);
+    //                Debug.Log("Stack overflow test, " + retryIndex);
+    //                RetryPlacement(itemToPlace, doorToPlace);
+    //            }
+    //        }
+    //    }
+    //}
+
     private void RetryPlacement(GameObject itemToPlace, GameObject doorToPlace)
     {
         DungeonPart randomGeneratedRoom = null;
@@ -233,6 +294,7 @@ public class DungeonGenerator : MonoBehaviour
             if (roomToTest.HasAvailableEntryPoint(out room1EntryPoint))
             {
                 randomGeneratedRoom = roomToTest;
+                Debug.Log(randomLinkRoomIndex);
                 break;
             }
             retryIndex++;
@@ -250,6 +312,7 @@ public class DungeonGenerator : MonoBehaviour
                 {
                     dungeonPart.UnuseEntryPoint(room2EntryPoint);
                     randomGeneratedRoom.UnuseEntryPoint(room1EntryPoint);
+                    Debug.Log("Stack overflow test, " + retryIndex);
                     RetryPlacement(itemToPlace, doorToPlace);
                 }
             }
@@ -285,14 +348,53 @@ public class DungeonGenerator : MonoBehaviour
         return didIntersect;
     }
 
+    private bool HasAvailablePath(DungeonPart dungeonPart)
+    {
+        bool hasAvailablePath = false;
+
+        foreach (EntryPoint entry in dungeonPart.GetAvailableEntryPoints())
+        {
+            bool didIntersect = false;
+
+            Collider[] hits = Physics.OverlapBox(
+                entry.transform.position + (entry.transform.forward * 2),
+                new Vector3(1,1,1),
+                Quaternion.identity,
+                roomLayerMask);
+
+            foreach (Collider hit in hits)
+            {
+                if (hit == dungeonPart.collider) continue;
+
+                if (hit != dungeonPart.collider)
+                {
+                    didIntersect = true;
+                    break;
+                }
+            }
+
+            if (!didIntersect)
+            {
+                hasAvailablePath = true;
+                break;
+            }
+        }
+        
+
+        return hasAvailablePath;
+    }
+
     private void AlignRooms(Transform room1, Transform room2, Transform room1Entry, Transform room2Entry)
     {
-        float angle = Vector3.Angle(room1Entry.forward, room2Entry.forward);
+        float angle = Vector3.SignedAngle(room1Entry.forward, room2Entry.forward, Vector3.up);
+        //Debug.Log($"Angle: {angle}");
 
-        room2.TransformPoint(room2Entry.position);
-        room2.eulerAngles = new Vector3(room2.eulerAngles.x, room2.eulerAngles.y + angle, room2.eulerAngles.z);
+        //room2.TransformPoint(room2Entry.position);
+        room2.eulerAngles = new Vector3(room2.eulerAngles.x, room2.eulerAngles.y + (180 - angle), room2.eulerAngles.z);
+        //room2.RotateAround(room2Entry.position, Vector3.up, angle);
 
         Vector3 offset = room1Entry.position - room2Entry.position;
+        //Debug.Log($"Offset: {offset}");
 
         room2.position += offset;
 
