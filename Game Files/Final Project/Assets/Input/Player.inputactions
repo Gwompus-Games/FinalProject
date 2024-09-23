@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Mouse Position",
+                    "name": "Cursor Position",
                     "type": "PassThrough",
                     "id": "a59172d1-4f88-4e30-9c6e-d9f71883bea0",
                     "expectedControlType": "Vector2",
@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Cursor Delta",
+                    "type": "Value",
+                    "id": "765944ac-2973-4e24-acef-321935098232",
+                    "expectedControlType": "Delta",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -167,7 +176,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse & Keyboard",
-                    "action": "Mouse Position",
+                    "action": "Cursor Position",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -190,6 +199,17 @@
                     "processors": "",
                     "groups": "Mouse & Keyboard",
                     "action": "R Mouse Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89b74187-12e7-4031-8764-9f838cdd0b6d",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse & Keyboard",
+                    "action": "Cursor Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

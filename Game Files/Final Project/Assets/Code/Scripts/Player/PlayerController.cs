@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(OxygenSystem))]
+[RequireComponent(typeof(SuitSystem))]
 public class PlayerController : MonoBehaviour
 {
     public enum PlayerState
@@ -24,11 +26,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _gravity = -2f;
 
     [Header("Stamina Settings")]
-    [SerializeField] private float _maxStamina = 100;
-    [SerializeField] private float _staminaLossSpeed = 10f;
-    [SerializeField] private float _staminaJumpCost = 20f;
-    [SerializeField] private float _staminaRegenSpeed = 12f;
-    [SerializeField] private float _staminaRegenDelay = 1f;
     [SerializeField] private Image _staminaBar;
 
     [Header("Grounded Settings")]
@@ -51,14 +48,15 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _movementInput = Vector2.zero;
 
+    private OxygenSystem _oxygenSystem;
+    private SuitSystem _suitSystem;
+
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
 
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
-
-        UpdateStamina(_maxStamina);
     }
 
     private void Update()
@@ -68,7 +66,6 @@ public class PlayerController : MonoBehaviour
 
         // Take player inputs
         MovementInput();
-        JumpInput();
 
         // Update player state and apply state logic
         UpdateState();
@@ -111,15 +108,12 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.Idle:
                 moveSpeed = 0;
-                RegenerateStamina();
                 break;
             case PlayerState.Walking:
                 moveSpeed = _walkSpeed;
-                RegenerateStamina(0.5f);
                 break;
             case PlayerState.Running:
                 moveSpeed = _runSpeed;
-                DecreaseStamina();
                 break;
         }
     }
@@ -151,14 +145,6 @@ public class PlayerController : MonoBehaviour
         _movement = (transform.right * _movementInput.x + transform.forward * _movementInput.y);
     }
 
-    private void JumpInput()
-    {
-        if (Input.GetButtonDown("Jump") && isGrounded && _velocity.y <= 0.1f)
-        {
-            Jump();
-        }
-    }
-
     private void ApplyMovement()
     {
         _controller.Move(_movement * moveSpeed * Time.deltaTime);
@@ -177,16 +163,6 @@ public class PlayerController : MonoBehaviour
         _controller.Move(_velocity * Time.deltaTime);
     }
 
-    private void Jump()
-    {
-        if (_stamina < _staminaJumpCost)
-            return;
-
-
-        _velocity.y = Mathf.Sqrt(_jumpForce * 0.1f * -2 * _gravity);
-        UpdateStamina(_stamina - _staminaJumpCost);
-    }
-
     private void IsGroundedChanged()
     {
         if (isGrounded)
@@ -203,39 +179,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded)
             _staminaRegenDelayTimer += Time.deltaTime;
-    }
-
-    private void DecreaseStamina(float multiplier = 1)
-    {
-        if (_stamina == 0 || !isGrounded)
-            return;
-
-        UpdateStamina(_stamina - (_staminaRegenSpeed * multiplier * Time.deltaTime));
-
-        if (_stamina <= 1)
-            ChangeState(PlayerState.Walking);
-    }
-
-    private void RegenerateStamina(float multiplier = 1)
-    {
-        if (_stamina >= _maxStamina || !isGrounded || _staminaRegenDelayTimer < _staminaRegenDelay)
-            return;
-
-        UpdateStamina(_stamina + (_staminaRegenSpeed * multiplier * Time.deltaTime));
-    }
-
-    private void UpdateStamina(float newStamina)
-    {
-        if (newStamina < _stamina)
-        {
-            if (_infiniteStamina)
-                return;
-
-            _staminaRegenDelayTimer = 0;
-        }
-
-        _stamina = Mathf.Clamp(newStamina, 0, _maxStamina);
-        _staminaBar.fillAmount = _stamina / _maxStamina;
     }
 
     // Input functions using CustomPlayerInput

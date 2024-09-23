@@ -15,13 +15,13 @@ public class InventoryController : MonoBehaviour
 
     private void OnEnable()
     {
-        CustomPlayerInput.UpdateMousePosition += UpdateMousePos;
+        CustomPlayerInput.UpdateCursorPosition += UpdateMousePos;
         CustomPlayerInput.Rotate += RotateItem;
     }
 
     private void OnDisable()
     {
-        CustomPlayerInput.UpdateMousePosition -= UpdateMousePos;
+        CustomPlayerInput.UpdateCursorPosition -= UpdateMousePos;
         CustomPlayerInput.Rotate -= RotateItem;
     }
 
