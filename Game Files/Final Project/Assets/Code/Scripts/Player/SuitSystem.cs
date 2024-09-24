@@ -32,12 +32,12 @@ public class SuitSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        CustomPlayerInput.OpenInventory += DebugTakeDamage;
+        //CustomPlayerInput.OpenInventory += DebugTakeDamage;
     }
 
     private void OnDisable()
     {
-        CustomPlayerInput.OpenInventory -= DebugTakeDamage;        
+        //CustomPlayerInput.OpenInventory -= DebugTakeDamage;        
     }
 
     private void Update()
@@ -47,7 +47,7 @@ public class SuitSystem : MonoBehaviour
 
     public void DebugTakeDamage()
     {
-        TakeSuitDamage(75f);
+        TakeSuitDamage(25f);
     }
 
     public void TakeSuitDamage(float damage)
