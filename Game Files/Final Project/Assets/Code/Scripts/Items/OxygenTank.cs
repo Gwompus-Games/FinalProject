@@ -2,18 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OxygenTank : MonoBehaviour
+public class OxygenTank : Item
 {
     [SerializeField] private OxygenTankSO _myData;
     public float oxygenLeft { get; private set; }
     public bool containsOxygen { get; private set; }
     private float _maxOxygenCapacity = 0;
+    private int _myOxygenTankID = 0;
 
     private void Awake()
     {
         _maxOxygenCapacity = _myData.minutesUntilEmpty * 60f;
         oxygenLeft = _maxOxygenCapacity;
         containsOxygen = (oxygenLeft > 0);
+    }
+
+    public void SetOxygenTankID(int id)
+    {
+        if (id < 0)
+        {
+            throw new System.Exception("Assigning oxygen tank ID to a negative number!");
+        }
+        _myOxygenTankID = id;
+    }
+
+    public int GetOxygenTankID()
+    {
+        return _myOxygenTankID;
     }
 
     public void DrainOxygen(float drainAmountInSeconds, out float remainder)
