@@ -7,11 +7,13 @@ using UnityEngine.InputSystem;
 public class CustomPlayerInput : MonoBehaviour
 {
     public static CustomPlayerInput INSTANCE;
-    public static Action<Vector2> UpdateMousePosition;
+    public static Action<Vector2> UpdateCursorPosition;
+    public static Action<Vector2> UpdateCursorDelta;
     public static Action<int> Rotate;
     public static Action<Vector2> UpdateMovement;
     public static Action OpenInventory;
     public static Action<CustomInputData> LeftMouseButton;
+    public static Action<CustomInputData> RightMouseButton;
 
     public enum CustomInputData
     {
@@ -27,6 +29,7 @@ public class CustomPlayerInput : MonoBehaviour
             return;
         }
         INSTANCE = this;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void InputMovement(InputAction.CallbackContext context)
@@ -48,10 +51,16 @@ public class CustomPlayerInput : MonoBehaviour
         }
     }
 
-    public void InputMousePosition(InputAction.CallbackContext context)
+    public void InputCursorPosition(InputAction.CallbackContext context)
     {
         Vector2 mousePosition = context.ReadValue<Vector2>();
-        UpdateMousePosition?.Invoke(mousePosition);
+        UpdateCursorPosition?.Invoke(mousePosition);
+    }
+
+    public void InputCursorDelta(InputAction.CallbackContext context)
+    {
+        Vector2 cursorDelta = context.ReadValue<Vector2>();
+        UpdateCursorDelta?.Invoke(cursorDelta);
     }
 
     public void InputOpenInventory(InputAction.CallbackContext context)
@@ -71,6 +80,18 @@ public class CustomPlayerInput : MonoBehaviour
         if (context.canceled)
         {
             LeftMouseButton?.Invoke(CustomInputData.RELEASED);
+        }
+    }
+
+    public void InputRightMouseButton(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            RightMouseButton?.Invoke(CustomInputData.PRESSED);
+        }
+        if (context.canceled)
+        {
+            RightMouseButton?.Invoke(CustomInputData.RELEASED);
         }
     }
 }
