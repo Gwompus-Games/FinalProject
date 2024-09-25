@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundCheckRadius = 0.4f;
 
+    public static PlayerController INSTANCE;
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
     public float moveSpeed { get; private set; }
@@ -52,12 +53,23 @@ public class PlayerController : MonoBehaviour
     private OxygenSystem _oxygenSystem;
     private SuitSystem _suitSystem;
 
+    private void Awake()
+    {
+        if (INSTANCE != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        INSTANCE = this;
+    }
+
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
 
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
+        ChangeInventoryUIState(false);
     }
 
     private void Update()
@@ -208,9 +220,28 @@ public class PlayerController : MonoBehaviour
         _movementInput = newMovementInput;
     }
 
+    private void ChangeInventoryUIState(bool enabled)
+    {
+        UIManager.INSTANCE.SetInventoryUI(enabled);
+        GetComponentInChildren<InventoryController>().enabled = enabled;
+        GetComponentInChildren<CameraLook>().enabled = !enabled;
+    }
+
     public void ToggleInventory()
     {
-        Debug.Log("TOGGLED");
-        Cursor.lockState = CursorLockMode.None;
+        switch (currentState)
+        {
+            case PlayerState.Inventory:
+                Cursor.lockState = CursorLockMode.Locked;
+                ChangeInventoryUIState(false);
+                ChangeState(PlayerState.Idle);
+                break;
+            default:
+                Cursor.lockState = CursorLockMode.None;
+                ChangeInventoryUIState(true);
+                ChangeState(PlayerState.Inventory);
+                break;
+        }
+        
     }
 }

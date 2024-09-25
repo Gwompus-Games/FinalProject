@@ -5,7 +5,22 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _suitText;
+    public static UIManager INSTANCE;
+
+    [SerializeField] private GameObject _inventoryUI;
+    [SerializeField] private GameObject _suitUI;
+    private TMP_Text _suitText;
+
+    private void Awake()
+    {
+        if (INSTANCE != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        INSTANCE = this;
+        _suitText = _suitUI.GetComponentInChildren<TMP_Text>();
+    }
 
     private void OnEnable()
     {
@@ -15,6 +30,12 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         SuitSystem.UpdateSuitUI -= UpdateSuitUI;
+    }
+
+    public void SetInventoryUI(bool enabled)
+    {
+        _inventoryUI.SetActive(enabled);
+        _suitUI.SetActive(!enabled);
     }
 
     public void UpdateSuitUI()

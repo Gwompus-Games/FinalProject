@@ -8,12 +8,23 @@ public class InventoryController : MonoBehaviour
 {
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
+    public static InventoryController INSTANCE;
     private InventoryItem _itemToPlace;
 
     [SerializeField] GameObject testInventoryItemPrefab;
     [SerializeField] GameObject testInventoryItemPrefab2;
 
     private Vector3 _mousePosition = Vector3.zero;
+
+    private void Awake()
+    {
+        if (INSTANCE != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        INSTANCE = this;
+    }
 
     private void OnEnable()
     {
@@ -22,12 +33,11 @@ public class InventoryController : MonoBehaviour
         CustomPlayerInput.LeftMouseButton += PlaceInput;
     }
 
-    
-
     private void OnDisable()
     {
         CustomPlayerInput.UpdateCursorPosition -= UpdateMousePos;
         CustomPlayerInput.Rotate -= RotateItem;
+        CustomPlayerInput.LeftMouseButton -= PlaceInput;
     }
 
     private void Update()
