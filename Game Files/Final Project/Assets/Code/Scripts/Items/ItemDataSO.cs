@@ -5,7 +5,8 @@ using UnityEngine;
 public class ItemDataSO : ScriptableObject
 {
     public string itemName = "Item Name";
-    public GameObject prefab;
+    public Mesh mesh;
+    public Material meshMaterial;
     public Sprite inventoryIcon;
     public int baseValue = 0;
 }

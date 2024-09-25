@@ -201,6 +201,13 @@ public class PlayerController : MonoBehaviour
             _staminaRegenDelayTimer += Time.deltaTime;
     }
 
+    private bool CheckIfLookingAtItem()
+    {
+
+
+        return false;
+    }
+
     // Input functions using CustomPlayerInput
 
     private void OnEnable()
