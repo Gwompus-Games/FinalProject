@@ -17,6 +17,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private LayerMask roomLayerMask;
 
     private List<DungeonPart> generatedRooms;
+    private List<DungeonPart> availableRooms;
     private bool isGenerated = false;
 
     private void Awake()
@@ -27,6 +28,8 @@ public class DungeonGenerator : MonoBehaviour
     private void Start()
     {
         generatedRooms = new List<DungeonPart>();
+        availableRooms = new List<DungeonPart>();
+
         StartGeneration();
     }
 
@@ -62,6 +65,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         generatedRooms.Clear();
+        availableRooms.Clear();
         isGenerated = false;
     }
 
@@ -77,12 +81,12 @@ public class DungeonGenerator : MonoBehaviour
 
                 if (generatedRoom.TryGetComponent(out DungeonPart dungeonPart) )
                 {
-                    generatedRooms.Add(dungeonPart);
+                    AddNewRoom(dungeonPart);
                 }
             }
             else
             {
-                bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.9f;
+                bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.95f;
                 DungeonPart randomGeneratedRoom = null;
                 Transform room1EntryPoint = null;
                 int totalRetries = 1000;
@@ -90,8 +94,8 @@ public class DungeonGenerator : MonoBehaviour
 
                 while (randomGeneratedRoom == null && retryIndex < totalRetries)
                 {
-                    int randomLinkRoomIndex = Random.Range(0, generatedRooms.Count);
-                    DungeonPart roomToTest = generatedRooms[randomLinkRoomIndex];
+                    int randomLinkRoomIndex = Random.Range(0, availableRooms.Count);
+                    DungeonPart roomToTest = availableRooms[randomLinkRoomIndex];
                     if (roomToTest.HasAvailableEntryPoint(out room1EntryPoint))
                     {
                         randomGeneratedRoom = roomToTest;
@@ -112,15 +116,17 @@ public class DungeonGenerator : MonoBehaviour
                     {
                         if (dungeonPart.HasAvailableEntryPoint(out Transform room2EntryPoint))
                         {
-                            generatedRooms.Add(dungeonPart);
+                            AddNewRoom(dungeonPart);
+
                             doorToAlign.transform.position = room1EntryPoint.transform.position;
                             doorToAlign.transform.rotation = room1EntryPoint.transform.rotation;
+
                             AlignRooms(randomGeneratedRoom.transform, generatedHallway.transform, room1EntryPoint, room2EntryPoint);
 
                             if (HandleIntersection(dungeonPart))
                             {
                                 randomGeneratedRoom.UnuseEntryPoint(room1EntryPoint);
-                                generatedRooms.Remove(dungeonPart);
+                                RemoveRoom(dungeonPart);
                                 Destroy(generatedHallway);
                                 Destroy(doorToAlign);
                                 continue;
@@ -167,14 +173,15 @@ public class DungeonGenerator : MonoBehaviour
                     {
                         if (dungeonPart.HasAvailableEntryPoint(out Transform room2EntryPoint))
                         {
-                            generatedRooms.Add(dungeonPart);
+                            AddNewRoom(dungeonPart);
                             doorToAlign.transform.position = room1EntryPoint.transform.position;
                             doorToAlign.transform.rotation = room1EntryPoint.transform.rotation;
                             AlignRooms(randomGeneratedRoom.transform, generatedRoom.transform, room1EntryPoint, room2EntryPoint);
 
                             if (HandleIntersection(dungeonPart))
                             {
-                                generatedRooms.Remove(dungeonPart);
+                                dungeonPart.UnuseEntryPoint(room1EntryPoint);
+                                RemoveRoom(dungeonPart);
                                 Destroy(generatedRoom);
                                 Destroy(doorToAlign);
                                 continue;
@@ -279,6 +286,30 @@ public class DungeonGenerator : MonoBehaviour
     //    }
     //}
 
+    private void AddNewRoom(DungeonPart dungeonPart)
+    {
+        generatedRooms.Add(dungeonPart);
+        availableRooms.Add(dungeonPart);
+    }
+
+    private void RemoveRoom(DungeonPart dungeonPart)
+    {
+        generatedRooms.Remove(dungeonPart);
+        availableRooms.Remove(dungeonPart);
+    }
+
+    public void RemoveAvailableRoom(DungeonPart room)
+    {
+        if (availableRooms.Contains(room))
+            availableRooms.Remove(room);
+    }
+
+    public void AddAvailableRoom(DungeonPart room)
+    {
+        if (!availableRooms.Contains(room))
+            availableRooms.Add(room);
+    }
+
     private void RetryPlacement(GameObject itemToPlace, GameObject doorToPlace)
     {
         DungeonPart randomGeneratedRoom = null;
@@ -321,7 +352,7 @@ public class DungeonGenerator : MonoBehaviour
 
     private void FillEmptyEntrances()
     {
-        generatedRooms.ForEach(room => room.FillEmptyDoors());
+        availableRooms.ForEach(room => room.FillEmptyDoors());
     }
 
     private bool HandleIntersection(DungeonPart dungeonPart)
