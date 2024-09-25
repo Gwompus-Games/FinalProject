@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     {
         Idle,
         Walking,
-        Running
+        Running,
+        Inventory
     }
 
     [Header("Debug Settings")]
@@ -24,9 +25,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _runSpeed = 5f;
     [SerializeField] private float _jumpForce = 2f;
     [SerializeField] private float _gravity = -2f;
-
-    [Header("Stamina Settings")]
-    [SerializeField] private Image _staminaBar;
 
     [Header("Grounded Settings")]
     [SerializeField] private LayerMask _groundMask;
@@ -43,8 +41,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 _velocity;
 
     private float _defaultStepOffset;
-    private float _stamina;
-    private float _staminaRegenDelayTimer;
 
     private Vector2 _movementInput = Vector2.zero;
 
@@ -61,9 +57,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Update timers
-        UpdateTimers();
-
         // Take player inputs
         MovementInput();
 
@@ -81,13 +74,17 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
+        if (currentState == PlayerState.Inventory)
+        {
+            return;
+        }
         if (_movement.magnitude == 0)
         {
             ChangeState(PlayerState.Idle);
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded && _stamina > 1)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
             {
                 ChangeState(PlayerState.Running);
             }
@@ -114,6 +111,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Running:
                 moveSpeed = _runSpeed;
+                break;
+            default:
+                moveSpeed = 0;
                 break;
         }
     }
@@ -175,26 +175,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void UpdateTimers()
-    {
-        if (isGrounded)
-            _staminaRegenDelayTimer += Time.deltaTime;
-    }
-
     // Input functions using CustomPlayerInput
 
     private void OnEnable()
     {
         CustomPlayerInput.UpdateMovement += UpdateMovement;
+        CustomPlayerInput.OpenInventory += ToggleInventory;
     }
 
     private void OnDisable()
     {
         CustomPlayerInput.UpdateMovement -= UpdateMovement;
+        CustomPlayerInput.OpenInventory -= ToggleInventory;
     }
 
     public void UpdateMovement(Vector2 newMovementInput)
     {
         _movementInput = newMovementInput;
+    }
+
+    public void ToggleInventory()
+    {
+        Debug.Log("TOGGLED");
+        Cursor.lockState = CursorLockMode.None;
     }
 }

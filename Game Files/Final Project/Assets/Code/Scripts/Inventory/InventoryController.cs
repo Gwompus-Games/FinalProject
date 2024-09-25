@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
@@ -17,7 +19,10 @@ public class InventoryController : MonoBehaviour
     {
         CustomPlayerInput.UpdateCursorPosition += UpdateMousePos;
         CustomPlayerInput.Rotate += RotateItem;
+        CustomPlayerInput.LeftMouseButton += PlaceInput;
     }
+
+    
 
     private void OnDisable()
     {
@@ -50,49 +55,66 @@ public class InventoryController : MonoBehaviour
                 _itemToPlace = null;
             }
         }
-
-        if (selectedItemGrid == null)
-        {
-            return;
-        }
-        if (!selectedItemGrid.gameObject.activeInHierarchy)
-        {
-            return;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (_itemToPlace == null)
-            {
-                InventoryItem item = selectedItemGrid.PickupItem(_mousePosition);
-                if (item != null)
-                {
-                    SwapItemInHand(item);
-                }
-            }
-            else
-            {
-                if(selectedItemGrid.PlaceItem(_itemToPlace, _mousePosition, out InventoryItem returnItem))
-                {
-                    SwapItemInHand(returnItem);
-                }
-                else
-                {
-                    _itemToPlace.InvalidPlacementFlash();
-                }
-            }
-        }
     }
 
     public void SwapItemInHand(InventoryItem item)
     {
-        Debug.Log(item);
         if (item != null)
         {
             item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
             item.GetComponent<RectTransform>().position = _mousePosition;
         }
         _itemToPlace = item;
+    }
+
+    private void DropItemInput(CustomPlayerInput.CustomInputData data)
+    {
+        if (data != CustomPlayerInput.CustomInputData.PRESSED)
+        {
+
+        }
+    }
+
+    private void PlaceInput(CustomPlayerInput.CustomInputData data)
+    {
+        if (data != CustomPlayerInput.CustomInputData.PRESSED)
+        {
+            return;
+        }
+
+        if (selectedItemGrid == null)
+        {
+            if (_itemToPlace != null)
+            {
+
+            }
+            return;
+        }
+
+        if (!selectedItemGrid.gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        if (_itemToPlace == null)
+        {
+            InventoryItem item = selectedItemGrid.PickupItem(_mousePosition);
+            if (item != null)
+            {
+                SwapItemInHand(item);
+            }
+        }
+        else
+        {
+            if (selectedItemGrid.PlaceItem(_itemToPlace, _mousePosition, out InventoryItem returnItem))
+            {
+                SwapItemInHand(returnItem);
+            }
+            else
+            {
+                _itemToPlace.InvalidPlacementFlash();
+            }
+        }
     }
 
     public void UpdateMousePos(Vector2 mousePosition)
