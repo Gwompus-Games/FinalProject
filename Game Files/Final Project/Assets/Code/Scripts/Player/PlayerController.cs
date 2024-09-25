@@ -26,9 +26,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _jumpForce = 2f;
     [SerializeField] private float _gravity = -2f;
 
-    [Header("Stamina Settings")]
-    [SerializeField] private Image _staminaBar;
-
     [Header("Grounded Settings")]
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private Transform _groundCheck;
@@ -44,8 +41,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 _velocity;
 
     private float _defaultStepOffset;
-    private float _stamina;
-    private float _staminaRegenDelayTimer;
 
     private Vector2 _movementInput = Vector2.zero;
 
@@ -62,9 +57,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Update timers
-        UpdateTimers();
-
         // Take player inputs
         MovementInput();
 
@@ -92,7 +84,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded && _stamina > 1)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
             {
                 ChangeState(PlayerState.Running);
             }
@@ -181,12 +173,6 @@ public class PlayerController : MonoBehaviour
         {
             _controller.stepOffset = 0;
         }
-    }
-
-    private void UpdateTimers()
-    {
-        if (isGrounded)
-            _staminaRegenDelayTimer += Time.deltaTime;
     }
 
     // Input functions using CustomPlayerInput
