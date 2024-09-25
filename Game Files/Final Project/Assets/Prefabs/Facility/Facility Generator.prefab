@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4848040540732877328}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 027ec16f5254c1e41b0841e5db121ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entrance: {fileID: 8857224470717509373, guid: 1a435ba19a4679d4c89ff2a4a94c64bc,
+  entrance: {fileID: 8857224470717509373, guid: f2266029d2b4fbc4f982fe20286c987e,
     type: 3}
   rooms:
-  - {fileID: 8857224470717509373, guid: bbd5bf36c85d54147a6f119b9c3effd1, type: 3}
-  - {fileID: 8857224470717509373, guid: cef1c940bc85e5045a7aa9f327ac393a, type: 3}
-  - {fileID: 8857224470717509373, guid: e2f4706fad8c1f44198cdeb5b5b5072d, type: 3}
+  - {fileID: 8857224470717509373, guid: e96e2ad445be48949b2314312d793a4d, type: 3}
+  - {fileID: 8857224470717509373, guid: 9864274980841eb4589cc7ba9c413bf7, type: 3}
+  - {fileID: 8857224470717509373, guid: e227b741b29adfe449157d5ae2c660e5, type: 3}
   specialRooms: []
   alternateEntrances: []
   hallways:
@@ -58,7 +58,7 @@ MonoBehaviour:
   - {fileID: 8857224470717509373, guid: 393c0ec6480d0174c8802f4ae4ba1aa0, type: 3}
   - {fileID: 8857224470717509373, guid: 0f0473378537cad48a4a203c9fd0149b, type: 3}
   door: {fileID: 1293551178090617148, guid: b1e3ecf6bc301f0429ce124d301592be, type: 3}
-  numOfRooms: 300
+  numOfRooms: 200
   roomLayerMask:
     serializedVersion: 2
     m_Bits: 128

@@ -6,14 +6,6 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class DungeonPart : MonoBehaviour
 {
-    public enum DungeonPartType
-    {
-        Room,
-        Hallway
-    }
-
-    [SerializeField] LayerMask roomLayerMask;
-    [SerializeField] private DungeonPartType dungeonPartType;
     [SerializeField] private GameObject fillerWall;
 
     public List<Transform> entryPoints;
