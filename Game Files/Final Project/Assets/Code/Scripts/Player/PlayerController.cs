@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     {
         Idle,
         Walking,
-        Running
+        Running,
+        Inventory
     }
 
     [Header("Debug Settings")]
@@ -81,6 +82,10 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
+        if (currentState == PlayerState.Inventory)
+        {
+            return;
+        }
         if (_movement.magnitude == 0)
         {
             ChangeState(PlayerState.Idle);
@@ -114,6 +119,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Running:
                 moveSpeed = _runSpeed;
+                break;
+            default:
+                moveSpeed = 0;
                 break;
         }
     }
@@ -186,15 +194,23 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         CustomPlayerInput.UpdateMovement += UpdateMovement;
+        CustomPlayerInput.OpenInventory += ToggleInventory;
     }
 
     private void OnDisable()
     {
         CustomPlayerInput.UpdateMovement -= UpdateMovement;
+        CustomPlayerInput.OpenInventory -= ToggleInventory;
     }
 
     public void UpdateMovement(Vector2 newMovementInput)
     {
         _movementInput = newMovementInput;
+    }
+
+    public void ToggleInventory()
+    {
+        Debug.Log("TOGGLED");
+        Cursor.lockState = CursorLockMode.None;
     }
 }
