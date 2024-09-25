@@ -73,7 +73,7 @@ public class DungeonPart : MonoBehaviour
 
     private void UseEntryPoint(Transform entryTransform, EntryPoint entryPoint)
     {
-        entryPoint.SetOccupied();
+        entryPoint.SetOccupied(true);
         avaiableEntryPoints.Remove(entryTransform);
 
         if (avaiableEntryPoints.Count <= 0)
@@ -99,6 +99,7 @@ public class DungeonPart : MonoBehaviour
                 if (!entryPoint.IsOccupied())
                 {
                     GameObject wall = Instantiate(fillerWall);
+                    wall.transform.parent = transform;
                     wall.transform.position = entry.transform.position;
                     wall.transform.rotation = entry.transform.rotation;
                 }
