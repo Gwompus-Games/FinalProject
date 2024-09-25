@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(OxygenSystem))]
+[RequireComponent(typeof(SuitSystem))]
 public class PlayerController : MonoBehaviour
 {
     public enum PlayerState
@@ -14,49 +16,47 @@ public class PlayerController : MonoBehaviour
     }
 
     [Header("Debug Settings")]
-    [SerializeField] private bool debugMode = false;
-    [SerializeField] private bool infiniteStamina = false;
+    [SerializeField] private bool _debugMode = false;
+    [SerializeField] private bool _infiniteStamina = false;
 
     [Header("Movement Settings")]
-    [SerializeField] private float walkSpeed = 3f;
-    [SerializeField] private float runSpeed = 5f;
-    [SerializeField] private float jumpForce = 2f;
-    [SerializeField] private float gravity = -2f;
+    [SerializeField] private float _walkSpeed = 3f;
+    [SerializeField] private float _runSpeed = 5f;
+    [SerializeField] private float _jumpForce = 2f;
+    [SerializeField] private float _gravity = -2f;
 
     [Header("Stamina Settings")]
-    [SerializeField] private float maxStamina = 100;
-    [SerializeField] private float staminaLossSpeed = 10f;
-    [SerializeField] private float staminaJumpCost = 20f;
-    [SerializeField] private float staminaRegenSpeed = 12f;
-    [SerializeField] private float staminaRegenDelay = 1f;
-    [SerializeField] private Image staminaBar;
+    [SerializeField] private Image _staminaBar;
 
     [Header("Grounded Settings")]
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckRadius = 0.4f;
+    [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private float _groundCheckRadius = 0.4f;
 
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
     public float moveSpeed { get; private set; }
 
-    CharacterController controller;
+    CharacterController _controller;
 
-    private Vector3 movement;
-    private Vector3 velocity;
+    private Vector3 _movement;
+    private Vector3 _velocity;
 
-    private float defaultStepOffset;
-    private float stamina;
-    private float staminaRegenDelayTimer;
+    private float _defaultStepOffset;
+    private float _stamina;
+    private float _staminaRegenDelayTimer;
+
+    private Vector2 _movementInput = Vector2.zero;
+
+    private OxygenSystem _oxygenSystem;
+    private SuitSystem _suitSystem;
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
+        _controller = GetComponent<CharacterController>();
 
-        defaultStepOffset = controller.stepOffset;
-        moveSpeed = walkSpeed;
-
-        UpdateStamina(maxStamina);
+        _defaultStepOffset = _controller.stepOffset;
+        moveSpeed = _walkSpeed;
     }
 
     private void Update()
@@ -66,7 +66,6 @@ public class PlayerController : MonoBehaviour
 
         // Take player inputs
         MovementInput();
-        JumpInput();
 
         // Update player state and apply state logic
         UpdateState();
@@ -82,13 +81,13 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (movement.magnitude == 0)
+        if (_movement.magnitude == 0)
         {
             ChangeState(PlayerState.Idle);
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded && stamina > 1)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded && _stamina > 1)
             {
                 ChangeState(PlayerState.Running);
             }
@@ -109,15 +108,12 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.Idle:
                 moveSpeed = 0;
-                RegenerateStamina();
                 break;
             case PlayerState.Walking:
-                moveSpeed = walkSpeed;
-                RegenerateStamina(0.5f);
+                moveSpeed = _walkSpeed;
                 break;
             case PlayerState.Running:
-                moveSpeed = runSpeed;
-                DecreaseStamina();
+                moveSpeed = _runSpeed;
                 break;
         }
     }
@@ -131,9 +127,9 @@ public class PlayerController : MonoBehaviour
     {
         bool oldIsGrounded = isGrounded;
 
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
+        isGrounded = Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundMask);
 
-        if (velocity.y > 0.2f)
+        if (_velocity.y > 0.2f)
             isGrounded = false;
 
         if (isGrounded != oldIsGrounded)
@@ -141,27 +137,17 @@ public class PlayerController : MonoBehaviour
             IsGroundedChanged();
         }
 
-        if (isGrounded && velocity.y < 0.5f)
+        if (isGrounded && _velocity.y < 0.5f)
         {
-            velocity.y = -5f;
+            _velocity.y = -5f;
         }
 
-        Vector2 movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-
-        movement = (transform.right * movementInput.x + transform.forward * movementInput.y);
-    }
-
-    private void JumpInput()
-    {
-        if (Input.GetButtonDown("Jump") && isGrounded && velocity.y <= 0.1f)
-        {
-            Jump();
-        }
+        _movement = (transform.right * _movementInput.x + transform.forward * _movementInput.y);
     }
 
     private void ApplyMovement()
     {
-        controller.Move(movement * moveSpeed * Time.deltaTime);
+        _controller.Move(_movement * moveSpeed * Time.deltaTime);
     }
 
     private void CalculateGravity()
@@ -169,72 +155,46 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
             return;
 
-        velocity.y += gravity * Time.deltaTime;
+        _velocity.y += _gravity * Time.deltaTime;
     }
 
     private void ApplyGravity()
     {
-        controller.Move(velocity * Time.deltaTime);
-    }
-
-    private void Jump()
-    {
-        if (stamina < staminaJumpCost)
-            return;
-
-
-        velocity.y = Mathf.Sqrt(jumpForce * 0.1f * -2 * gravity);
-        UpdateStamina(stamina - staminaJumpCost);
+        _controller.Move(_velocity * Time.deltaTime);
     }
 
     private void IsGroundedChanged()
     {
         if (isGrounded)
         {
-            controller.stepOffset = defaultStepOffset;
+            _controller.stepOffset = _defaultStepOffset;
         }
         else
         {
-            controller.stepOffset = 0;
+            _controller.stepOffset = 0;
         }
     }
 
     private void UpdateTimers()
     {
         if (isGrounded)
-            staminaRegenDelayTimer += Time.deltaTime;
+            _staminaRegenDelayTimer += Time.deltaTime;
     }
 
-    private void DecreaseStamina(float multiplier = 1)
+    // Input functions using CustomPlayerInput
+
+    private void OnEnable()
     {
-        if (stamina == 0 || !isGrounded)
-            return;
-
-        UpdateStamina(stamina - (staminaRegenSpeed * multiplier * Time.deltaTime));
-
-        if (stamina <= 1)
-            ChangeState(PlayerState.Walking);
+        CustomPlayerInput.UpdateMovement += UpdateMovement;
     }
 
-    private void RegenerateStamina(float multiplier = 1)
+    private void OnDisable()
     {
-        if (stamina >= maxStamina || !isGrounded || staminaRegenDelayTimer < staminaRegenDelay)
-            return;
-
-        UpdateStamina(stamina + (staminaRegenSpeed * multiplier * Time.deltaTime));
+        CustomPlayerInput.UpdateMovement -= UpdateMovement;
     }
 
-    private void UpdateStamina(float newStamina)
+    public void UpdateMovement(Vector2 newMovementInput)
     {
-        if (newStamina < stamina)
-        {
-            if (infiniteStamina)
-                return;
-
-            staminaRegenDelayTimer = 0;
-        }
-
-        stamina = Mathf.Clamp(newStamina, 0, maxStamina);
-        staminaBar.fillAmount = stamina / maxStamina;
+        _movementInput = newMovementInput;
     }
 }

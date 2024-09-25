@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class DungeonPart : MonoBehaviour
 {
@@ -15,13 +17,13 @@ public class DungeonPart : MonoBehaviour
     [SerializeField] private GameObject fillerWall;
 
     public List<Transform> entryPoints;
-    public new Collider collider;
+    private List<Transform> avaiableEntryPoints = new List<Transform>();
 
-    private BoxCollider boxCollider;
+    public new Collider collider;
 
     private void Awake()
     {
-        boxCollider = GetComponent<BoxCollider>();
+        avaiableEntryPoints.AddRange(entryPoints);
         //FixBoxCollider();
     }
 
@@ -47,7 +49,7 @@ public class DungeonPart : MonoBehaviour
                 {
                     result = true;
                     resultingEntry = entry;
-                    res.SetOccupied();
+                    UseEntryPoint(entry, res);
                 }
                 entryPoint = resultingEntry;
                 return result;
@@ -65,7 +67,7 @@ public class DungeonPart : MonoBehaviour
                 {
                     resultingEntry = entry;
                     result = true;
-                    res.SetOccupied();
+                    UseEntryPoint(entry, res);
                     break;
                 }
             }
@@ -77,11 +79,22 @@ public class DungeonPart : MonoBehaviour
         return result;
     }
 
+    private void UseEntryPoint(Transform entryTransform, EntryPoint entryPoint)
+    {
+        entryPoint.SetOccupied();
+        avaiableEntryPoints.Remove(entryTransform);
+
+        if (avaiableEntryPoints.Count <= 0)
+            DungeonGenerator.Instance.RemoveAvailableRoom(this);
+    }
+
     public void UnuseEntryPoint(Transform entryPoint)
     {
         if (entryPoint.TryGetComponent(out EntryPoint entry))
         {
             entry.SetOccupied(false);
+            avaiableEntryPoints.Add(entryPoint);
+            DungeonGenerator.Instance.AddAvailableRoom(this);
         }
     }
 
@@ -119,17 +132,17 @@ public class DungeonPart : MonoBehaviour
         return availableEntryPoints;
     }
 
-    private void FixBoxCollider()
-    {
-        boxCollider.size = new Vector3(boxCollider.size.x - 0.2f, boxCollider.size.y - 0.2f, boxCollider.size.z - 0.2f);
-    }
+    //private void FixBoxCollider()
+    //{
+    //    boxCollider.size = new Vector3(boxCollider.size.x - 0.2f, boxCollider.size.y - 0.2f, boxCollider.size.z - 0.2f);
+    //}
 
-    private void OnDrawGizmos()
-    {
-        if (collider == null)
-            return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (collider == null)
+    //        return;
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.size);
-    }
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.size);
+    //}
 } 
