@@ -11,10 +11,15 @@ public class DungeonPart : MonoBehaviour
     public List<Transform> entryPoints;
     private List<Transform> avaiableEntryPoints = new List<Transform>();
 
+    public List<MeshRenderer> meshRenderersToHide = new List<MeshRenderer>();
+    public List<GameObject> objectsToHide = new List<GameObject>();
+
     public new Collider collider;
 
     private void Awake()
     {
+        ShowMesh(false);
+
         avaiableEntryPoints.AddRange(entryPoints);
         //FixBoxCollider();
     }
@@ -123,6 +128,19 @@ public class DungeonPart : MonoBehaviour
         }
 
         return availableEntryPoints;
+    }
+
+    public void ShowMesh(bool isShowing = true)
+    {
+        foreach (GameObject obj in objectsToHide)
+        {
+            obj.SetActive(isShowing);
+        }
+
+        foreach (MeshRenderer renderer in meshRenderersToHide)
+        {
+            renderer.enabled = isShowing;
+        }
     }
 
     //private void FixBoxCollider()

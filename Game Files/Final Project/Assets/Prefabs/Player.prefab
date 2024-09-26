@@ -675,6 +675,7 @@ GameObject:
   - component: {fileID: 5035508768408984001}
   - component: {fileID: 8379607226771131165}
   - component: {fileID: 7210416837440170363}
+  - component: {fileID: 752392146625522760}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -729,7 +730,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 50
   field of view: 75
   orthographic: 0
   orthographic size: 5
@@ -885,6 +886,23 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
+--- !u!114 &752392146625522760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604277345570955366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 876be916ec3d288468e4983c5e76881d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedItemGrid: {fileID: 0}
+  testInventoryItemPrefab: {fileID: 3969134843577476104, guid: ad812b8ba4d8e764aa540bbee0fad299,
+    type: 3}
+  testInventoryItemPrefab2: {fileID: 3969134843577476104, guid: c74a81766c8d52a449ad7518c7e8397c,
+    type: 3}
 --- !u!1 &6826084432062396286
 GameObject:
   m_ObjectHideFlags: 0

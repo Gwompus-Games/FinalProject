@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
+    public static InventoryController INSTANCE;
+
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
-    public static InventoryController INSTANCE;
     private InventoryItem _itemToPlace;
 
     [SerializeField] GameObject testInventoryItemPrefab;
