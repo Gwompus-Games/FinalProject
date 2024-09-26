@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundCheckRadius = 0.4f;
 
+    [Header("Inventory Settings")]
+
+
     public static PlayerController INSTANCE;
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
@@ -187,7 +190,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool CheckIfLookingAtItem()
+    private bool CheckIfLookingAtInteractable()
     {
 
 
