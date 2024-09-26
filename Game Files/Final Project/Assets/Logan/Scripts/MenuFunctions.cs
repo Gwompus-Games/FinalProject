@@ -8,10 +8,11 @@ public class MenuFunctions : MonoBehaviour
 {
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private string PlayButtonTargetScene = "";
 
     public void StartGame()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("LoganTestScene");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(PlayButtonTargetScene);
     }
 
     public void SwapToOptions()
