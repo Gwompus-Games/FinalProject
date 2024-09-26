@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class RenderDistance : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.TryGetComponent(out DungeonPart room))
+        {
+            room.ShowMesh(true);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit(Collider other)
     {
-        
+        if (other.TryGetComponent(out DungeonPart room))
+        {
+            room.ShowMesh(false);
+        }
     }
 }

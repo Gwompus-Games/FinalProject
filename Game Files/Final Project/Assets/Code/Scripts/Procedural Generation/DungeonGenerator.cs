@@ -111,7 +111,7 @@ public class DungeonGenerator : MonoBehaviour
             {
                 int randomIndex = Random.Range(0, hallways.Count);
                 GameObject generatedHallway = Instantiate(hallways[randomIndex], transform.position, transform.rotation);
-                generatedHallway.transform.SetParent(null);
+                generatedHallway.transform.SetParent(transform);
                 generatedHallway.name += " " + generatedRooms.Count;
 
                 SetRandomRotation(generatedHallway.transform);
@@ -144,7 +144,7 @@ public class DungeonGenerator : MonoBehaviour
                     generatedRoom = Instantiate(rooms[randomIndex], transform.position, transform.rotation);
                 }
 
-                generatedRoom.transform.SetParent(null);
+                generatedRoom.transform.SetParent(transform);
                 generatedRoom.name += " " + generatedRooms.Count;
 
                 SetRandomRotation(generatedRoom.transform);
@@ -349,7 +349,7 @@ public class DungeonGenerator : MonoBehaviour
             for (int r = 0; r < 4; r++)
             {
                 GameObject generatedHallway = Instantiate(shuffledHallways[i], transform.position, transform.rotation);
-                generatedHallway.transform.SetParent(null);
+                generatedHallway.transform.SetParent(transform);
                 generatedHallway.name += " " + generatedRooms.Count;
 
                 SetYRotation(generatedHallway.transform, r * 90);
@@ -366,7 +366,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         GameObject generatedRoom = Instantiate(entrance, transform.position, transform.rotation);
 
-        generatedRoom.transform.SetParent(null);
+        generatedRoom.transform.SetParent(transform);
 
         if (generatedRoom.TryGetComponent(out DungeonPart dungeonPart))
         {
