@@ -82,7 +82,8 @@ public class InventoryController : MonoBehaviour
     {
         if (data != CustomPlayerInput.CustomInputData.PRESSED)
         {
-
+            Destroy(_itemToPlace.gameObject);
+            _itemToPlace = null;
         }
     }
 
