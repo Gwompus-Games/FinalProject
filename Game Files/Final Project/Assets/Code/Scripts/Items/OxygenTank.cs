@@ -5,7 +5,18 @@ using UnityEngine;
 public class OxygenTank : InventoryItem
 {
     [SerializeField] private OxygenTankSO _oxygenTankData;
-    public float oxygenLeft { get; private set; }
+    public float oxygenLeft { 
+        get
+        {
+            return _oxygenLeft;
+        }
+        private set
+        {
+            _oxygenLeft = value;
+            oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / _maxOxygenCapacity * 100);
+        }
+    }
+    private float _oxygenLeft;
     public bool containsOxygen { get; private set; }
     private float _maxOxygenCapacity = 0;
     private int _myOxygenTankID = 0;
@@ -16,7 +27,6 @@ public class OxygenTank : InventoryItem
         _maxOxygenCapacity = _oxygenTankData.minutesUntilEmpty * 60f;
         oxygenLeft = _maxOxygenCapacity;
         containsOxygen = (oxygenLeft > 0);
-        oxygenLeftPercent = "100";
     }
 
     public void SetOxygenTankID(int id)
@@ -46,7 +56,6 @@ public class OxygenTank : InventoryItem
         {
             containsOxygen = false;
         }
-        oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / _maxOxygenCapacity * 100);
     }
 
     public void AddOxygen(float oxygenToAddInSeconds, out float remainder)
