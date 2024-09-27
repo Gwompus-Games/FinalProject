@@ -205,6 +205,11 @@ public class PlayerController : MonoBehaviour
 
     public void NoOxygenLeft()
     {
+        KillPlayer();
+    }
+
+    public void KillPlayer()
+    {
 
     }
 

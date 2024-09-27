@@ -8,7 +8,7 @@ public class SuitSystem : MonoBehaviour
     public static SuitSystem INSTANCE;
     public static Action UpdateSuitUI;
     [field: SerializeField] public int numberOfSections { get; private set; } = 5;
-    [field: SerializeField] public float currentSection { get; private set; } = 5;
+    [field: SerializeField] public int currentSection { get; private set; } = 5;
     [SerializeField] private float[] oxygenDrainForSection;
 
     [field: SerializeField] public float suitDurabilitySectionMax { get; private set; } = 100;
@@ -65,6 +65,7 @@ public class SuitSystem : MonoBehaviour
         if (currentSection <= 1)
         {
             Debug.Log("Kill Player");
+            PlayerController.INSTANCE.KillPlayer();
         }
         currentSection--;
         remainderDamage = Mathf.Max(damage - suitDurabilityForCurrentSection, 0);
