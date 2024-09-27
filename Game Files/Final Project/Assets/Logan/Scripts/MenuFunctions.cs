@@ -36,6 +36,5 @@ public class MenuFunctions : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit(0);
-        UnityEditor.EditorApplication.isPlaying = false;
     }
 }
