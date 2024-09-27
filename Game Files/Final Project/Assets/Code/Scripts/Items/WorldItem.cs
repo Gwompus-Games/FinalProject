@@ -12,11 +12,12 @@ public class WorldItem : MonoBehaviour
 
     private void Awake()
     {
+        _meshRenderer = GetComponent<MeshRenderer>();
+
         if (_itemData != null)
         {
             AssignData(_itemData);
         }
-        _meshRenderer = GetComponent<MeshRenderer>();
     }
 
     public void SpawnItem(Vector3 position, ItemDataSO itemData = null)
