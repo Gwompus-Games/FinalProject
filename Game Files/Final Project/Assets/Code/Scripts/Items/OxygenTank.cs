@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OxygenTank : Item
+public class OxygenTank : InventoryItem
 {
     [SerializeField] private OxygenTankSO _myData;
     public float oxygenLeft { get; private set; }
     public bool containsOxygen { get; private set; }
     private float _maxOxygenCapacity = 0;
     private int _myOxygenTankID = 0;
+    public string oxygenLeftPercent { get; private set; }
 
     private void Awake()
     {
         _maxOxygenCapacity = _myData.minutesUntilEmpty * 60f;
         oxygenLeft = _maxOxygenCapacity;
         containsOxygen = (oxygenLeft > 0);
+        oxygenLeftPercent = "100";
     }
 
     public void SetOxygenTankID(int id)
@@ -44,6 +46,7 @@ public class OxygenTank : Item
         {
             containsOxygen = false;
         }
+        oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / _maxOxygenCapacity * 100);
     }
 
     public void AddOxygen(float oxygenToAddInSeconds, out float remainder)

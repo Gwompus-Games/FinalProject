@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _runSpeed = 5f;
     [SerializeField] private float _jumpForce = 2f;
     [SerializeField] private float _gravity = -2f;
+    [SerializeField] [Range(1f, 5f)] private float _runningOxygenDrainMultiplier = 2f;
 
     [Header("Grounded Settings")]
     [SerializeField] private LayerMask _groundMask;
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
     private OxygenSystem _oxygenSystem;
     private SuitSystem _suitSystem;
-
+    private OxygenDrainer _runningDrainer;
     private void Awake()
     {
         if (INSTANCE != null)
@@ -59,6 +60,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
         INSTANCE = this;
+        _runningDrainer = gameObject.AddComponent<OxygenDrainer>();
+        _runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
     }
 
     private void Start()
@@ -197,6 +200,11 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    public void NoOxygenLeft()
+    {
+
+    }
+
     // Input functions using CustomPlayerInput
 
     private void OnEnable()
@@ -214,6 +222,18 @@ public class PlayerController : MonoBehaviour
     public void UpdateMovement(Vector2 newMovementInput)
     {
         _movementInput = newMovementInput;
+    }
+
+    public void RunInput(bool running)
+    {
+        if (running)
+        {
+            OxygenSystem.INSTANCE.AddDrainingSource(_runningDrainer);
+        }
+        else
+        {
+            OxygenSystem.INSTANCE.RemoveDrainingSource(_runningDrainer);
+        }
     }
 
     private void ChangeInventoryUIState(bool enabled)

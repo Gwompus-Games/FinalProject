@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class OxygenDrainer : MonoBehaviour
 {
-    public float drainMultiplier { get; private set; } = 1.0f;
+    [field:SerializeField] public float drainMultiplier { get; private set; } = 1.0f;
 
+    public void SetDrainMultiplier(float newMultiplier)
+    {
+        drainMultiplier = newMultiplier;
+    }
 }

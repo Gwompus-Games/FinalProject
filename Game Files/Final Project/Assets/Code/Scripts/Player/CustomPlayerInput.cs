@@ -14,6 +14,7 @@ public class CustomPlayerInput : MonoBehaviour
     public static Action OpenInventory;
     public static Action<CustomInputData> LeftMouseButton;
     public static Action<CustomInputData> RightMouseButton;
+    public static Action<bool> UpdateRunning;
 
     public enum CustomInputData
     {
@@ -92,6 +93,18 @@ public class CustomPlayerInput : MonoBehaviour
         if (context.canceled)
         {
             RightMouseButton?.Invoke(CustomInputData.RELEASED);
+        }
+    }
+
+    public void InputRunning(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            UpdateRunning?.Invoke(true);
+        }
+        if (context.canceled)
+        {
+            UpdateRunning?.Invoke(false );
         }
     }
 }

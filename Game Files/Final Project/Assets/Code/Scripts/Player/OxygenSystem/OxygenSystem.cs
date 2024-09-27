@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 public class OxygenSystem : MonoBehaviour
 {
     public static OxygenSystem INSTANCE;
+    public static Action<string> OxygenLeftInTank;
 
     [SerializeField] private List<OxygenTank> oxygenTanks = new List<OxygenTank>();
     private int activeOxygenTank = 0;
@@ -28,7 +30,7 @@ public class OxygenSystem : MonoBehaviour
 
     private void Update()
     {
-        
+        DrainActiveTank(Time.deltaTime);
     }
 
     private void SortAndLabelOxygenTanks()
@@ -84,12 +86,12 @@ public class OxygenSystem : MonoBehaviour
         SortAndLabelOxygenTanks();
     }
 
-    private void SwapOxygenTank()
+    private bool SwapOxygenTank()
     {
         int selectedTank = 0;
         if (oxygenTanks.Count < 1)
         {
-            return;
+            return false;
         }
         if (!oxygenTanks[selectedTank].containsOxygen)
         {
@@ -100,13 +102,18 @@ public class OxygenSystem : MonoBehaviour
                     selectedTank = t;
                     break;
                 }
+                if (t >= oxygenTanks.Count - 1)
+                {
+                    return false;
+                }
             }
         }
 
         activeOxygenTank = selectedTank;
+        return true;
     }
 
-    private void SwapOxygenTank(int tank)
+    private bool SwapOxygenTank(int tank)
     {
         if (tank >= oxygenTanks.Count || tank < 0)
         {
@@ -116,9 +123,11 @@ public class OxygenSystem : MonoBehaviour
         if (!oxygenTanks[tank].containsOxygen)
         {
             Debug.Log($"Swapping to {tank} tank, which has no oxygen.");
+            return SwapOxygenTank();
         }
 
         activeOxygenTank = tank;
+        return true;
     }
 
     public void AddDrainingSource(OxygenDrainer drainer)
@@ -143,16 +152,41 @@ public class OxygenSystem : MonoBehaviour
         oxygenDrainMultipliers.Remove(drainer);
     }
 
-    private void DrainActiveTank(float drainAmount)
+    private void DrainActiveTank(float drainAmountInSeconds)
     {
-        if (oxygenTanks[activeOxygenTank].DrainOxygen(drainAmount, out drainAmount))
+        drainAmountInSeconds = ApplyDrainModifiers(drainAmountInSeconds);
+        while (drainAmountInSeconds > 0)
         {
+            oxygenTanks[activeOxygenTank].DrainOxygen(drainAmountInSeconds, out drainAmountInSeconds);
+            if (drainAmountInSeconds >= 0)
+            {
+                if (!SwapOxygenTank())
+                {
+                    PlayerController.INSTANCE.NoOxygenLeft();
+                    OxygenLeftInTank?.Invoke("0");
+                    break;
+                }
+            }
+        }
 
+        if (drainAmountInSeconds <= 0)
+        {
+            OxygenLeftInTank?.Invoke(oxygenTanks[activeOxygenTank].oxygenLeftPercent);
         }
     }
 
-    private float ApplyDrainModifiers(float baseDrainAmount)
+    private float ApplyDrainModifiers(float baseDrainAmountInSeconds)
     {
+        if (oxygenDrainMultipliers.Count <= 0)
+        {
+            return baseDrainAmountInSeconds;
+        }
+        float modifiedDrainAmountInSeconds = baseDrainAmountInSeconds;
 
+        for (int d = 0; d < oxygenDrainMultipliers.Count; d++)
+        {
+            modifiedDrainAmountInSeconds *= oxygenDrainMultipliers[d].drainMultiplier;
+        }
+        return modifiedDrainAmountInSeconds;
     }
 }
