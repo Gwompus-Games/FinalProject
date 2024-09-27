@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
+    public static InventoryController INSTANCE;
+
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
     private InventoryItem _itemToPlace;
@@ -15,6 +17,16 @@ public class InventoryController : MonoBehaviour
 
     private Vector3 _mousePosition = Vector3.zero;
 
+    private void Awake()
+    {
+        if (INSTANCE != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        INSTANCE = this;
+    }
+
     private void OnEnable()
     {
         CustomPlayerInput.UpdateCursorPosition += UpdateMousePos;
@@ -22,12 +34,11 @@ public class InventoryController : MonoBehaviour
         CustomPlayerInput.LeftMouseButton += PlaceInput;
     }
 
-    
-
     private void OnDisable()
     {
         CustomPlayerInput.UpdateCursorPosition -= UpdateMousePos;
         CustomPlayerInput.Rotate -= RotateItem;
+        CustomPlayerInput.LeftMouseButton -= PlaceInput;
     }
 
     private void Update()

@@ -11,10 +11,16 @@ public class DungeonPart : MonoBehaviour
     public List<Transform> entryPoints;
     private List<Transform> avaiableEntryPoints = new List<Transform>();
 
+    private MeshRenderer[] meshRenderersToHide;
+    private Light[] lightsToHide;
+
     public new Collider collider;
 
     private void Awake()
     {
+        GetComponentsToHide();
+        ShowMesh(false);
+
         avaiableEntryPoints.AddRange(entryPoints);
         //FixBoxCollider();
     }
@@ -73,7 +79,7 @@ public class DungeonPart : MonoBehaviour
 
     private void UseEntryPoint(Transform entryTransform, EntryPoint entryPoint)
     {
-        entryPoint.SetOccupied();
+        entryPoint.SetOccupied(true);
         avaiableEntryPoints.Remove(entryTransform);
 
         if (avaiableEntryPoints.Count <= 0)
@@ -99,6 +105,7 @@ public class DungeonPart : MonoBehaviour
                 if (!entryPoint.IsOccupied())
                 {
                     GameObject wall = Instantiate(fillerWall);
+                    wall.transform.parent = transform;
                     wall.transform.position = entry.transform.position;
                     wall.transform.rotation = entry.transform.rotation;
                 }
@@ -122,6 +129,25 @@ public class DungeonPart : MonoBehaviour
         }
 
         return availableEntryPoints;
+    }
+
+    public void ShowMesh(bool isShowing = true)
+    {
+        foreach (Light obj in lightsToHide)
+        {
+            obj.enabled = isShowing;
+        }
+
+        foreach (MeshRenderer renderer in meshRenderersToHide)
+        {
+            renderer.enabled = isShowing;
+        }
+    }
+
+    private void GetComponentsToHide()
+    {
+        meshRenderersToHide = gameObject.GetComponentsInChildren<MeshRenderer>();
+        lightsToHide = gameObject.GetComponentsInChildren<Light>();
     }
 
     //private void FixBoxCollider()

@@ -6,23 +6,25 @@ using UnityEngine.UI;
 [RequireComponent(typeof(MeshRenderer))]
 public class Item : MonoBehaviour
 {
-    private Image _inventoryImage;
-    private MeshRenderer _meshRenderer;
-
-    protected virtual void Awake()
-    {
-        _meshRenderer = GetComponent<MeshRenderer>();
-        _inventoryImage = GetComponentInChildren<Image>();
-
-    }
+    protected GameObject _worldObject;
+    protected GameObject _inventoryObject;
 
     public virtual void AddToInventory()
     {
-
+        _worldObject.SetActive(false);
+        _inventoryObject.SetActive(true);
     }
 
     public virtual void RemoveFromInventory()
     {
+        PlaceObjectInFrontOfPlayer();
+        _worldObject.SetActive(true);
+        _inventoryObject.SetActive(false);
+    }
 
+    protected void PlaceObjectInFrontOfPlayer()
+    {
+        Transform playerTransform = PlayerController.INSTANCE.transform;
+        _worldObject.transform.position = playerTransform.position + playerTransform.forward;
     }
 }
