@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
     public float moveSpeed { get; private set; }
+    public bool isRunning { get; private set; }
 
     CharacterController _controller;
 
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
+        isRunning = false;
         ChangeInventoryUIState(false);
     }
 
@@ -100,20 +102,13 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Idle);
         }
+        else if (isRunning && isGrounded)
+        {
+            ChangeState(PlayerState.Running);
+        }
         else
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && isGrounded)
-            {
-                ChangeState(PlayerState.Running);
-            }
-            else if (!Input.GetKey(KeyCode.LeftShift) && isGrounded && currentState == PlayerState.Running)
-            {
-                ChangeState(PlayerState.Walking);
-            }
-            else if (currentState == PlayerState.Idle)
-            {
-                ChangeState(PlayerState.Walking);
-            }
+            ChangeState(PlayerState.Walking);
         }
     }
 
@@ -138,6 +133,14 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeState(PlayerState newState)
     {
+        if (newState == PlayerState.Running)
+        {
+            OxygenSystem.INSTANCE.AddDrainingSource(_runningDrainer);
+        }
+        else
+        {
+            OxygenSystem.INSTANCE.RemoveDrainingSource(_runningDrainer);
+        }
         currentState = newState;
     }
 
@@ -211,12 +214,14 @@ public class PlayerController : MonoBehaviour
     {
         CustomPlayerInput.UpdateMovement += UpdateMovement;
         CustomPlayerInput.OpenInventory += ToggleInventory;
+        CustomPlayerInput.UpdateRunning += RunInput;
     }
 
     private void OnDisable()
     {
         CustomPlayerInput.UpdateMovement -= UpdateMovement;
         CustomPlayerInput.OpenInventory -= ToggleInventory;
+        CustomPlayerInput.UpdateRunning -= RunInput;
     }
 
     public void UpdateMovement(Vector2 newMovementInput)
@@ -226,14 +231,7 @@ public class PlayerController : MonoBehaviour
 
     public void RunInput(bool running)
     {
-        if (running)
-        {
-            OxygenSystem.INSTANCE.AddDrainingSource(_runningDrainer);
-        }
-        else
-        {
-            OxygenSystem.INSTANCE.RemoveDrainingSource(_runningDrainer);
-        }
+        isRunning = running;
     }
 
     private void ChangeInventoryUIState(bool enabled)
