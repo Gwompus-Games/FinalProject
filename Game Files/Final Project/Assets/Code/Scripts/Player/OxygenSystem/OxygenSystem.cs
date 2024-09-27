@@ -9,7 +9,7 @@ public class OxygenSystem : MonoBehaviour
 
     [SerializeField] private List<OxygenTank> oxygenTanks = new List<OxygenTank>();
     private int activeOxygenTank = 0;
-    private Dictionary<MonoBehaviour, float> oxygenDrainMultipliers = new Dictionary<MonoBehaviour, float>();
+    private List<OxygenDrainer> oxygenDrainMultipliers = new List<OxygenDrainer>();
 
     private void Awake()
     {
@@ -119,5 +119,40 @@ public class OxygenSystem : MonoBehaviour
         }
 
         activeOxygenTank = tank;
+    }
+
+    public void AddDrainingSource(OxygenDrainer drainer)
+    {
+        if (oxygenDrainMultipliers.Contains(drainer))
+        {
+            Debug.Log($"List of drainers already contains {drainer.name}");
+            return;
+        }
+
+        oxygenDrainMultipliers.Add(drainer);
+    }
+
+    public void RemoveDrainingSource(OxygenDrainer drainer)
+    {
+        if (!oxygenDrainMultipliers.Contains(drainer))
+        {
+            Debug.Log($"List of drainers already contains {drainer.name}");
+            return;
+        }
+
+        oxygenDrainMultipliers.Remove(drainer);
+    }
+
+    private void DrainActiveTank(float drainAmount)
+    {
+        if (oxygenTanks[activeOxygenTank].DrainOxygen(drainAmount, out drainAmount))
+        {
+
+        }
+    }
+
+    private float ApplyDrainModifiers(float baseDrainAmount)
+    {
+
     }
 }
