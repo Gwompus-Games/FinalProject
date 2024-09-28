@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SuitSystem : MonoBehaviour
+public class SuitSystem : MonoBehaviour, IDamageable
 {
     public static SuitSystem INSTANCE;
     public static Action UpdateSuitUI;
@@ -47,10 +47,10 @@ public class SuitSystem : MonoBehaviour
 
     public void DebugTakeDamage()
     {
-        TakeSuitDamage(25f);
+        TakeDamage(25f);
     }
 
-    public void TakeSuitDamage(float damage)
+    public void TakeDamage(float damage)
     {
         while (damage >= suitDurabilityForCurrentSection)
         {
