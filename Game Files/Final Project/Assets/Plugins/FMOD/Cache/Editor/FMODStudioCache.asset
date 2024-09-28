@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638628545405517049
+  lastModified: 638630490470119285
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -35,11 +35,38 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638628545405527020
+  lastModified: 638630490471335878
   FileSizes:
   - Name: Desktop
-    Value: 41248
+    Value: 184800
   Exists: 1
+--- !u!114 &-1996697862472181675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/Footsteps
+  Guid:
+    Data1: 812532637
+    Data2: 1225509064
+    Data3: 1966231682
+    Data4: -260619525
+  Banks:
+  - {fileID: -4396399035835856423}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1640
 --- !u!114 &-555875900518921724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,10 +82,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638628545405517049
+  lastModified: 638630490470129278
   FileSizes:
   - Name: Desktop
-    Value: 800
+    Value: 856
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -77,15 +104,16 @@ MonoBehaviour:
   - {fileID: -6825772452312535613}
   - {fileID: -4396399035835856423}
   EditorEvents:
-  - {fileID: 1409328802590190347}
+  - {fileID: -1996697862472181675}
+  - {fileID: 2916856265200451565}
   EditorParameters: []
   MasterBanks:
   - {fileID: -6825772452312535613}
   StringsBanks:
   - {fileID: -555875900518921724}
-  cacheTime: 638628545405527020
+  cacheTime: 638630490471335878
   cacheVersion: 131619
---- !u!114 &1409328802590190347
+--- !u!114 &2916856265200451565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,9 +123,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/test
+  m_Name: event:/Heartbeat
   m_EditorClassIdentifier: 
-  Path: event:/test
+  Path: event:/Heartbeat
   Guid:
     Data1: 669225454
     Data2: 1328506579

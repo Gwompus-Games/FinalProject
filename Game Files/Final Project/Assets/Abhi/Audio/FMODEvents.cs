@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class FMODEvents : MonoBehaviour
 {
-    [field: Header ("Test SFX")]
-    [field: SerializeField] public EventReference test { get; private set; }
+    [field: Header ("Heartbeat SFX")]
+    [field: SerializeField] public EventReference heartbeat { get; private set; }
+    
+    [field: Header ("Footsteps SFX")]
+    [field: SerializeField] public EventReference footsteps { get; private set; }
     public static FMODEvents instance { get; private set; }
 
     private void Awake()
