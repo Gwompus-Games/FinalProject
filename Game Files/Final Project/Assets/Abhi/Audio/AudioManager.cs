@@ -7,8 +7,7 @@ using FMOD.Studio;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    public EventReference test;
-
+    private List<EventInstance> eventInstances = new List<EventInstance>();
     private void Awake()
     {
         if(instance != null)
@@ -23,22 +22,24 @@ public class AudioManager : MonoBehaviour
         RuntimeManager.PlayOneShot(sound, worldPos);
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyUp(KeyCode.T))
-        {
-            Test();
-        }   
-    }
-
-    public void Test()
-    {
-        PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
-    }
-
     public EventInstance CreateEventInstance(EventReference eventReference)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
+        eventInstances.Add(eventInstance);
         return eventInstance;
+    }
+
+    private void CleanUp()
+    {
+        foreach(EventInstance eventInstance in eventInstances)
+        {
+            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            eventInstance.release();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        CleanUp();
     }
 }

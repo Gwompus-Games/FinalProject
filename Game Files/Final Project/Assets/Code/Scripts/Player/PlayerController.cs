@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         ChangeInventoryUIState(false);
-        //playerFootsteps = AudioManager.instance.CreateEventInstance(playerFootsteps);
+        playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.footsteps);
     }
 
     private void Update()
@@ -91,6 +91,30 @@ public class PlayerController : MonoBehaviour
         // Check for jump input and calculate then apply gravity
         CalculateGravity();
         ApplyGravity();
+
+        //FMOD
+        UpdateSound();
+    }
+
+    private void UpdateSound()
+    {
+        playerFootsteps.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (_movement.magnitude != 0 && isGrounded)
+        {
+            print("playing footsteps audio");
+            PLAYBACK_STATE playbackState;
+            playerFootsteps.getPlaybackState(out playbackState);
+            if(playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                playerFootsteps.start();
+            }
+        }
+        else
+        {
+            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+        }
+        //enemy heartbeat logic
+        //AudioManager.instance.PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
     }
 
     private void UpdateState()
