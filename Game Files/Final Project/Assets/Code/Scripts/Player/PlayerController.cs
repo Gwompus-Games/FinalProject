@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FMOD;
+using FMOD.Studio;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
@@ -51,6 +53,9 @@ public class PlayerController : MonoBehaviour
     private OxygenSystem _oxygenSystem;
     private SuitSystem _suitSystem;
 
+    //FMOD
+    private EventInstance playerFootsteps;
+
     private void Awake()
     {
         if (INSTANCE != null)
@@ -68,6 +73,7 @@ public class PlayerController : MonoBehaviour
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         ChangeInventoryUIState(false);
+        //playerFootsteps = AudioManager.instance.CreateEventInstance(playerFootsteps);
     }
 
     private void Update()
