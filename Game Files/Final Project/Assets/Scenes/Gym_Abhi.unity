@@ -1089,6 +1089,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1527164130}
     m_Modifications:
+    - target: {fileID: 505155305859489429, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2518273171994542862, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1433,6 +1438,13 @@ MonoBehaviour:
       Data3: 1712869041
       Data4: -2101957101
     Path: event:/Heartbeat
+  <bgm>k__BackingField:
+    Guid:
+      Data1: 1790704850
+      Data2: 1177567374
+      Data3: 1163514770
+      Data4: 762684083
+    Path: event:/BGM
   <footsteps>k__BackingField:
     Guid:
       Data1: 812532637
@@ -1872,6 +1884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0d9ee8ebcf02d4db35b58087f0e793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &1895061503
 GameObject:
   m_ObjectHideFlags: 0

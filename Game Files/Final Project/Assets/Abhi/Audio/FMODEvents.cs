@@ -8,6 +8,9 @@ public class FMODEvents : MonoBehaviour
     [field: Header ("Heartbeat SFX")]
     [field: SerializeField] public EventReference heartbeat { get; private set; }
     
+    [field: Header ("BGM")]
+    [field: SerializeField] public EventReference bgm { get; private set; }
+    
     [field: Header ("Footsteps SFX")]
     [field: SerializeField] public EventReference footsteps { get; private set; }
     public static FMODEvents instance { get; private set; }

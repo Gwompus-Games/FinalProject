@@ -15,11 +15,38 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638630490470119285
+  lastModified: 638631547976907752
   FileSizes:
   - Name: Desktop
     Value: 1036
   Exists: 1
+--- !u!114 &-5745841172225750221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BGM
+  m_EditorClassIdentifier: 
+  Path: event:/BGM
+  Guid:
+    Data1: 1790704850
+    Data2: 1177567374
+    Data3: 1163514770
+    Data4: 762684083
+  Banks:
+  - {fileID: -4396399035835856423}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 76434
 --- !u!114 &-4396399035835856423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35,10 +62,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638630490471335878
+  lastModified: 638631547989934118
   FileSizes:
   - Name: Desktop
-    Value: 184800
+    Value: 1017920
   Exists: 1
 --- !u!114 &-1996697862472181675
 MonoBehaviour:
@@ -82,10 +109,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638630490470129278
+  lastModified: 638631547976922848
   FileSizes:
   - Name: Desktop
-    Value: 856
+    Value: 890
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -106,12 +133,13 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: -1996697862472181675}
   - {fileID: 2916856265200451565}
+  - {fileID: -5745841172225750221}
   EditorParameters: []
   MasterBanks:
   - {fileID: -6825772452312535613}
   StringsBanks:
   - {fileID: -555875900518921724}
-  cacheTime: 638630490471335878
+  cacheTime: 638631547989934118
   cacheVersion: 131619
 --- !u!114 &2916856265200451565
 MonoBehaviour:

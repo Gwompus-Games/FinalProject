@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
     private List<EventInstance> eventInstances = new List<EventInstance>();
+    public PlayerController player;
+
     private void Awake()
     {
         if(instance != null)
@@ -15,11 +17,24 @@ public class AudioManager : MonoBehaviour
             Debug.LogError("Found more than one audio manager in the scene.");
         }
         instance = this;
+
+        player = FindObjectOfType<PlayerController>();
+        PlayOneShotAttached(FMODEvents.instance.bgm);
     }
 
     public void PlayOneShot(EventReference sound, Vector3 worldPos)
     {
         RuntimeManager.PlayOneShot(sound, worldPos);
+    }
+    
+    public void PlayOneShotAttached(EventReference sound, GameObject source)
+    {
+        RuntimeManager.PlayOneShotAttached(sound, source);
+    }
+    
+    public void PlayOneShotAttached(EventReference sound)
+    {
+        RuntimeManager.PlayOneShotAttached(sound, player.gameObject);
     }
 
     public EventInstance CreateEventInstance(EventReference eventReference)
