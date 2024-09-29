@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OxygenTank : Item
+public class OxygenTank : InventoryItem
 {
-    [SerializeField] private OxygenTankSO _myData;
-    public float oxygenLeft { get; private set; }
+    [SerializeField] private OxygenTankSO _oxygenTankData;
+    public float oxygenLeft { 
+        get
+        {
+            return _oxygenLeft;
+        }
+        private set
+        {
+            _oxygenLeft = value;
+            oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / _maxOxygenCapacity * 100);
+        }
+    }
+    private float _oxygenLeft;
     public bool containsOxygen { get; private set; }
     private float _maxOxygenCapacity = 0;
     private int _myOxygenTankID = 0;
+    public string oxygenLeftPercent { get; private set; }
 
     private void Awake()
     {
-        _maxOxygenCapacity = _myData.minutesUntilEmpty * 60f;
+        _maxOxygenCapacity = _oxygenTankData.minutesUntilEmpty * 60f;
         oxygenLeft = _maxOxygenCapacity;
         containsOxygen = (oxygenLeft > 0);
     }
