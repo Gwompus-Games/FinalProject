@@ -22,6 +22,14 @@ public class AudioManager : MonoBehaviour
         PlayOneShotAttached(FMODEvents.instance.bgm);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            PlayOneShot(FMODEvents.instance.heartbeat, player.transform.position);
+        }
+    }
+
     public void PlayOneShot(EventReference sound, Vector3 worldPos)
     {
         RuntimeManager.PlayOneShot(sound, worldPos);
