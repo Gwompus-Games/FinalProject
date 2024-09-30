@@ -65,7 +65,7 @@ public class SuitSystem : MonoBehaviour, IDamageable
         if (currentSection <= 1)
         {
             Debug.Log("Kill Player");
-            PlayerController.INSTANCE.KillPlayer();
+            PlayerController.instance.KillPlayer();
         }
         currentSection--;
         remainderDamage = Mathf.Max(damage - suitDurabilityForCurrentSection, 0);

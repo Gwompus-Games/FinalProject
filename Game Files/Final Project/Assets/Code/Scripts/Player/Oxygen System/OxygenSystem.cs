@@ -162,7 +162,7 @@ public class OxygenSystem : MonoBehaviour
             {
                 if (!SwapOxygenTank())
                 {
-                    PlayerController.INSTANCE.NoOxygenLeft();
+                    PlayerController.instance.NoOxygenLeft();
                     OxygenLeftInTank?.Invoke("0");
                     break;
                 }

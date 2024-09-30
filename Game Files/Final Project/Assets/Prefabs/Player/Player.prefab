@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828f5eb3cf1a12648804b8d3af98d087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 15
+  mouseSensitivity: 10
   playerBody: {fileID: 2518273171994542862}
 --- !u!1 &2303797473383469411
 GameObject:
@@ -520,6 +520,7 @@ MonoBehaviour:
   _runSpeed: 3
   _jumpForce: 2
   _gravity: -2
+  _runningOxygenDrainMultiplier: 2
   _groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -687,7 +688,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4586079081141089300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e934b7a049b907445bd5ae2a842574f7, type: 3}
   m_Name: 
