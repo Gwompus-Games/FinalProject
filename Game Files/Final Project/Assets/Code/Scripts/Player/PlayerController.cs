@@ -104,7 +104,6 @@ public class PlayerController : MonoBehaviour
         playerFootsteps.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         if (_movement.magnitude != 0 && isGrounded)
         {
-            print("playing footsteps audio");
             PLAYBACK_STATE playbackState;
             playerFootsteps.getPlaybackState(out playbackState);
             if(playbackState.Equals(PLAYBACK_STATE.STOPPED))
