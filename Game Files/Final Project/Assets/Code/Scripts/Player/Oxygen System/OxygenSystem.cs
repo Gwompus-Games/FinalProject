@@ -152,9 +152,21 @@ public class OxygenSystem : MonoBehaviour
         oxygenDrainMultipliers.Remove(drainer);
     }
 
+    public bool DrainingSourceActive(OxygenDrainer drainer)
+    {
+        return oxygenDrainMultipliers.Contains(drainer);
+    }
+
     private void DrainActiveTank(float drainAmountInSeconds)
     {
         drainAmountInSeconds = ApplyDrainModifiers(drainAmountInSeconds);
+
+        if (oxygenTanks.Count <= 0)
+        {
+            PlayerController.INSTANCE.NoOxygenLeft();
+            return;
+        }
+
         while (drainAmountInSeconds > 0)
         {
             oxygenTanks[activeOxygenTank].DrainOxygen(drainAmountInSeconds, out drainAmountInSeconds);
@@ -162,7 +174,7 @@ public class OxygenSystem : MonoBehaviour
             {
                 if (!SwapOxygenTank())
                 {
-                    PlayerController.instance.NoOxygenLeft();
+                    PlayerController.INSTANCE.NoOxygenLeft();
                     OxygenLeftInTank?.Invoke("0");
                     break;
                 }

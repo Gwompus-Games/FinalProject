@@ -104,7 +104,7 @@ public class CustomPlayerInput : MonoBehaviour
         }
         if (context.canceled)
         {
-            UpdateRunning?.Invoke(false );
+            UpdateRunning?.Invoke(false);
         }
     }
 }

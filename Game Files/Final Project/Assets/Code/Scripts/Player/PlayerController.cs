@@ -10,7 +10,7 @@ using FMOD.Studio;
 [RequireComponent(typeof(SuitSystem))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController instance;
+    public static PlayerController INSTANCE;
 
     public enum PlayerState
     {
@@ -58,12 +58,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (INSTANCE != null)
         {
             Destroy(gameObject);
             return;
         }
-        instance = this;
+        INSTANCE = this;
         _runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         _runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
     }
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.Idle);
         }
-        else if (isRunning && isGrounded)
+        else if (isRunning)
         {
             ChangeState(PlayerState.Running);
         }
@@ -162,11 +162,17 @@ public class PlayerController : MonoBehaviour
     {
         if (newState == PlayerState.Running)
         {
-            //OxygenSystem.INSTANCE.AddDrainingSource(_runningDrainer);
+            if (!OxygenSystem.INSTANCE.DrainingSourceActive(_runningDrainer))
+            {
+                OxygenSystem.INSTANCE.AddDrainingSource(_runningDrainer);
+            }
         }
         else
         {
-            //OxygenSystem.INSTANCE.RemoveDrainingSource(_runningDrainer);
+            if (OxygenSystem.INSTANCE.DrainingSourceActive(_runningDrainer))
+            {
+                OxygenSystem.INSTANCE.RemoveDrainingSource(_runningDrainer);
+            }
         }
         currentState = newState;
     }

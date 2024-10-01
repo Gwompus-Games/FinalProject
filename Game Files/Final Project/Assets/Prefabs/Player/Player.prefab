@@ -676,6 +676,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 765944ac-2973-4e24-acef-321935098232
     m_ActionName: Player/Cursor Delta[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5864806220124439931}
+        m_TargetAssemblyTypeName: CustomPlayerInput, Assembly-CSharp
+        m_MethodName: InputRunning
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3bd843ab-90e4-4811-8b9f-c9b0bbaf6508
+    m_ActionName: Player/Sprint[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -688,7 +704,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4586079081141089300}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e934b7a049b907445bd5ae2a842574f7, type: 3}
   m_Name: 
@@ -706,11 +722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f8d7445102f2b94f9e7b3053a985275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <numberOfSections>k__BackingField: 5
-  <currentSection>k__BackingField: 5
-  oxygenDrainForSection: []
-  <suitDurabilitySectionMax>k__BackingField: 100
-  <suitDurabilityForCurrentSection>k__BackingField: 100
+  <suitStats>k__BackingField: {fileID: 11400000, guid: 38a6d0546c9a60a4ba896db26efcd231,
+    type: 2}
 --- !u!114 &4765867987772039652
 MonoBehaviour:
   m_ObjectHideFlags: 0

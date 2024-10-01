@@ -38,10 +38,10 @@ public class UIManager : MonoBehaviour
         _suitUI.SetActive(!enabled);
     }
 
-    public void UpdateSuitUI()
+    public void UpdateSuitUI(int currentSection, int totalNumberOfSections, float currentDurability, int maxDurability)
     {
-        string UIText = "Section: " + SuitSystem.INSTANCE.currentSection + "/" + SuitSystem.INSTANCE.numberOfSections + " ";
-        UIText += "Durability: " + SuitSystem.INSTANCE.suitDurabilityForCurrentSection + "/" + SuitSystem.INSTANCE.suitDurabilitySectionMax;
+        string UIText = "Section: " + currentSection + "/" + totalNumberOfSections + " ";
+        UIText += "Durability: " + currentDurability + "/" + maxDurability;
         _suitText.text = UIText;
     }
 }
