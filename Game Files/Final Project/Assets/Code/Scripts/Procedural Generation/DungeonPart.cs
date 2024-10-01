@@ -11,6 +11,8 @@ public class DungeonPart : MonoBehaviour
     public List<Transform> entryPoints;
     private List<Transform> avaiableEntryPoints = new List<Transform>();
 
+    [SerializeField] private Transform enemySpawnPoint;
+
     private MeshRenderer[] meshRenderersToHide;
     private Light[] lightsToHide;
 
