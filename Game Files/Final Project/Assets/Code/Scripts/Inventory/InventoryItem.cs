@@ -12,6 +12,7 @@ public class InventoryItem : MonoBehaviour
     public Vector2Int originTile = new Vector2Int(-1, -1);
     private RectTransform _myRectTransform;
     private Coroutine _flashingRoutune = null;
+    public ItemDataSO itemData { get; private set; }
 
     private void Awake()
     {
@@ -33,6 +34,11 @@ public class InventoryItem : MonoBehaviour
             tileBackgroundImages.Add(inventoryTiles[tile].GetComponent<Image>());
         }
         ChangeTileColours(InventoryGrid.globalItemData.normalTileColour, InventoryGrid.globalItemData.tileAlpha);
+    }
+
+    public void InitializeInventoryItem(ItemDataSO data)
+    {
+        itemData = data;
     }
 
     public void RotateClockwise()

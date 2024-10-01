@@ -7,6 +7,7 @@ public class ItemDataSO : ScriptableObject
     public string itemName = "Item Name";
     public Mesh mesh;
     public Material meshMaterial;
-    public Sprite inventoryIcon;
+    public GameObject worldObject;
+    public GameObject inventoryObject;
     public int baseValue = 0;
 }

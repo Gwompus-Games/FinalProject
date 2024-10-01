@@ -35,7 +35,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundCheckRadius = 0.4f;
-    
+
+    [Header("Interacting Settings")]
+    [SerializeField] private float _grabLength = 2f;
+    private IInteractable _interactableLookingAt;
+
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
     public float moveSpeed { get; private set; }
@@ -83,6 +87,9 @@ public class PlayerController : MonoBehaviour
     {
         // Take player inputs
         MovementInput();
+
+        //Check for looking at an Interactable
+        CheckIfLookingAtInteractable();
 
         // Update player state and apply state logic
         UpdateState();
@@ -231,9 +238,35 @@ public class PlayerController : MonoBehaviour
 
     private bool CheckIfLookingAtInteractable()
     {
+        Transform cameraTransform = Camera.main.transform;
 
+        RaycastHit hit;
+        bool foundInteractable = false;
+        IInteractable interactableItem;
+        _interactableLookingAt = null;
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, _grabLength))
+        {
+            if (hit.transform.tag == "Interactable")
+            {
+                if (hit.rigidbody.gameObject.TryGetComponent<IInteractable>(out interactableItem))
+                {
+                    _interactableLookingAt = interactableItem;
+                    foundInteractable = true;
+                }
+            }
+        }
 
-        return false;
+        if (_debugMode)
+        {
+            Color rayColour = Color.red;
+            if (foundInteractable)
+            {
+                rayColour = Color.green;
+            }
+            UnityEngine.Debug.DrawRay(cameraTransform.position, cameraTransform.forward, rayColour);
+        }
+
+        return foundInteractable;
     }
 
     public void NoOxygenLeft()
@@ -253,6 +286,7 @@ public class PlayerController : MonoBehaviour
         CustomPlayerInput.UpdateMovement += UpdateMovement;
         CustomPlayerInput.OpenInventory += ToggleInventory;
         CustomPlayerInput.UpdateRunning += RunInput;
+        CustomPlayerInput.LeftMouseButton += InteractWithInteractable;
     }
 
     private void OnDisable()
@@ -260,6 +294,7 @@ public class PlayerController : MonoBehaviour
         CustomPlayerInput.UpdateMovement -= UpdateMovement;
         CustomPlayerInput.OpenInventory -= ToggleInventory;
         CustomPlayerInput.UpdateRunning -= RunInput;
+        CustomPlayerInput.LeftMouseButton -= InteractWithInteractable;
     }
 
     public void UpdateMovement(Vector2 newMovementInput)
@@ -272,11 +307,30 @@ public class PlayerController : MonoBehaviour
         isRunning = running;
     }
 
+    public void InteractWithInteractable(CustomPlayerInput.CustomInputData data)
+    {
+        if (currentState == PlayerState.Inventory)
+        {
+            return;
+        }
+        if (data == CustomPlayerInput.CustomInputData.RELEASED)
+        {
+            if (_interactableLookingAt != null)
+            {
+                _interactableLookingAt.Interact();
+            }
+        }
+    }
+
     private void ChangeInventoryUIState(bool enabled)
     {
         UIManager.INSTANCE.SetInventoryUI(enabled);
         GetComponentInChildren<InventoryController>().enabled = enabled;
         GetComponentInChildren<CameraLook>().enabled = !enabled;
+        if (!enabled)
+        {
+            InventoryController.INSTANCE.InventoryClosing();
+        }
     }
 
     public void ToggleInventory()
@@ -284,16 +338,25 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case PlayerState.Inventory:
-                Cursor.lockState = CursorLockMode.Locked;
-                ChangeInventoryUIState(false);
-                ChangeState(PlayerState.Idle);
+                CloseInventory();
                 break;
             default:
-                Cursor.lockState = CursorLockMode.None;
-                ChangeInventoryUIState(true);
-                ChangeState(PlayerState.Inventory);
+                OpenInventory();
                 break;
         }
+    }
 
+    public void OpenInventory()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        ChangeInventoryUIState(true);
+        ChangeState(PlayerState.Inventory);
+    }
+
+    public void CloseInventory() 
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        ChangeInventoryUIState(false);
+        ChangeState(PlayerState.Idle);
     }
 }

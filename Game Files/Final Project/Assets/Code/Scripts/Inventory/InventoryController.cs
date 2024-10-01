@@ -32,6 +32,7 @@ public class InventoryController : MonoBehaviour
         CustomPlayerInput.UpdateCursorPosition += UpdateMousePos;
         CustomPlayerInput.Rotate += RotateItem;
         CustomPlayerInput.LeftMouseButton += PlaceInput;
+        CustomPlayerInput.RightMouseButton += DropItemInput;
     }
 
     private void OnDisable()
@@ -39,6 +40,7 @@ public class InventoryController : MonoBehaviour
         CustomPlayerInput.UpdateCursorPosition -= UpdateMousePos;
         CustomPlayerInput.Rotate -= RotateItem;
         CustomPlayerInput.LeftMouseButton -= PlaceInput;
+        CustomPlayerInput.RightMouseButton -= DropItemInput;
     }
 
     private void Update()
@@ -57,15 +59,6 @@ public class InventoryController : MonoBehaviour
                 _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
             }
         }
-
-        if (_itemToPlace != null)
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                Destroy(_itemToPlace.gameObject);
-                _itemToPlace = null;
-            }
-        }
     }
 
     public void SwapItemInHand(InventoryItem item)
@@ -78,12 +71,16 @@ public class InventoryController : MonoBehaviour
         _itemToPlace = item;
     }
 
+    public void InventoryClosing()
+    {
+        DropItemIntoWorld();
+    }
+
     private void DropItemInput(CustomPlayerInput.CustomInputData data)
     {
         if (data != CustomPlayerInput.CustomInputData.PRESSED)
         {
-            Destroy(_itemToPlace.gameObject);
-            _itemToPlace = null;
+            DropItemIntoWorld();
         }
     }
 
@@ -98,7 +95,7 @@ public class InventoryController : MonoBehaviour
         {
             if (_itemToPlace != null)
             {
-
+                DropItemIntoWorld();
             }
             return;
         }
@@ -159,5 +156,27 @@ public class InventoryController : MonoBehaviour
                 Debug.LogError("Rotate failed, invalid input received.");
                 return;
         }
+    }
+
+    public void AddItemToInventory(ItemDataSO itemData)
+    {
+        _itemToPlace = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
+        _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
+        _itemToPlace.InitializeInventoryItem(itemData);
+        PlayerController.INSTANCE.OpenInventory();
+    }
+
+    private void DropItemIntoWorld()
+    {
+        if (_itemToPlace == null)
+        {
+            return;
+        }
+        WorldItem worldItemWO = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WorldItem>();
+        worldItemWO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
+        Vector3 spawnPoint = PlayerController.INSTANCE.transform.position + (PlayerController.INSTANCE.transform.forward * 1.25f);
+        worldItemWO.SpawnItem(spawnPoint, _itemToPlace.itemData);
+        Destroy(_itemToPlace.gameObject);
+        SwapItemInHand(null);
     }
 }
