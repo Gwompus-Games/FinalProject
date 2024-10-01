@@ -6,13 +6,15 @@ using BehaviorTree;
 
 public class CheckPlayerInAttackRange : Node
 {
+    private Enemy _enemyScript;
     private Transform _transform;
     private Animator _animator;
 
-    public CheckPlayerInAttackRange(Transform transform)
+    public CheckPlayerInAttackRange(Enemy enemyScript)
     {
-        _transform = transform;
-        _animator = transform.GetComponent<Animator>();
+        _enemyScript = enemyScript;
+        _transform = _enemyScript.transform;
+        _animator = _enemyScript.animator;
     }
 
     public override NodeState Evaluate()
@@ -25,7 +27,7 @@ public class CheckPlayerInAttackRange : Node
         }
 
         Transform target = (Transform)t;
-        if (Vector3.Distance(_transform.position, target.position) <= AnglerFishBT.attackRange)
+        if (Vector3.Distance(_transform.position, target.position) <= _enemyScript.attackRadius)
         {
             _animator.SetBool("Attacking", true);
             _animator.SetBool("Walking", false);

@@ -9,12 +9,14 @@ public class CheckPlayerInFOVRange : Node
     private static int _playerLayerMask = 1 << 3;
 
     private Transform _transform;
+    private Enemy _enemyScript;
     private Animator _animator;
 
-    public CheckPlayerInFOVRange(Transform transform)
+    public CheckPlayerInFOVRange(Enemy enemyScript)
     {
-        _transform = transform;
-        _animator = transform.GetComponent<Animator>();
+        _enemyScript = enemyScript;
+        _transform = _enemyScript.transform;
+        _animator = _enemyScript.animator;
     }
 
     public override NodeState Evaluate()
@@ -23,7 +25,7 @@ public class CheckPlayerInFOVRange : Node
         if (t == null)
         {
             Collider[] colliders = Physics.OverlapSphere(
-                _transform.position, AnglerFishBT.fovRange, _playerLayerMask);
+                _transform.position, _enemyScript.fovRadius, _playerLayerMask);
 
             if (colliders.Length > 0)
             {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private int numOfRooms = 10;
     [SerializeField] private LayerMask roomLayerMask;
 
+    private NavMeshSurface navMesh;
     private List<DungeonPart> generatedRooms;
     private List<DungeonPart> availableRooms;
     private bool isGenerated = false;
@@ -23,6 +25,8 @@ public class DungeonGenerator : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        navMesh = GetComponent<NavMeshSurface>();
     }
 
     private void Start()
@@ -61,10 +65,7 @@ public class DungeonGenerator : MonoBehaviour
             Generate();
         }
 
-        //GenerateAlternateEntrances();
-        FillEmptyEntrances();
-
-        isGenerated = true;
+        FinishGeneration();
         Debug.Log($"Room Count: {generatedRooms.Count}, Tries: {tries}");
     }
 
@@ -78,6 +79,16 @@ public class DungeonGenerator : MonoBehaviour
         generatedRooms.Clear();
         availableRooms.Clear();
         isGenerated = false;
+    }
+
+    private void FinishGeneration()
+    {
+        //GenerateAlternateEntrances();
+        FillEmptyEntrances();
+
+        isGenerated = true;
+
+        navMesh.BuildNavMesh();
     }
 
     private void Generate()

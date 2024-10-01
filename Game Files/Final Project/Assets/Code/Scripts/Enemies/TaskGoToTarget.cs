@@ -7,20 +7,22 @@ using BehaviorTree;
 public class TaskGoToTarget : Node
 {
     private Transform _transform;
+    private Enemy _enemyScript;
 
-    public TaskGoToTarget(Transform transform)
+    public TaskGoToTarget(Enemy enemyScript)
     {
-        _transform = transform;
+        _enemyScript = enemyScript;
+        _transform = _enemyScript.transform;
     }
 
     public override NodeState Evaluate()
     {
         Transform target = (Transform)GetData("target");
 
-        if (Vector3.Distance(_transform.position, target.position) > 0.01f)
+        if (Vector3.Distance(_transform.position, target.position) > 0.5f)
         {
             _transform.position = Vector3.MoveTowards(
-                _transform.position, target.position, AnglerFishBT.speed * Time.deltaTime);
+                _transform.position, target.position, _enemyScript.moveSpeed * Time.deltaTime);
             _transform.LookAt(target.position);
         }
 

@@ -3,27 +3,28 @@ using BehaviorTree;
 
 public class AnglerFishBT : Tree
 {
-    public UnityEngine.Transform[] waypoints;
+    private AnglerFish _anglerFish;
 
-    public static float speed = 2f;
-    public static float fovRange = 6f;
-    public static float attackRange = 1f;
+    private void Awake()
+    {
+        _anglerFish = GetComponent<AnglerFish>();
+    }
 
     protected override Node SetupTree()
     {
         Node root = new Selector(new List<Node>
         {
-            //new Sequence(new List<Node>
-            //{
-            //    new CheckEnemyInAttackRange(transform),
-            //    new TaskAttack(transform),
-            //}),
             new Sequence(new List<Node>
             {
-                new CheckPlayerInFOVRange(transform),
-                new TaskGoToTarget(transform),
+                new CheckPlayerInAttackRange(_anglerFish),
+                new TaskAttack(_anglerFish),
             }),
-            new TaskPatrol(transform, waypoints),
+            new Sequence(new List<Node>
+            {
+                new CheckPlayerInFOVRange(_anglerFish),
+                new TaskGoToTarget(_anglerFish),
+            }),
+            new TaskPatrol(_anglerFish),
         });
 
         return root;

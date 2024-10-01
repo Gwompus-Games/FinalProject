@@ -6,6 +6,8 @@ using BehaviorTree;
 
 public class TaskAttack : Node
 {
+    private Enemy _enemyScript;
+    private Transform _transform;
     private Animator _animator;
 
     private Transform _lastTarget;
@@ -14,9 +16,11 @@ public class TaskAttack : Node
     private float _attackTime = 1f;
     private float _attackCounter = 0f;
 
-    public TaskAttack(Transform transform)
+    public TaskAttack(Enemy enemyScript)
     {
-        _animator = transform.GetComponent<Animator>();
+        _enemyScript = enemyScript;
+        _transform = _enemyScript.transform;
+        _animator = enemyScript.animator;
     }
 
     public override NodeState Evaluate()
