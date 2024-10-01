@@ -8,6 +8,7 @@ public class DungeonGenerator : MonoBehaviour
 {
     public static DungeonGenerator Instance { get; private set; }
 
+    [Header("Generation Settings")]
     [SerializeField] private GameObject entrance;
     [SerializeField] private List<GameObject> rooms;
     [SerializeField] private List<GameObject> specialRooms;
@@ -16,6 +17,10 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private GameObject door;
     [SerializeField] private int numOfRooms = 10;
     [SerializeField] private LayerMask roomLayerMask;
+
+    [Header("Enemy Spawning")]
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private int minRoomsToSpawn = 20;
 
     private NavMeshSurface navMesh;
     private List<DungeonPart> generatedRooms;
@@ -170,6 +175,8 @@ public class DungeonGenerator : MonoBehaviour
                     }
                 }
             }
+
+            
         }
     }
 

@@ -21,9 +21,7 @@ public class TaskGoToTarget : Node
 
         if (Vector3.Distance(_transform.position, target.position) > 0.5f)
         {
-            _transform.position = Vector3.MoveTowards(
-                _transform.position, target.position, _enemyScript.moveSpeed * Time.deltaTime);
-            _transform.LookAt(target.position);
+            _enemyScript.MoveToPoint(target.position);
         }
 
         state = NodeState.RUNNING;
