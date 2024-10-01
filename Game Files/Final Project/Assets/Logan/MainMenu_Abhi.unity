@@ -1342,7 +1342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuPanel: {fileID: 430969373}
   optionsPanel: {fileID: 1637505439}
-  PlayButtonTargetScene: LoganTestScene
+  PlayButtonTargetScene: Game
 --- !u!1 &941756502
 GameObject:
   m_ObjectHideFlags: 0
@@ -2614,7 +2614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
