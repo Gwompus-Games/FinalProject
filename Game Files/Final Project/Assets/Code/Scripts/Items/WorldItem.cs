@@ -4,7 +4,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
-public class WorldItem : MonoBehaviour
+[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Rigidbody))]
+public class WorldItem : MonoBehaviour, IInteractable
 {
     [SerializeField] private ItemDataSO _itemData;
     private MeshRenderer _meshRenderer;
@@ -18,6 +20,7 @@ public class WorldItem : MonoBehaviour
         {
             AssignData(_itemData);
         }
+        transform.tag = "Interactable";
     }
 
     public void SpawnItem(Vector3 position, ItemDataSO itemData = null)
@@ -26,6 +29,7 @@ public class WorldItem : MonoBehaviour
         {
             AssignData(itemData);
         }
+        transform.position = position;
         HideItem(false);
     }
 
@@ -44,5 +48,11 @@ public class WorldItem : MonoBehaviour
     private void HideItem(bool hideItem)
     {
         _meshRenderer.enabled = !hideItem;
+    }
+
+    public void Interact()
+    {
+        InventoryController.INSTANCE.AddItemToInventory(_itemData);
+        DespawnItem();
     }
 }
