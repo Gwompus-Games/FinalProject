@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using FMOD;
 using FMOD.Studio;
-using UnityEngine.SceneManagement;
+using FMODUnity;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
 [RequireComponent(typeof(SuitSystem))]
+[RequireComponent(typeof(StudioEventEmitter))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance;
+    public static PlayerController INSTANCE;
 
     public enum PlayerState
     {
@@ -63,12 +64,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (INSTANCE != null)
         {
             Destroy(gameObject);
             return;
         }
-        Instance = this;
+        INSTANCE = this;
         _runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         _runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
     }
@@ -121,7 +122,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+            playerFootsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         //enemy heartbeat logic
         //AudioManager.instance.PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
@@ -277,12 +278,7 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-        
-    }
 
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(0);
     }
 
     // Input functions using CustomPlayerInput

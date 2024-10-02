@@ -5,7 +5,7 @@
 			<value>Footsteps</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{609e54f9-7854-4eb0-8afb-97096af8cda4}</destination>
@@ -75,6 +75,12 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{001a4c6e-9dca-4da5-8812-5132a58384e0}">
+		<property name="volume">
+			<value>-10.5</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{522e3098-1cce-4fbf-aa2e-8db8cd407cf2}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{65a73bbf-fa57-4065-b408-fd2bb36249b5}</destination>
 		</relationship>
@@ -106,6 +112,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{320e079c-ad39-4900-af22-22c5d1591a25}">
+		<property name="volume">
+			<value>5.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -133,10 +142,17 @@
 			<destination>{4e317c69-2adb-4aac-9f29-a1b525b00f39}</destination>
 		</relationship>
 	</object>
+	<object class="ADSRModulator" id="{522e3098-1cce-4fbf-aa2e-8db8cd407cf2}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{65a73bbf-fa57-4065-b408-fd2bb36249b5}">
 		<relationship name="effects">
 			<destination>{2d9b3a42-60c3-4bea-914a-030981d73092}</destination>
-			<destination>{c49bdf08-3dca-4d43-8695-e773489b7824}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{477af96b-dbad-4347-b726-8790583201c5}" />
@@ -183,6 +199,5 @@
 	</object>
 	<object class="MixerBusPanner" id="{c4c44dc7-aa44-4256-b296-81a89c472e60}" />
 	<object class="MixerBusFader" id="{2d9b3a42-60c3-4bea-914a-030981d73092}" />
-	<object class="SpatialiserEffect" id="{c49bdf08-3dca-4d43-8695-e773489b7824}" />
 	<object class="MixerBusFader" id="{10c02df2-8080-4556-94b8-4c6bbcc4af94}" />
 </objects>

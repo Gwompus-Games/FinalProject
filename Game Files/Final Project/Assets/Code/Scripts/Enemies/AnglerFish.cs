@@ -1,15 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+
 
 public class AnglerFish : Enemy
 {
-    public static AnglerFish Instance;
+    private StudioEventEmitter emitter;
 
-    protected override void Awake()
+    private void Start()
     {
-        Instance = this;
+        emitter = AudioManager.instance.InitializeEventEmitter(FMODEvents.instance.heartbeat, gameObject);
+    }
 
-        base.Awake();
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            emitter.Play();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            emitter.Stop();
+        }
     }
 }
