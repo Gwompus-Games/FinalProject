@@ -133,14 +133,29 @@ public class DungeonPart : MonoBehaviour
         return availableEntryPoints;
     }
 
-    public void SpawnEnemy(GameObject enemyPrefab)
+    public bool SpawnEnemy(GameObject enemyPrefab)
     {
         Vector3 spawnPoint = transform.position;
 
         if (enemySpawnPoint != null)
             spawnPoint = enemySpawnPoint.position;
 
-        Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+        GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+        if (newEnemy.TryGetComponent(out Enemy enemyScript))
+        {
+            if (enemyScript.HasValidPath(PlayerController.Instance.transform.position))
+            {
+                enemyScript.SetupEnemy();
+                return true;
+            }
+            else
+            {
+                Destroy(newEnemy);
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public void ShowMesh(bool isShowing = true)

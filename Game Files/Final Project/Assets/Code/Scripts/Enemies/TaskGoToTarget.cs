@@ -19,9 +19,13 @@ public class TaskGoToTarget : Node
     {
         Transform target = (Transform)GetData("target");
 
-        if (Vector3.Distance(_transform.position, target.position) > 1.5f)
+        if (Vector3.Distance(_transform.position, target.position) > 1f)
         {
-            _enemyScript.MoveToPoint(target.position);
+            _enemyScript.MoveToPoint(target.position, 2f);
+        }
+        else
+        {
+            _enemyScript.StopMoving();
         }
 
         state = NodeState.RUNNING;

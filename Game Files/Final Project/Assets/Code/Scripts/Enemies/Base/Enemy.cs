@@ -27,18 +27,22 @@ public class Enemy : MonoBehaviour
         UpdateNavMeshAgentSettings();
     }
 
-    private void Start()
+    public virtual void SetupEnemy()
     {
-        if (!HasValidPath())
-        {
-            DungeonGenerator.Instance.EnemyFailedToSpawn();
-            Destroy(gameObject);
-        }
+
     }
 
-    public void MoveToPoint(Vector3 pos)
+    public void MoveToPoint(Vector3 pos, float speedMultiplier = 1)
     {
+        if (agent.isStopped)
+            agent.isStopped = false;
+
         agent.destination = pos;
+    }
+
+    public void StopMoving()
+    {
+        agent.isStopped = true;
     }
 
     private void UpdateNavMeshAgentSettings()
@@ -48,10 +52,10 @@ public class Enemy : MonoBehaviour
         agent.angularSpeed = turnSpeed;
     }
 
-    public bool HasValidPath()
+    public bool HasValidPath(Vector3 targetPos)
     {
         NavMeshPath navMeshPath = new NavMeshPath();
-        agent.CalculatePath(PlayerController.Instance.transform.position, navMeshPath);
+        agent.CalculatePath(targetPos, navMeshPath);
         
         if (navMeshPath.status != NavMeshPathStatus.PathComplete)
         {

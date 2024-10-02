@@ -10,7 +10,7 @@ public class TaskAttack : Node
     private Transform _transform;
     private Animator _animator;
 
-    private float _attackTime = 2f;
+    private float _attackTime = 0.25f;
     private float _attackCounter = 0f;
 
     public TaskAttack(Enemy enemyScript)

@@ -434,6 +434,7 @@ MonoBehaviour:
   entryPoints:
   - {fileID: 9018719829511361548}
   - {fileID: 3312249476106067176}
+  enemySpawnPoint: {fileID: 0}
   collider: {fileID: 8671722119277807236}
 --- !u!65 &8671722119277807236
 BoxCollider:
@@ -1286,7 +1287,7 @@ PrefabInstance:
     - target: {fileID: 8802203250117021519, guid: 7d9d04f864ae2d248a72bf209bb130f7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.656
+      value: 2.81
       objectReference: {fileID: 0}
     - target: {fileID: 8802203250117021519, guid: 7d9d04f864ae2d248a72bf209bb130f7,
         type: 3}
@@ -1296,7 +1297,7 @@ PrefabInstance:
     - target: {fileID: 8802203250117021519, guid: 7d9d04f864ae2d248a72bf209bb130f7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2.69
       objectReference: {fileID: 0}
     - target: {fileID: 8802203250117021519, guid: 7d9d04f864ae2d248a72bf209bb130f7,
         type: 3}

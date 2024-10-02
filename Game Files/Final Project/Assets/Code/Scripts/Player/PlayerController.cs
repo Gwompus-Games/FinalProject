@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
@@ -12,7 +13,7 @@ using FMODUnity;
 [RequireComponent(typeof(StudioEventEmitter))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController INSTANCE;
+    public static PlayerController Instance;
 
     public enum PlayerState
     {
@@ -24,12 +25,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debug Settings")]
     [SerializeField] private bool _debugMode = false;
-    [SerializeField] private bool _infiniteStamina = false;
 
     [Header("Movement Settings")]
     [SerializeField] private float _walkSpeed = 3f;
     [SerializeField] private float _runSpeed = 5f;
-    [SerializeField] private float _jumpForce = 2f;
     [SerializeField] private float _gravity = -2f;
     [SerializeField] [Range(1f, 5f)] private float _runningOxygenDrainMultiplier = 2f;
 
@@ -59,17 +58,17 @@ public class PlayerController : MonoBehaviour
     private OxygenSystem _oxygenSystem;
     private SuitSystem _suitSystem;
     private OxygenDrainer _runningDrainer;
-    
+
     private EventInstance playerFootsteps;
 
     private void Awake()
     {
-        if (INSTANCE != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
-        INSTANCE = this;
+        Instance = this;
         _runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         _runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
     }
@@ -281,6 +280,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     // Input functions using CustomPlayerInput
 
     private void OnEnable()
@@ -355,7 +359,7 @@ public class PlayerController : MonoBehaviour
         ChangeState(PlayerState.Inventory);
     }
 
-    public void CloseInventory() 
+    public void CloseInventory()
     {
         Cursor.lockState = CursorLockMode.Locked;
         ChangeInventoryUIState(false);
