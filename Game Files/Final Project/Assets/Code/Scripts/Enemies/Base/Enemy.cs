@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,11 +21,17 @@ public class Enemy : MonoBehaviour
     [Header("Assign")]
     public Animator animator;
 
+    [Header("FMOD")]
+    private StudioEventEmitter emitter;
+
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
 
         UpdateNavMeshAgentSettings();
+
+        //FMOD
+        emitter = AudioManager.instance.InitializeEventEmitter(FMODEvents.instance.heartbeat, gameObject);
     }
 
     private void Start()
@@ -51,7 +58,7 @@ public class Enemy : MonoBehaviour
     public bool HasValidPath()
     {
         NavMeshPath navMeshPath = new NavMeshPath();
-        agent.CalculatePath(PlayerController.Instance.transform.position, navMeshPath);
+        agent.CalculatePath(PlayerController.INSTANCE.transform.position, navMeshPath);
         
         if (navMeshPath.status != NavMeshPathStatus.PathComplete)
         {
@@ -64,4 +71,22 @@ public class Enemy : MonoBehaviour
             return true;
         }
     }
+
+    #region FMOD
+    private void OnTriggerEnter(Collider other)
+    {
+        if (emitter && other.CompareTag("Player"))
+        {
+            emitter.Play();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (emitter && other.CompareTag("Player"))
+        {
+            emitter.Stop();
+        }
+    }
+    #endregion
 }

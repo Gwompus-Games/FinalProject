@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
@@ -360,5 +361,11 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         ChangeInventoryUIState(false);
         ChangeState(PlayerState.Idle);
+    }
+
+    public void RestartGame()
+    {
+        AudioManager.instance.CleanUp();
+        SceneManager.LoadScene(0);
     }
 }

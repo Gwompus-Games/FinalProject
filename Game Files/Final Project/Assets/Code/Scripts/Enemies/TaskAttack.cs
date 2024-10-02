@@ -27,7 +27,7 @@ public class TaskAttack : Node
         _attackCounter += Time.deltaTime;
         if (_attackCounter >= _attackTime)
         {
-            PlayerController.Instance.RestartGame();
+            PlayerController.INSTANCE.RestartGame();
             //bool enemyIsDead = _playerController.TakeHit();
             //if (enemyIsDead)
             //{
