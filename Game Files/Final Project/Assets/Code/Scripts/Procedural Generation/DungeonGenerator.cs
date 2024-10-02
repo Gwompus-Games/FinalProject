@@ -26,6 +26,7 @@ public class DungeonGenerator : MonoBehaviour
     private List<DungeonPart> generatedRooms;
     private List<DungeonPart> availableRooms;
     private bool isGenerated = false;
+    private bool isEnemySpawned = false;
 
     private void Awake()
     {
@@ -175,8 +176,6 @@ public class DungeonGenerator : MonoBehaviour
                     }
                 }
             }
-
-            
         }
     }
 
@@ -297,6 +296,12 @@ public class DungeonGenerator : MonoBehaviour
                     //Debug.Log($"Destroyed room attached to {previousRoom.name}");
                     return false;
                 }
+            }
+
+            if (generatedRooms.Count >= minRoomsToSpawn && !isEnemySpawned)
+            {
+                newPart.SpawnEnemy(enemyPrefab);
+                isEnemySpawned = true;
             }
         }
 

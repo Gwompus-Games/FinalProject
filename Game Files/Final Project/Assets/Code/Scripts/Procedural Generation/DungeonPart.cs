@@ -133,6 +133,16 @@ public class DungeonPart : MonoBehaviour
         return availableEntryPoints;
     }
 
+    public void SpawnEnemy(GameObject enemyPrefab)
+    {
+        Vector3 spawnPoint = transform.position;
+
+        if (enemySpawnPoint != null)
+            spawnPoint = enemySpawnPoint.position;
+
+        Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+    }
+
     public void ShowMesh(bool isShowing = true)
     {
         foreach (Light obj in lightsToHide)
