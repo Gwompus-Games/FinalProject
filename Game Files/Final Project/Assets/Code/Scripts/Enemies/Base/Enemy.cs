@@ -1,4 +1,3 @@
-using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -21,31 +20,29 @@ public class Enemy : MonoBehaviour
     [Header("Assign")]
     public Animator animator;
 
-    [Header("FMOD")]
-    private StudioEventEmitter emitter;
-
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
 
         UpdateNavMeshAgentSettings();
-
-        //FMOD
-        emitter = AudioManager.instance.InitializeEventEmitter(FMODEvents.instance.heartbeat, gameObject);
     }
 
-    private void Start()
+    public virtual void SetupEnemy()
     {
-        if (!HasValidPath())
-        {
-            DungeonGenerator.Instance.EnemyFailedToSpawn();
-            Destroy(gameObject);
-        }
+
     }
 
-    public void MoveToPoint(Vector3 pos)
+    public void MoveToPoint(Vector3 pos, float speedMultiplier = 1)
     {
+        if (agent.isStopped)
+            agent.isStopped = false;
+
         agent.destination = pos;
+    }
+
+    public void StopMoving()
+    {
+        agent.isStopped = true;
     }
 
     private void UpdateNavMeshAgentSettings()
@@ -55,10 +52,10 @@ public class Enemy : MonoBehaviour
         agent.angularSpeed = turnSpeed;
     }
 
-    public bool HasValidPath()
+    public bool HasValidPath(Vector3 targetPos)
     {
         NavMeshPath navMeshPath = new NavMeshPath();
-        agent.CalculatePath(PlayerController.INSTANCE.transform.position, navMeshPath);
+        agent.CalculatePath(targetPos, navMeshPath);
         
         if (navMeshPath.status != NavMeshPathStatus.PathComplete)
         {
@@ -71,22 +68,4 @@ public class Enemy : MonoBehaviour
             return true;
         }
     }
-
-    #region FMOD
-    private void OnTriggerEnter(Collider other)
-    {
-        if (emitter && other.CompareTag("Player"))
-        {
-            emitter.Play();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (emitter && other.CompareTag("Player"))
-        {
-            emitter.Stop();
-        }
-    }
-    #endregion
 }

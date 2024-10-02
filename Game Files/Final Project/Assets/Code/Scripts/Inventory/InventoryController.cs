@@ -166,11 +166,11 @@ public class InventoryController : MonoBehaviour
 
     public void AddItemToInventory(ItemDataSO itemData)
     {
-        PlayerController.INSTANCE.OpenInventory();
+        PlayerController.Instance.OpenInventory();
         InventoryItem inventoryItem;
         if (CheckInventorySpaceAvailable(itemData, out inventoryItem))
         {
-            PlayerController.INSTANCE.CloseInventory();
+            PlayerController.Instance.CloseInventory();
             return;
         }
         _itemToPlace = inventoryItem;
@@ -230,7 +230,7 @@ public class InventoryController : MonoBehaviour
         }
         WorldItem worldItemWO = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WorldItem>();
         worldItemWO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        Vector3 spawnPoint = PlayerController.INSTANCE.transform.position + (PlayerController.INSTANCE.transform.forward * 1.25f);
+        Vector3 spawnPoint = PlayerController.Instance.transform.position + (PlayerController.Instance.transform.forward * 1.25f);
         worldItemWO.SpawnItem(spawnPoint, _itemToPlace.itemData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);

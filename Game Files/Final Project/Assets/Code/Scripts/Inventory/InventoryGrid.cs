@@ -311,4 +311,38 @@ public class InventoryGrid : MonoBehaviour
     {
         ClearItemSlots(item.originTile, item.tilesUsed.ToArray());
     }
+
+    public InventoryItem[] GetAllInventoryItems()
+    {
+        List<InventoryItem> items = new List<InventoryItem>();
+        for (int x = 0; x < inventoryItemSlot.GetLength(0); x++)
+        {
+            for (int y = 0; y < inventoryItemSlot.GetLength(1); y++)
+            {
+                InventoryItem item = GetItemInSlot(new Vector2Int(x, y));
+                if (!items.Contains(item))
+                {
+                    items.Add(item);
+                }
+            }
+        }
+        return items.ToArray();
+    }
+
+    public InventoryItem[] GetSellingItems()
+    {
+        List<InventoryItem> items = new List<InventoryItem>();
+        for (int x = 0; x < inventoryItemSlot.GetLength(0); x++)
+        {
+            for (int y = 0; y < inventoryItemSlot.GetLength(1); y++)
+            {
+                InventoryItem item = GetItemInSlot(new Vector2Int(x, y));
+                if (!items.Contains(item) && item.itemData.usedForSelling)
+                {
+                    items.Add(item);
+                }
+            }
+        }
+        return items.ToArray();
+    }
 }

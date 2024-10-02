@@ -1,32 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6895393722182702704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Heartbeat2D
-  m_EditorClassIdentifier: 
-  Path: event:/Heartbeat2D
-  Guid:
-    Data1: -1066212668
-    Data2: 1112399927
-    Data3: -263659593
-    Data4: 894281733
-  Banks:
-  - {fileID: -4396399035835856423}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 7992
 --- !u!114 &-6825772452312535613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,7 +15,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638634809900535524
+  lastModified: 638627909611691451
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -89,10 +62,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638634835953426727
+  lastModified: 638634103042148253
   FileSizes:
   - Name: Desktop
-    Value: 1019296
+    Value: 1018272
   Exists: 1
 --- !u!114 &-1996697862472181675
 MonoBehaviour:
@@ -136,10 +109,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638634835953365259
+  lastModified: 638634103042062945
   FileSizes:
   - Name: Desktop
-    Value: 934
+    Value: 890
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -161,13 +134,12 @@ MonoBehaviour:
   - {fileID: -1996697862472181675}
   - {fileID: 2916856265200451565}
   - {fileID: -5745841172225750221}
-  - {fileID: -6895393722182702704}
   EditorParameters: []
   MasterBanks:
   - {fileID: -6825772452312535613}
   StringsBanks:
   - {fileID: -555875900518921724}
-  cacheTime: 638634835953426727
+  cacheTime: 638634103042148253
   cacheVersion: 131619
 --- !u!114 &2916856265200451565
 MonoBehaviour:

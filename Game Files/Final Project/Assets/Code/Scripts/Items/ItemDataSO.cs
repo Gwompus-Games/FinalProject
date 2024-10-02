@@ -8,4 +8,5 @@ public class ItemDataSO : ScriptableObject
     public GameObject worldObject;
     public GameObject inventoryObject;
     public int baseValue = 0;
+    public bool usedForSelling;
 }
