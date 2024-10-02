@@ -302,11 +302,6 @@ public class DungeonGenerator : MonoBehaviour
                     return false;
                 }
             }
-
-            if (generatedRooms.Count >= minRoomsToSpawn && !isEnemySpawned)
-            {
-                
-            }
         }
 
         return true;
