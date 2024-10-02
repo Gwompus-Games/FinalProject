@@ -20,11 +20,24 @@ public class DungeonPart : MonoBehaviour
 
     private void Awake()
     {
+        avaiableEntryPoints.AddRange(entryPoints);
+    }
+
+    public void SetupPart()
+    {
         GetComponentsToHide();
         ShowMesh(false);
+        /SpawnLoot();
+    }
 
-        avaiableEntryPoints.AddRange(entryPoints);
-        //FixBoxCollider();
+    private void SpawnLoot()
+    {
+        TreasureSpawnPoint[] spawnPoints = GetComponentsInChildren<TreasureSpawnPoint>();
+
+        foreach (TreasureSpawnPoint point in spawnPoints)
+        {
+            point.SpawnTreasureByRarity();
+        }
     }
 
     public bool HasAvailableEntryPoint(out Transform entryPoint)

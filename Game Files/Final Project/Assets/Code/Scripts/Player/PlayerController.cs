@@ -73,9 +73,9 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _movementInput = Vector2.zero;
 
-    private OxygenSystem _oxygenSystem;
-    private SuitSystem _suitSystem;
-    private OxygenDrainer _runningDrainer;
+    public OxygenSystem oxygenSystem { get; private set; }
+    public SuitSystem suitSystem { get; private set; }
+    public OxygenDrainer runningDrainer { get; private set; }
 
     private EventInstance playerFootsteps;
 
@@ -87,8 +87,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
         Instance = this;
-        _runningDrainer = gameObject.AddComponent<OxygenDrainer>();
-        _runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
+        runningDrainer = gameObject.AddComponent<OxygenDrainer>();
+        runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
     }
 
     private void Start()
@@ -188,16 +188,16 @@ public class PlayerController : MonoBehaviour
     {
         if (newState == PlayerState.Running)
         {
-            if (!OxygenSystem.INSTANCE.DrainingSourceActive(_runningDrainer))
+            if (!OxygenSystem.INSTANCE.DrainingSourceActive(runningDrainer))
             {
-                OxygenSystem.INSTANCE.AddDrainingSource(_runningDrainer);
+                OxygenSystem.INSTANCE.AddDrainingSource(runningDrainer);
             }
         }
         else
         {
-            if (OxygenSystem.INSTANCE.DrainingSourceActive(_runningDrainer))
+            if (OxygenSystem.INSTANCE.DrainingSourceActive(runningDrainer))
             {
-                OxygenSystem.INSTANCE.RemoveDrainingSource(_runningDrainer);
+                OxygenSystem.INSTANCE.RemoveDrainingSource(runningDrainer);
             }
         }
         currentState = newState;

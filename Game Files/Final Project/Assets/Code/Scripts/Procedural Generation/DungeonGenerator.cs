@@ -302,6 +302,8 @@ public class DungeonGenerator : MonoBehaviour
                     return false;
                 }
             }
+
+            newPart.SetupPart();
         }
 
         return true;
