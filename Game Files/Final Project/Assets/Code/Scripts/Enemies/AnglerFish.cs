@@ -28,16 +28,17 @@ public class AnglerFish : Enemy
     {
         if (other.CompareTag("Player"))
         {
-          if (emitter != null)
-            emitter.Play();
+            if (emitter != null)
+                emitter.Play();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-          if (emitter != null)
-            emitter.Stop();
+            if (emitter != null)
+                emitter.Stop();
         }
+    }
 }
