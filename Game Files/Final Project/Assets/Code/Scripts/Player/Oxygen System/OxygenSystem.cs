@@ -7,11 +7,11 @@ using UnityEngine;
 public class OxygenSystem : MonoBehaviour
 {
     public static OxygenSystem INSTANCE;
-    public static Action<string> OxygenLeftInTank;
+    public static Action<string, float> OxygenLeftInTank;
 
-    [SerializeField] private List<OxygenTank> oxygenTanks = new List<OxygenTank>();
-    private int activeOxygenTank = 0;
-    private List<OxygenDrainer> oxygenDrainMultipliers = new List<OxygenDrainer>();
+    [SerializeField] private List<OxygenTank> _oxygenTanks = new List<OxygenTank>();
+    private int _activeOxygenTank = 0;
+    private List<OxygenDrainer> _oxygenDrainMultipliers = new List<OxygenDrainer>();
 
     private void Awake()
     {
@@ -35,18 +35,18 @@ public class OxygenSystem : MonoBehaviour
 
     private void SortAndLabelOxygenTanks()
     {
-        switch (oxygenTanks.Count)
+        switch (_oxygenTanks.Count)
         {
             case < 1:
                 break;
             case 1:
-                oxygenTanks[0].SetOxygenTankID(0);
+                _oxygenTanks[0].SetOxygenTankID(0);
                 SwapOxygenTank(0);
                 break;
             default:
-                for (int t = 0; t < oxygenTanks.Count; t++)
+                for (int t = 0; t < _oxygenTanks.Count; t++)
                 {
-                    oxygenTanks[t].SetOxygenTankID(t);
+                    _oxygenTanks[t].SetOxygenTankID(t);
                 }
                 break;
         }
@@ -54,150 +54,151 @@ public class OxygenSystem : MonoBehaviour
 
     public void AddOxygenTank(OxygenTank tankToAdd)
     {
-        if (oxygenTanks.Contains(tankToAdd))
+        if (_oxygenTanks.Contains(tankToAdd))
         {
             return;
         }
 
-        oxygenTanks.Add(tankToAdd);
+        _oxygenTanks.Add(tankToAdd);
         SortAndLabelOxygenTanks();
     }
 
     public void RemoveOxygenTank(OxygenTank tankToRemove)
     {
-        if (!oxygenTanks.Contains(tankToRemove))
+        if (!_oxygenTanks.Contains(tankToRemove))
         {
             return;
         }
 
-        oxygenTanks.Remove(tankToRemove);
+        _oxygenTanks.Remove(tankToRemove);
         SortAndLabelOxygenTanks();
     }
 
     public void RemoveOxygenTank(int tankIDToRemove)
     {
-        if (tankIDToRemove < 0 || tankIDToRemove >= oxygenTanks.Count)
+        if (tankIDToRemove < 0 || tankIDToRemove >= _oxygenTanks.Count)
         {
             Debug.LogWarning($"Tried to remove tank ID {tankIDToRemove}, which is outside the scope of the List");
             return;
         }
 
-        oxygenTanks.RemoveAt(tankIDToRemove);
+        _oxygenTanks.RemoveAt(tankIDToRemove);
         SortAndLabelOxygenTanks();
     }
 
     private bool SwapOxygenTank()
     {
         int selectedTank = 0;
-        if (oxygenTanks.Count < 1)
+        if (_oxygenTanks.Count < 1)
         {
             return false;
         }
-        if (!oxygenTanks[selectedTank].containsOxygen)
+        if (!_oxygenTanks[selectedTank].containsOxygen)
         {
-            for (int t = 0; t < oxygenTanks.Count; t++)
+            for (int t = 0; t < _oxygenTanks.Count; t++)
             {
-                if (oxygenTanks[t].containsOxygen)
+                if (_oxygenTanks[t].containsOxygen)
                 {
                     selectedTank = t;
                     break;
                 }
-                if (t >= oxygenTanks.Count - 1)
+                if (t >= _oxygenTanks.Count - 1)
                 {
                     return false;
                 }
             }
         }
 
-        activeOxygenTank = selectedTank;
+        _activeOxygenTank = selectedTank;
         return true;
     }
 
     private bool SwapOxygenTank(int tank)
     {
-        if (tank >= oxygenTanks.Count || tank < 0)
+        if (tank >= _oxygenTanks.Count || tank < 0)
         {
             throw new System.Exception($"Tried to swap to {tank} tank, which is out of range.");
         }
 
-        if (!oxygenTanks[tank].containsOxygen)
+        if (!_oxygenTanks[tank].containsOxygen)
         {
             Debug.Log($"Swapping to {tank} tank, which has no oxygen.");
             return SwapOxygenTank();
         }
 
-        activeOxygenTank = tank;
+        _activeOxygenTank = tank;
         return true;
     }
 
     public void AddDrainingSource(OxygenDrainer drainer)
     {
-        if (oxygenDrainMultipliers.Contains(drainer))
+        if (_oxygenDrainMultipliers.Contains(drainer))
         {
             Debug.Log($"List of drainers already contains {drainer.name}");
             return;
         }
 
-        oxygenDrainMultipliers.Add(drainer);
+        _oxygenDrainMultipliers.Add(drainer);
     }
 
     public void RemoveDrainingSource(OxygenDrainer drainer)
     {
-        if (!oxygenDrainMultipliers.Contains(drainer))
+        if (!_oxygenDrainMultipliers.Contains(drainer))
         {
             Debug.Log($"List of drainers already contains {drainer.name}");
             return;
         }
 
-        oxygenDrainMultipliers.Remove(drainer);
+        _oxygenDrainMultipliers.Remove(drainer);
     }
 
     public bool DrainingSourceActive(OxygenDrainer drainer)
     {
-        return oxygenDrainMultipliers.Contains(drainer);
+        return _oxygenDrainMultipliers.Contains(drainer);
     }
 
     private void DrainActiveTank(float drainAmountInSeconds)
     {
         drainAmountInSeconds = ApplyDrainModifiers(drainAmountInSeconds);
 
-        if (oxygenTanks.Count <= 0)
+        if (_oxygenTanks.Count == 0)
         {
             PlayerController.Instance.NoOxygenLeft();
+            OxygenLeftInTank?.Invoke("0", 0f);
             return;
         }
 
         while (drainAmountInSeconds > 0)
         {
-            oxygenTanks[activeOxygenTank].DrainOxygen(drainAmountInSeconds, out drainAmountInSeconds);
-            if (drainAmountInSeconds >= 0)
+            _oxygenTanks[_activeOxygenTank].DrainOxygen(drainAmountInSeconds, out drainAmountInSeconds);
+            if (drainAmountInSeconds > 0)
             {
                 if (!SwapOxygenTank())
                 {
                     PlayerController.Instance.NoOxygenLeft();
-                    OxygenLeftInTank?.Invoke("0");
+                    OxygenLeftInTank?.Invoke("0", 0f);
                     break;
                 }
             }
         }
 
-        if (drainAmountInSeconds <= 0)
+        if (drainAmountInSeconds == 0)
         {
-            OxygenLeftInTank?.Invoke(oxygenTanks[activeOxygenTank].oxygenLeftPercent);
+            OxygenLeftInTank?.Invoke(_oxygenTanks[_activeOxygenTank].oxygenLeftPercent, _oxygenTanks[_activeOxygenTank].oxygenLeft / _oxygenTanks[_activeOxygenTank].maxOxygenCapacity * 100f);
         }
     }
 
     private float ApplyDrainModifiers(float baseDrainAmountInSeconds)
     {
-        if (oxygenDrainMultipliers.Count <= 0)
+        if (_oxygenDrainMultipliers.Count == 0)
         {
             return baseDrainAmountInSeconds;
         }
         float modifiedDrainAmountInSeconds = baseDrainAmountInSeconds;
 
-        for (int d = 0; d < oxygenDrainMultipliers.Count; d++)
+        for (int d = 0; d < _oxygenDrainMultipliers.Count; d++)
         {
-            modifiedDrainAmountInSeconds *= oxygenDrainMultipliers[d].drainMultiplier;
+            modifiedDrainAmountInSeconds *= _oxygenDrainMultipliers[d].drainMultiplier;
         }
         return modifiedDrainAmountInSeconds;
     }

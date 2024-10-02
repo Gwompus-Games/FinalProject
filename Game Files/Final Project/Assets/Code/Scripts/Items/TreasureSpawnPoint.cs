@@ -5,6 +5,7 @@ using UnityEngine;
 public class TreasureSpawnPoint : MonoBehaviour
 {
     [SerializeField] private TreasureListSO _treasureList;
+    public static TreasureListSO treasureList;
     [SerializeField] private bool _useWeightedSpawning;
     private bool _treasureSpawned = false;
     public static Dictionary<TreasureSO.TreasureRarity, List<TreasureSO>> treasuresByRarity { get; private set; } = new Dictionary<TreasureSO.TreasureRarity, List<TreasureSO>>();
@@ -12,6 +13,10 @@ public class TreasureSpawnPoint : MonoBehaviour
 
     private void Awake()
     {
+        if (treasureList == null && _treasureList != null)
+        {
+            treasureList = _treasureList;
+        }
         if (treasuresByRarity.Count == 0)
         {
             treasuresByRarity.Add(TreasureSO.TreasureRarity.COMMON, new List<TreasureSO>());
@@ -106,6 +111,7 @@ public class TreasureSpawnPoint : MonoBehaviour
         }
         GameObject treasureGO = Instantiate(treasureToSpawn.worldObject, transform.position, Quaternion.identity);
         treasureGO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
+        treasureGO.GetComponent<WorldItem>().SpawnItem(transform.position, treasureToSpawn);
         _treasureSpawned = true;
     }
 }

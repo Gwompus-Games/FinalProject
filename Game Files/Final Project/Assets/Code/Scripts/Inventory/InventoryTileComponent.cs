@@ -18,6 +18,11 @@ public class InventoryTileComponent : MonoBehaviour
         _myRectTransform = GetComponent<RectTransform>();
         _myTileImage = GetComponent<Image>();
 
+        InitializeTileComponent();
+    }
+
+    public void InitializeTileComponent()
+    {
         Vector2 size = new Vector2(globalData.tileWidth, globalData.tileHeight);
         _myRectTransform.sizeDelta = size;
 

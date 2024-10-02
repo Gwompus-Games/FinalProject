@@ -76,6 +76,8 @@ public class SuitSystem : MonoBehaviour, IDamageable
         {
             Debug.Log("Kill Player");
             PlayerController.Instance.KillPlayer();
+            remainderDamage = 0;
+            return;
         }
         currentSection++;
         remainderDamage = Mathf.Max(damage - currentSectionDurability, 0);
@@ -86,6 +88,9 @@ public class SuitSystem : MonoBehaviour, IDamageable
 
     private void UpdateUI()
     {
-        UpdateSuitUI?.Invoke(numberOfSections - currentSection, suitStats.numberOfSections, currentSectionDurability, suitStats.maxDurabilityForSections);
+        UpdateSuitUI?.Invoke(numberOfSections - currentSection,
+                             suitStats.numberOfSections,
+                             currentSectionDurability,
+                             suitStats.maxDurabilityForSections);
     }
 }
