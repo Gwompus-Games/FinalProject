@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonGenerator : MonoBehaviour
 {
     public static DungeonGenerator Instance { get; private set; }
 
+    [Header("Generation Settings")]
     [SerializeField] private GameObject entrance;
     [SerializeField] private List<GameObject> rooms;
     [SerializeField] private List<GameObject> specialRooms;
@@ -16,13 +20,21 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private int numOfRooms = 10;
     [SerializeField] private LayerMask roomLayerMask;
 
+    [Header("Enemy Spawning")]
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private int minRoomsToSpawn = 20;
+
+    private NavMeshSurface navMesh;
     private List<DungeonPart> generatedRooms;
     private List<DungeonPart> availableRooms;
     private bool isGenerated = false;
+    private bool isEnemySpawned = false;
 
     private void Awake()
     {
         Instance = this;
+
+        navMesh = GetComponent<NavMeshSurface>();
     }
 
     private void Start()
@@ -61,10 +73,7 @@ public class DungeonGenerator : MonoBehaviour
             Generate();
         }
 
-        //GenerateAlternateEntrances();
-        FillEmptyEntrances();
-
-        isGenerated = true;
+        FinishGeneration();
         Debug.Log($"Room Count: {generatedRooms.Count}, Tries: {tries}");
     }
 
@@ -78,6 +87,16 @@ public class DungeonGenerator : MonoBehaviour
         generatedRooms.Clear();
         availableRooms.Clear();
         isGenerated = false;
+    }
+
+    private void FinishGeneration()
+    {
+        //GenerateAlternateEntrances();
+        FillEmptyEntrances();
+
+        isGenerated = true;
+
+        navMesh.BuildNavMesh();
     }
 
     private void Generate()
@@ -280,9 +299,20 @@ public class DungeonGenerator : MonoBehaviour
                     return false;
                 }
             }
+
+            if (generatedRooms.Count >= minRoomsToSpawn && !isEnemySpawned)
+            {
+                newPart.SpawnEnemy(enemyPrefab);
+                isEnemySpawned = true;
+            }
         }
 
         return true;
+    }
+
+    public void EnemyFailedToSpawn()
+    {
+        isEnemySpawned = false;
     }
 
     private bool HasAvailablePath(DungeonPart dungeonPart)

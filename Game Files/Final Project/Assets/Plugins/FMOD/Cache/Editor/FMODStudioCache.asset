@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638627914110109416
+  lastModified: 638634036486421313
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -62,10 +62,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638633746445937563
+  lastModified: 638634093193823500
   FileSizes:
   - Name: Desktop
-    Value: 1017920
+    Value: 1018272
   Exists: 1
 --- !u!114 &-1996697862472181675
 MonoBehaviour:
@@ -88,7 +88,7 @@ MonoBehaviour:
   Banks:
   - {fileID: -4396399035835856423}
   IsStream: 0
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
@@ -109,7 +109,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638633746445907510
+  lastModified: 638634036486436390
   FileSizes:
   - Name: Desktop
     Value: 890
@@ -139,7 +139,7 @@ MonoBehaviour:
   - {fileID: -6825772452312535613}
   StringsBanks:
   - {fileID: -555875900518921724}
-  cacheTime: 638633746445937563
+  cacheTime: 638634093193823500
   cacheVersion: 131619
 --- !u!114 &2916856265200451565
 MonoBehaviour:
@@ -155,16 +155,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Heartbeat
   Guid:
-    Data1: 669225454
-    Data2: 1328506579
-    Data3: 1712869041
-    Data4: -2101957101
+    Data1: 800433928
+    Data2: 1286228201
+    Data3: 745080967
+    Data4: -92704395
   Banks:
   - {fileID: -4396399035835856423}
   IsStream: 0
   Is3D: 1
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 8000

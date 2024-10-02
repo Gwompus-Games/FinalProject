@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2530720800774275589}
   - component: {fileID: 8836820511829067398}
   - component: {fileID: 5428755019918539624}
-  - component: {fileID: 8113014583226249362}
+  - component: {fileID: 6266353506757348651}
   m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8113014583226249362
-BoxCollider:
+--- !u!64 &6266353506757348651
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,6 +102,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4, y: 0.5, z: 4}
-  m_Center: {x: 2, y: -0.24, z: 2}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -629719859055844128, guid: 580f9dff823fc5f49819f4437a463380, type: 3}

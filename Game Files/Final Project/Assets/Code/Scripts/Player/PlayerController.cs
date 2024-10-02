@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using FMOD;
 using FMOD.Studio;
+using FMODUnity;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
 [RequireComponent(typeof(SuitSystem))]
+[RequireComponent(typeof(StudioEventEmitter))]
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController INSTANCE;
@@ -120,7 +122,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+            playerFootsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         //enemy heartbeat logic
         //AudioManager.instance.PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
