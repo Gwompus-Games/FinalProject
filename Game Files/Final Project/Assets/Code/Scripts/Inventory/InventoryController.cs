@@ -11,6 +11,7 @@ public class InventoryController : MonoBehaviour
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
     private InventoryItem _itemToPlace;
+    [SerializeField] private InventoryGrid _inventory;
 
     [SerializeField] GameObject testInventoryItemPrefab;
     [SerializeField] GameObject testInventoryItemPrefab2;
@@ -160,10 +161,60 @@ public class InventoryController : MonoBehaviour
 
     public void AddItemToInventory(ItemDataSO itemData)
     {
-        _itemToPlace = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
+        PlayerController.INSTANCE.OpenInventory();
+        InventoryItem inventoryItem;
+        if (CheckInventorySpaceAvailable(itemData, out inventoryItem))
+        {
+            PlayerController.INSTANCE.CloseInventory();
+            return;
+        }
+        _itemToPlace = inventoryItem;
         _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
         _itemToPlace.InitializeInventoryItem(itemData);
-        PlayerController.INSTANCE.OpenInventory();
+    }
+
+    private bool CheckInventorySpaceAvailable(ItemDataSO itemData, out InventoryItem inventoryItem)
+    {
+        inventoryItem = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
+        inventoryItem.FindExtremes(out Vector2Int minSpaceDistance, out Vector2Int maxSpaceDistance);
+        Debug.Log(minSpaceDistance);
+        Debug.Log(maxSpaceDistance);
+        if (_inventory == null)
+        {
+            return false;
+        }
+        for (int x = 0; x < _inventory.gridSizeWidth; x++)
+        {
+            if (x + minSpaceDistance.x < 0  ||
+                x + maxSpaceDistance.x > _inventory.gridSizeWidth)
+            {
+                continue;
+            }
+            for (int y = 0; y < _inventory.gridSizeHeight; y++)
+            {
+                if (y + minSpaceDistance.y < 0 ||
+                    y + maxSpaceDistance.y > _inventory.gridSizeHeight)
+                {
+                    continue;
+                }
+                if (_inventory.CheckIfSlotsAvailable(new Vector2Int(x, y), inventoryItem.tilesUsed.ToArray()))
+                {
+                    _inventory.PlaceItem(inventoryItem, new Vector2Int(x, y));
+                    RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
+                    rectTransform.SetParent(_inventory.GetComponent<RectTransform>());
+                    Vector2 position = new Vector2();
+                    position.x = (float)x * InventoryGrid.globalItemData.tileWidth + InventoryGrid.globalItemData.tileWidth / 2f;
+                    position.y = -((float)y * InventoryGrid.globalItemData.tileHeight + InventoryGrid.globalItemData.tileHeight / 2f);
+
+                    rectTransform.localPosition = position;
+                    inventoryItem.InitializeInventoryItem(itemData);
+                    Debug.Log($"Found spot for {itemData.itemName} at x:{x} y:{y}");
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void DropItemIntoWorld()

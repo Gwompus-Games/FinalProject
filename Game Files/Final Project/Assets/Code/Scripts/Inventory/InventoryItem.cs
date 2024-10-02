@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class InventoryItem : MonoBehaviour
     private RectTransform _myRectTransform;
     private Coroutine _flashingRoutune = null;
     public ItemDataSO itemData { get; private set; }
+    private bool _initialized = false;
 
     private void Awake()
     {
@@ -21,9 +23,34 @@ public class InventoryItem : MonoBehaviour
 
     private void Start()
     {
+        InitializeGridSpaces();
+    }
+
+    public void FindExtremes(out Vector2Int minSpaceDistance, out Vector2Int maxSpaceDistance)
+    {
+        InitializeGridSpaces();
+        minSpaceDistance = new Vector2Int(int.MaxValue, int.MaxValue);
+        maxSpaceDistance = new Vector2Int(int.MinValue, int.MinValue);
+        for (int t = 0; t < tilesUsed.Count; t++)
+        {
+            minSpaceDistance.x = (int)MathF.Min(minSpaceDistance.x, tilesUsed[t].x);
+            maxSpaceDistance.x = (int)MathF.Max(maxSpaceDistance.x, tilesUsed[t].x);
+            minSpaceDistance.y = (int)MathF.Min(minSpaceDistance.y, tilesUsed[t].y);
+            maxSpaceDistance.y = (int)MathF.Max(maxSpaceDistance.y, tilesUsed[t].y);
+        }
+    }
+
+    private void InitializeGridSpaces()
+    {
+        if (_initialized)
+        {
+            return;
+        }
+        _initialized = true;
         InventoryTileComponent[] inventoryTiles = GetComponentsInChildren<InventoryTileComponent>();
         for (int tile = 0; tile < inventoryTiles.Length; tile++)
         {
+            inventoryTiles[tile].InitializeTileComponent();
             if (tilesUsed.Contains(inventoryTiles[tile].gridPosition))
             {
                 Destroy(inventoryTiles[tile].gameObject);

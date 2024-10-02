@@ -52,7 +52,7 @@ public class OxygenTank : InventoryItem
             remainder = -oxygenLeft;
             oxygenLeft = 0;
         }
-        if (oxygenLeft <= 0)
+        if (oxygenLeft == 0)
         {
             containsOxygen = false;
         }

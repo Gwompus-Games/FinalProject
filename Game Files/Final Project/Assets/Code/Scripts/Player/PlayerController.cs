@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         isRunning = false;
-        ChangeInventoryUIState(false);
+        CloseInventory();
         playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.footsteps);
     }
 
