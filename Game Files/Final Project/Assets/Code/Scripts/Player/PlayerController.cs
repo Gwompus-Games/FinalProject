@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(StudioEventEmitter))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController INSTANCE;
+    public static PlayerController Instance;
 
     public enum PlayerState
     {
@@ -63,12 +63,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if (INSTANCE != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
-        INSTANCE = this;
+        Instance = this;
         _runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         _runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
     }
@@ -278,6 +278,11 @@ public class PlayerController : MonoBehaviour
     public void KillPlayer()
     {
 
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
     }
 
     // Input functions using CustomPlayerInput
