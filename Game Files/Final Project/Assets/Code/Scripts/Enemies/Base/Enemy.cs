@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,11 +20,20 @@ public class Enemy : MonoBehaviour
     [Header("Assign")]
     public Animator animator;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
 
         UpdateNavMeshAgentSettings();
+    }
+
+    private void Start()
+    {
+        if (!HasValidPath())
+        {
+            DungeonGenerator.Instance.EnemyFailedToSpawn();
+            Destroy(gameObject);
+        }
     }
 
     public void MoveToPoint(Vector3 pos)
@@ -36,5 +46,22 @@ public class Enemy : MonoBehaviour
         agent.speed = moveSpeed;
         agent.acceleration = acceleration;
         agent.angularSpeed = turnSpeed;
+    }
+
+    public bool HasValidPath()
+    {
+        NavMeshPath navMeshPath = new NavMeshPath();
+        agent.CalculatePath(PlayerController.Instance.transform.position, navMeshPath);
+        
+        if (navMeshPath.status != NavMeshPathStatus.PathComplete)
+        {
+            print("Invalid path");
+            return false;
+        }
+        else
+        {
+            print("Valid path");
+            return true;
+        }
     }
 }

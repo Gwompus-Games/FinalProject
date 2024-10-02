@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class DungeonGenerator : MonoBehaviour
     private List<DungeonPart> generatedRooms;
     private List<DungeonPart> availableRooms;
     private bool isGenerated = false;
+    private bool isEnemySpawned = false;
 
     private void Awake()
     {
@@ -175,8 +178,6 @@ public class DungeonGenerator : MonoBehaviour
                     }
                 }
             }
-
-            
         }
     }
 
@@ -298,9 +299,20 @@ public class DungeonGenerator : MonoBehaviour
                     return false;
                 }
             }
+
+            if (generatedRooms.Count >= minRoomsToSpawn && !isEnemySpawned)
+            {
+                newPart.SpawnEnemy(enemyPrefab);
+                isEnemySpawned = true;
+            }
         }
 
         return true;
+    }
+
+    public void EnemyFailedToSpawn()
+    {
+        isEnemySpawned = false;
     }
 
     private bool HasAvailablePath(DungeonPart dungeonPart)

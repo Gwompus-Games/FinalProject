@@ -8,29 +8,36 @@ public class InventoryGrid : MonoBehaviour
     [SerializeField] private InventoryGlobalDataSO _globalData;
     public static InventoryGlobalDataSO globalItemData;
 
-    InventoryItem[,] inventoryItemSlot;
+    public InventoryItem[,] inventoryItemSlot { get; private set; }
 
     RectTransform rectTransform;
 
     Vector2 positionOnTheGrid = new Vector2();
     Vector2Int tileGridPosition = new Vector2Int();
 
-    [SerializeField] int gridSizeWidth;
-    [SerializeField] int gridSizeHeight;
+    [field: SerializeField] public int gridSizeWidth { get; private set; }
+    [field: SerializeField] public int gridSizeHeight { get; private set; }
+    private bool _initialized = false;
 
     private void Awake()
     {
         globalItemData = _globalData;
+        rectTransform = GetComponent<RectTransform>();
     }
 
     private void Start()
     {
-        rectTransform = GetComponent<RectTransform>();
         Init(gridSizeWidth, gridSizeHeight);
     }
 
     private void Init(int width, int height)
     {
+        if (_initialized)
+        {
+            return;
+        }
+        _initialized = true;
+
         RectTransform parentRectTransform = null;
 
         if (!transform.parent.gameObject.TryGetComponent<RectTransform>(out parentRectTransform))
@@ -166,6 +173,7 @@ public class InventoryGrid : MonoBehaviour
     
     private bool CheckIfSlotAvailable(Vector2Int gridTile)
     {
+        Init(gridSizeWidth, gridSizeHeight);
         if (gridTile.x < 0 || gridTile.y < 0)
         {
             return false;
@@ -182,7 +190,7 @@ public class InventoryGrid : MonoBehaviour
         return true;
     }
     
-    private bool CheckIfSlotsAvailable(Vector2Int origin, Vector2Int[] tileCoordinates)
+    public bool CheckIfSlotsAvailable(Vector2Int origin, Vector2Int[] tileCoordinates)
     {
         for (int t = 0; t < tileCoordinates.Length; t++)
         {

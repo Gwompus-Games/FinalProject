@@ -19,7 +19,7 @@ public class TaskGoToTarget : Node
     {
         Transform target = (Transform)GetData("target");
 
-        if (Vector3.Distance(_transform.position, target.position) > 0.5f)
+        if (Vector3.Distance(_transform.position, target.position) > 1.5f)
         {
             _enemyScript.MoveToPoint(target.position);
         }

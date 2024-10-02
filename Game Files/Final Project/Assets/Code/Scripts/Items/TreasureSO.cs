@@ -14,4 +14,5 @@ public class TreasureSO : ItemDataSO
     }
     
     public TreasureRarity rarity;
+    public int spawnChancePoints = 100;
 }

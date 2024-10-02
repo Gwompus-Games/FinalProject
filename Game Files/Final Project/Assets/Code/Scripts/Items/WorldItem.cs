@@ -41,8 +41,6 @@ public class WorldItem : MonoBehaviour, IInteractable
     private void AssignData(ItemDataSO itemData)
     {
         _itemData = itemData;
-        GetComponent<MeshFilter>().mesh = _itemData.mesh;
-        _meshRenderer.material = _itemData.meshMaterial;
     }
 
     private void HideItem(bool hideItem)

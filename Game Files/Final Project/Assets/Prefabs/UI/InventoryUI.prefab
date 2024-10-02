@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 9186137832341554912}
   - component: {fileID: 7278765591344027387}
   - component: {fileID: 108494379748748294}
+  - component: {fileID: 4247730263258914884}
   m_Layer: 5
   m_Name: Grid
   m_TagString: Untagged
@@ -208,8 +209,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalData: {fileID: 11400000, guid: 9d58b878e24bac345aac93b0679f2b07, type: 2}
-  gridSizeWidth: 15
-  gridSizeHeight: 5
+  <gridSizeWidth>k__BackingField: 15
+  <gridSizeHeight>k__BackingField: 5
 --- !u!114 &108494379748748294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,5 +221,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf8c7185109c4e14f83c652a27c6fa52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4247730263258914884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8222149129229736053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada0a03e479b842448d93a0bcf6c807f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

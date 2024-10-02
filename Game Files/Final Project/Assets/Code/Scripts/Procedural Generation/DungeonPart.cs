@@ -11,6 +11,8 @@ public class DungeonPart : MonoBehaviour
     public List<Transform> entryPoints;
     private List<Transform> avaiableEntryPoints = new List<Transform>();
 
+    [SerializeField] private Transform enemySpawnPoint;
+
     private MeshRenderer[] meshRenderersToHide;
     private Light[] lightsToHide;
 
@@ -129,6 +131,16 @@ public class DungeonPart : MonoBehaviour
         }
 
         return availableEntryPoints;
+    }
+
+    public void SpawnEnemy(GameObject enemyPrefab)
+    {
+        Vector3 spawnPoint = transform.position;
+
+        if (enemySpawnPoint != null)
+            spawnPoint = enemySpawnPoint.position;
+
+        Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
     }
 
     public void ShowMesh(bool isShowing = true)
