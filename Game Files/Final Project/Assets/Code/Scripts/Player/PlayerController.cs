@@ -23,12 +23,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debug Settings")]
     [SerializeField] private bool _debugMode = false;
-    [SerializeField] private bool _infiniteStamina = false;
 
     [Header("Movement Settings")]
     [SerializeField] private float _walkSpeed = 3f;
     [SerializeField] private float _runSpeed = 5f;
-    [SerializeField] private float _jumpForce = 2f;
     [SerializeField] private float _gravity = -2f;
     [SerializeField] [Range(1f, 5f)] private float _runningOxygenDrainMultiplier = 2f;
 

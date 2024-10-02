@@ -1523,6 +1523,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Facility Generator
       objectReference: {fileID: 0}
+    - target: {fileID: 7102847078085645767, guid: d6d3b5a9ec6a09046968fc96ae419890,
+        type: 3}
+      propertyPath: m_VoxelSize
+      value: 0.125
+      objectReference: {fileID: 0}
     - target: {fileID: 7917565826325681004, guid: d6d3b5a9ec6a09046968fc96ae419890,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1572,6 +1577,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9028053648451412134, guid: d6d3b5a9ec6a09046968fc96ae419890,
+        type: 3}
+      propertyPath: minRoomsToSpawn
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 9028053648451412134, guid: d6d3b5a9ec6a09046968fc96ae419890,
+        type: 3}
+      propertyPath: minDistanceToSpawn
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -600,10 +600,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   acceleration: 4
-  turnSpeed: 80
-  patrolRadius: 20
-  fovRadius: 6
-  attackRadius: 1
+  turnSpeed: 90
+  patrolRadius: 40
+  fovRadius: 4
+  attackRadius: 1.5
   animator: {fileID: 5829206917758833173}
 --- !u!114 &3387660441205239120
 MonoBehaviour:
@@ -797,7 +797,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 2fb082c506aa8f94090ea1142d0f13b5, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -4196952040310456772, guid: e00fb109a8386e34a8a6f2a141c2fa46, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4222234181864256509, guid: e00fb109a8386e34a8a6f2a141c2fa46,
         type: 3}

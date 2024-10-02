@@ -8,8 +8,13 @@ public class AnglerFish : Enemy
 
     protected override void Awake()
     {
+        base.Awake();
+    }
+
+    public override void SetupEnemy()
+    {
         Instance = this;
 
-        base.Awake();
+        base.SetupEnemy();
     }
 }

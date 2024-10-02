@@ -41,9 +41,11 @@ public class TaskPatrol : Node
         }
         else
         {
-            if (Vector3.Distance(_transform.position, currentRoom.position) < 0.01f)
+            if (currentRoom == null)
+                FindNewRoom();
+
+            if (Vector3.Distance(_transform.position, currentRoom.position) < 1f)
             {
-                _transform.position = currentRoom.position;
                 _waitCounter = 0f;
                 _waiting = true;
 
@@ -52,9 +54,6 @@ public class TaskPatrol : Node
             }
             else
             {
-                if (currentRoom == null)
-                    FindNewRoom();
-
                 _enemyScript.MoveToPoint(currentRoom.position);
             }
         }
@@ -72,7 +71,11 @@ public class TaskPatrol : Node
         if (colliders.Length > 0)
         {
             int randomIndex = Random.Range(0, colliders.Length);
-            currentRoom = colliders[randomIndex].transform;
+
+            if (_enemyScript.HasValidPath(colliders[randomIndex].transform.position))
+                currentRoom = colliders[randomIndex].transform;
+            else
+                FindNewRoom();
         }
     }
 
