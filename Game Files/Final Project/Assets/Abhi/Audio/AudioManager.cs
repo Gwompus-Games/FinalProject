@@ -58,7 +58,7 @@ public class AudioManager : MonoBehaviour
         return eventInstance;
     }
 
-    public void CleanUp()
+    private void CleanUp()
     {
         foreach(EventInstance eventInstance in eventInstances)
         {

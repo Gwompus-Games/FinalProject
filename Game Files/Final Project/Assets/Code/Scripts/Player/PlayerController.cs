@@ -418,10 +418,4 @@ public class PlayerController : MonoBehaviour
         ChangeInventoryUIState(false);
         ChangeState(PlayerState.Idle);
     }
-
-    public void RestartGame()
-    {
-        AudioManager.instance.CleanUp();
-        SceneManager.LoadScene(0);
-    }
 }
