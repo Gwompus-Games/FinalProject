@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
+    public static Action<int> UpdateMoney;
 
     public enum PlayerState
     {
@@ -40,6 +42,22 @@ public class PlayerController : MonoBehaviour
     [Header("Interacting Settings")]
     [SerializeField] private float _grabLength = 2f;
     private IInteractable _interactableLookingAt;
+
+    [Header("Money Settings")]
+    [SerializeField] private int _startingMoney;
+    [field: SerializeField] public int money
+    {
+        get
+        {
+            return _money;
+        }
+        private set
+        {
+            _money = value;
+            UpdateMoney?.Invoke(_money);
+        }
+    }
+    private int _money;
 
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
@@ -268,6 +286,41 @@ public class PlayerController : MonoBehaviour
         }
 
         return foundInteractable;
+    }
+
+    public void GainMoney(int income)
+    {
+        if (income < 0)
+        {
+            throw new Exception("Tried to gain a negative amount of money!");
+        }
+        if (income == 0)
+        {
+            UnityEngine.Debug.LogWarning("Gaining $0!");
+        }
+        money += income;
+    }
+
+    public bool SpendMoney(int cost)
+    {
+        if (cost < 0)
+        {
+            throw new Exception("Tried to spend a negative amount of money!");
+        }
+
+        if (cost == 0)
+        {
+            UnityEngine.Debug.LogWarning("Spending $0!");
+        }
+
+        if (cost > money)
+        {
+            UnityEngine.Debug.Log("Tried to spend more money than player has!");
+            return false;
+        }
+
+        money -= cost;
+        return true;
     }
 
     public void NoOxygenLeft()

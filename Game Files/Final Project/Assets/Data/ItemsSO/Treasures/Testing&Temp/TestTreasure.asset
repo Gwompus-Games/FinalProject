@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: TestTreasure
   m_EditorClassIdentifier: 
   itemName: Item Name
-  mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  meshMaterial: {fileID: 3107604678906970665, guid: f34ef578e33577149b4536ce0fa22b55,
-    type: 3}
   worldObject: {fileID: 1964563567234353733, guid: c71a5e059f0a0a74dbeb0af1df163bb3,
     type: 3}
   inventoryObject: {fileID: 3969134843577476104, guid: c74a81766c8d52a449ad7518c7e8397c,
     type: 3}
   baseValue: 0
+  usedForSelling: 1
   rarity: 0
+  spawnChancePoints: 100

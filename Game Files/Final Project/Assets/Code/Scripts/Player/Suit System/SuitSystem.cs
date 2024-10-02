@@ -75,7 +75,7 @@ public class SuitSystem : MonoBehaviour, IDamageable
         if (currentSection >= numberOfSections)
         {
             Debug.Log("Kill Player");
-            PlayerController.INSTANCE.KillPlayer();
+            PlayerController.Instance.KillPlayer();
             remainderDamage = 0;
             return;
         }

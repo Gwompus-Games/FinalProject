@@ -5,6 +5,7 @@ using UnityEngine;
 public class TreasureSpawnPoint : MonoBehaviour
 {
     [SerializeField] private TreasureListSO _treasureList;
+    public static TreasureListSO staticTreasureList;
     [SerializeField] private bool _useWeightedSpawning;
     private bool _treasureSpawned = false;
     public static Dictionary<TreasureSO.TreasureRarity, List<TreasureSO>> treasuresByRarity { get; private set; } = new Dictionary<TreasureSO.TreasureRarity, List<TreasureSO>>();
@@ -12,15 +13,23 @@ public class TreasureSpawnPoint : MonoBehaviour
 
     private void Awake()
     {
+        if (staticTreasureList == null && _treasureList != null)
+        {
+            staticTreasureList = _treasureList;
+        }
+        else if (staticTreasureList != null)
+        {
+            _treasureList = staticTreasureList;
+        }
         if (treasuresByRarity.Count == 0)
         {
             treasuresByRarity.Add(TreasureSO.TreasureRarity.COMMON, new List<TreasureSO>());
             treasuresByRarity.Add(TreasureSO.TreasureRarity.UNCOMMON, new List<TreasureSO>());
             treasuresByRarity.Add(TreasureSO.TreasureRarity.RARE, new List<TreasureSO>());
             treasuresByRarity.Add(TreasureSO.TreasureRarity.UNIQUE, new List<TreasureSO>());
-            for (int t = 0; t < _treasureList.treasures.Length; t++)
+            for (int t = 0; t < staticTreasureList.treasures.Length; t++)
             {
-                treasuresByRarity[_treasureList.treasures[t].rarity].Add(_treasureList.treasures[t]);
+                treasuresByRarity[staticTreasureList.treasures[t].rarity].Add(staticTreasureList.treasures[t]);
             }
         }
     }
@@ -106,6 +115,7 @@ public class TreasureSpawnPoint : MonoBehaviour
         }
         GameObject treasureGO = Instantiate(treasureToSpawn.worldObject, transform.position, Quaternion.identity);
         treasureGO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
+        treasureGO.GetComponent<WorldItem>().SpawnItem(transform.position, treasureToSpawn);
         _treasureSpawned = true;
     }
 }
