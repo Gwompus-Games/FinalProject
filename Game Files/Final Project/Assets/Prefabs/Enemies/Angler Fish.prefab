@@ -563,8 +563,13 @@ GameObject:
   - component: {fileID: 8641332338968694515}
   - component: {fileID: 3387660441205239120}
   - component: {fileID: 1673952998344467424}
+<<<<<<< HEAD
+  - component: {fileID: 493224968087502545}
+  - component: {fileID: 3452173113812863881}
+=======
   - component: {fileID: 1912482794835341909}
   - component: {fileID: 2638763523898406521}
+>>>>>>> main
   m_Layer: 0
   m_Name: Angler Fish
   m_TagString: Enemy
@@ -641,7 +646,11 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+<<<<<<< HEAD
+--- !u!135 &493224968087502545
+=======
 --- !u!135 &1912482794835341909
+>>>>>>> main
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -660,9 +669,15 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
+<<<<<<< HEAD
+  m_Radius: 30
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3452173113812863881
+=======
   m_Radius: 40
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2638763523898406521
+>>>>>>> main
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -692,7 +707,11 @@ MonoBehaviour:
   Params: []
   OverrideAttenuation: 1
   OverrideMinDistance: 1
+<<<<<<< HEAD
+  OverrideMaxDistance: 30
+=======
   OverrideMaxDistance: 40
+>>>>>>> main
 --- !u!1 &8085970012863640488
 GameObject:
   m_ObjectHideFlags: 0
