@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using FMOD;
 using FMOD.Studio;
+using FMODUnity;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
 [RequireComponent(typeof(SuitSystem))]
+[RequireComponent(typeof(StudioEventEmitter))]
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviour
     private OxygenSystem _oxygenSystem;
     private SuitSystem _suitSystem;
     private OxygenDrainer _runningDrainer;
-    
+
     private EventInstance playerFootsteps;
 
     private void Awake()
@@ -119,7 +121,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+            playerFootsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         //enemy heartbeat logic
         //AudioManager.instance.PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
@@ -275,7 +277,7 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-        
+
     }
 
     public void RestartGame()
@@ -357,7 +359,7 @@ public class PlayerController : MonoBehaviour
         ChangeState(PlayerState.Inventory);
     }
 
-    public void CloseInventory() 
+    public void CloseInventory()
     {
         Cursor.lockState = CursorLockMode.Locked;
         ChangeInventoryUIState(false);
