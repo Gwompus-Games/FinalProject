@@ -335,6 +335,7 @@ public class PlayerController : MonoBehaviour
 
     public void RestartGame()
     {
+        AudioManager.instance.CleanUp();
         SceneManager.LoadScene(0);
     }
 
@@ -417,11 +418,5 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         ChangeInventoryUIState(false);
         ChangeState(PlayerState.Idle);
-    }
-
-    public void RestartGame()
-    {
-        AudioManager.instance.CleanUp();
-        SceneManager.LoadScene(0);
     }
 }

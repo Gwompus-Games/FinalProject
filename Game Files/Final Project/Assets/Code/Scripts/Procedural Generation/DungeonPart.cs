@@ -27,7 +27,7 @@ public class DungeonPart : MonoBehaviour
     {
         GetComponentsToHide();
         ShowMesh(false);
-        /SpawnLoot();
+        SpawnLoot();
     }
 
     private void SpawnLoot()
