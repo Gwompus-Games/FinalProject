@@ -27,7 +27,7 @@ public class AudioManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.H))
         {
-            PlayOneShot(FMODEvents.instance.heartbeat, PlayerController.INSTANCE.transform.position);
+            PlayOneShot(FMODEvents.instance.heartbeat, PlayerController.Instance.transform.position);
         }
     }
 
@@ -43,7 +43,7 @@ public class AudioManager : MonoBehaviour
     
     public void PlayOneShotAttached(EventReference sound)
     {
-        RuntimeManager.PlayOneShotAttached(sound, PlayerController.INSTANCE.gameObject);
+        RuntimeManager.PlayOneShotAttached(sound, PlayerController.Instance.gameObject);
     }
 
     public EventInstance CreateEventInstance(EventReference eventReference)

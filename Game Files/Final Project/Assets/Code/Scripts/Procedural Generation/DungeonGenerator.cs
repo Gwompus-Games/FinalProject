@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -306,6 +308,11 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void EnemyFailedToSpawn()
+    {
+        isEnemySpawned = false;
     }
 
     private bool HasAvailablePath(DungeonPart dungeonPart)

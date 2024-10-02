@@ -1145,7 +1145,7 @@ PrefabInstance:
     - target: {fileID: 8857224470717509373, guid: f2266029d2b4fbc4f982fe20286c987e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1382,6 +1382,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Angler Fish
       objectReference: {fileID: 0}
+    - target: {fileID: 5827894065527653237, guid: 108871f710f0eae45a7e5ee9871b44c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7199023561265837029, guid: 108871f710f0eae45a7e5ee9871b44c6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1567,6 +1572,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9028053648451412134, guid: d6d3b5a9ec6a09046968fc96ae419890,
+        type: 3}
+      propertyPath: minRoomsToSpawn
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

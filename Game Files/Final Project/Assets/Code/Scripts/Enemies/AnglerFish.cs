@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class AnglerFish : Enemy
 {
-    public static AnglerFish instance;
+    public static AnglerFish Instance;
 
-    private void Awake()
+    protected override void Awake()
     {
-        instance = this;
+        Instance = this;
+
+        base.Awake();
     }
 }

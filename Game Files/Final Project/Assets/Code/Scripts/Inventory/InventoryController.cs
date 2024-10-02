@@ -163,7 +163,7 @@ public class InventoryController : MonoBehaviour
         _itemToPlace = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
         _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
         _itemToPlace.InitializeInventoryItem(itemData);
-        PlayerController.INSTANCE.OpenInventory();
+        PlayerController.Instance.OpenInventory();
     }
 
     private void DropItemIntoWorld()
@@ -174,7 +174,7 @@ public class InventoryController : MonoBehaviour
         }
         WorldItem worldItemWO = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WorldItem>();
         worldItemWO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        Vector3 spawnPoint = PlayerController.INSTANCE.transform.position + (PlayerController.INSTANCE.transform.forward * 1.25f);
+        Vector3 spawnPoint = PlayerController.Instance.transform.position + (PlayerController.Instance.transform.forward * 1.25f);
         worldItemWO.SpawnItem(spawnPoint, _itemToPlace.itemData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);

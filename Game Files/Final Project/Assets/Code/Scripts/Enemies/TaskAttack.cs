@@ -10,10 +10,7 @@ public class TaskAttack : Node
     private Transform _transform;
     private Animator _animator;
 
-    private Transform _lastTarget;
-    private PlayerController _playerController;
-
-    private float _attackTime = 1f;
+    private float _attackTime = 2f;
     private float _attackCounter = 0f;
 
     public TaskAttack(Enemy enemyScript)
@@ -26,15 +23,11 @@ public class TaskAttack : Node
     public override NodeState Evaluate()
     {
         Transform target = (Transform)GetData("target");
-        if (target != _lastTarget)
-        {
-            _playerController = target.GetComponent<PlayerController>();
-            _lastTarget = target;
-        }
 
         _attackCounter += Time.deltaTime;
         if (_attackCounter >= _attackTime)
         {
+            PlayerController.Instance.RestartGame();
             //bool enemyIsDead = _playerController.TakeHit();
             //if (enemyIsDead)
             //{
