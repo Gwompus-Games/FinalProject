@@ -7,7 +7,7 @@ using UnityEngine;
 public class OxygenSystem : MonoBehaviour
 {
     public static OxygenSystem INSTANCE;
-    public static Action<string> OxygenLeftInTank;
+    public static Action<string, float> OxygenLeftInTank;
 
     [SerializeField] private List<OxygenTank> _oxygenTanks = new List<OxygenTank>();
     private int _activeOxygenTank = 0;
@@ -164,7 +164,7 @@ public class OxygenSystem : MonoBehaviour
         if (_oxygenTanks.Count == 0)
         {
             PlayerController.INSTANCE.NoOxygenLeft();
-            OxygenLeftInTank?.Invoke("0");
+            OxygenLeftInTank?.Invoke("0", 0f);
             return;
         }
 
@@ -176,7 +176,7 @@ public class OxygenSystem : MonoBehaviour
                 if (!SwapOxygenTank())
                 {
                     PlayerController.INSTANCE.NoOxygenLeft();
-                    OxygenLeftInTank?.Invoke("0");
+                    OxygenLeftInTank?.Invoke("0", 0f);
                     break;
                 }
             }
@@ -184,7 +184,7 @@ public class OxygenSystem : MonoBehaviour
 
         if (drainAmountInSeconds == 0)
         {
-            OxygenLeftInTank?.Invoke(_oxygenTanks[_activeOxygenTank].oxygenLeftPercent);
+            OxygenLeftInTank?.Invoke(_oxygenTanks[_activeOxygenTank].oxygenLeftPercent, _oxygenTanks[_activeOxygenTank].oxygenLeft / _oxygenTanks[_activeOxygenTank].maxOxygenCapacity * 100f);
         }
     }
 

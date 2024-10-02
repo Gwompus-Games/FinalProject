@@ -68,6 +68,16 @@ public class InventoryItem : MonoBehaviour
         itemData = data;
     }
 
+    public virtual void ItemPlacedInInventory()
+    {
+
+    }
+
+    public virtual void ItemRemovedFromInventory()
+    {
+
+    }
+
     public void RotateClockwise()
     {
         for (int tile = 0; tile < tilesUsed.Count; tile++)

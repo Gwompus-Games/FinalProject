@@ -68,6 +68,11 @@ public class InventoryController : MonoBehaviour
         {
             item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
             item.GetComponent<RectTransform>().position = _mousePosition;
+            item.ItemRemovedFromInventory();
+        }
+        if (_itemToPlace != null)
+        {
+            _itemToPlace.ItemPlacedInInventory();
         }
         _itemToPlace = item;
     }

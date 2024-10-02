@@ -13,19 +13,19 @@ public class OxygenTank : InventoryItem
         private set
         {
             _oxygenLeft = value;
-            oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / _maxOxygenCapacity * 100);
+            oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / maxOxygenCapacity * 100);
         }
     }
-    private float _oxygenLeft;
+    public float _oxygenLeft { get; private set; }
     public bool containsOxygen { get; private set; }
-    private float _maxOxygenCapacity = 0;
+    public float maxOxygenCapacity { get; private set; } = 0;
     private int _myOxygenTankID = 0;
     public string oxygenLeftPercent { get; private set; }
 
     private void Awake()
     {
-        _maxOxygenCapacity = _oxygenTankData.minutesUntilEmpty * 60f;
-        oxygenLeft = _maxOxygenCapacity;
+        maxOxygenCapacity = _oxygenTankData.minutesUntilEmpty * 60f;
+        oxygenLeft = maxOxygenCapacity;
         containsOxygen = (oxygenLeft > 0);
     }
 
@@ -62,26 +62,38 @@ public class OxygenTank : InventoryItem
     {
         remainder = 0;
         containsOxygen = true;
-        if (oxygenToAddInSeconds >= _maxOxygenCapacity)
+        if (oxygenToAddInSeconds >= maxOxygenCapacity)
         {
             SetTankToFull();
-            remainder = oxygenToAddInSeconds - _maxOxygenCapacity;
+            remainder = oxygenToAddInSeconds - maxOxygenCapacity;
             return;
         }
 
-        if (oxygenLeft + oxygenToAddInSeconds >= _maxOxygenCapacity)
+        if (oxygenLeft + oxygenToAddInSeconds >= maxOxygenCapacity)
         {
             SetTankToFull();
-            remainder = oxygenLeft + oxygenToAddInSeconds - _maxOxygenCapacity;
+            remainder = oxygenLeft + oxygenToAddInSeconds - maxOxygenCapacity;
             return;
         }
 
-        oxygenLeft = Mathf.Min(oxygenLeft + oxygenToAddInSeconds, _maxOxygenCapacity);
+        oxygenLeft = Mathf.Min(oxygenLeft + oxygenToAddInSeconds, maxOxygenCapacity);
     }
 
     public void SetTankToFull()
     {
-        oxygenLeft = _maxOxygenCapacity;
+        oxygenLeft = maxOxygenCapacity;
         containsOxygen = true;
+    }
+
+    public override void ItemPlacedInInventory()
+    {
+        base.ItemPlacedInInventory();
+        OxygenSystem.INSTANCE.AddOxygenTank(this);
+    }
+
+    public override void ItemRemovedFromInventory()
+    {
+        base.ItemRemovedFromInventory();
+        OxygenSystem.INSTANCE.RemoveOxygenTank(this);
     }
 }
