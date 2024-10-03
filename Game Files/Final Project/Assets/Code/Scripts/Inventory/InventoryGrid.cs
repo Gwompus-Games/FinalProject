@@ -337,6 +337,10 @@ public class InventoryGrid : MonoBehaviour
             for (int y = 0; y < inventoryItemSlot.GetLength(1); y++)
             {
                 InventoryItem item = GetItemInSlot(new Vector2Int(x, y));
+                if (item == null)
+                {
+                    continue;
+                }
                 if (!items.Contains(item) && item.itemData.usedForSelling)
                 {
                     items.Add(item);

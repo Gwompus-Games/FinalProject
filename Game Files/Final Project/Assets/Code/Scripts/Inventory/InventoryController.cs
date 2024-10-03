@@ -68,7 +68,7 @@ public class InventoryController : MonoBehaviour
     {
         if (item != null)
         {
-            item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
+            item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
             item.GetComponent<RectTransform>().position = _mousePosition;
             item.ItemRemovedFromInventory();
         }
@@ -176,7 +176,7 @@ public class InventoryController : MonoBehaviour
             return;
         }
         _itemToPlace = inventoryItem;
-        _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
+        _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
         _itemToPlace.InitializeInventoryItem(itemData);
     }
 
