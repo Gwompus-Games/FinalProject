@@ -22,7 +22,8 @@ public class DungeonGenerator : MonoBehaviour
 
     [Header("Enemy Spawning")]
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private int minRoomsToSpawn = 20;
+    [SerializeField] private int minRoomsToSpawn = 50;
+    [SerializeField] private int minDistanceToSpawn = 50;
 
     private NavMeshSurface navMesh;
     private List<DungeonPart> generatedRooms;
@@ -97,6 +98,8 @@ public class DungeonGenerator : MonoBehaviour
         isGenerated = true;
 
         navMesh.BuildNavMesh();
+
+        SpawnEnemy();
     }
 
     private void Generate()
@@ -108,7 +111,7 @@ public class DungeonGenerator : MonoBehaviour
 
         while (generatedRooms.Count < numOfRooms && availableRooms.Count > 0)
         {
-            bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.95f;
+            bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.9f;
             DungeonPart previousRoom = null;
             Transform previousEntryPoint = null;
             int totalRetries = 1000;
@@ -300,14 +303,26 @@ public class DungeonGenerator : MonoBehaviour
                 }
             }
 
-            if (generatedRooms.Count >= minRoomsToSpawn && !isEnemySpawned)
-            {
-                newPart.SpawnEnemy(enemyPrefab);
-                isEnemySpawned = true;
-            }
+            newPart.SetupPart();
         }
 
         return true;
+    }
+
+    private void SpawnEnemy()
+    {
+        for (int i = minRoomsToSpawn; i < generatedRooms.Count; i++)
+        {
+            if (Vector3.Distance(generatedRooms[i].transform.position, transform.position) < minDistanceToSpawn)
+                continue;
+
+            if (generatedRooms[i].SpawnEnemy(enemyPrefab))
+            {
+                return;
+            }
+        }
+
+        Debug.LogError("Reached maximum spawn attempts without success!");
     }
 
     public void EnemyFailedToSpawn()

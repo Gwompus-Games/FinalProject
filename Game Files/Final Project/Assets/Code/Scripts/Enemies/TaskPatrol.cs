@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using BehaviorTree;
+using static UnityEngine.GraphicsBuffer;
 
 public class TaskPatrol : Node
 {
@@ -17,6 +18,8 @@ public class TaskPatrol : Node
     private float _waitTime = 1f; // in seconds
     private float _waitCounter = 0f;
     private bool _waiting = false;
+
+    private Transform currentRoom;
 
     public TaskPatrol(Enemy enemyScript)
     {
@@ -38,39 +41,42 @@ public class TaskPatrol : Node
         }
         else
         {
-            //Collider[] colliders = Physics.OverlapSphere(
-            //    _transform.position, _enemyScript.patrolRadius, _roomLayerMask);
+            if (currentRoom == null)
+                FindNewRoom();
 
-            //if (colliders.Length > 0)
-            //{
-            //    int randomIndex = Random.Range(0, colliders.Length);
+            if (Vector3.Distance(_transform.position, currentRoom.position) < 1f)
+            {
+                _waitCounter = 0f;
+                _waiting = true;
 
-            //    parent.parent.SetData("target", colliders[0].transform);
-            //    _animator.SetBool("Walking", true);
-            //    state = NodeState.SUCCESS;
-            //    return state;
-            //}
-
-            //Transform wp = _waypoints[_currentWaypointIndex];
-            //if (Vector3.Distance(_transform.position, wp.position) < 0.01f)
-            //{
-            //    _transform.position = wp.position;
-            //    _waitCounter = 0f;
-            //    _waiting = true;
-
-            //    _currentWaypointIndex = (_currentWaypointIndex + 1) % _waypoints.Length;
-            //    _animator.SetBool("Walking", false);
-            //}
-            //else
-            //{
-            //    _transform.position = Vector3.MoveTowards(_transform.position, wp.position, AnglerFishBT.speed * Time.deltaTime);
-            //    _transform.LookAt(wp.position);
-            //}
+                FindNewRoom();
+                _animator.SetBool("Walking", false);
+            }
+            else
+            {
+                _enemyScript.MoveToPoint(currentRoom.position);
+            }
         }
 
 
         state = NodeState.RUNNING;
         return state;
+    }
+
+    private void FindNewRoom()
+    {
+        Collider[] colliders = Physics.OverlapSphere(
+                _transform.position, _enemyScript.patrolRadius, _roomLayerMask);
+
+        if (colliders.Length > 0)
+        {
+            int randomIndex = Random.Range(0, colliders.Length);
+
+            if (_enemyScript.HasValidPath(colliders[randomIndex].transform.position))
+                currentRoom = colliders[randomIndex].transform;
+            else
+                FindNewRoom();
+        }
     }
 
 }

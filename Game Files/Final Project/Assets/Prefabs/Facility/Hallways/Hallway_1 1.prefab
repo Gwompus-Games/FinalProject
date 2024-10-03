@@ -3148,6 +3148,7 @@ MonoBehaviour:
   entryPoints:
   - {fileID: 9018719829511361548}
   - {fileID: 8471999666205678267}
+  enemySpawnPoint: {fileID: 0}
   collider: {fileID: 8671722119277807236}
 --- !u!65 &8671722119277807236
 BoxCollider:
@@ -3168,8 +3169,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.5, y: 3, z: 3.5}
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Size: {x: 3.5, y: 3, z: 23.5}
+  m_Center: {x: 0, y: 1.5, z: -10}
 --- !u!1 &9114922159521461909
 GameObject:
   m_ObjectHideFlags: 0

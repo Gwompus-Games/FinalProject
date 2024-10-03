@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
@@ -26,12 +27,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debug Settings")]
     [SerializeField] private bool _debugMode = false;
-    [SerializeField] private bool _infiniteStamina = false;
 
     [Header("Movement Settings")]
     [SerializeField] private float _walkSpeed = 3f;
     [SerializeField] private float _runSpeed = 5f;
-    [SerializeField] private float _jumpForce = 2f;
     [SerializeField] private float _gravity = -2f;
     [SerializeField] [Range(1f, 5f)] private float _runningOxygenDrainMultiplier = 2f;
 
@@ -74,10 +73,10 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _movementInput = Vector2.zero;
 
-    private OxygenSystem _oxygenSystem;
-    private SuitSystem _suitSystem;
-    private OxygenDrainer _runningDrainer;
-    
+    public OxygenSystem oxygenSystem { get; private set; }
+    public SuitSystem suitSystem { get; private set; }
+    public OxygenDrainer runningDrainer { get; private set; }
+
     private EventInstance playerFootsteps;
 
     private void Awake()
@@ -88,8 +87,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
         Instance = this;
-        _runningDrainer = gameObject.AddComponent<OxygenDrainer>();
-        _runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
+        runningDrainer = gameObject.AddComponent<OxygenDrainer>();
+        runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
     }
 
     private void Start()
@@ -189,16 +188,16 @@ public class PlayerController : MonoBehaviour
     {
         if (newState == PlayerState.Running)
         {
-            if (!OxygenSystem.INSTANCE.DrainingSourceActive(_runningDrainer))
+            if (!OxygenSystem.INSTANCE.DrainingSourceActive(runningDrainer))
             {
-                OxygenSystem.INSTANCE.AddDrainingSource(_runningDrainer);
+                OxygenSystem.INSTANCE.AddDrainingSource(runningDrainer);
             }
         }
         else
         {
-            if (OxygenSystem.INSTANCE.DrainingSourceActive(_runningDrainer))
+            if (OxygenSystem.INSTANCE.DrainingSourceActive(runningDrainer))
             {
-                OxygenSystem.INSTANCE.RemoveDrainingSource(_runningDrainer);
+                OxygenSystem.INSTANCE.RemoveDrainingSource(runningDrainer);
             }
         }
         currentState = newState;
@@ -334,6 +333,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     // Input functions using CustomPlayerInput
 
     private void OnEnable()
@@ -408,7 +412,7 @@ public class PlayerController : MonoBehaviour
         ChangeState(PlayerState.Inventory);
     }
 
-    public void CloseInventory() 
+    public void CloseInventory()
     {
         Cursor.lockState = CursorLockMode.Locked;
         ChangeInventoryUIState(false);
