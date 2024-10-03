@@ -100,6 +100,15 @@ public class DungeonGenerator : MonoBehaviour
         navMesh.BuildNavMesh();
 
         SpawnEnemy();
+        SpawnAllLoot();
+    }
+
+    private void SpawnAllLoot()
+    {
+        foreach(DungeonPart room in generatedRooms)
+        {
+            room.SpawnLoot();
+        }
     }
 
     private void Generate()

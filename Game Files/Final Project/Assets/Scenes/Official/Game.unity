@@ -638,6 +638,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 455594996}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &381885380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2303797473383469411, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 5185126630802670081}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &381885385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381885380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e7075fe60156949958a64609706948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offColor: {r: 0.41568628, g: 0.3882353, b: 0.3529412, a: 1}
+  minOffTime: 0.05
+  maxOffTime: 0.1
+  minDelay: 1
+  maxDelay: 5
 --- !u!1001 &409057393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -873,6 +896,50 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5185126630802670081}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &634241676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 634241678}
+  - component: {fileID: 634241677}
+  m_Layer: 0
+  m_Name: WorldItems
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &634241677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634241676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f8c8002761c1e4892dad71cfee7ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &634241678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634241676}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.904673, y: 0.8628629, z: -1.0327406}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 660133991}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &660133990
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,6 +972,7 @@ Transform:
   - {fileID: 1347406489}
   - {fileID: 468127386}
   - {fileID: 409057394}
+  - {fileID: 634241678}
   - {fileID: 1299666997}
   m_Father: {fileID: 1527164130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1505,55 +1573,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: EventReference.Path
-      value: event:/Heartbeat
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: OverrideAttenuation
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: OverrideMaxDistance
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: OverrideMinDistance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: EventReference.Guid.Data1
-      value: 800433928
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: EventReference.Guid.Data2
-      value: 1286228201
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: EventReference.Guid.Data3
-      value: 745080967
-      objectReference: {fileID: 0}
-    - target: {fileID: 8672683170310346580, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
-        type: 3}
-      propertyPath: EventReference.Guid.Data4
-      value: -92704395
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2303797473383469411, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
+        type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 381885385}
   m_SourcePrefab: {fileID: 100100000, guid: 16b3557e27aa9c942bf1f25b50eefd7e, type: 3}
 --- !u!1001 &8449573598224640729
 PrefabInstance:
@@ -1631,15 +1658,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1527164130}
     m_Modifications:
-    - target: {fileID: 324732543462341299, guid: fab884ff994c84c42b556ec8fd1f00ad,
+    - target: {fileID: 958860232771693427, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
-      propertyPath: m_Alpha
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358049335919165380, guid: fab884ff994c84c42b556ec8fd1f00ad,
+        type: 3}
+      propertyPath: m_fontColor.b
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6680900804851565285, guid: fab884ff994c84c42b556ec8fd1f00ad,
+    - target: {fileID: 5358049335919165380, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358049335919165380, guid: fab884ff994c84c42b556ec8fd1f00ad,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358049335919165380, guid: fab884ff994c84c42b556ec8fd1f00ad,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7046486428478826216, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
