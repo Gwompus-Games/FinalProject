@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 316350817992923501, guid: 859591c8699b6c442b4ba4065fe5afa2,
         type: 3}
       propertyPath: m_Name
-      value: TLVT_02 Variant
+      value: ITHVT_01
       objectReference: {fileID: 0}
     - target: {fileID: 632609311855097608, guid: 859591c8699b6c442b4ba4065fe5afa2,
         type: 3}
@@ -133,7 +133,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -34,6 +34,12 @@ public class TreasureSpawnPoint : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        //Purely for testing
+        SpawnTreasureByRarity(TreasureSO.TreasureRarity.COMMON, TreasureSO.TreasureRarity.UNCOMMON, TreasureSO.TreasureRarity.RARE);
+    }
+
     public void SpawnTreasureByRarity(params TreasureSO.TreasureRarity[] rarity)
     {
         if (_treasureSpawned)

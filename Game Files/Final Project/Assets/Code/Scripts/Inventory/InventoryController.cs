@@ -10,6 +10,8 @@ public class InventoryController : MonoBehaviour
 
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
+    [HideInInspector]
+    public ScrappingZone selectedScrappingZone;
     private InventoryItem _itemToPlace;
     [SerializeField] private InventoryGrid _inventory;
 
@@ -66,7 +68,7 @@ public class InventoryController : MonoBehaviour
     {
         if (item != null)
         {
-            item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
+            item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
             item.GetComponent<RectTransform>().position = _mousePosition;
             item.ItemRemovedFromInventory();
         }
@@ -174,7 +176,7 @@ public class InventoryController : MonoBehaviour
             return;
         }
         _itemToPlace = inventoryItem;
-        _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
+        _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
         _itemToPlace.InitializeInventoryItem(itemData);
     }
 
@@ -220,6 +222,11 @@ public class InventoryController : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void ScrapItem()
+    {
+
     }
 
     private void DropItemIntoWorld()
