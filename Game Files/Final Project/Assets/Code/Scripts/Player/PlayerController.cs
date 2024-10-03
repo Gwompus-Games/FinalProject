@@ -332,7 +332,7 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-
+        SceneManager.LoadScene(0);
     }
 
     public void RestartGame()
