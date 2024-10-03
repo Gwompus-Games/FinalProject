@@ -49,11 +49,11 @@ public class DungeonGenerator : MonoBehaviour
     private void Update()
     {
         // Only for testing in editor play mode
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Despawn();
-            StartGeneration();
-        }
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    Despawn();
+        //    StartGeneration();
+        //}
     }
 
     public void StartGeneration()
@@ -100,6 +100,15 @@ public class DungeonGenerator : MonoBehaviour
         navMesh.BuildNavMesh();
 
         SpawnEnemy();
+        SpawnAllLoot();
+    }
+
+    private void SpawnAllLoot()
+    {
+        foreach(DungeonPart room in generatedRooms)
+        {
+            room.SpawnLoot();
+        }
     }
 
     private void Generate()
@@ -111,7 +120,7 @@ public class DungeonGenerator : MonoBehaviour
 
         while (generatedRooms.Count < numOfRooms && availableRooms.Count > 0)
         {
-            bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.9f;
+            bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.75f;
             DungeonPart previousRoom = null;
             Transform previousEntryPoint = null;
             int totalRetries = 1000;

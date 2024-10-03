@@ -10,7 +10,7 @@ public class TaskAttack : Node
     private Transform _transform;
     private Animator _animator;
 
-    private float _attackTime = 0.25f;
+    private float _attackTime = 1f;
     private float _attackCounter = 0f;
 
     public TaskAttack(Enemy enemyScript)
@@ -27,7 +27,7 @@ public class TaskAttack : Node
         _attackCounter += Time.deltaTime;
         if (_attackCounter >= _attackTime)
         {
-            //PlayerController.Instance.suitSystem.TakeDamage();
+            PlayerController.Instance.suitSystem.TakeDamage(100);
 
             //bool enemyIsDead = _playerController.TakeHit();
             //if (enemyIsDead)

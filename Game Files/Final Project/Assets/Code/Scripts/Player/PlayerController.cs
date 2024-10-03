@@ -89,6 +89,8 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
+        suitSystem = GetComponent<SuitSystem>();
+        oxygenSystem = GetComponent<OxygenSystem>();
     }
 
     private void Start()
@@ -330,11 +332,12 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-
+        SceneManager.LoadScene(0);
     }
 
     public void RestartGame()
     {
+        AudioManager.instance.CleanUp();
         SceneManager.LoadScene(0);
     }
 

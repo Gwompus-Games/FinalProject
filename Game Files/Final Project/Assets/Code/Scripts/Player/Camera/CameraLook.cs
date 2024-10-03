@@ -25,7 +25,7 @@ public class CameraLook : MonoBehaviour
         CustomPlayerInput.UpdateCursorDelta -= CursorUpdate;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (GameManager.Instance.isPaused)
             return;

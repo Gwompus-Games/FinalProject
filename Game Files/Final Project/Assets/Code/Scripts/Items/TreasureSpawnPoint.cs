@@ -119,9 +119,9 @@ public class TreasureSpawnPoint : MonoBehaviour
         {
             uniqueTreasuresSpawned.Add(treasureToSpawn);
         }
-        GameObject treasureGO = Instantiate(treasureToSpawn.worldObject, transform.position, Quaternion.identity);
+        GameObject treasureGO = Instantiate(treasureToSpawn.worldObject, transform.position + Vector3.up * 0.5f, Quaternion.identity);
         treasureGO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        treasureGO.GetComponent<WorldItem>().SpawnItem(transform.position, treasureToSpawn);
+        treasureGO.GetComponent<WorldItem>().SpawnItem(transform.position + Vector3.up * 0.5f, treasureToSpawn);
         _treasureSpawned = true;
     }
 }

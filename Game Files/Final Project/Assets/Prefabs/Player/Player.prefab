@@ -91,6 +91,8 @@ GameObject:
   - component: {fileID: 1914274174314877693}
   - component: {fileID: 8665006264660026091}
   - component: {fileID: 4712179725825400149}
+  - component: {fileID: 8916758702161875553}
+  - component: {fileID: 5938082697186661674}
   m_Layer: 3
   m_Name: Spot Light
   m_TagString: Untagged
@@ -297,6 +299,35 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &8916758702161875553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303797473383469411}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e7075fe60156949958a64609706948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offColor: {r: 0.41568628, g: 0.3882353, b: 0.3529412, a: 1}
+  minOffTime: 0.05
+  maxOffTime: 0.1
+  minDelay: 1
+  maxDelay: 5
+--- !u!114 &5938082697186661674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303797473383469411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ef0412f45fa064a866e054cc26536f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3863805984255841135
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +481,7 @@ GameObject:
   - component: {fileID: 505155305859489429}
   - component: {fileID: 8716103006985781635}
   - component: {fileID: 4765867987772039652}
+  - component: {fileID: 8672683170310346580}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -514,11 +546,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4a92e1551bb499fa901bef368818ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugMode: 0
-  _infiniteStamina: 0
+  _debugMode: 1
   _walkSpeed: 1.75
   _runSpeed: 3
-  _jumpForce: 2
   _gravity: -2
   _runningOxygenDrainMultiplier: 2
   _groundMask:
@@ -526,7 +556,8 @@ MonoBehaviour:
     m_Bits: 64
   _groundCheck: {fileID: 5115705277198490957}
   _groundCheckRadius: 0.4
-  _grabLength: 2
+  _grabLength: 4
+  _startingMoney: 0
 --- !u!114 &5864806220124439931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,7 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e934b7a049b907445bd5ae2a842574f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oxygenTanks: []
+  _oxygenTanks: []
 --- !u!114 &8716103006985781635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,6 +773,37 @@ MonoBehaviour:
   frequency: 12
   cam: {fileID: 1245587565713539590}
   camHolder: {fileID: 5926708727342267907}
+--- !u!114 &8672683170310346580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586079081141089300}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 800433928
+      Data2: 1286228201
+      Data3: 745080967
+      Data4: -92704395
+    Path: event:/Heartbeat
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 30
 --- !u!1 &5111408600435198105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1269,6 +1331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedItemGrid: {fileID: 0}
+  selectedScrappingZone: {fileID: 0}
+  _inventory: {fileID: 0}
   testInventoryItemPrefab: {fileID: 3969134843577476104, guid: ad812b8ba4d8e764aa540bbee0fad299,
     type: 3}
   testInventoryItemPrefab2: {fileID: 3969134843577476104, guid: c74a81766c8d52a449ad7518c7e8397c,

@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public bool isPaused { get; private set; } = true;
+    public bool isPaused { get; private set; } = false;
 
     private void Awake()
     {
@@ -22,14 +22,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            isPaused = !isPaused;
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    isPaused = !isPaused;
+        //}
 
-        if (Input.GetMouseButton(0) && Application.isFocused)
-        {
-            isPaused = false;
-        }
+        //if (Input.GetMouseButton(0) && Application.isFocused)
+        //{
+        //    isPaused = false;
+        //}
     }
 }
