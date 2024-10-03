@@ -335,6 +335,7 @@ public class PlayerController : MonoBehaviour
 
     public void RestartGame()
     {
+        AudioManager.instance.CleanUp();
         SceneManager.LoadScene(0);
     }
 
