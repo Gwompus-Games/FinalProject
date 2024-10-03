@@ -10,6 +10,8 @@ public class InventoryController : MonoBehaviour
 
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
+    [HideInInspector]
+    public ScrappingZone selectedScrappingZone;
     private InventoryItem _itemToPlace;
     [SerializeField] private InventoryGrid _inventory;
 
@@ -220,6 +222,11 @@ public class InventoryController : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void ScrapItem()
+    {
+
     }
 
     private void DropItemIntoWorld()
