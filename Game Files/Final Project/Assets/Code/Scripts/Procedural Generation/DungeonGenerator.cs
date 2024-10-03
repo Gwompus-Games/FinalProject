@@ -49,11 +49,11 @@ public class DungeonGenerator : MonoBehaviour
     private void Update()
     {
         // Only for testing in editor play mode
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Despawn();
-            StartGeneration();
-        }
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    Despawn();
+        //    StartGeneration();
+        //}
     }
 
     public void StartGeneration()
