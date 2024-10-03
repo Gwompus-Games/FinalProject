@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OxygenTank : InventoryItem
+public class II_OxygenTank : InventoryItem
 {
     [SerializeField] private OxygenTankSO _oxygenTankData;
     public float oxygenLeft { 

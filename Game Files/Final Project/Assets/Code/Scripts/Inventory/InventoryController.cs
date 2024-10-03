@@ -70,11 +70,6 @@ public class InventoryController : MonoBehaviour
         {
             item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
             item.GetComponent<RectTransform>().position = _mousePosition;
-            item.ItemRemovedFromInventory();
-        }
-        if (_itemToPlace != null)
-        {
-            _itemToPlace.ItemPlacedInInventory();
         }
         _itemToPlace = item;
     }
@@ -184,8 +179,6 @@ public class InventoryController : MonoBehaviour
     {
         inventoryItem = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
         inventoryItem.FindExtremes(out Vector2Int minSpaceDistance, out Vector2Int maxSpaceDistance);
-        Debug.Log(minSpaceDistance);
-        Debug.Log(maxSpaceDistance);
         if (_inventory == null)
         {
             return false;

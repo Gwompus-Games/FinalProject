@@ -70,7 +70,7 @@ public class InventoryItem : MonoBehaviour
 
     public virtual void ItemPlacedInInventory()
     {
-
+        Debug.Log(gameObject.name + "Added to inventory!");
     }
 
     public virtual void ItemRemovedFromInventory()

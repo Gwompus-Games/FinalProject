@@ -9,9 +9,11 @@ public class OxygenSystem : MonoBehaviour
     public static OxygenSystem INSTANCE;
     public static Action<string, float> OxygenLeftInTank;
 
-    [SerializeField] private List<OxygenTank> _oxygenTanks = new List<OxygenTank>();
+    [SerializeField] private List<II_OxygenTank> _oxygenTanks = new List<II_OxygenTank>();
     private int _activeOxygenTank = 0;
     private List<OxygenDrainer> _oxygenDrainMultipliers = new List<OxygenDrainer>();
+    [SerializeField] private OxygenTankSO _starterOxygenTank;
+    [SerializeField] private int _numberOfStartingOxygenTanks;
 
     private void Awake()
     {
@@ -25,7 +27,14 @@ public class OxygenSystem : MonoBehaviour
 
     private void Start()
     {
-        
+        if (_starterOxygenTank != null && _numberOfStartingOxygenTanks > 0)
+        {
+            Debug.Log($"Adding {_numberOfStartingOxygenTanks} tanks to inventory.");
+            for (int t = 0; t < _numberOfStartingOxygenTanks; t++)
+            {
+                InventoryController.INSTANCE.AddItemToInventory(_starterOxygenTank);
+            }
+        }
     }
 
     private void Update()
@@ -52,7 +61,7 @@ public class OxygenSystem : MonoBehaviour
         }
     }
 
-    public void AddOxygenTank(OxygenTank tankToAdd)
+    public void AddOxygenTank(II_OxygenTank tankToAdd)
     {
         if (_oxygenTanks.Contains(tankToAdd))
         {
@@ -63,7 +72,7 @@ public class OxygenSystem : MonoBehaviour
         SortAndLabelOxygenTanks();
     }
 
-    public void RemoveOxygenTank(OxygenTank tankToRemove)
+    public void RemoveOxygenTank(II_OxygenTank tankToRemove)
     {
         if (!_oxygenTanks.Contains(tankToRemove))
         {

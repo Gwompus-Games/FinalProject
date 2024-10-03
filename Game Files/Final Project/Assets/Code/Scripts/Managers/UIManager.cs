@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject _inventoryUI;
     [SerializeField] private GameObject _suitUI;
-    private TMP_Text _suitText;
 
     private void Awake()
     {
@@ -19,29 +18,11 @@ public class UIManager : MonoBehaviour
             return;
         }
         INSTANCE = this;
-        _suitText = _suitUI.GetComponentInChildren<TMP_Text>();
-    }
-
-    private void OnEnable()
-    {
-        SuitSystem.UpdateSuitUI += UpdateSuitUI;
-    }
-
-    private void OnDisable()
-    {
-        SuitSystem.UpdateSuitUI -= UpdateSuitUI;
     }
 
     public void SetInventoryUI(bool enabled)
     {
         _inventoryUI.SetActive(enabled);
         _suitUI.SetActive(!enabled);
-    }
-
-    public void UpdateSuitUI(int currentSection, int totalNumberOfSections, float currentDurability, int maxDurability)
-    {
-        string UIText = "Section: " + currentSection + "/" + totalNumberOfSections + " ";
-        UIText += "Durability: " + currentDurability + "/" + maxDurability;
-        _suitText.text = UIText;
     }
 }

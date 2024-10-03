@@ -711,6 +711,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 505155305859489429, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
+        type: 3}
+      propertyPath: _starterOxygenTank
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f867d3391e94f040865196b26eb2d98,
+        type: 2}
+    - target: {fileID: 505155305859489429, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
+        type: 3}
+      propertyPath: _numberOfStartingOxygenTanks
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 752392146625522760, guid: 16b3557e27aa9c942bf1f25b50eefd7e,
         type: 3}
       propertyPath: _inventory

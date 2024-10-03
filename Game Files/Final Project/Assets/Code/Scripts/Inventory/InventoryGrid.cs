@@ -92,6 +92,7 @@ public class InventoryGrid : MonoBehaviour
             return null;
         }
         InventoryItem item = GetItemInSlot(gridPosition);
+        item.ItemRemovedFromInventory();
         ClearItemInSlot(gridPosition);
         return item;
     }
@@ -138,6 +139,7 @@ public class InventoryGrid : MonoBehaviour
         }
         if (returnItem != null)
         {
+            returnItem.ItemRemovedFromInventory();
             ClearSlotsWithItem(returnItem);
         }
 
@@ -146,6 +148,8 @@ public class InventoryGrid : MonoBehaviour
         rectTransform.SetParent(this.rectTransform);
         SetItemSlots(gridPosition, inventoryItem.tilesUsed.ToArray(), inventoryItem);
         inventoryItem.originTile = gridPosition;
+        inventoryItem.ItemPlacedInInventory();
+        Debug.Log($"Added {inventoryItem.gameObject.name} to inventory");
 
         Vector2 position = new Vector2();
         position.x = (float)gridPosition.x * globalItemData.tileWidth + globalItemData.tileWidth / 2f;
