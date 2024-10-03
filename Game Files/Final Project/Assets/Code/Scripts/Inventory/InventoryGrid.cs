@@ -23,11 +23,13 @@ public class InventoryGrid : MonoBehaviour
     {
         globalItemData = _globalData;
         rectTransform = GetComponent<RectTransform>();
+
+        Init(gridSizeWidth, gridSizeHeight);
     }
 
     private void Start()
     {
-        Init(gridSizeWidth, gridSizeHeight);
+        // where init used to be
     }
 
     private void Init(int width, int height)
@@ -331,6 +333,9 @@ public class InventoryGrid : MonoBehaviour
 
     public InventoryItem[] GetSellingItems()
     {
+        if (inventoryItemSlot.Length <= 0)
+            return new InventoryItem[0];
+
         List<InventoryItem> items = new List<InventoryItem>();
         for (int x = 0; x < inventoryItemSlot.GetLength(0); x++)
         {
