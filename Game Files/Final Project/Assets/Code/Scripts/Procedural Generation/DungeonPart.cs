@@ -21,11 +21,12 @@ public class DungeonPart : MonoBehaviour
     private void Awake()
     {
         avaiableEntryPoints.AddRange(entryPoints);
+
+        GetComponentsToHide();
     }
 
     public void SetupPart()
     {
-        GetComponentsToHide();
         ShowMesh(false);
         //SpawnLoot();
     }
