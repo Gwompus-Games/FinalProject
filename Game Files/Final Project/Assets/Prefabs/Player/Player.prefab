@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 1914274174314877693}
   - component: {fileID: 8665006264660026091}
   - component: {fileID: 4712179725825400149}
+  - component: {fileID: 8916758702161875553}
   - component: {fileID: 5938082697186661674}
   m_Layer: 3
   m_Name: Spot Light
@@ -298,6 +299,23 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
+--- !u!114 &8916758702161875553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303797473383469411}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e7075fe60156949958a64609706948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offColor: {r: 0.41568628, g: 0.3882353, b: 0.3529412, a: 1}
+  minOffTime: 0.05
+  maxOffTime: 0.1
+  minDelay: 1
+  maxDelay: 5
 --- !u!114 &5938082697186661674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,7 +546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4a92e1551bb499fa901bef368818ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugMode: 0
+  _debugMode: 1
   _walkSpeed: 1.75
   _runSpeed: 3
   _gravity: -2
@@ -538,7 +556,7 @@ MonoBehaviour:
     m_Bits: 64
   _groundCheck: {fileID: 5115705277198490957}
   _groundCheckRadius: 0.4
-  _grabLength: 2
+  _grabLength: 4
   _startingMoney: 0
 --- !u!114 &5864806220124439931
 MonoBehaviour:
@@ -1313,6 +1331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedItemGrid: {fileID: 0}
+  selectedScrappingZone: {fileID: 0}
   _inventory: {fileID: 0}
   testInventoryItemPrefab: {fileID: 3969134843577476104, guid: ad812b8ba4d8e764aa540bbee0fad299,
     type: 3}

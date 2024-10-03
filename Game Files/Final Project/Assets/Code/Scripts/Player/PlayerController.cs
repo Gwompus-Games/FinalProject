@@ -89,6 +89,8 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
+        suitSystem = GetComponent<SuitSystem>();
+        oxygenSystem = GetComponent<OxygenSystem>();
     }
 
     private void Start()

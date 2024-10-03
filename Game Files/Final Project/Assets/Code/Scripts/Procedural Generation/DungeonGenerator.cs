@@ -120,7 +120,7 @@ public class DungeonGenerator : MonoBehaviour
 
         while (generatedRooms.Count < numOfRooms && availableRooms.Count > 0)
         {
-            bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.9f;
+            bool shouldPlaceHallway = Random.Range(0f, 1f) < 0.75f;
             DungeonPart previousRoom = null;
             Transform previousEntryPoint = null;
             int totalRetries = 1000;

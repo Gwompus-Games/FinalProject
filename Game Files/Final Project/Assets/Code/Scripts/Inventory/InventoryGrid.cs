@@ -107,12 +107,12 @@ public class InventoryGrid : MonoBehaviour
 
         if (gridPosition.x >= gridSizeWidth || gridPosition.y >= gridSizeHeight)
         {
-            Debug.LogError("Cannot place on a space bigger than the grid size!");
+            Debug.LogWarning("Cannot place on a space bigger than the grid size!");
             return false;
         }
         if (gridPosition.x < 0 || gridPosition.y < 0)
         {
-            Debug.LogError("Cannot place on a negative space.");
+            Debug.LogWarning("Cannot place on a negative space.");
             return false;
         }
         if (!CheckIfSlotsAvailable(gridPosition, inventoryItem.tilesUsed.ToArray()))
@@ -120,12 +120,12 @@ public class InventoryGrid : MonoBehaviour
             List<InventoryItem> itemsInSlots = GetItemsInSlots(gridPosition, inventoryItem.tilesUsed.ToArray());
             if (itemsInSlots == null)
             {
-                Debug.LogError("Tried to place in a bad spot.");
+                Debug.LogWarning("Tried to place in a bad spot.");
                 return false;
             }
             if (itemsInSlots.Count > 1)
             {
-                Debug.LogError("Too many items blocking spaces");
+                Debug.LogWarning("Too many items blocking spaces");
                 return false;
             }
             if (itemsInSlots.Count <= 0)
