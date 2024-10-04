@@ -34,6 +34,7 @@ public class InventoryGrid : MonoBehaviour
     private void Start()
     {
         // where init used to be
+
     }
 
     private void Init(int width, int height)
@@ -74,6 +75,8 @@ public class InventoryGrid : MonoBehaviour
             position.y = parentRectTransform.position.y + (parentRectTransform.sizeDelta.y - rectTransform.sizeDelta.y) / 2;
         }
         rectTransform.position = position;
+
+        InventoryUI.Instance.SyncBarSize(rectTransform.sizeDelta.x);
     }
 
     private Vector2Int GetTileGridPosition(Vector2 worldPosition)
