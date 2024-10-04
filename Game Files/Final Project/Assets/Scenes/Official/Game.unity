@@ -1693,11 +1693,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1383318421}
+  m_Father: {fileID: 770060777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 660, y: 372.59998}
+  m_AnchoredPosition: {x: 75, y: -13.700012}
   m_SizeDelta: {x: 250, y: 25}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1238347456
@@ -2400,6 +2400,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1527164130}
     m_Modifications:
     - target: {fileID: 6693417349089607, guid: fab884ff994c84c42b556ec8fd1f00ad, type: 3}
+      propertyPath: o2Level
+      value: 
+      objectReference: {fileID: 1650213628}
+    - target: {fileID: 6693417349089607, guid: fab884ff994c84c42b556ec8fd1f00ad, type: 3}
       propertyPath: endColor.a
       value: 1
       objectReference: {fileID: 0}
@@ -2817,23 +2821,23 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4658720615511680862, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
       insertIndex: 0
-      addedObject: {fileID: 1238347455}
-    - targetCorrespondingSourceObject: {fileID: 4658720615511680862, guid: fab884ff994c84c42b556ec8fd1f00ad,
-        type: 3}
-      insertIndex: 1
       addedObject: {fileID: 619646822}
     - targetCorrespondingSourceObject: {fileID: 4658720615511680862, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
-      insertIndex: 2
+      insertIndex: 1
       addedObject: {fileID: 387936149}
     - targetCorrespondingSourceObject: {fileID: 4658720615511680862, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
-      insertIndex: 3
+      insertIndex: 2
       addedObject: {fileID: 322559104}
     - targetCorrespondingSourceObject: {fileID: 4658720615511680862, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
-      insertIndex: 5
+      insertIndex: 4
       addedObject: {fileID: 628768328}
+    - targetCorrespondingSourceObject: {fileID: 3882302917401255581, guid: fab884ff994c84c42b556ec8fd1f00ad,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1238347455}
     - targetCorrespondingSourceObject: {fileID: 3882302917401255581, guid: fab884ff994c84c42b556ec8fd1f00ad,
         type: 3}
       insertIndex: -1

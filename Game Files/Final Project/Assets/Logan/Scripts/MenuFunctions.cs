@@ -35,6 +35,6 @@ public class MenuFunctions : MonoBehaviour
 
     public void ExitGame()
     {
-        Application.Quit(0);
+        Application.Quit();
     }
 }
