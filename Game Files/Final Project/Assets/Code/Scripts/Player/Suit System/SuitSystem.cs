@@ -36,7 +36,7 @@ public class SuitSystem : MonoBehaviour, IDamageable
 
         suitOxygenDrainer = (OxygenDrainer) gameObject.AddComponent(typeof(OxygenDrainer));
         suitOxygenDrainer.SetDrainMultiplier(suitStats.oxygenDrainMultiplierForSections[currentSection]);
-        OxygenSystem.INSTANCE.AddDrainingSource(suitOxygenDrainer);
+        suitOxygenDrainer.ActivateDrainer();
         UpdateUI();
     }
 

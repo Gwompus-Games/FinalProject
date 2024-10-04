@@ -10,4 +10,20 @@ public class OxygenDrainer : MonoBehaviour
     {
         drainMultiplier = newMultiplier;
     }
+
+    public void ActivateDrainer()
+    {
+        if (!OxygenSystem.INSTANCE.DrainingSourceActive(this))
+        {
+            OxygenSystem.INSTANCE.AddDrainingSource(this);
+        }
+    }
+
+    public void DeactivateDrainer()
+    {
+        if (OxygenSystem.INSTANCE.DrainingSourceActive(this))
+        {
+            OxygenSystem.INSTANCE.RemoveDrainingSource(this);
+        }
+    }
 }

@@ -191,17 +191,11 @@ public class PlayerController : MonoBehaviour
     {
         if (newState == PlayerState.Running)
         {
-            if (!OxygenSystem.INSTANCE.DrainingSourceActive(runningDrainer))
-            {
-                OxygenSystem.INSTANCE.AddDrainingSource(runningDrainer);
-            }
+            runningDrainer.ActivateDrainer();
         }
         else
         {
-            if (OxygenSystem.INSTANCE.DrainingSourceActive(runningDrainer))
-            {
-                OxygenSystem.INSTANCE.RemoveDrainingSource(runningDrainer);
-            }
+            runningDrainer.DeactivateDrainer();
         }
         currentState = newState;
     }
