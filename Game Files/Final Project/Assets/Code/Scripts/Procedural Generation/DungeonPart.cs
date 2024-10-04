@@ -11,7 +11,7 @@ public class DungeonPart : MonoBehaviour
     [SerializeField] private GameObject fillerWall;
 
     public List<Transform> entryPoints;
-    private List<Transform> avaiableEntryPoints = new List<Transform>();
+    private List<Transform> availableEntryPoints = new List<Transform>();
 
     [SerializeField] private Transform enemySpawnPoint;
 
@@ -22,7 +22,7 @@ public class DungeonPart : MonoBehaviour
 
     private void Awake()
     {
-        avaiableEntryPoints.AddRange(entryPoints);
+        availableEntryPoints.AddRange(entryPoints);
 
         GetComponentsToHide();
     }
@@ -59,31 +59,10 @@ public class DungeonPart : MonoBehaviour
         int totalRetries = 100;
         int retryIndex = 0;
 
-        if (entryPoints.Count == 1)
-        {
-            Transform entry = entryPoints[0];
-            if (entry.TryGetComponent<EntryPoint>(out EntryPoint res))
-            {
-                if (res.IsOccupied())
-                {
-                    result = false;
-                    resultingEntry = null;
-                }
-                else
-                {
-                    result = true;
-                    resultingEntry = entry;
-                    UseEntryPoint(entry, res);
-                }
-                entryPoint = resultingEntry;
-                return result;
-            }
-        }
-
         while (resultingEntry == null && retryIndex < totalRetries)
         {
-            int randomEntryIndex = Random.Range(0, entryPoints.Count);
-            Transform entry = entryPoints[randomEntryIndex];
+            int randomEntryIndex = Random.Range(0, availableEntryPoints.Count);
+            Transform entry = availableEntryPoints[randomEntryIndex];
 
             if (entry.TryGetComponent(out EntryPoint res))
             {
@@ -91,7 +70,6 @@ public class DungeonPart : MonoBehaviour
                 {
                     resultingEntry = entry;
                     result = true;
-                    UseEntryPoint(entry, res);
                     break;
                 }
             }
@@ -103,21 +81,30 @@ public class DungeonPart : MonoBehaviour
         return result;
     }
 
-    private void UseEntryPoint(Transform entryTransform, EntryPoint entryPoint)
+    public void UseEntryPoint(Transform entryPoint)
     {
-        entryPoint.SetOccupied(true);
-        avaiableEntryPoints.Remove(entryTransform);
+        if (entryPoint.TryGetComponent(out EntryPoint entry))
+        {
+            if (entry.IsOccupied())
+                return;
 
-        if (avaiableEntryPoints.Count <= 0)
+            entry.SetOccupied(true);
+            availableEntryPoints.Remove(entryPoint);
+
+            if (availableEntryPoints.Count == 0)
             DungeonGenerator.Instance.RemoveAvailableRoom(this);
+        }
     }
 
     public void UnuseEntryPoint(Transform entryPoint)
     {
         if (entryPoint.TryGetComponent(out EntryPoint entry))
         {
+            if (entry.IsOccupied() == false)
+                return;
+
             entry.SetOccupied(false);
-            avaiableEntryPoints.Add(entryPoint);
+            availableEntryPoints.Add(entryPoint);
             DungeonGenerator.Instance.AddAvailableRoom(this);
         }
     }
