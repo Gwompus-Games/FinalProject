@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Open Inventory",
+                    "name": "Inventory",
                     "type": "Button",
                     "id": "8400e7a8-7469-45c9-9d0f-3506c419ea03",
                     "expectedControlType": "Button",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "L Mouse Button",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "25b63014-2ea6-458b-afbc-051316e77380",
                     "expectedControlType": "Button",
@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "R Mouse Button",
+                    "name": "Drop",
                     "type": "Button",
                     "id": "9bb29f16-e317-4531-8b76-bc05bbed8300",
                     "expectedControlType": "Button",
@@ -72,6 +72,15 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "3bd843ab-90e4-4811-8b9f-c9b0bbaf6508",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory Pickup Item",
+                    "type": "Button",
+                    "id": "3edf982e-f017-4d44-8249-9e8465f5b3e3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -170,11 +179,11 @@
                 {
                     "name": "",
                     "id": "e979d0f7-0909-49ed-a68b-b87bb2acfb5c",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse & Keyboard",
-                    "action": "Open Inventory",
+                    "action": "Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -192,11 +201,11 @@
                 {
                     "name": "",
                     "id": "e05518fd-8172-49fe-8934-bd2d4189d822",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse & Keyboard",
-                    "action": "L Mouse Button",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -207,7 +216,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse & Keyboard",
-                    "action": "R Mouse Button",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -230,6 +239,17 @@
                     "processors": "",
                     "groups": "Mouse & Keyboard",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8138718-917a-49be-a5b8-14c1ece87e7e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse & Keyboard",
+                    "action": "Inventory Pickup Item",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

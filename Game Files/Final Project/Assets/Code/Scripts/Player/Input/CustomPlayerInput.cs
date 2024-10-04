@@ -14,6 +14,7 @@ public class CustomPlayerInput : MonoBehaviour
     public static Action OpenInventory;
     public static Action<CustomInputData> LeftMouseButton;
     public static Action<CustomInputData> RightMouseButton;
+    public static Action Interact;
     public static Action<bool> UpdateRunning;
 
     public enum CustomInputData
@@ -72,19 +73,15 @@ public class CustomPlayerInput : MonoBehaviour
         }
     }
 
-    public void InputLeftMouseButton(InputAction.CallbackContext context)
+    public void InputInteract(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            LeftMouseButton?.Invoke(CustomInputData.PRESSED);
-        }
-        if (context.canceled)
-        {
-            LeftMouseButton?.Invoke(CustomInputData.RELEASED);
+            Interact?.Invoke();
         }
     }
 
-    public void InputRightMouseButton(InputAction.CallbackContext context)
+    public void InputDrop(InputAction.CallbackContext context)
     {
         if (context.started)
         {
@@ -105,6 +102,18 @@ public class CustomPlayerInput : MonoBehaviour
         if (context.canceled)
         {
             UpdateRunning?.Invoke(false);
+        }
+    }
+
+    public void InputInventoryPickupItem(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            LeftMouseButton?.Invoke(CustomInputData.PRESSED);
+        }
+        if (context.canceled)
+        {
+            LeftMouseButton?.Invoke(CustomInputData.RELEASED);
         }
     }
 }

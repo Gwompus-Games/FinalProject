@@ -28,7 +28,6 @@ public class InventoryGrid : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         _xScaler = (float)Screen.width / (float)globalItemData.referenceResolution.x;
         _yScaler = (float)Screen.height / (float)globalItemData.referenceResolution.y;
-        Debug.Log($"X:{_xScaler} | Y:{_yScaler}");
         Init(gridSizeWidth, gridSizeHeight);
     }
 
@@ -85,7 +84,7 @@ public class InventoryGrid : MonoBehaviour
         tileGridPosition.x = (int)(positionOnTheGrid.x / (globalItemData.tileWidth * _xScaler));
         tileGridPosition.y = (int)(positionOnTheGrid.y / (globalItemData.tileHeight * _yScaler));
 
-        Debug.Log(tileGridPosition);
+        //Debug.Log(tileGridPosition);
 
         return tileGridPosition;
     }
@@ -154,7 +153,6 @@ public class InventoryGrid : MonoBehaviour
         SetItemSlots(gridPosition, inventoryItem.tilesUsed.ToArray(), inventoryItem);
         inventoryItem.originTile = gridPosition;
         inventoryItem.ItemPlacedInInventory();
-        Debug.Log($"Added {inventoryItem.gameObject.name} to inventory");
 
         Vector2 position = new Vector2();
         position.x = (float)gridPosition.x * globalItemData.tileWidth + globalItemData.tileWidth / 2f;

@@ -6,10 +6,14 @@ public class SellingPoint : MonoBehaviour, IInteractable
 
     private void Awake()
     {
+        transform.tag = "Interactable";
+    }
+
+    private void Start()
+    {
         PlayerController.Instance.OpenInventory();
         playerInventory = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
         PlayerController.Instance.CloseInventory();
-        transform.tag = "Interactable";
     }
 
     private int SellAllTreasuresInInventory()

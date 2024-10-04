@@ -328,6 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ef0412f45fa064a866e054cc26536f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  glowstickPrefab: {fileID: 0}
 --- !u!1 &3863805984255841135
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,7 +665,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5864806220124439931}
         m_TargetAssemblyTypeName: CustomPlayerInput, Assembly-CSharp
-        m_MethodName: InputLeftMouseButton
+        m_MethodName: InputInteract
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -680,7 +681,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5864806220124439931}
         m_TargetAssemblyTypeName: CustomPlayerInput, Assembly-CSharp
-        m_MethodName: InputRightMouseButton
+        m_MethodName: InputDrop
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -724,6 +725,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3bd843ab-90e4-4811-8b9f-c9b0bbaf6508
     m_ActionName: Player/Sprint[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5864806220124439931}
+        m_TargetAssemblyTypeName: CustomPlayerInput, Assembly-CSharp
+        m_MethodName: InputInventoryPickupItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3edf982e-f017-4d44-8249-9e8465f5b3e3
+    m_ActionName: Player/Inventory Pickup Item[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

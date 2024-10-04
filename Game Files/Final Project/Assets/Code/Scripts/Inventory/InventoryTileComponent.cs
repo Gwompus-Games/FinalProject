@@ -11,7 +11,6 @@ public class InventoryTileComponent : MonoBehaviour
     private Image _myTileImage;
     [HideInInspector]
     public Vector2Int gridPosition;
-    [SerializeField] private InventoryGlobalDataSO globalData;
 
     private void Awake()
     {
@@ -20,10 +19,11 @@ public class InventoryTileComponent : MonoBehaviour
 
         InitializeTileComponent();
     }
-
+    
     public void InitializeTileComponent()
     {
-        Vector2 size = new Vector2(globalData.tileWidth, globalData.tileHeight);
+        Vector2 size = new Vector2(InventoryGrid.globalItemData.tileWidth, InventoryGrid.globalItemData.tileHeight);
+        
         _myRectTransform.sizeDelta = size;
 
         Vector2 snappedPos = _myRectTransform.localPosition;

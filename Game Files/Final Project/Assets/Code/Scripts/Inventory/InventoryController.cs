@@ -177,7 +177,7 @@ public class InventoryController : MonoBehaviour
 
     private bool CheckInventorySpaceAvailable(ItemDataSO itemData, out InventoryItem inventoryItem)
     {
-        inventoryItem = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
+        inventoryItem = Instantiate(itemData.inventoryObject, _inventory.transform).GetComponent<InventoryItem>();
         inventoryItem.FindExtremes(out Vector2Int minSpaceDistance, out Vector2Int maxSpaceDistance);
         if (_inventory == null)
         {
@@ -208,7 +208,6 @@ public class InventoryController : MonoBehaviour
 
                     rectTransform.localPosition = position;
                     inventoryItem.InitializeInventoryItem(itemData);
-                    Debug.Log($"Found spot for {itemData.itemName} at x:{x} y:{y}");
                     return true;
                 }
             }

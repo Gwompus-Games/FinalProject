@@ -332,7 +332,7 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-        //RestartGame();
+        RestartGame();
     }
 
     public void RestartGame()
@@ -348,7 +348,7 @@ public class PlayerController : MonoBehaviour
         CustomPlayerInput.UpdateMovement += UpdateMovement;
         CustomPlayerInput.OpenInventory += ToggleInventory;
         CustomPlayerInput.UpdateRunning += RunInput;
-        CustomPlayerInput.LeftMouseButton += InteractWithInteractable;
+        CustomPlayerInput.Interact += InteractWithInteractable;
     }
 
     private void OnDisable()
@@ -356,7 +356,7 @@ public class PlayerController : MonoBehaviour
         CustomPlayerInput.UpdateMovement -= UpdateMovement;
         CustomPlayerInput.OpenInventory -= ToggleInventory;
         CustomPlayerInput.UpdateRunning -= RunInput;
-        CustomPlayerInput.LeftMouseButton -= InteractWithInteractable;
+        CustomPlayerInput.Interact -= InteractWithInteractable;
     }
 
     public void UpdateMovement(Vector2 newMovementInput)
@@ -369,19 +369,17 @@ public class PlayerController : MonoBehaviour
         isRunning = running;
     }
 
-    public void InteractWithInteractable(CustomPlayerInput.CustomInputData data)
+    public void InteractWithInteractable()
     {
         if (currentState == PlayerState.Inventory)
         {
             return;
         }
-        if (data == CustomPlayerInput.CustomInputData.RELEASED)
+        if (_interactableLookingAt == null)
         {
-            if (_interactableLookingAt != null)
-            {
-                _interactableLookingAt.Interact();
-            }
+            return;
         }
+        _interactableLookingAt.Interact();
     }
 
     private void ChangeInventoryUIState(bool enabled)

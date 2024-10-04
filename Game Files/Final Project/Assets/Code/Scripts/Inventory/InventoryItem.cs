@@ -8,22 +8,24 @@ using UnityEngine.UI;
 public class InventoryItem : MonoBehaviour
 {
     public List<Vector2Int> tilesUsed { get; private set; } = new List<Vector2Int>();
-    private List<Image> tileBackgroundImages = new List<Image>();
+    protected List<Image> tileBackgroundImages = new List<Image>();
     [HideInInspector]
     public Vector2Int originTile = new Vector2Int(-1, -1);
-    private RectTransform _myRectTransform;
-    private Coroutine _flashingRoutune = null;
+    protected RectTransform _myRectTransform;
+    protected Coroutine _flashingRoutune = null;
     public ItemDataSO itemData { get; private set; }
-    private bool _initialized = false;
+    protected bool _initialized = false;
+    [SerializeField] private Image _itemImage;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _myRectTransform = GetComponent<RectTransform>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         InitializeGridSpaces();
+        ResizeForScreen();
     }
 
     public void FindExtremes(out Vector2Int minSpaceDistance, out Vector2Int maxSpaceDistance)
@@ -40,7 +42,7 @@ public class InventoryItem : MonoBehaviour
         }
     }
 
-    private void InitializeGridSpaces()
+    protected void InitializeGridSpaces()
     {
         if (_initialized)
         {
@@ -68,9 +70,14 @@ public class InventoryItem : MonoBehaviour
         itemData = data;
     }
 
+    protected void ResizeForScreen()
+    {
+        _myRectTransform.localScale = new Vector3(1, 1, 1);
+    }
+
     public virtual void ItemPlacedInInventory()
     {
-        Debug.Log(gameObject.name + "Added to inventory!");
+        
     }
 
     public virtual void ItemRemovedFromInventory()
@@ -116,7 +123,7 @@ public class InventoryItem : MonoBehaviour
         ChangeTileColours(InventoryGrid.globalItemData.normalTileColour, InventoryGrid.globalItemData.tileAlpha);
     }
 
-    private void ChangeTileColours(Color colourToChangeTo, float alpha)
+    protected void ChangeTileColours(Color colourToChangeTo, float alpha)
     {
         colourToChangeTo.a = alpha;
         for (int tile = 0; tile < tileBackgroundImages.Count; tile++)
@@ -125,7 +132,7 @@ public class InventoryItem : MonoBehaviour
         }
     }
 
-    private IEnumerator InvalidPlacementFlashing()
+    protected IEnumerator InvalidPlacementFlashing()
     {
         ChangeTileColours(InventoryGrid.globalItemData.invalidTileColours[0], InventoryGrid.globalItemData.flashingAlpha);
         int colour = 0;
