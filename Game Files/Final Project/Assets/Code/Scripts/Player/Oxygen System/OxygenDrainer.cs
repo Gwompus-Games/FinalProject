@@ -6,12 +6,12 @@ public class OxygenDrainer : MonoBehaviour
 {
     [field:SerializeField] public float drainMultiplier { get; private set; } = 1.0f;
 
-    public void SetDrainMultiplier(float newMultiplier)
+    public virtual void SetDrainMultiplier(float newMultiplier)
     {
         drainMultiplier = newMultiplier;
     }
 
-    public void ActivateDrainer()
+    public virtual void ActivateDrainer()
     {
         if (!OxygenSystem.INSTANCE.DrainingSourceActive(this))
         {
@@ -19,7 +19,7 @@ public class OxygenDrainer : MonoBehaviour
         }
     }
 
-    public void DeactivateDrainer()
+    public virtual void DeactivateDrainer()
     {
         if (OxygenSystem.INSTANCE.DrainingSourceActive(this))
         {
