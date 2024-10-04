@@ -13,9 +13,10 @@ public class InventoryItem : MonoBehaviour
     public Vector2Int originTile = new Vector2Int(-1, -1);
     protected RectTransform _myRectTransform;
     protected Coroutine _flashingRoutune = null;
-    public ItemDataSO itemData { get; private set; }
     protected bool _initialized = false;
     [SerializeField] private Image _itemImage;
+    public ItemDataSO itemData { get; private set; }
+    public int sellValue { get; private set; }
 
     protected virtual void Awake()
     {
@@ -24,6 +25,10 @@ public class InventoryItem : MonoBehaviour
 
     protected virtual void Start()
     {
+        if (itemData != null)
+        {
+            InitializeInventoryItem(itemData);
+        }
         InitializeGridSpaces();
         ResizeForScreen();
     }
@@ -68,6 +73,7 @@ public class InventoryItem : MonoBehaviour
     public void InitializeInventoryItem(ItemDataSO data)
     {
         itemData = data;
+        sellValue = itemData.baseValue;
     }
 
     protected void ResizeForScreen()

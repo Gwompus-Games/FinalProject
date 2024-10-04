@@ -16,8 +16,8 @@ public class II_OxygenTank : InventoryItem
             oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / maxOxygenCapacity * 100);
         }
     }
-    public float _oxygenLeft { get; private set; }
-    public bool containsOxygen { get; private set; }
+    private float _oxygenLeft;
+    public bool containsOxygen => oxygenLeft > 0;
     public float maxOxygenCapacity { get; private set; } = 0;
     protected int _myOxygenTankID = 0;
     public string oxygenLeftPercent { get; private set; }
@@ -27,7 +27,6 @@ public class II_OxygenTank : InventoryItem
         base.Awake();
         maxOxygenCapacity = _oxygenTankData.minutesUntilEmpty * 60f;
         oxygenLeft = maxOxygenCapacity;
-        containsOxygen = (oxygenLeft > 0);
     }
 
     public void SetOxygenTankID(int id)
@@ -53,16 +52,11 @@ public class II_OxygenTank : InventoryItem
             remainder = -oxygenLeft;
             oxygenLeft = 0;
         }
-        if (oxygenLeft == 0)
-        {
-            containsOxygen = false;
-        }
     }
 
     public void AddOxygen(float oxygenToAddInSeconds, out float remainder)
     {
         remainder = 0;
-        containsOxygen = true;
         if (oxygenToAddInSeconds >= maxOxygenCapacity)
         {
             SetTankToFull();
@@ -83,7 +77,6 @@ public class II_OxygenTank : InventoryItem
     public void SetTankToFull()
     {
         oxygenLeft = maxOxygenCapacity;
-        containsOxygen = true;
     }
 
     public override void ItemPlacedInInventory()

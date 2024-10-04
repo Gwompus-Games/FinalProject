@@ -34,8 +34,6 @@ public class SellingPoint : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        PlayerController.Instance.OpenInventory();
-        PlayerController.Instance.GainMoney(SellAllTreasuresInInventory());
-        PlayerController.Instance.CloseInventory();
+        PlayerController.Instance.ChangeUIState(UIManager.UIToDisplay.SHOP);
     }
 }

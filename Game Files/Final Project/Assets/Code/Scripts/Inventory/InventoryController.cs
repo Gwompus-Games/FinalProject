@@ -11,7 +11,7 @@ public class InventoryController : MonoBehaviour
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
     [HideInInspector]
-    public ScrappingZone selectedScrappingZone;
+    public SellingZone selectedSellingZone;
     private InventoryItem _itemToPlace;
     [SerializeField] private InventoryGrid _inventory;
 
@@ -74,6 +74,11 @@ public class InventoryController : MonoBehaviour
         _itemToPlace = item;
     }
 
+    public InventoryItem GetItemInHand()
+    {
+        return _itemToPlace;
+    }
+
     public void InventoryClosing()
     {
         DropItemIntoWorld();
@@ -94,7 +99,7 @@ public class InventoryController : MonoBehaviour
             return;
         }
 
-        if (selectedItemGrid == null)
+        if (selectedItemGrid == null && selectedSellingZone == null)
         {
             if (_itemToPlace != null)
             {
@@ -103,28 +108,37 @@ public class InventoryController : MonoBehaviour
             return;
         }
 
-        if (!selectedItemGrid.gameObject.activeInHierarchy)
+        if (selectedItemGrid != null)
         {
-            return;
-        }
-
-        if (_itemToPlace == null)
-        {
-            InventoryItem item = selectedItemGrid.PickupItem(_mousePosition);
-            if (item != null)
+            if (_itemToPlace == null)
             {
-                SwapItemInHand(item);
-            }
-        }
-        else
-        {
-            if (selectedItemGrid.PlaceItem(_itemToPlace, _mousePosition, out InventoryItem returnItem))
-            {
-                SwapItemInHand(returnItem);
+                InventoryItem item = selectedItemGrid.PickupItem(_mousePosition);
+                if (item != null)
+                {
+                    SwapItemInHand(item);
+                }
             }
             else
             {
-                _itemToPlace.InvalidPlacementFlash();
+                if (selectedItemGrid.PlaceItem(_itemToPlace, _mousePosition, out InventoryItem returnItem))
+                {
+                    SwapItemInHand(returnItem);
+                }
+                else
+                {
+                    _itemToPlace.InvalidPlacementFlash();
+                }
+            }
+        }
+        else if (selectedSellingZone != null)
+        {
+            if (_itemToPlace != null)
+            {
+                selectedSellingZone.SellItem(_itemToPlace);
+            }
+            else
+            {
+
             }
         }
     }
