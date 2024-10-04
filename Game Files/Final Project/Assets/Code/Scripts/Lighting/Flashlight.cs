@@ -5,6 +5,7 @@ using UnityEngine;
 public class Flashlight : MonoBehaviour
 {
     private Light lightSource;
+    public GameObject glowstickPrefab;
 
     private void Awake()
     {
@@ -16,6 +17,10 @@ public class Flashlight : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             lightSource.enabled = !lightSource.enabled;
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Instantiate(glowstickPrefab, transform.position + transform.forward, Quaternion.identity);
         }
     }
 }
