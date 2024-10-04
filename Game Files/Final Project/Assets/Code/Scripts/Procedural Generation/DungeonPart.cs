@@ -6,7 +6,7 @@ using Unity.Burst.Intrinsics;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class DungeonPart : MonoBehaviour
+public class DungeonPart : MonoBehaviour, IHideable
 {
     [SerializeField] private GameObject fillerWall;
 
@@ -29,7 +29,7 @@ public class DungeonPart : MonoBehaviour
 
     public void SetupPart()
     {
-        ShowMesh(false);
+        Show(false);
     }
 
     public void SpawnLoot()
@@ -169,7 +169,7 @@ public class DungeonPart : MonoBehaviour
         return false;
     }
 
-    public void ShowMesh(bool isShowing = true)
+    public void Show(bool isShowing = true)
     {
         foreach (Light obj in lightsToHide)
         {

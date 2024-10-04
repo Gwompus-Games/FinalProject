@@ -6,17 +6,18 @@ public class RenderDistance : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out DungeonPart room))
+        if (other.TryGetComponent(out IHideable hideable))
         {
-            room.ShowMesh(true);
+            hideable.Show(true);
         }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out DungeonPart room))
+        if (other.TryGetComponent(out IHideable hideable))
         {
-            room.ShowMesh(false);
+            hideable.Show(false);
         }
     }
 }
