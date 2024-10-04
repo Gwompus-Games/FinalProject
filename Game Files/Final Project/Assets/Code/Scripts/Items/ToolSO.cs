@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class ToolSO : ItemDataSO
 {
+    [Header("Tool Data")]
     public int buyValue = 0;
 }

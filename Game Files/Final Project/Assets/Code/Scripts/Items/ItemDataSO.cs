@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class ItemDataSO : ScriptableObject
 {
+    [Header("General Item Data")]
     public string itemName = "Item Name";
-    public GameObject worldObject;
-    public GameObject inventoryObject;
-    public int baseValue = 0;
     public bool usedForSelling;
+    [Header("World Item Data")]
+    public GameObject worldObject;
+    public float density = 1f;
+    [Range(2.5f, 100f)] public float drag = 15f;
+    public float angularDrag = 0.15f;
+    [Header("Inventory Item Data")]
+    public GameObject inventoryObject;
+    [Header("Selling Data")]
+    public int baseValue = 0;
 }

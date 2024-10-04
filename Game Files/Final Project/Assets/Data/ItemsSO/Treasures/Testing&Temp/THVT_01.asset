@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: THVT_01
   m_EditorClassIdentifier: 
   itemName: THVT_01
+  usedForSelling: 1
   worldObject: {fileID: 2926654282546814086, guid: 8031fb2e20cb2d64880a6a18dc5a83dd,
     type: 3}
+  density: 1
+  drag: 15
+  angularDrag: 0.15
   inventoryObject: {fileID: 2582931896262244936, guid: a6ec16f3c30e0d344bdbfa90aba19288,
     type: 3}
   baseValue: 105
-  usedForSelling: 1
   rarity: 2
   spawnChancePoints: 100

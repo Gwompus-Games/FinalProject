@@ -32,6 +32,10 @@ public class OxygenUI : MonoBehaviour
         //    return;
         //}
         //_uiText.text = textPercent + "%";
+        if (o2Level == null)
+        {
+            return;
+        }
         Vector3 o2Scale = o2Level.rectTransform.localScale;
         o2Scale.x = Mathf.Clamp(percentLeft / 100, 0.1f, 1);
         o2Level.rectTransform.localScale = o2Scale;

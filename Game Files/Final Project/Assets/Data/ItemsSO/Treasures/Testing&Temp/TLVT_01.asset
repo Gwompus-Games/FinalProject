@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: TLVT_01
   m_EditorClassIdentifier: 
   itemName: TLVT_01
+  usedForSelling: 1
   worldObject: {fileID: 4779515826770650758, guid: 24bbaf32e82e06c4bb5ae4ec5a8c94c9,
     type: 3}
+  density: 1
+  drag: 15
+  angularDrag: 0.15
   inventoryObject: {fileID: 5110446840269711149, guid: 037a7d6e94755e245823fb73d8d2f620,
     type: 3}
   baseValue: 12
-  usedForSelling: 1
   rarity: 0
   spawnChancePoints: 100

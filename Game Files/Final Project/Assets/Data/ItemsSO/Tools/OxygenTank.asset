@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: OxygenTank
   m_EditorClassIdentifier: 
   itemName: Oxygen Tank
+  usedForSelling: 0
   worldObject: {fileID: 2158336407097566406, guid: e9f656b78a3323f438477a5196611f03,
     type: 3}
+  density: 2.5
+  drag: 7.3
+  angularDrag: 0.15
   inventoryObject: {fileID: 2315322122880622368, guid: f42f6707ca93d094b9b8fa40f32c14e8,
     type: 3}
   baseValue: 0
-  usedForSelling: 0
   buyValue: 0
   minutesUntilEmpty: 5

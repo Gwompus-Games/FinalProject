@@ -13,6 +13,7 @@ public class TreasureSO : ItemDataSO
         UNIQUE
     }
     
+    [Header("Treasure Data")]
     public TreasureRarity rarity;
     public int spawnChancePoints = 100;
 }

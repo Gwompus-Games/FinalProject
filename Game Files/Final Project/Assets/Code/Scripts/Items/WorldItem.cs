@@ -10,12 +10,13 @@ public class WorldItem : MonoBehaviour, IInteractable
 {
     [SerializeField] private ItemDataSO _itemData;
     private MeshRenderer _meshRenderer;
+    private Rigidbody _rigidbody;
     public bool hidden { get; private set; } = false;
 
     private void Awake()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
-
+        _rigidbody = GetComponent<Rigidbody>();
         if (_itemData != null)
         {
             AssignData(_itemData);
@@ -41,6 +42,9 @@ public class WorldItem : MonoBehaviour, IInteractable
     private void AssignData(ItemDataSO itemData)
     {
         _itemData = itemData;
+        _rigidbody.mass = _itemData.density;
+        _rigidbody.drag = _itemData.drag;
+        _rigidbody.angularDrag = _itemData.angularDrag;
     }
 
     private void HideItem(bool hideItem)
