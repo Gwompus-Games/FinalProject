@@ -16,6 +16,7 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField] private List<GameObject> specialRooms;
     [SerializeField] private List<GameObject> alternateEntrances;
     [SerializeField] private List<GameObject> hallways;
+    [SerializeField] private List<GameObject> specialHallways;
     [SerializeField] private GameObject door;
     [SerializeField] private int numOfRooms = 10;
     [SerializeField] private LayerMask roomLayerMask;
@@ -126,6 +127,7 @@ public class DungeonGenerator : MonoBehaviour
             int totalRetries = 1000;
             int retryIndex = 0;
 
+            // Pick a random room to build off of
             while (previousRoom == null && retryIndex < totalRetries)
             {
                 int randomLinkRoomIndex = Random.Range(0, availableRooms.Count);
@@ -138,10 +140,31 @@ public class DungeonGenerator : MonoBehaviour
                 retryIndex++;
             }
 
+            // Building hallways
             if (shouldPlaceHallway)
             {
-                int randomIndex = Random.Range(0, hallways.Count);
-                GameObject generatedHallway = Instantiate(hallways[randomIndex], transform.position, transform.rotation);
+                GameObject randomHallwayPrefab; // Newly spawned room
+
+                // Checks if there are special hallways, then has a chance to place one
+                if (specialRooms.Count > 0)
+                {
+                    bool shouldPlaceSpecialHallway = Random.Range(0f, 1f) > 0.85f;
+
+                    if (shouldPlaceSpecialHallway)
+                    {
+                        randomHallwayPrefab = specialHallways[Random.Range(0, specialHallways.Count)];
+                    }
+                    else
+                    {
+                        randomHallwayPrefab = hallways[Random.Range(0, hallways.Count)];
+                    }
+                }
+                else // Randomly picks and spawns a normal hallway
+                {
+                    randomHallwayPrefab = hallways[Random.Range(0, hallways.Count)];
+                }
+
+                GameObject generatedHallway = Instantiate(randomHallwayPrefab, transform.position, transform.rotation);
                 generatedHallway.transform.SetParent(transform);
                 generatedHallway.name += " " + generatedRooms.Count;
 
@@ -150,31 +173,31 @@ public class DungeonGenerator : MonoBehaviour
                 if (!CreateRoom(previousRoom, previousEntryPoint, generatedHallway))
                     continue;
             }
-            else
+            else // Building rooms
             {
-                GameObject generatedRoom;
+                GameObject randomRoomPrefab; // Random room prefab
+                GameObject generatedRoom; // Newly spawned room
 
+                // Checks if there are special rooms, then has a chance to place one
                 if (specialRooms.Count > 0)
                 {
                     bool shouldPlaceSpecialRoom = Random.Range(0f, 1f) > 0.9f;
 
                     if (shouldPlaceSpecialRoom)
                     {
-                        int randomIndex = Random.Range(0, specialRooms.Count);
-                        generatedRoom = Instantiate(specialRooms[randomIndex], transform.position, transform.rotation);
+                        randomRoomPrefab = specialRooms[Random.Range(0, specialRooms.Count)];
                     }
                     else
                     {
-                        int randomIndex = Random.Range(0, rooms.Count);
-                        generatedRoom = Instantiate(rooms[randomIndex], transform.position, transform.rotation);
+                        randomRoomPrefab = rooms[Random.Range(0, rooms.Count)];
                     }
                 }
-                else
+                else // Randomly picks and spawns a normal room
                 {
-                    int randomIndex = Random.Range(0, rooms.Count);
-                    generatedRoom = Instantiate(rooms[randomIndex], transform.position, transform.rotation);
+                    randomRoomPrefab = rooms[Random.Range(0, rooms.Count)];
                 }
 
+                generatedRoom = Instantiate(randomRoomPrefab, transform.position, transform.rotation);
                 generatedRoom.transform.SetParent(transform);
                 generatedRoom.name += " " + generatedRooms.Count;
 
@@ -304,15 +327,16 @@ public class DungeonGenerator : MonoBehaviour
 
                 if (IsIntersecting(newPart, previousRoom, newRoom))
                 {
-                    previousRoom.UnuseEntryPoint(previousEntryPoint);
                     RemoveRoom(newPart);
                     DestroyImmediate(newRoom);
                     //Debug.Log($"Destroyed room attached to {previousRoom.name}");
                     return false;
                 }
-            }
 
-            newPart.SetupPart();
+                previousRoom.UseEntryPoint(previousEntryPoint);
+                newPart.UseEntryPoint(newEntryPoint);
+                newPart.SetupPart();
+            }
         }
 
         return true;
@@ -396,6 +420,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         List<GameObject> shuffledHallways = new List<GameObject>();
         shuffledHallways.AddRange(hallways);
+        shuffledHallways.AddRange(specialHallways);
         Shuffle(hallways);
 
         for (int i = 0; i < shuffledHallways.Count; i++)
