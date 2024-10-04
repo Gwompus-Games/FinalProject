@@ -7,13 +7,12 @@ using UnityEngine.UI;
 public class OxygenUI : MonoBehaviour
 {
     private TMP_Text _uiText;
-    private Image o2Level;
+    [SerializeField] private Image o2Level;
     public Color startColor, endColor;
 
     private void Awake()
     {
         _uiText = GetComponentInChildren<TMP_Text>();
-        o2Level = GetComponentInChildren<Image>();
     }
 
     private void OnEnable()

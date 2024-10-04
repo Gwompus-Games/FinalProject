@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Money Settings")]
     [SerializeField] private int _startingMoney;
-    [field: SerializeField] public int money
+    [SerializeField] public int money
     {
         get
         {
@@ -54,7 +54,8 @@ public class PlayerController : MonoBehaviour
         private set
         {
             _money = value;
-            UpdateMoney?.Invoke(_money);
+            //UpdateMoney?.Invoke(_money);
+            //print("test money");
         }
     }
     private int _money;
@@ -301,6 +302,7 @@ public class PlayerController : MonoBehaviour
             UnityEngine.Debug.LogWarning("Gaining $0!");
         }
         money += income;
+        UpdateMoney?.Invoke(money);
     }
 
     public bool SpendMoney(int cost)
