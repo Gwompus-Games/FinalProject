@@ -37,5 +37,6 @@ public class OxygenUI : MonoBehaviour
         o2Scale.x = Mathf.Clamp(percentLeft / 100, 0.1f, 1);
         o2Level.rectTransform.localScale = o2Scale;
         o2Level.color = Color.Lerp(startColor, endColor, 1 - (percentLeft / 100));
+        print(1 - (percentLeft / 100));
     }
 }
