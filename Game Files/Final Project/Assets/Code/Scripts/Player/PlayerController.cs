@@ -334,7 +334,7 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-        //RestartGame();
+        RestartGame();
     }
 
     public void RestartGame()
