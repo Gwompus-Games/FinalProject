@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5828335156126745648}
   - component: {fileID: 50776716453765559}
+  - component: {fileID: -5540626344954697718}
   m_Layer: 5
   m_Name: IOxygenTank
   m_TagString: Untagged
@@ -129,6 +130,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originTile: {x: -1, y: -1}
   _oxygenTankData: {fileID: 11400000, guid: 3f867d3391e94f040865196b26eb2d98, type: 2}
+--- !u!225 &-5540626344954697718
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2315322122880622368}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1001 &388905823587558935
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,4 +13,5 @@ public class InventoryGlobalDataSO : ScriptableObject
     public float tileHeight = 50f;
     public float tileAlpha = 0.25f;
     public float flashingAlpha = 0.5f;
+    public Vector2Int referenceResolution;
 }

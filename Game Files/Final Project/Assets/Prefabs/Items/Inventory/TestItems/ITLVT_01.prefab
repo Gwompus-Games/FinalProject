@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1563762577608789727}
   - component: {fileID: 7943194212243953064}
   - component: {fileID: 535903711307724664}
+  - component: {fileID: 8437305172566882383}
   m_Layer: 5
   m_Name: ITLVT_01
   m_TagString: Untagged
@@ -68,6 +69,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originTile: {x: -1, y: -1}
+--- !u!225 &8437305172566882383
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5110446840269711149}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6955040203422337078
 GameObject:
   m_ObjectHideFlags: 0

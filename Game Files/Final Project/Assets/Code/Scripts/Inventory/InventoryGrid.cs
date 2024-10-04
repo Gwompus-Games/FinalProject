@@ -17,13 +17,18 @@ public class InventoryGrid : MonoBehaviour
 
     [field: SerializeField] public int gridSizeWidth { get; private set; }
     [field: SerializeField] public int gridSizeHeight { get; private set; }
+    private float _xScaler;
+    private float _yScaler;
+
     private bool _initialized = false;
 
     private void Awake()
     {
         globalItemData = _globalData;
         rectTransform = GetComponent<RectTransform>();
-
+        _xScaler = (float)Screen.width / (float)globalItemData.referenceResolution.x;
+        _yScaler = (float)Screen.height / (float)globalItemData.referenceResolution.y;
+        Debug.Log($"X:{_xScaler} | Y:{_yScaler}");
         Init(gridSizeWidth, gridSizeHeight);
     }
 
@@ -77,8 +82,8 @@ public class InventoryGrid : MonoBehaviour
         positionOnTheGrid.x = worldPosition.x - rectTransform.position.x;
         positionOnTheGrid.y = rectTransform.position.y - worldPosition.y;
 
-        tileGridPosition.x = (int)(positionOnTheGrid.x / globalItemData.tileWidth);
-        tileGridPosition.y = (int)(positionOnTheGrid.y / globalItemData.tileHeight);
+        tileGridPosition.x = (int)(positionOnTheGrid.x / (globalItemData.tileWidth * _xScaler));
+        tileGridPosition.y = (int)(positionOnTheGrid.y / (globalItemData.tileHeight * _yScaler));
 
         Debug.Log(tileGridPosition);
 
@@ -237,12 +242,12 @@ public class InventoryGrid : MonoBehaviour
             Vector2Int gridTile = origin + tileCoordinates[t];
             if (gridTile.x < 0 || gridTile.y < 0)
             {
-                Debug.LogError("Tried to access a negative slot.");
+                Debug.LogWarning("Tried to access a negative slot.");
                 return null;
             }
             if (gridTile.x >= gridSizeWidth || gridTile.y >= gridSizeHeight)
             {
-                Debug.LogError("Tried to access a slot greater than the grid size.");
+                Debug.LogWarning("Tried to access a slot greater than the grid size.");
                 return null;
             }
             if (inventoryItemSlot[gridTile.x, gridTile.y] != null && !items.Contains(inventoryItemSlot[gridTile.x, gridTile.y]))
