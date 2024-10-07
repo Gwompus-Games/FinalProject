@@ -296,15 +296,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6692558, g: 0.8490566, b: 0.6688323, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -445,10 +445,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 0
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
@@ -652,15 +652,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.67058825, g: 0.8509804, b: 0.67058825, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -996,9 +996,9 @@ RectTransform:
   - {fileID: 3992030441598338355}
   m_Father: {fileID: 4702010396639184241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 259.99997, y: 497.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 415, y: 635}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5369242687989074693
@@ -1076,7 +1076,7 @@ PrefabInstance:
     - target: {fileID: 1067152032932626957, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
       propertyPath: m_Name
-      value: ShopTab Variant
+      value: ScrappingTab
       objectReference: {fileID: 0}
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
@@ -1091,22 +1091,22 @@ PrefabInstance:
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
@@ -1156,12 +1156,12 @@ PrefabInstance:
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -37.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -165
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2152374250617611278, guid: 3ebab499bbe588c408e795dc97692a9a,
         type: 3}
@@ -1177,6 +1177,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693769132387856788, guid: 3ebab499bbe588c408e795dc97692a9a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

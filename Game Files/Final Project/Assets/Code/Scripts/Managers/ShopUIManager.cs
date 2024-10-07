@@ -12,7 +12,8 @@ public class ShopUIManager : MonoBehaviour
     public enum ShopTabEnum
     {
         SHOP,
-        SCRAPING
+        SCRAPING,
+        AUCTIONING
     }
 
     public ShopTabEnum currentTab

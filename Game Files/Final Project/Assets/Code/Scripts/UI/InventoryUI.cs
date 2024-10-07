@@ -22,6 +22,11 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        //SyncBarSize();
+    }
+
     public void SyncBarSize(float width)
     {
         if (_infoBarRectTransform == null)
