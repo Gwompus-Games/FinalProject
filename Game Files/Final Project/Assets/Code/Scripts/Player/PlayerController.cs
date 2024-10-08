@@ -378,9 +378,21 @@ public class PlayerController : MonoBehaviour
         _interactableLookingAt.Interact();
     }
 
-    private void ChangeInventoryUIState(bool enabled)
+    public void ChangeUIState(UIManager.UIToDisplay ui)
     {
-        UIManager.INSTANCE.SetInventoryUI(enabled);
+        UIManager.INSTANCE.SetUI(ui);
+        bool enabled = false;
+        switch (ui)
+        {
+            case UIManager.UIToDisplay.GAME:
+                ChangeState(PlayerState.Idle);
+                enabled = false;
+                break;
+            default:
+                ChangeState(PlayerState.Inventory);
+                enabled = true;
+                break;
+        }
         GetComponentInChildren<InventoryController>().enabled = enabled;
         GetComponentInChildren<CameraLook>().enabled = !enabled;
         if (!enabled)
@@ -404,15 +416,13 @@ public class PlayerController : MonoBehaviour
 
     public void OpenInventory()
     {
-        Cursor.lockState = CursorLockMode.None;
-        ChangeInventoryUIState(true);
+        ChangeUIState(UIManager.UIToDisplay.INVENTORY);
         ChangeState(PlayerState.Inventory);
     }
 
     public void CloseInventory()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        ChangeInventoryUIState(false);
+        ChangeUIState(UIManager.UIToDisplay.GAME);
         ChangeState(PlayerState.Idle);
     }
 }
