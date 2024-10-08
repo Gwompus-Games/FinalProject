@@ -41,7 +41,6 @@ public class ShopUIManager : MonoBehaviour
         }
         Instance = this;
         _shopTabs = GetComponentsInChildren<ShopTab>();
-        Debug.Log(_shopTabsButtonSection.name);
     }
 
     private void Start()
