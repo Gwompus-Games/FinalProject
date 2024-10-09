@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BuyingManager : MonoBehaviour
 {
-    public static BuyingManager Instance;
-
     [field: SerializeField] public ToolListSO toolList { get; private set; }
     public static Action UpdateBuySections;
     [field: SerializeField] public Color ableToBuyColour { get; private set; }
@@ -15,12 +13,7 @@ public class BuyingManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        
     }
 
     private void Start()

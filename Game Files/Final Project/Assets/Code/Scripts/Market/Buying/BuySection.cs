@@ -54,11 +54,11 @@ public class BuySection : MonoBehaviour
         }
         if (_canAfford)
         {
-            _buyButtonImage.color = BuyingManager.Instance.ableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.ableToBuyColour;
         }
         else
         {
-            _buyButtonImage.color = BuyingManager.Instance.unableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.unableToBuyColour;
         }
     }
 
@@ -74,17 +74,17 @@ public class BuySection : MonoBehaviour
         _toolCostText.text = $"${_toolData.buyValue}";
         if (_canAfford)
         {
-            _buyButtonImage.color = BuyingManager.Instance.ableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.ableToBuyColour;
         }
         else
         {
-            _buyButtonImage.color = BuyingManager.Instance.unableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.unableToBuyColour;
         }
         _initialized = true;
     }
 
     public void BuyItem()
     {
-        BuyingManager.Instance.BuyItem(_toolData);
+        GameManager.BuyingManagerInstance.BuyItem(_toolData);
     }
 }
