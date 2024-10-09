@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class OxygenSystem : MonoBehaviour
 {
-    public static OxygenSystem Instance;
     public static Action<string, float> OxygenLeftInTank;
 
     public List<II_OxygenTank> oxygenTanks { get; private set; } = new List<II_OxygenTank>();
@@ -17,12 +16,7 @@ public class OxygenSystem : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+
     }
 
     private void Start()

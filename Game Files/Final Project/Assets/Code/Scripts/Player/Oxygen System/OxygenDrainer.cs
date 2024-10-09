@@ -13,17 +13,17 @@ public class OxygenDrainer : MonoBehaviour
 
     public virtual void ActivateDrainer()
     {
-        if (!OxygenSystem.Instance.DrainingSourceActive(this))
+        if (!GameManager.OxygenSystemInstance.DrainingSourceActive(this))
         {
-            OxygenSystem.Instance.AddDrainingSource(this);
+            GameManager.OxygenSystemInstance.AddDrainingSource(this);
         }
     }
 
     public virtual void DeactivateDrainer()
     {
-        if (OxygenSystem.Instance.DrainingSourceActive(this))
+        if (GameManager.OxygenSystemInstance.DrainingSourceActive(this))
         {
-            OxygenSystem.Instance.RemoveDrainingSource(this);
+            GameManager.OxygenSystemInstance.RemoveDrainingSource(this);
         }
     }
 }

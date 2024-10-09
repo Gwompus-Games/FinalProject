@@ -64,7 +64,7 @@ public class OxygenInfoBar : InfoBarTextElement
 
     public void UpdateOxygenUI()
     {
-        int numberOfSections = OxygenSystem.Instance.oxygenTanks.Count;
+        int numberOfSections = GameManager.OxygenSystemInstance.oxygenTanks.Count;
 
         if (!CheckIfSectionTotalMatches(numberOfSections))
         {
