@@ -14,7 +14,6 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(StudioEventEmitter))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance;
     public static Action<int> UpdateMoney;
 
     public enum PlayerState
@@ -81,12 +80,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
         suitSystem = GetComponent<SuitSystem>();
@@ -387,7 +380,7 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeUIState(UIManager.UIToDisplay ui)
     {
-        UIManager.INSTANCE.SetUI(ui);
+        GameManager.UIManagerInstance.SetUI(ui);
         bool enabled = false;
         switch (ui)
         {

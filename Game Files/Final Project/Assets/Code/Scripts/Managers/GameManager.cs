@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //Manager Instances (Singletons)
     public static GameManager Instance;
+    public static UIManager UIManagerInstance;
+    public static ShopUIManager ShopUIManagerInstance;
+
+    //Important Game Instances (Singletons)
     public static PlayerController PlayerControllerInstance;
+
 
     public bool isPaused { get; private set; } = false;
 
@@ -17,7 +23,9 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+        UIManagerInstance = FindFirstObjectAndDestroyOthers<UIManager>();
         PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();
+        ShopUIManagerInstance = FindFirstObjectAndDestroyOthers<ShopUIManager>();
     }
 
     private T FindFirstObjectAndDestroyOthers<T>()
