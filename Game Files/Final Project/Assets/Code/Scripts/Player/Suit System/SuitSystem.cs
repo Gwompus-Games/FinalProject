@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SuitSystem : MonoBehaviour, IDamageable
 {
-    public static SuitSystem Instance;
     public static Action<int, int, float, int> UpdateSuitUI;
     public int numberOfSections { get; private set; } = 5;
     public int currentSection { get; private set; } = 5;
@@ -15,12 +14,7 @@ public class SuitSystem : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+
     }
 
     private void Start()

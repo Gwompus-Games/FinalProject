@@ -15,10 +15,7 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
     {
         base.OnEnable();
         SuitSystem.UpdateSuitUI += UpdateSuitUI;
-        if (SuitSystem.Instance != null)
-        {
-            SuitSystem.Instance.UpdateUI();
-        }
+        GameManager.SuitSystemInstance.UpdateUI();
     }
 
     protected override void OnDisable()
@@ -31,10 +28,10 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
     {
         base.Start();
         UpdateText(_uiElementName);
-        UpdateSuitUI(SuitSystem.Instance.suitStats.numberOfSections,
-                     SuitSystem.Instance.suitStats.numberOfSections,
-                     SuitSystem.Instance.suitStats.maxDurabilityForSections,
-                     SuitSystem.Instance.suitStats.maxDurabilityForSections);
+        UpdateSuitUI(GameManager.SuitSystemInstance.suitStats.numberOfSections,
+                     GameManager.SuitSystemInstance.suitStats.numberOfSections,
+                     GameManager.SuitSystemInstance.suitStats.maxDurabilityForSections,
+                     GameManager.SuitSystemInstance.suitStats.maxDurabilityForSections);
     }
 
     public override void UpdateText(string textToAdd)

@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
     public static ShopUIManager ShopUIManagerInstance;
     public static BuyingManager BuyingManagerInstance;
 
-    //Important Game Instances (Singletons)
+    //System Instances (Singletons)
     public static PlayerController PlayerControllerInstance;
+    public static SuitSystem SuitSystemInstance;
 
 
     public bool isPaused { get; private set; } = false;
@@ -23,11 +24,15 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        //Setting all the Manager Instances
         Instance = this;
         UIManagerInstance = FindFirstObjectAndDestroyOthers<UIManager>();
-        PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();
         ShopUIManagerInstance = FindFirstObjectAndDestroyOthers<ShopUIManager>();
         BuyingManagerInstance = FindFirstObjectAndDestroyOthers<BuyingManager>();
+
+        //Setting all the System Instances
+        PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();
+        SuitSystemInstance = FindFirstObjectAndDestroyOthers<SuitSystem>();
     }
 
     private T FindFirstObjectAndDestroyOthers<T>()
