@@ -321,6 +321,14 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
+    public void TeleportPlayer(Vector3 position)
+    {
+        CharacterController characterController = GetComponent<CharacterController>();
+        characterController.enabled = false;
+        transform.position = position;
+        characterController.enabled = true;
+    }
+
     public void NoOxygenLeft()
     {
         KillPlayer();

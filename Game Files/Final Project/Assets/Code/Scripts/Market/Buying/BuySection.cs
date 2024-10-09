@@ -13,17 +13,24 @@ public class BuySection : MonoBehaviour
     [SerializeField] private Image _buyButtonImage;
     [SerializeField] private TMP_Text _buyButtonText;
     private int _buyValue = 0;
-    private bool _canAfford = true;
-    //private bool _canAfford => PlayerController.Instance.money >= _buyValue;
+    private int _playerMoney = 0;
+    private bool _canAfford => _playerMoney >= _buyValue;
 
     private void OnEnable()
     {
         BuyingManager.UpdateBuySections += UpdateSection;
+        PlayerController.UpdateMoney += UpdateMoney;
     }
 
     private void OnDisable()
     {
         BuyingManager.UpdateBuySections -= UpdateSection;
+        PlayerController.UpdateMoney -= UpdateMoney;
+    }
+
+    public void UpdateMoney(int newValue)
+    {
+        _playerMoney = newValue;
     }
 
     public void UpdateSection()

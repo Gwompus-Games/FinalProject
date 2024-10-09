@@ -28,6 +28,11 @@ public class InventoryController : MonoBehaviour
             return;
         }
         INSTANCE = this;
+        InventoryGrid inventoryGrid = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
+        if (inventoryGrid != null)
+        {
+            _inventory = inventoryGrid;
+        }
     }
 
     private void OnEnable()
