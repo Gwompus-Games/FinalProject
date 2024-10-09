@@ -397,7 +397,7 @@ public class PlayerController : MonoBehaviour
         GetComponentInChildren<CameraLook>().enabled = !enabled;
         if (!enabled)
         {
-            InventoryController.Instance.InventoryClosing();
+            GameManager.InventoryControllerInstance.InventoryClosing();
         }
     }
 

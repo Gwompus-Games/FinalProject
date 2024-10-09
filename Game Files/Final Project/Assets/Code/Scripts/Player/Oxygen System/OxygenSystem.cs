@@ -25,7 +25,7 @@ public class OxygenSystem : MonoBehaviour
         {
             for (int t = 0; t < _numberOfStartingOxygenTanks; t++)
             {
-                InventoryController.Instance.AddItemToInventory(_starterOxygenTank);
+                GameManager.InventoryControllerInstance.AddItemToInventory(_starterOxygenTank);
             }
         }
     }

@@ -52,7 +52,7 @@ public class BuyingManager : MonoBehaviour
             return;
         }
         GameManager.PlayerControllerInstance.SpendMoney(toolToBuy.buyValue);
-        InventoryController.Instance.AddItemToInventory(toolToBuy);
+        GameManager.InventoryControllerInstance.AddItemToInventory(toolToBuy);
         UpdateBuySections?.Invoke();
     }
 }

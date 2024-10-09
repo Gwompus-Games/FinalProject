@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    public static InventoryController Instance;
-
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
     [HideInInspector]
@@ -22,12 +20,6 @@ public class InventoryController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
         InventoryGrid inventoryGrid = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
         if (inventoryGrid != null)
         {

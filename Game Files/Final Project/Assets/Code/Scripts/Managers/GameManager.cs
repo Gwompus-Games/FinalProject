@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public static PlayerController PlayerControllerInstance;
     public static SuitSystem SuitSystemInstance;
     public static OxygenSystem OxygenSystemInstance;
+    public static InventoryController InventoryControllerInstance;
 
 
     public bool isPaused { get; private set; } = false;
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();
         SuitSystemInstance = FindFirstObjectAndDestroyOthers<SuitSystem>();
         OxygenSystemInstance = FindFirstObjectAndDestroyOthers<OxygenSystem>();
+        InventoryControllerInstance = FindFirstObjectAndDestroyOthers<InventoryController>();
     }
 
     private T FindFirstObjectAndDestroyOthers<T>()
