@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static UIManager UIManagerInstance;
     public static ShopUIManager ShopUIManagerInstance;
     public static BuyingManager BuyingManagerInstance;
+    public static InventoryUI InventoryUIInstance;
 
     //System Instances (Singletons)
     public static PlayerController PlayerControllerInstance;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
         UIManagerInstance = FindFirstObjectAndDestroyOthers<UIManager>();
         ShopUIManagerInstance = FindFirstObjectAndDestroyOthers<ShopUIManager>();
         BuyingManagerInstance = FindFirstObjectAndDestroyOthers<BuyingManager>();
+        InventoryUIInstance = FindFirstObjectAndDestroyOthers<InventoryUI>();
 
         //Setting all the System Instances
         PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();

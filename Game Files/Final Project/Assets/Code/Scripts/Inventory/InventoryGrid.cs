@@ -75,10 +75,7 @@ public class InventoryGrid : MonoBehaviour
             position.y = parentRectTransform.position.y + (parentRectTransform.sizeDelta.y - rectTransform.sizeDelta.y) / 2;
         }
         rectTransform.position = position;
-        if (InventoryUI.Instance != null)
-        {
-            InventoryUI.Instance.SyncBarSize(rectTransform.sizeDelta.x);
-        }
+        GameManager.InventoryUIInstance.SyncBarSize(rectTransform.sizeDelta.x);
     }
 
     private Vector2Int GetTileGridPosition(Vector2 worldPosition)
