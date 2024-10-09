@@ -328,6 +328,7 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
+        print("u ded");
         RestartGame();
     }
 
