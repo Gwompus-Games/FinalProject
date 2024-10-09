@@ -21,9 +21,18 @@ public class BuyingManager : MonoBehaviour
             return;
         }
         Instance = this;
+    }
+
+    private void Start()
+    {
         CreateBuySections();
     }
-    
+
+    private void OnEnable()
+    {
+        UpdateBuySections?.Invoke();
+    }
+
     public void CreateBuySections()
     {
         if (toolList == null)
@@ -44,6 +53,13 @@ public class BuyingManager : MonoBehaviour
 
     public void BuyItem(ToolSO toolToBuy)
     {
-
+        if (GameManager.PlayerControllerInstance.money < toolToBuy.buyValue)
+        {
+            Debug.LogWarning("Player doesn't have enough money to buy this tool.");
+            return;
+        }
+        GameManager.PlayerControllerInstance.SpendMoney(toolToBuy.buyValue);
+        InventoryController.Instance.AddItemToInventory(toolToBuy);
+        UpdateBuySections?.Invoke();
     }
 }

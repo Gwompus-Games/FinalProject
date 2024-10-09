@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public static PlayerController PlayerControllerInstance;
 
     public bool isPaused { get; private set; } = false;
 
@@ -12,13 +13,29 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
+        PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();
     }
+
+    private T FindFirstObjectAndDestroyOthers<T>()
+    {
+        GameObject[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None) as GameObject[];
+        if (objects.Length == 0)
+        {
+            return default(T);
+        }
+        if (objects.Length != 1)
+        {
+            for (int i = objects.Length; i >= 1; i++)
+            {
+                Destroy(objects[i].gameObject);
+            }
+        }
+        return objects[0].gameObject.GetComponent<T>();
+    } 
 
     private void Update()
     {

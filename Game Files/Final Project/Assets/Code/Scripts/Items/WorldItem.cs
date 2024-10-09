@@ -54,7 +54,7 @@ public class WorldItem : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        InventoryController.INSTANCE.AddItemToInventory(_itemData);
+        InventoryController.Instance.AddItemToInventory(_itemData);
         DespawnItem();
     }
 }

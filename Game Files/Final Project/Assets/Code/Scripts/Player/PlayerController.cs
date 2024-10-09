@@ -54,8 +54,7 @@ public class PlayerController : MonoBehaviour
         private set
         {
             _money = value;
-            //UpdateMoney?.Invoke(_money);
-            //print("test money");
+            UpdateMoney?.Invoke(_money);
         }
     }
     private int _money;
@@ -97,12 +96,12 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
-
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         isRunning = false;
         CloseInventory();
         playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.footsteps);
+        money = _startingMoney;
     }
 
     private void Update()
@@ -296,7 +295,6 @@ public class PlayerController : MonoBehaviour
             UnityEngine.Debug.LogWarning("Gaining $0!");
         }
         money += income;
-        UpdateMoney?.Invoke(money);
     }
 
     public bool SpendMoney(int cost)
@@ -406,7 +404,7 @@ public class PlayerController : MonoBehaviour
         GetComponentInChildren<CameraLook>().enabled = !enabled;
         if (!enabled)
         {
-            InventoryController.INSTANCE.InventoryClosing();
+            InventoryController.Instance.InventoryClosing();
         }
     }
 

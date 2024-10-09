@@ -27,6 +27,16 @@ public abstract class InfoBarTextElement : MonoBehaviour
 
     }
 
+    protected virtual void OnEnable()
+    {
+
+    }
+    
+    protected virtual void OnDisable()
+    {
+
+    }
+
     public virtual void UpdateText(float number)
     {
         _uiText.text = $"{_uiElementName}: {number}";

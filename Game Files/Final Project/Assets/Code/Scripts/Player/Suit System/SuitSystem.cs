@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SuitSystem : MonoBehaviour, IDamageable
 {
-    public static SuitSystem INSTANCE;
+    public static SuitSystem Instance;
     public static Action<int, int, float, int> UpdateSuitUI;
     public int numberOfSections { get; private set; } = 5;
     public int currentSection { get; private set; } = 5;
@@ -15,12 +15,12 @@ public class SuitSystem : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        if (INSTANCE != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
-        INSTANCE = this;
+        Instance = this;
     }
 
     private void Start()
@@ -52,7 +52,10 @@ public class SuitSystem : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            DebugTakeDamage();
+        }
     }
 
     public void DebugTakeDamage()
@@ -75,7 +78,7 @@ public class SuitSystem : MonoBehaviour, IDamageable
         if (currentSection >= numberOfSections)
         {
             Debug.Log("Kill Player");
-            PlayerController.Instance.KillPlayer();
+            GameManager.PlayerControllerInstance.KillPlayer();
             remainderDamage = 0;
             return;
         }
@@ -86,10 +89,10 @@ public class SuitSystem : MonoBehaviour, IDamageable
         suitOxygenDrainer.SetDrainMultiplier(suitStats.oxygenDrainMultiplierForSections[nextSectionToUse]);
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         UpdateSuitUI?.Invoke(numberOfSections - currentSection,
-                             suitStats.numberOfSections,
+                             numberOfSections,
                              currentSectionDurability,
                              suitStats.maxDurabilityForSections);
     }

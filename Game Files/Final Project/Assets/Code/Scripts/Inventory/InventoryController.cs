@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    public static InventoryController INSTANCE;
+    public static InventoryController Instance;
 
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
@@ -22,12 +22,12 @@ public class InventoryController : MonoBehaviour
 
     private void Awake()
     {
-        if (INSTANCE != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
-        INSTANCE = this;
+        Instance = this;
         InventoryGrid inventoryGrid = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
         if (inventoryGrid != null)
         {
@@ -182,11 +182,18 @@ public class InventoryController : MonoBehaviour
 
     public void AddItemToInventory(ItemDataSO itemData)
     {
-        PlayerController.Instance.OpenInventory();
+        bool startedOpen = (GameManager.PlayerControllerInstance.currentState == PlayerController.PlayerState.Inventory);
+        if (!startedOpen)
+        {
+            GameManager.PlayerControllerInstance.OpenInventory();
+        }
         InventoryItem inventoryItem;
         if (CheckInventorySpaceAvailable(itemData, out inventoryItem))
         {
-            PlayerController.Instance.CloseInventory();
+            if (startedOpen == false)
+            {
+                GameManager.PlayerControllerInstance.CloseInventory();
+            }
             return;
         }
         _itemToPlace = inventoryItem;
@@ -246,9 +253,13 @@ public class InventoryController : MonoBehaviour
         {
             return;
         }
+        if (_itemToPlace.itemData == null)
+        {
+            return;
+        }
         WorldItem worldItemWO = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WorldItem>();
         worldItemWO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        Vector3 spawnPoint = PlayerController.Instance.transform.position + (PlayerController.Instance.transform.forward * 1.25f);
+        Vector3 spawnPoint = GameManager.PlayerControllerInstance.transform.position + (GameManager.PlayerControllerInstance.transform.forward * 1.25f);
         worldItemWO.SpawnItem(spawnPoint, _itemToPlace.itemData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);
