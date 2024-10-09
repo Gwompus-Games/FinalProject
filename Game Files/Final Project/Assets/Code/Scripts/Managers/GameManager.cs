@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     //System Instances (Singletons)
     public static PlayerController PlayerControllerInstance;
     public static SuitSystem SuitSystemInstance;
+    public static OxygenSystem OxygenSystemInstance;
 
 
     public bool isPaused { get; private set; } = false;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
         //Setting all the System Instances
         PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();
         SuitSystemInstance = FindFirstObjectAndDestroyOthers<SuitSystem>();
+        OxygenSystemInstance = FindFirstObjectAndDestroyOthers<OxygenSystem>();
     }
 
     private T FindFirstObjectAndDestroyOthers<T>()
@@ -46,7 +48,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = objects.Length; i >= 1; i++)
             {
-                Destroy(objects[i].gameObject);
+                DestroyImmediate(objects[i].gameObject);
             }
         }
         return objects[0].gameObject.GetComponent<T>();
