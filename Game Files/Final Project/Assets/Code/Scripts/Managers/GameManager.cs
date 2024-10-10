@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static BuyingManager BuyingManagerInstance;
     public static InventoryUI InventoryUIInstance;
 
-    //System Instances (Singletons)
+    //Game System Instances (Singletons)
     public static PlayerController PlayerControllerInstance;
     public static SuitSystem SuitSystemInstance;
     public static OxygenSystem OxygenSystemInstance;
@@ -43,19 +44,29 @@ public class GameManager : MonoBehaviour
 
     private T FindFirstObjectAndDestroyOthers<T>()
     {
-        GameObject[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None) as GameObject[];
-        if (objects.Length == 0)
+        Object[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
+        GameObject[] gameObjects = new GameObject[objects.Length];
+        int index = 0;
+        for (int o = 0; o < objects.Length; o++)
+        {
+            if (objects[o].GameObject() != null)
+            {
+                gameObjects[index] = objects[o].GameObject();
+                index++;
+            }
+        }
+        if (gameObjects.Length == 0)
         {
             return default(T);
         }
-        if (objects.Length != 1)
+        if (gameObjects.Length != 1)
         {
-            for (int i = objects.Length; i >= 1; i++)
+            for (int i = gameObjects.Length; i >= 1; i++)
             {
-                DestroyImmediate(objects[i].gameObject);
+                DestroyImmediate(gameObjects[i].gameObject);
             }
         }
-        return objects[0].gameObject.GetComponent<T>();
+        return gameObjects[0].GetComponent<T>();
     } 
 
     private void Update()
