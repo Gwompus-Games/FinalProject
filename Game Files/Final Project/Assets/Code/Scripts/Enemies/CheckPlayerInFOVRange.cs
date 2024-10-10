@@ -29,10 +29,19 @@ public class CheckPlayerInFOVRange : Node
 
             if (colliders.Length > 0)
             {
-                parent.parent.SetData("target", colliders[0].transform);
-                _animator.SetBool("Walking", true);
-                state = NodeState.SUCCESS;
-                return state;
+                RaycastHit hit;
+
+                if (Physics.Raycast(_transform.position, (colliders[0].transform.position - _transform.position), out hit, _enemyScript.fovRadius))
+                {
+                    if (hit.transform == colliders[0].transform)
+                    {
+
+                        parent.parent.SetData("target", colliders[0].transform);
+                        _animator.SetBool("Walking", true);
+                        state = NodeState.SUCCESS;
+                        return state;
+                    }
+                }
             }
 
             state = NodeState.FAILURE;
