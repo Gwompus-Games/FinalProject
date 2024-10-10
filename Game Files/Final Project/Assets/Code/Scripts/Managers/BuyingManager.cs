@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BuyingManager : MonoBehaviour
 {
-    public static BuyingManager Instance;
-
     [field: SerializeField] public ToolListSO toolList { get; private set; }
     public static Action UpdateBuySections;
     [field: SerializeField] public Color ableToBuyColour { get; private set; }
@@ -15,15 +13,19 @@ public class BuyingManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        
+    }
+
+    private void Start()
+    {
         CreateBuySections();
     }
-    
+
+    private void OnEnable()
+    {
+        UpdateBuySections?.Invoke();
+    }
+
     public void CreateBuySections()
     {
         if (toolList == null)
@@ -44,6 +46,13 @@ public class BuyingManager : MonoBehaviour
 
     public void BuyItem(ToolSO toolToBuy)
     {
-
+        if (GameManager.PlayerControllerInstance.money < toolToBuy.buyValue)
+        {
+            Debug.LogWarning("Player doesn't have enough money to buy this tool.");
+            return;
+        }
+        GameManager.PlayerControllerInstance.SpendMoney(toolToBuy.buyValue);
+        GameManager.InventoryControllerInstance.AddItemToInventory(toolToBuy);
+        UpdateBuySections?.Invoke();
     }
 }

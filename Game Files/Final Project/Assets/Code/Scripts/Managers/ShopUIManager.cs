@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ShopUIManager : MonoBehaviour
 {
-    public static ShopUIManager Instance;
     [SerializeField] private GameObject _shopTabsButtonSection;
     [SerializeField] private GameObject _buttonPrefab;
 
@@ -34,12 +33,6 @@ public class ShopUIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
         _shopTabs = GetComponentsInChildren<ShopTab>();
     }
 

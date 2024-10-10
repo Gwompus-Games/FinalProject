@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class MoneyInfoBar : InfoBarTextElement
 {
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         PlayerController.UpdateMoney += UpdateText;
+        UpdateText(GameManager.PlayerControllerInstance.money);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         PlayerController.UpdateMoney -= UpdateText;
     }
 
     protected override void Start()
     {
         base.Start();
-        UpdateText(PlayerController.Instance.money);
     }
 
     public override void UpdateText(int money)

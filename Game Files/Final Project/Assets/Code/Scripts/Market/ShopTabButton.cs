@@ -22,6 +22,6 @@ public class ShopTabButton : MonoBehaviour
 
     public void ButtonPressed()
     {
-        ShopUIManager.Instance.SwapToTab(tab);
+        GameManager.ShopUIManagerInstance.SwapToTab(tab);
     }
 }

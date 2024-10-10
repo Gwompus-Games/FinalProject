@@ -12,8 +12,8 @@ public class Hatch : MonoBehaviour, IInteractable
     public void Interact()
     {
         print("interacted");
-        PlayerController.Instance.GetComponent<CharacterController>().enabled = false;
-        PlayerController.Instance.transform.position = teleport.transform.position;
-        PlayerController.Instance.GetComponent<CharacterController>().enabled = true;
+        GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = false;
+        GameManager.PlayerControllerInstance.transform.position = teleport.transform.position;
+        GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = true;
     }
 }

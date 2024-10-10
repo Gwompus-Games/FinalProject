@@ -14,7 +14,6 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(StudioEventEmitter))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance;
     public static Action<int> UpdateMoney;
 
     public enum PlayerState
@@ -54,8 +53,7 @@ public class PlayerController : MonoBehaviour
         private set
         {
             _money = value;
-            //UpdateMoney?.Invoke(_money);
-            //print("test money");
+            UpdateMoney?.Invoke(_money);
         }
     }
     private int _money;
@@ -82,12 +80,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
         suitSystem = GetComponent<SuitSystem>();
@@ -97,12 +89,12 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
-
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         isRunning = false;
         CloseInventory();
         playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.footsteps);
+        money = _startingMoney;
     }
 
     private void Update()
@@ -296,7 +288,6 @@ public class PlayerController : MonoBehaviour
             UnityEngine.Debug.LogWarning("Gaining $0!");
         }
         money += income;
-        UpdateMoney?.Invoke(money);
     }
 
     public bool SpendMoney(int cost)
@@ -389,7 +380,7 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeUIState(UIManager.UIToDisplay ui)
     {
-        UIManager.INSTANCE.SetUI(ui);
+        GameManager.UIManagerInstance.SetUI(ui);
         bool enabled = false;
         switch (ui)
         {
@@ -406,7 +397,7 @@ public class PlayerController : MonoBehaviour
         GetComponentInChildren<CameraLook>().enabled = !enabled;
         if (!enabled)
         {
-            InventoryController.INSTANCE.InventoryClosing();
+            GameManager.InventoryControllerInstance.InventoryClosing();
         }
     }
 

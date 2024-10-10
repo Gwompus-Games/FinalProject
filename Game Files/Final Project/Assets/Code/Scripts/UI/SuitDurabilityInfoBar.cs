@@ -8,15 +8,19 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
 {
     [SerializeField] private GameObject _durabilityComponentsObject;
     [SerializeField] private GameObject _durabilitySectionPrefab;
-    List<SuitDurabilityUISection> _durabilityUISections = new List<SuitDurabilityUISection>();
+    [SerializeField] private Color _fillColor, _emptyColor;
+    List<fillableUISection> _durabilityUISections = new List<fillableUISection>();
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         SuitSystem.UpdateSuitUI += UpdateSuitUI;
+        GameManager.SuitSystemInstance.UpdateUI();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         SuitSystem.UpdateSuitUI -= UpdateSuitUI;
     }
 
@@ -24,6 +28,10 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
     {
         base.Start();
         UpdateText(_uiElementName);
+        UpdateSuitUI(GameManager.SuitSystemInstance.suitStats.numberOfSections,
+                     GameManager.SuitSystemInstance.suitStats.numberOfSections,
+                     GameManager.SuitSystemInstance.suitStats.maxDurabilityForSections,
+                     GameManager.SuitSystemInstance.suitStats.maxDurabilityForSections);
     }
 
     public override void UpdateText(string textToAdd)
@@ -48,9 +56,16 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
 
     private void ChangeDurabilityUISections(int numberOfSections)
     {
-        if (numberOfSections > _durabilityUISections.Count)
+        for (int s = _durabilityUISections.Count - 1; s >= 0; s--)
         {
-
+            Destroy(_durabilityUISections[s].gameObject);
+        }
+        _durabilityUISections.Clear();
+        for (int s = 0; s < numberOfSections; s++)
+        {
+            _durabilityUISections.Add(Instantiate(_durabilitySectionPrefab, _durabilityComponentsObject.transform).GetComponent<fillableUISection>());
+            _durabilityUISections[s].SetFillAmount(1f);
+            _durabilityUISections[s].SetColours(_fillColor, _emptyColor);
         }
     }
 
@@ -59,6 +74,21 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
         if (!CheckIfSectionTotalMatches(numberOfSections))
         {
             ChangeDurabilityUISections(numberOfSections);
+        }
+        for (int s = 0; s < _durabilityUISections.Count; s++)
+        {
+            if (s < currentSection - 1)
+            {
+                _durabilityUISections[s].SetFillAmount(1f);
+            }
+            else if (s == currentSection - 1)
+            {
+                _durabilityUISections[s].SetFillAmount(currentSectionDurablility / (float)maxSectionDurability);
+            }
+            else
+            {
+                _durabilityUISections[s].SetFillAmount(0f);
+            }
         }
     }
 }

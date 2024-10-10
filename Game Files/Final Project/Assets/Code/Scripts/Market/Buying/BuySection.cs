@@ -12,61 +12,79 @@ public class BuySection : MonoBehaviour
     [SerializeField] private TMP_Text _toolCostText;
     [SerializeField] private Image _buyButtonImage;
     [SerializeField] private TMP_Text _buyButtonText;
-    private int _buyValue = 0;
-    private int _playerMoney = 0;
-    private bool _canAfford => _playerMoney >= _buyValue;
+    private bool _initialized = false;
+    private bool _canAfford 
+    { 
+        get
+        {
+            if (GameManager.PlayerControllerInstance == null)
+            {
+                throw new System.Exception("Player Controller is null!");
+            }
+            if (_toolData == null)
+            {
+                throw new System.Exception("Tool data is null!");
+            }
+            return GameManager.PlayerControllerInstance.money >= _toolData.buyValue;
+        }
+        set
+        { }
+    }
 
     private void OnEnable()
     {
         BuyingManager.UpdateBuySections += UpdateSection;
-        PlayerController.UpdateMoney += UpdateMoney;
+        UpdateSection();
     }
 
     private void OnDisable()
     {
         BuyingManager.UpdateBuySections -= UpdateSection;
-        PlayerController.UpdateMoney -= UpdateMoney;
-    }
-
-    public void UpdateMoney(int newValue)
-    {
-        _playerMoney = newValue;
     }
 
     public void UpdateSection()
     {
+        if (!_initialized)
+        {
+            return;
+        }
         if (_toolData == null)
         {
             throw new System.Exception("No tool data assigned!");
         }
         if (_canAfford)
         {
-            _buyButtonImage.color = BuyingManager.Instance.ableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.ableToBuyColour;
         }
         else
         {
-            _buyButtonImage.color = BuyingManager.Instance.unableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.unableToBuyColour;
         }
     }
 
     public void InitializeSection(ToolSO newToolData)
     {
+        if (_initialized)
+        {
+            return;
+        }
         _toolData = newToolData;
         _iconImage.sprite = _toolData.shopIcon;
         _toolNameText.text = _toolData.itemName;
         _toolCostText.text = $"${_toolData.buyValue}";
         if (_canAfford)
         {
-            _buyButtonImage.color = BuyingManager.Instance.ableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.ableToBuyColour;
         }
         else
         {
-            _buyButtonImage.color = BuyingManager.Instance.unableToBuyColour;
+            _buyButtonImage.color = GameManager.BuyingManagerInstance.unableToBuyColour;
         }
+        _initialized = true;
     }
 
     public void BuyItem()
     {
-        BuyingManager.Instance.BuyItem(_toolData);
+        GameManager.BuyingManagerInstance.BuyItem(_toolData);
     }
 }

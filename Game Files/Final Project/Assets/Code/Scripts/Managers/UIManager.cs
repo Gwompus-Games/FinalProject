@@ -5,8 +5,6 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager INSTANCE;
-
     [SerializeField] private GameObject _inventoryUI;
     [SerializeField] private GameObject _suitUI;
     [SerializeField] private GameObject _shopUI;
@@ -20,12 +18,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (INSTANCE != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        INSTANCE = this;
+
     }
 
     public void SetUI(UIToDisplay ui)
