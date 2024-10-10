@@ -8,7 +8,10 @@ public class MoneyInfoBar : InfoBarTextElement
     {
         base.OnEnable();
         PlayerController.UpdateMoney += UpdateText;
-        UpdateText(GameManager.PlayerControllerInstance.money);
+        if (GameManager.PlayerControllerInstance != null)
+        {
+            UpdateText(GameManager.PlayerControllerInstance.money);
+        }
     }
 
     protected override void OnDisable()

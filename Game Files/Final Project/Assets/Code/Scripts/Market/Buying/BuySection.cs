@@ -13,23 +13,7 @@ public class BuySection : MonoBehaviour
     [SerializeField] private Image _buyButtonImage;
     [SerializeField] private TMP_Text _buyButtonText;
     private bool _initialized = false;
-    private bool _canAfford 
-    { 
-        get
-        {
-            if (GameManager.PlayerControllerInstance == null)
-            {
-                throw new System.Exception("Player Controller is null!");
-            }
-            if (_toolData == null)
-            {
-                throw new System.Exception("Tool data is null!");
-            }
-            return GameManager.PlayerControllerInstance.money >= _toolData.buyValue;
-        }
-        set
-        { }
-    }
+    private bool _canAfford = false;
 
     private void OnEnable()
     {
@@ -51,6 +35,10 @@ public class BuySection : MonoBehaviour
         if (_toolData == null)
         {
             throw new System.Exception("No tool data assigned!");
+        }
+        if (GameManager.PlayerControllerInstance != null)
+        {
+            _canAfford = GameManager.PlayerControllerInstance.money >= _toolData.buyValue;
         }
         if (_canAfford)
         {

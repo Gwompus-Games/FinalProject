@@ -15,7 +15,10 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
     {
         base.OnEnable();
         SuitSystem.UpdateSuitUI += UpdateSuitUI;
-        GameManager.SuitSystemInstance.UpdateUI();
+        if (GameManager.SuitSystemInstance != null)
+        {
+            GameManager.SuitSystemInstance.UpdateUI();
+        }
     }
 
     protected override void OnDisable()
