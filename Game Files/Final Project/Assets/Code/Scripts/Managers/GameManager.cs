@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static BuyingManager BuyingManagerInstance;
     public static InventoryUI InventoryUIInstance;
 
-    //System Instances (Singletons)
+    //Game System Instances (Singletons)
     public static PlayerController PlayerControllerInstance;
     public static SuitSystem SuitSystemInstance;
     public static OxygenSystem OxygenSystemInstance;
@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour
                 index++;
             }
         }
-        Debug.Log($"Instance: {gameObjects[0] == null} | Game Object Name: {gameObjects[0].name}");
         if (gameObjects.Length == 0)
         {
             return default(T);
