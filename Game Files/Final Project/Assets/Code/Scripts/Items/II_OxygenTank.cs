@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class II_OxygenTank : InventoryItem
 {
-    [SerializeField] protected OxygenTankSO _oxygenTankData;
+    [field: SerializeField] public OxygenTankSO oxygenTankData { get; protected set; }
     public float oxygenLeft { 
         get
         {
@@ -12,23 +12,23 @@ public class II_OxygenTank : InventoryItem
         }
         protected set
         {
-            _oxygenLeft = value;
+            _oxygenLeft = Mathf.Clamp(value, 0f, maxOxygenCapacity);
             oxygenFillAmount = oxygenLeft / maxOxygenCapacity;
             oxygenLeftPercent = string.Format("{0:0.##}", oxygenFillAmount * 100);
         }
     }
-    private float _oxygenLeft;
+    protected float _oxygenLeft;
     public bool containsOxygen => oxygenLeft > 0;
-    public float maxOxygenCapacity { get; private set; } = 0;
+    public float maxOxygenCapacity { get; protected set; } = 0;
     protected int _myOxygenTankID = 0;
-    public string oxygenLeftPercent { get; private set; }
-    public float oxygenFillAmount { get; private set; }
+    public string oxygenLeftPercent { get; protected set; }
+    public float oxygenFillAmount { get; protected set; }
 
     protected override void Awake()
     {
         base.Awake();
-        maxOxygenCapacity = _oxygenTankData.minutesUntilEmpty * 60f;
-        oxygenLeft = maxOxygenCapacity;
+        //maxOxygenCapacity = oxygenTankData.minutesUntilEmpty * 60f;
+        //SetTankToFull();
     }
 
     public void SetOxygenTankID(int id)
@@ -59,13 +59,6 @@ public class II_OxygenTank : InventoryItem
     public void AddOxygen(float oxygenToAddInSeconds, out float remainder)
     {
         remainder = 0;
-        if (oxygenToAddInSeconds >= maxOxygenCapacity)
-        {
-            SetTankToFull();
-            remainder = oxygenToAddInSeconds - maxOxygenCapacity;
-            return;
-        }
-
         if (oxygenLeft + oxygenToAddInSeconds >= maxOxygenCapacity)
         {
             SetTankToFull();
@@ -73,12 +66,28 @@ public class II_OxygenTank : InventoryItem
             return;
         }
 
-        oxygenLeft = Mathf.Min(oxygenLeft + oxygenToAddInSeconds, maxOxygenCapacity);
+        oxygenLeft += oxygenToAddInSeconds;
+    }
+
+    public void SetTankOxygenLevel(float oxygen)
+    {
+        oxygenLeft = oxygen;
     }
 
     public void SetTankToFull()
     {
         oxygenLeft = maxOxygenCapacity;
+    }
+
+    public void InitializeTank(OxygenTankSO tankData)
+    {
+        if (tankData == null)
+        {
+            Debug.Log("Null data passed");
+            return;
+        }
+        oxygenTankData = tankData;
+        maxOxygenCapacity = oxygenTankData.minutesUntilEmpty * 60f;
     }
 
     public override void ItemPlacedInInventory()

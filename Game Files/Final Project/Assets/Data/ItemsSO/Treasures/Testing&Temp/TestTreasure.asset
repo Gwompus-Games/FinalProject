@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: TestTreasure
   m_EditorClassIdentifier: 
   itemName: Item Name
+  usedForSelling: 1
   worldObject: {fileID: 1964563567234353733, guid: c71a5e059f0a0a74dbeb0af1df163bb3,
     type: 3}
-  inventoryObject: {fileID: 3969134843577476104, guid: c74a81766c8d52a449ad7518c7e8397c,
+  density: 1
+  drag: 15
+  angularDrag: 0.15
+  inventoryObject: {fileID: 2511371399614049092, guid: 3f23cbd8b92ff5140bd769c1d2a9c26e,
     type: 3}
   baseValue: 0
-  usedForSelling: 1
   rarity: 0
   spawnChancePoints: 100
