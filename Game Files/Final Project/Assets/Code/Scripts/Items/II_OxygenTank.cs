@@ -13,7 +13,8 @@ public class II_OxygenTank : InventoryItem
         protected set
         {
             _oxygenLeft = value;
-            oxygenLeftPercent = string.Format("{0:0.##}", oxygenLeft / maxOxygenCapacity * 100);
+            oxygenFillAmount = oxygenLeft / maxOxygenCapacity;
+            oxygenLeftPercent = string.Format("{0:0.##}", oxygenFillAmount * 100);
         }
     }
     private float _oxygenLeft;
@@ -21,6 +22,7 @@ public class II_OxygenTank : InventoryItem
     public float maxOxygenCapacity { get; private set; } = 0;
     protected int _myOxygenTankID = 0;
     public string oxygenLeftPercent { get; private set; }
+    public float oxygenFillAmount { get; private set; }
 
     protected override void Awake()
     {

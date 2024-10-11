@@ -18,7 +18,6 @@ public class BuySection : MonoBehaviour
     private void OnEnable()
     {
         BuyingManager.UpdateBuySections += UpdateSection;
-        UpdateSection();
     }
 
     private void OnDisable()

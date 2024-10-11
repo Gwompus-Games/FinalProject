@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3386755253262078921}
   - component: {fileID: 1778979411614186965}
   - component: {fileID: 6741589420940607039}
+  - component: {fileID: 952313040161973606}
   m_Layer: 5
   m_Name: Shop UI
   m_TagString: Untagged
@@ -121,6 +122,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &952313040161973606
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250902169327831464}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &4159589431619246075
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,6 +42,7 @@ public class BuyingManager : MonoBehaviour
             BuySection section = Instantiate(_buySectionPrefab, transform).GetComponent<BuySection>();
             section.InitializeSection(toolList.tools[t]);
         }
+        UpdateBuySections?.Invoke();
     }
 
     public void BuyItem(ToolSO toolToBuy)

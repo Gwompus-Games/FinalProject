@@ -327,7 +327,7 @@ public class PlayerController : MonoBehaviour
 
     public void KillPlayer()
     {
-        print("u ded");
+        UnityEngine.Debug.Log("u ded");
         RestartGame();
     }
 

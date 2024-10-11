@@ -7,6 +7,7 @@ public class SellingPoint : MonoBehaviour, IInteractable
     private void Awake()
     {
         transform.tag = "Interactable";
+        GetComponentInChildren<Canvas>().worldCamera = Camera.main;
     }
 
     private void Start()
