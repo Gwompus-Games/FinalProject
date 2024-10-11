@@ -77,8 +77,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828f5eb3cf1a12648804b8d3af98d087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 10
-  playerBody: {fileID: 2518273171994542862}
+  _speed: 200
+  _rotationLimit: 90
+  _smoothTime: 0.02
+  _horiRotHelper: {fileID: 0}
 --- !u!1 &2303797473383469411
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +376,7 @@ GameObject:
   - component: {fileID: 3203781041019635320}
   - component: {fileID: 7388950037020119291}
   - component: {fileID: 1671993767813362017}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,6 +486,7 @@ GameObject:
   - component: {fileID: 8716103006985781635}
   - component: {fileID: 4765867987772039652}
   - component: {fileID: 8672683170310346580}
+  - component: {fileID: 4122007023428012745}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -823,6 +826,29 @@ MonoBehaviour:
   OverrideAttenuation: 1
   OverrideMinDistance: 1
   OverrideMaxDistance: 30
+--- !u!136 &4122007023428012745
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586079081141089300}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &5638480799051720436
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +952,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5178890187729279566}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -962,7 +988,7 @@ GameObject:
   - component: {fileID: 5082337234945300536}
   - component: {fileID: 3687604595318831445}
   - component: {fileID: 9091596396890335013}
-  m_Layer: 8
+  m_Layer: 31
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}

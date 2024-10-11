@@ -4,43 +4,62 @@ using UnityEngine;
 
 public class CameraLook : MonoBehaviour
 {
-    public float mouseSensitivity = 400f;
-    public Transform playerBody;
+    [Header("PlayerRotate Properties")]
+    [SerializeField] private Transform _cameraHolder;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _rotationLimit;
 
-    float _xRotation = 0f;
-    private Vector2 _cursorInput = Vector2.zero;
+    [Header("PlayerRotateSmooth Properties")]
+    [SerializeField] private float _smoothTime;
+    [SerializeField] private Transform _horiRotHelper;
 
-    private void Start()
+    private float _vertRot;
+    private float _verOld;
+    private float _vertAngularVelocity;
+    private float _horiAngularVelocity;
+
+    private void Start() => _horiRotHelper.localRotation = transform.localRotation;
+
+    private void LateUpdate()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        Rotate();
     }
 
-    private void OnEnable()
+    public virtual void Rotate()
     {
-        CustomPlayerInput.UpdateCursorDelta += CursorUpdate;
+        _verOld = _vertRot;
+
+        _vertRot -= GetVerticalValue();
+        _vertRot = _vertRot <= -_rotationLimit ? -_rotationLimit :
+                  _vertRot >= _rotationLimit ? _rotationLimit :
+                  _vertRot;
+
+        RotateVertical();
+        RotateHorizontal();
     }
 
-    private void OnDisable()
+    private void RotateHorizontal()
     {
-        CustomPlayerInput.UpdateCursorDelta -= CursorUpdate;
+        _horiRotHelper.Rotate(Vector3.up * GetHorizontalValue(), Space.Self);
+        transform.localRotation
+            = Quaternion.Euler(
+                0f,
+                Mathf.SmoothDampAngle(
+                    transform.localEulerAngles.y,
+                    _horiRotHelper.localEulerAngles.y,
+                    ref _horiAngularVelocity,
+                    _smoothTime),
+                    0f
+                );
     }
 
-    private void Update()
+    private void RotateVertical()
     {
-        if (GameManager.Instance.isPaused)
-            return;
+        _vertRot = Mathf.SmoothDampAngle(_verOld, _vertRot, ref _vertAngularVelocity, _smoothTime);
 
-        Vector2 mouseInput = _cursorInput * mouseSensitivity * Time.deltaTime;
-
-        _xRotation -= mouseInput.y;
-        _xRotation = Mathf.Clamp(_xRotation, -80f, 80f);
-
-        transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseInput.x);
+        _cameraHolder.localRotation = Quaternion.Euler(_vertRot, 0f, 0f);
     }
 
-    public void CursorUpdate(Vector2 cursorDelta)
-    {
-        _cursorInput = cursorDelta;
-    }
+    protected float GetVerticalValue() => Input.GetAxis("Mouse Y") * _speed * Time.deltaTime;
+    protected float GetHorizontalValue() => Input.GetAxis("Mouse X") * _speed * Time.deltaTime;
 }
