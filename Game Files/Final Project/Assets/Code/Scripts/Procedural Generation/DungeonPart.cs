@@ -154,7 +154,7 @@ public class DungeonPart : MonoBehaviour, IHideable
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
         if (newEnemy.TryGetComponent(out Enemy enemyScript))
         {
-            if (enemyScript.HasValidPath(GameManager.PlayerControllerInstance.transform.position))
+            if (enemyScript.HasValidPath(DungeonGenerator.Instance.transform.position))
             {
                 enemyScript.SetupEnemy();
                 return true;

@@ -351,6 +351,7 @@ public class DungeonGenerator : MonoBehaviour
 
             if (generatedRooms[i].SpawnEnemy(enemyPrefab))
             {
+                isEnemySpawned = true;
                 return;
             }
         }
