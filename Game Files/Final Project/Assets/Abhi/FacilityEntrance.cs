@@ -13,6 +13,8 @@ public class FacilityEntrance : MonoBehaviour, IInteractable
     {
         print("interacted");
         //SceneManager.LoadScene(2);
+        GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = false;
         GameManager.PlayerControllerInstance.transform.position =  DungeonGenerator.Instance.transform.position;
+        GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = true;
     }
 }
