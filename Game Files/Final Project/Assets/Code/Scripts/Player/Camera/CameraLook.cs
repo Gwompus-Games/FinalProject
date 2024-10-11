@@ -6,19 +6,23 @@ public class CameraLook : MonoBehaviour
 {
     [Header("PlayerRotate Properties")]
     [SerializeField] private Transform _cameraHolder;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _rotationLimit;
+    [SerializeField] private float _speed = 200;
+    [SerializeField] private float _rotationLimit = 90;
 
     [Header("PlayerRotateSmooth Properties")]
-    [SerializeField] private float _smoothTime;
-    [SerializeField] private Transform _horiRotHelper;
+    [SerializeField] private float _smoothTime = 0.02f;
 
+    private Transform _horiRotHelper;
     private float _vertRot;
     private float _verOld;
     private float _vertAngularVelocity;
     private float _horiAngularVelocity;
 
-    private void Start() => _horiRotHelper.localRotation = transform.localRotation;
+    private void Start()
+    {
+        _horiRotHelper = new GameObject("Horizontal Rotation Helper").transform;
+        _horiRotHelper.localRotation = transform.localRotation;
+    } 
 
     private void LateUpdate()
     {
