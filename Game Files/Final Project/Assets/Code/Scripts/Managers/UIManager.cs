@@ -21,31 +21,53 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        SetUI(UIToDisplay.GAME);
+    }
+
     public void SetUI(UIToDisplay ui)
     {
         switch (ui)
         {
             case UIToDisplay.GAME:
                 Cursor.lockState = CursorLockMode.Locked;
-                _inventoryUI.GetComponent<CanvasGroup>().alpha = 0;
-                _suitUI.GetComponent<CanvasGroup>().alpha = 1;
-                _shopUI.GetComponent<CanvasGroup>().alpha = 0;
+                SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_suitUI.GetComponent<CanvasGroup>(), true);
+                SetVisable(_shopUI.GetComponent<CanvasGroup>(), false);
                 break;
             case UIToDisplay.INVENTORY:
                 Cursor.lockState = CursorLockMode.None;
-                _inventoryUI.GetComponent<CanvasGroup>().alpha = 1;
-                _suitUI.GetComponent<CanvasGroup>().alpha = 0;
-                _shopUI.GetComponent<CanvasGroup>().alpha = 0;
+                SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), true);
+                SetVisable(_suitUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_shopUI.GetComponent<CanvasGroup>(), false);
                 break;
             case UIToDisplay.SHOP:
                 Cursor.lockState = CursorLockMode.None;
-                _inventoryUI.GetComponent<CanvasGroup>().alpha = 1;
-                _suitUI.GetComponent<CanvasGroup>().alpha = 0;
-                _shopUI.GetComponent<CanvasGroup>().alpha = 1;
+                SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), true);
+                SetVisable(_suitUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_shopUI.GetComponent<CanvasGroup>(), true);
                 break;
             default:
 
                 break;
         }
+    }
+
+    private void SetVisable(CanvasGroup canvasGroup, bool visable)
+    {
+        if (canvasGroup == null)
+        {
+            Debug.LogWarning("Tried to set a null canvas group!");
+            return;
+        }
+        float alpha = 0;
+        if (visable)
+        {
+            alpha = 1;
+        }
+        canvasGroup.alpha = alpha;
+        canvasGroup.interactable = visable;
+        canvasGroup.blocksRaycasts = visable;
     }
 }
