@@ -45,14 +45,14 @@ public sealed class JayDistortion : CustomPostProcessVolumeComponent, IPostProce
         m_Material.SetFloat("_DistortionSpeed", distortionSpeed.value);
         m_Material.SetFloat("_DistortionScale", distortionScale.value);
 
-        if (mainTex.value != null)
-        {
-            m_Material.SetTexture("_MainTex", mainTex.value);
-        }
-        else
-        {
-            m_Material.SetTexture("_MainTex", source);
-        }
+        //if (mainTex.value != null)
+        //{
+        //    m_Material.SetTexture("_MainTex", mainTex.value);
+        //}
+        //else
+        //{
+        //    m_Material.SetTexture("_MainTex", source);
+        //}
 
         cmd.Blit(source, destination, m_Material, 0);
     }
