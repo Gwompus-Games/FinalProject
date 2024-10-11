@@ -172,7 +172,7 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public void AddItemToInventory(ItemDataSO itemData)
+    public InventoryItem AddItemToInventory(ItemDataSO itemData)
     {
         bool startedOpen = (GameManager.PlayerControllerInstance.currentState == PlayerController.PlayerState.Inventory);
         if (!startedOpen)
@@ -186,17 +186,40 @@ public class InventoryController : MonoBehaviour
             {
                 GameManager.PlayerControllerInstance.CloseInventory();
             }
-            return;
+            return inventoryItem;
         }
         _itemToPlace = inventoryItem;
         _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
         _itemToPlace.InitializeInventoryItem(itemData);
+        return _itemToPlace;
+    }
+
+    public void AddItemToInventory(OxygenTankSO tankData, float oxygen)
+    {
+        II_OxygenTank oxygenTank = AddItemToInventory(tankData as ItemDataSO) as II_OxygenTank;
+        if (oxygenTank == null)
+        {
+            Debug.Log($"Added null oxygen tank to inventory!");
+            return;
+        }
+        oxygenTank.SetTankOxygenLevel(oxygen);
     }
 
     private bool CheckInventorySpaceAvailable(ItemDataSO itemData, out InventoryItem inventoryItem)
     {
-        inventoryItem = Instantiate(itemData.inventoryObject, _inventory.transform).GetComponent<InventoryItem>();
-        inventoryItem.FindExtremes(out Vector2Int minSpaceDistance, out Vector2Int maxSpaceDistance);
+        GameObject inventoryObject = Instantiate(itemData.inventoryObject, _inventory.transform);
+        Vector2Int minSpaceDistance, maxSpaceDistance;
+        if (inventoryObject.TryGetComponent<II_OxygenTank>(out II_OxygenTank oxygenTankItem))
+        {
+            oxygenTankItem.InitializeTank(oxygenTankItem.oxygenTankData);
+            inventoryItem = oxygenTankItem;
+            inventoryItem.FindExtremes(out minSpaceDistance, out maxSpaceDistance);
+        }
+        else
+        {
+            inventoryItem = inventoryObject.GetComponent<InventoryItem>();
+            inventoryItem.FindExtremes(out minSpaceDistance, out maxSpaceDistance);
+        }
         if (_inventory == null)
         {
             return false;
@@ -249,10 +272,27 @@ public class InventoryController : MonoBehaviour
         {
             return;
         }
+        II_OxygenTank oxygenTank = _itemToPlace as II_OxygenTank;
+        if (oxygenTank != null)
+        {
+            DropOxygenTank(oxygenTank);
+            return;
+        }
         WorldItem worldItemWO = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WorldItem>();
         worldItemWO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
         Vector3 spawnPoint = GameManager.PlayerControllerInstance.transform.position + (GameManager.PlayerControllerInstance.transform.forward * 1.25f);
         worldItemWO.SpawnItem(spawnPoint, _itemToPlace.itemData);
+        Destroy(_itemToPlace.gameObject);
+        SwapItemInHand(null);
+    }
+
+    private void DropOxygenTank(II_OxygenTank oxygenTankToPlace)
+    {
+        Debug.Log($"Dropping OxygenTank: {oxygenTankToPlace}");
+        WI_OxygenTank wI_OxygenTank = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WI_OxygenTank>();
+        wI_OxygenTank.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
+        Vector3 spawnPoint = GameManager.PlayerControllerInstance.transform.position + (GameManager.PlayerControllerInstance.transform.forward * 1.25f);
+        wI_OxygenTank.SpawnItem(spawnPoint, oxygenTankToPlace.oxygenLeft, oxygenTankToPlace.oxygenTankData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);
     }

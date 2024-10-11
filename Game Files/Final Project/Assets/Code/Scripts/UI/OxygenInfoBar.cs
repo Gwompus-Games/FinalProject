@@ -9,13 +9,12 @@ public class OxygenInfoBar : InfoBarTextElement
     [SerializeField] private GameObject _durabilityComponentsObject;
     [SerializeField] private GameObject _durabilitySectionPrefab;
     [SerializeField] private Color _fillColor, _emptyColor;
-    List<fillableUISection> _oxygenUISections = new List<fillableUISection>();
+    private fillableUISection _oxygenUISection;
 
     protected override void OnEnable()
     {
         base.OnEnable();
         OxygenSystem.OxygenLeftInTank += OxygenUpdateListener;
-        UpdateOxygenUI();
     }
 
     protected override void OnDisable()
@@ -27,6 +26,9 @@ public class OxygenInfoBar : InfoBarTextElement
     protected override void Start()
     {
         base.Start();
+        _oxygenUISection = Instantiate(_durabilitySectionPrefab, _durabilityComponentsObject.transform).GetComponent<fillableUISection>();
+        _oxygenUISection.SetFillAmount(1f);
+        _oxygenUISection.SetColours(_fillColor, _emptyColor);
         UpdateText($"{_uiElementName}: %100");
     }
 
@@ -34,7 +36,8 @@ public class OxygenInfoBar : InfoBarTextElement
     {
         _uiText.text = textToAdd;
     }
-
+    /* 
+     * Old code for multiple sections
     private bool CheckIfSectionTotalMatches(int numberOfSections)
     {
         if (_oxygenUISections.Count > 0)
@@ -49,7 +52,7 @@ public class OxygenInfoBar : InfoBarTextElement
         }
         return numberOfSections == _oxygenUISections.Count;
     }
-
+    
     private void ChangeUISections(int numberOfSections)
     {
         for (int s = _oxygenUISections.Count - 1; s >= 0; s--)
@@ -65,16 +68,9 @@ public class OxygenInfoBar : InfoBarTextElement
         }
     }
 
-    public void OxygenUpdateListener(string fillPercentString, float fillPercentFloat)
-    {
-        UpdateOxygenUI();
-        fillPercentString = fillPercentString.Split('.')[0];
-        UpdateText($"{_uiElementName} Current Tank: %{fillPercentString}");
-    }
-
     public void UpdateOxygenUI()
     {
-        int numberOfSections = GameManager.OxygenSystemInstance.oxygenTanks.Count;
+        int numberOfSections = 1;
 
         if (!CheckIfSectionTotalMatches(numberOfSections))
         {
@@ -82,7 +78,14 @@ public class OxygenInfoBar : InfoBarTextElement
         }
         for (int s = 0; s < _oxygenUISections.Count; s++)
         {
-            _oxygenUISections[s].SetFillAmount(GameManager.OxygenSystemInstance.oxygenTanks[_oxygenUISections.Count - 1 - s].oxygenFillAmount);
+            _oxygenUISections[s].SetFillAmount(GameManager.OxygenSystemInstance.oxygenTanks[GameManager.OxygenSystemInstance.activeOxygenTank].oxygenFillAmount);
         }
+    }
+    */
+    public void OxygenUpdateListener(string fillPercentString, float fillPercentFloat)
+    {
+        fillPercentString = fillPercentString.Split('.')[0];
+        UpdateText($"{_uiElementName} Current Tank: %{fillPercentString}");
+        _oxygenUISection.SetFillAmount(fillPercentFloat / 100f);
     }
 }

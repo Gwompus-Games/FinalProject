@@ -25,7 +25,7 @@ public class OxygenSystem : MonoBehaviour
         {
             for (int t = 0; t < _numberOfStartingOxygenTanks; t++)
             {
-                GameManager.InventoryControllerInstance.AddItemToInventory(_starterOxygenTank);
+                GameManager.InventoryControllerInstance.AddItemToInventory(_starterOxygenTank, float.MaxValue);
             }
         }
     }
@@ -173,7 +173,7 @@ public class OxygenSystem : MonoBehaviour
 
         if (!oxygenTanks[tank].containsOxygen)
         {
-            Debug.Log($"Swapping to {tank} tank, which has no oxygen.");
+            Debug.LogWarning($"Swapping to {tank} tank, which has no oxygen.");
             return SwapOxygenTank();
         }
 

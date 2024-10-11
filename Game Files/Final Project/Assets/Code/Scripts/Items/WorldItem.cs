@@ -13,7 +13,7 @@ public class WorldItem : MonoBehaviour, IInteractable
     private Rigidbody _rigidbody;
     public bool hidden { get; private set; } = false;
 
-    private void Awake()
+    protected void Awake()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
         _rigidbody = GetComponent<Rigidbody>();
@@ -24,7 +24,12 @@ public class WorldItem : MonoBehaviour, IInteractable
         transform.tag = "Interactable";
     }
 
-    public void SpawnItem(Vector3 position, ItemDataSO itemData = null)
+    protected virtual void Start()
+    {
+        
+    }
+
+    public virtual void SpawnItem(Vector3 position, ItemDataSO itemData = null)
     {
         if (itemData != null)
         {
@@ -39,7 +44,7 @@ public class WorldItem : MonoBehaviour, IInteractable
         Destroy(gameObject);
     }
 
-    private void AssignData(ItemDataSO itemData)
+    protected void AssignData(ItemDataSO itemData)
     {
         _itemData = itemData;
         _rigidbody.mass = _itemData.density;
@@ -47,12 +52,12 @@ public class WorldItem : MonoBehaviour, IInteractable
         _rigidbody.angularDrag = _itemData.angularDrag;
     }
 
-    private void HideItem(bool hideItem)
+    protected void HideItem(bool hideItem)
     {
         _meshRenderer.enabled = !hideItem;
     }
 
-    public void Interact()
+    public virtual void Interact()
     {
         GameManager.InventoryControllerInstance.AddItemToInventory(_itemData);
         DespawnItem();
