@@ -27,31 +27,25 @@ public class UIManager : MonoBehaviour
         {
             case UIToDisplay.GAME:
                 Cursor.lockState = CursorLockMode.Locked;
-                _inventoryUI.SetActive(false);
-                _suitUI.SetActive(true);
-                _shopUI.SetActive(false);
+                _inventoryUI.GetComponent<CanvasGroup>().alpha = 0;
+                _suitUI.GetComponent<CanvasGroup>().alpha = 1;
+                _shopUI.GetComponent<CanvasGroup>().alpha = 0;
                 break;
             case UIToDisplay.INVENTORY:
                 Cursor.lockState = CursorLockMode.None;
-                _inventoryUI.SetActive(true);
-                _suitUI.SetActive(false);
-                _shopUI.SetActive(false);
+                _inventoryUI.GetComponent<CanvasGroup>().alpha = 1;
+                _suitUI.GetComponent<CanvasGroup>().alpha = 0;
+                _shopUI.GetComponent<CanvasGroup>().alpha = 0;
                 break;
             case UIToDisplay.SHOP:
                 Cursor.lockState = CursorLockMode.None;
-                _inventoryUI.SetActive(true);
-                _suitUI.SetActive(false);
-                _shopUI.SetActive(true);
+                _inventoryUI.GetComponent<CanvasGroup>().alpha = 1;
+                _suitUI.GetComponent<CanvasGroup>().alpha = 0;
+                _shopUI.GetComponent<CanvasGroup>().alpha = 1;
                 break;
             default:
 
                 break;
         }
-    }
-
-    public void SetInventoryUI(bool enabled)
-    {
-        _inventoryUI.SetActive(enabled);
-        _suitUI.SetActive(!enabled);
     }
 }

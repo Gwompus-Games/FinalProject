@@ -69,7 +69,7 @@ public class SuitSystem : MonoBehaviour, IDamageable
 
     private void DamageSection(float damage, out float remainderDamage)
     {
-        if (currentSection >= numberOfSections)
+        if (currentSection >= numberOfSections - 1)
         {
             Debug.Log("Kill Player");
             GameManager.PlayerControllerInstance.KillPlayer();

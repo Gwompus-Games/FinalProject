@@ -38,6 +38,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2883077276540197101, guid: e90f60e0fa1be474eae75899839c7c95,
+        type: 3}
+      propertyPath: m_PreferredHeight
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4723023905501648438, guid: e90f60e0fa1be474eae75899839c7c95,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -67,6 +72,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5019662256156546529, guid: e90f60e0fa1be474eae75899839c7c95,
+        type: 3}
+      propertyPath: m_PreferredHeight
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5317210672089772103, guid: e90f60e0fa1be474eae75899839c7c95,
         type: 3}
@@ -243,8 +253,56 @@ PrefabInstance:
       propertyPath: _uiElementName
       value: Oxygen
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8876680648979361887, guid: e90f60e0fa1be474eae75899839c7c95, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8763493750999748773, guid: e90f60e0fa1be474eae75899839c7c95,
+        type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 742978048643282805}
   m_SourcePrefab: {fileID: 100100000, guid: e90f60e0fa1be474eae75899839c7c95, type: 3}
+--- !u!1 &5218873063995856707 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8763493750999748773, guid: e90f60e0fa1be474eae75899839c7c95,
+    type: 3}
+  m_PrefabInstance: {fileID: 3599227416609933286}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &742978048643282805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5218873063995856707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 647792424e47c0d4fa5cff65895fd3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _uiElementName: Oxygen
+  _uiText: {fileID: 6972633454700593496}
+  _durabilityComponentsObject: {fileID: 8463938896037484818}
+  _durabilitySectionPrefab: {fileID: 6486426971709306970, guid: d515153d080ced542957717e52763650,
+    type: 3}
+  _fillColor: {r: 0.47058827, g: 0.5882353, b: 0.9333334, a: 1}
+  _emptyColor: {r: 0.18431373, g: 0.18823531, b: 0.29411766, a: 1}
+--- !u!114 &6972633454700593496 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5850390780963636926, guid: e90f60e0fa1be474eae75899839c7c95,
+    type: 3}
+  m_PrefabInstance: {fileID: 3599227416609933286}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &8463938896037484818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4937904319758130932, guid: e90f60e0fa1be474eae75899839c7c95,
+    type: 3}
+  m_PrefabInstance: {fileID: 3599227416609933286}
+  m_PrefabAsset: {fileID: 0}

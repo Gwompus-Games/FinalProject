@@ -14,17 +14,20 @@ public class OxygenInfoBar : InfoBarTextElement
     protected override void OnEnable()
     {
         base.OnEnable();
+        OxygenSystem.OxygenLeftInTank += OxygenUpdateListener;
+        UpdateOxygenUI();
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
+        OxygenSystem.OxygenLeftInTank -= OxygenUpdateListener;
     }
 
     protected override void Start()
     {
         base.Start();
-        UpdateText(_uiElementName);
+        UpdateText($"{_uiElementName}: %100");
     }
 
     public override void UpdateText(string textToAdd)
@@ -62,6 +65,13 @@ public class OxygenInfoBar : InfoBarTextElement
         }
     }
 
+    public void OxygenUpdateListener(string fillPercentString, float fillPercentFloat)
+    {
+        UpdateOxygenUI();
+        fillPercentString = fillPercentString.Split('.')[0];
+        UpdateText($"{_uiElementName} Current Tank: %{fillPercentString}");
+    }
+
     public void UpdateOxygenUI()
     {
         int numberOfSections = GameManager.OxygenSystemInstance.oxygenTanks.Count;
@@ -72,7 +82,7 @@ public class OxygenInfoBar : InfoBarTextElement
         }
         for (int s = 0; s < _oxygenUISections.Count; s++)
         {
-            
+            _oxygenUISections[s].SetFillAmount(GameManager.OxygenSystemInstance.oxygenTanks[_oxygenUISections.Count - 1 - s].oxygenFillAmount);
         }
     }
 }
