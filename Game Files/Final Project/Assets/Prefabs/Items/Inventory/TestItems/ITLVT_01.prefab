@@ -9,9 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1563762577608789727}
-  - component: {fileID: 7943194212243953064}
   - component: {fileID: 535903711307724664}
-  - component: {fileID: 8437305172566882383}
   m_Layer: 5
   m_Name: ITLVT_01
   m_TagString: Untagged
@@ -48,14 +46,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &7943194212243953064
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5110446840269711149}
-  m_CullTransparentMesh: 1
 --- !u!114 &535903711307724664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,18 +60,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originTile: {x: -1, y: -1}
   _itemImage: {fileID: 5354614922786261320}
---- !u!225 &8437305172566882383
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5110446840269711149}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &6955040203422337078
 GameObject:
   m_ObjectHideFlags: 0
