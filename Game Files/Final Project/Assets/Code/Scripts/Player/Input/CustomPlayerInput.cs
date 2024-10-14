@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class CustomPlayerInput : MonoBehaviour
 {
-    public static CustomPlayerInput INSTANCE;
     public static Action<Vector2> UpdateCursorPosition;
     public static Action<Vector2> UpdateCursorDelta;
     public static Action<int> Rotate;
@@ -25,12 +24,6 @@ public class CustomPlayerInput : MonoBehaviour
 
     private void Awake()
     {
-        if (INSTANCE != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        INSTANCE = this;
         Cursor.lockState = CursorLockMode.Locked;
     }
 

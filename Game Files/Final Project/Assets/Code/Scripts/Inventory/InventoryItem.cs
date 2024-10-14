@@ -31,6 +31,14 @@ public class InventoryItem : MonoBehaviour
         }
         InitializeGridSpaces();
         ResizeForScreen();
+        if (itemData.inventoryItemSprite == null)
+        {
+            itemData.inventoryItemSprite = _itemImage.sprite;
+        }
+        else
+        {
+            _itemImage.sprite = itemData.inventoryItemSprite;
+        }
     }
 
     public void FindExtremes(out Vector2Int minSpaceDistance, out Vector2Int maxSpaceDistance)
@@ -156,5 +164,10 @@ public class InventoryItem : MonoBehaviour
             numberOfFlashes++;
         }
         ChangeTileColours(InventoryGrid.globalItemData.normalTileColour, InventoryGrid.globalItemData.tileAlpha);
+    }
+
+    public Sprite GetItemSprite()
+    {
+        return _itemImage.sprite;
     }
 }

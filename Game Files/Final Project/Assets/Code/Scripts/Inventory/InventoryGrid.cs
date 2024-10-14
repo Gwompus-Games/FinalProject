@@ -7,6 +7,9 @@ public class InventoryGrid : MonoBehaviour
 {
     [SerializeField] private InventoryGlobalDataSO _globalData;
     public static InventoryGlobalDataSO globalItemData;
+    private InventoryController _inventoryController;
+    private InventoryItem _hoveredItem;
+    private Vector2 _cursorPos = Vector2.zero;
 
     public InventoryItem[,] inventoryItemSlot { get; private set; }
 
@@ -28,6 +31,7 @@ public class InventoryGrid : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         _xScaler = (float)Screen.width / (float)globalItemData.referenceResolution.x;
         _yScaler = (float)Screen.height / (float)globalItemData.referenceResolution.y;
+        _inventoryController = FindObjectOfType<InventoryController>();
         Init(gridSizeWidth, gridSizeHeight);
     }
 
@@ -35,6 +39,16 @@ public class InventoryGrid : MonoBehaviour
     {
         // where init used to be
 
+    }
+
+    private void OnEnable()
+    {
+        CustomPlayerInput.UpdateCursorPosition += CursorPosition;
+    }
+
+    private void OnDisable()
+    {
+        CustomPlayerInput.UpdateCursorPosition -= CursorPosition;
     }
 
     private void Init(int width, int height)
@@ -362,5 +376,60 @@ public class InventoryGrid : MonoBehaviour
             }
         }
         return items.ToArray();
+    }
+
+    public void CursorPosition(Vector2 position)
+    {
+        _cursorPos = position;
+        if (_inventoryController.selectedItemGrid != this)
+        {
+            return;
+        }
+        Vector2Int gridPos = GetTileGridPosition(position);
+        if (gridPos.x < 0 || gridPos.y < 0 ||
+            gridPos.x >= inventoryItemSlot.GetLength(0) ||
+            gridPos.y >= inventoryItemSlot.GetLength(1))
+        {
+            return;
+        }
+        InventoryItem newItem = GetItemInSlot(gridPos);
+        if (_hoveredItem != newItem)
+        {
+            _hoveredItem = newItem;
+            StartCoroutine(Hover(_hoveredItem));
+        }
+    }
+
+    private IEnumerator Hover(InventoryItem item)
+    {
+        InventoryPopupUI popupUI = GetComponentInParent<InventoryUI>().popupUI;
+        if (popupUI == null)
+        {
+            item = null;
+        }
+        yield return null;
+        if (_hoveredItem == item && item != null)
+        {
+            yield return new WaitForSeconds(popupUI.popupHoverTimeInSeconds);
+            if (_hoveredItem == item)
+            {
+                popupUI.EnablePopup(_cursorPos);
+                popupUI.SetPopupData(item);
+                II_OxygenTank oxygenItem = item as II_OxygenTank;
+                do
+                {
+                    if (oxygenItem != null)
+                    {
+                        popupUI.UpdatePopup(_cursorPos, oxygenItem);
+                    }
+                    else
+                    {
+                        popupUI.UpdatePopup(_cursorPos);
+                    }
+                    yield return new WaitForSeconds(0.15f);
+                } while (_hoveredItem == item);
+            }
+        }
+        popupUI.DisablePopup();
     }
 }

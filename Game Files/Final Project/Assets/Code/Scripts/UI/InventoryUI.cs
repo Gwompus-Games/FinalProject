@@ -5,7 +5,7 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private GameObject _infoBar;
-    private InventoryPopupUI _popupUI;
+    public InventoryPopupUI popupUI { get; private set; }
     private RectTransform _infoBarRectTransform;
 
     private void Awake()
@@ -14,8 +14,8 @@ public class InventoryUI : MonoBehaviour
         {
             throw new System.Exception("Info Bar not assigned to Inventory UI!");
         }
-        _popupUI = GetComponentInChildren<InventoryPopupUI>();
-        if (_popupUI == null)
+        popupUI = GetComponentInChildren<InventoryPopupUI>();
+        if (popupUI == null)
         {
             throw new System.Exception("No Popup Found!");
         }
