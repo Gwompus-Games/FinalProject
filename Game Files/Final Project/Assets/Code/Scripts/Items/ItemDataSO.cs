@@ -6,6 +6,7 @@ public class ItemDataSO : ScriptableObject
 {
     [Header("General Item Data")]
     public string itemName = "Item Name";
+    [TextArea]
     public string itemDescription = "";
     public bool usedForSelling;
     [Header("World Item Data")]

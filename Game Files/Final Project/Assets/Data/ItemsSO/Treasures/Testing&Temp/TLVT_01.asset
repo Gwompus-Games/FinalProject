@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TLVT_01
   m_EditorClassIdentifier: 
   itemName: TLVT_01
+  itemDescription: Low value Test item
   usedForSelling: 1
   worldObject: {fileID: 4779515826770650758, guid: 24bbaf32e82e06c4bb5ae4ec5a8c94c9,
     type: 3}
@@ -20,6 +21,8 @@ MonoBehaviour:
   drag: 15
   angularDrag: 0.15
   inventoryObject: {fileID: 8473071855378956784, guid: c6e4170c9c5af9f46b4b2998afa306a6,
+    type: 3}
+  inventoryItemSprite: {fileID: 21300000, guid: 03b09d6e923a52946aa05bb8fdf3983d,
     type: 3}
   baseValue: 12
   rarity: 0
