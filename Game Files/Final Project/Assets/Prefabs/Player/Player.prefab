@@ -556,6 +556,7 @@ MonoBehaviour:
   _runSpeed: 3
   _gravity: -2
   _runningOxygenDrainMultiplier: 2
+  _secondsToRunSpeed: 5
   _groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -563,6 +564,8 @@ MonoBehaviour:
   _groundCheckRadius: 0.4
   _grabLength: 4
   _startingMoney: 500
+  _bufferSecondsFromNoOxygen: 10
+  _deathTime: 7.5
 --- !u!114 &5864806220124439931
 MonoBehaviour:
   m_ObjectHideFlags: 0
