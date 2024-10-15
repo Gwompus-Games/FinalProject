@@ -379,10 +379,9 @@ public class PlayerController : ManagedByGameManager
 
     public void TeleportPlayer(Vector3 position)
     {
-        CharacterController characterController = GetComponent<CharacterController>();
-        characterController.enabled = false;
+        _controller.enabled = false;
         transform.position = position;
-        characterController.enabled = true;
+        _controller.enabled = true;
     }
 
     public void NoOxygenLeft()
