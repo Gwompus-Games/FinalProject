@@ -25,7 +25,7 @@ public class OxygenSystem : MonoBehaviour
         {
             for (int t = 0; t < _numberOfStartingOxygenTanks; t++)
             {
-                GameManager.InventoryControllerInstance.AddItemToInventory(_starterOxygenTank, float.MaxValue);
+                GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(_starterOxygenTank, float.MaxValue);
             }
         }
     }
@@ -214,7 +214,7 @@ public class OxygenSystem : MonoBehaviour
 
         if (oxygenTanks.Count == 0)
         {
-            GameManager.PlayerControllerInstance.NoOxygenLeft();
+            GameManager.Instance.GetManagedComponent<PlayerController>().NoOxygenLeft();
             OxygenLeftInTank?.Invoke("0", 0f);
             return;
         }
@@ -226,7 +226,7 @@ public class OxygenSystem : MonoBehaviour
             {
                 if (!SwapOxygenTank())
                 {
-                    GameManager.PlayerControllerInstance.NoOxygenLeft();
+                    GameManager.Instance.GetManagedComponent<PlayerController>().NoOxygenLeft();
                     OxygenLeftInTank?.Invoke("0", 0f);
                     break;
                 }
@@ -237,7 +237,7 @@ public class OxygenSystem : MonoBehaviour
         {
             OxygenLeftInTank?.Invoke(oxygenTanks[activeOxygenTank].oxygenLeftPercent, 
                                      oxygenTanks[activeOxygenTank].oxygenFillAmount * 100f);
-            GameManager.PlayerControllerInstance.OxygenRegained();
+            GameManager.Instance.GetManagedComponent<PlayerController>().OxygenRegained();
         }
     }
 

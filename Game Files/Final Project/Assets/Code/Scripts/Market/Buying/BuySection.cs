@@ -35,17 +35,17 @@ public class BuySection : MonoBehaviour
         {
             throw new System.Exception("No tool data assigned!");
         }
-        if (GameManager.PlayerControllerInstance != null)
+        if (GameManager.Instance.GetManagedComponent<PlayerController>() != null)
         {
-            _canAfford = GameManager.PlayerControllerInstance.money >= _toolData.buyValue;
+            _canAfford = GameManager.Instance.GetManagedComponent<PlayerController>().money >= _toolData.buyValue;
         }
         if (_canAfford)
         {
-            _buyButtonImage.color = GameManager.BuyingManagerInstance.ableToBuyColour;
+            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().ableToBuyColour;
         }
         else
         {
-            _buyButtonImage.color = GameManager.BuyingManagerInstance.unableToBuyColour;
+            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().unableToBuyColour;
         }
     }
 
@@ -61,17 +61,17 @@ public class BuySection : MonoBehaviour
         _toolCostText.text = $"${_toolData.buyValue}";
         if (_canAfford)
         {
-            _buyButtonImage.color = GameManager.BuyingManagerInstance.ableToBuyColour;
+            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().ableToBuyColour;
         }
         else
         {
-            _buyButtonImage.color = GameManager.BuyingManagerInstance.unableToBuyColour;
+            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().unableToBuyColour;
         }
         _initialized = true;
     }
 
     public void BuyItem()
     {
-        GameManager.BuyingManagerInstance.BuyItem(_toolData);
+        GameManager.Instance.GetManagedComponent<BuyingManager>().BuyItem(_toolData);
     }
 }

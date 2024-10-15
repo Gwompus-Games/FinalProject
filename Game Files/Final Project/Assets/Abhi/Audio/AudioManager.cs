@@ -4,26 +4,18 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : ManagedByGameManager
 {
-    public static AudioManager instance;
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
 
-    private void Awake()
+    public override void Init()
     {
-        if (instance != null)
-        {
-            Debug.LogError("Found more than one audio manager in the scene.");
-        }
-        instance = this;
-
-
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
         PlayOneShotAttached(FMODEvents.instance.bgm);
     }
@@ -48,7 +40,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOneShotAttached(EventReference sound)
     {
-        RuntimeManager.PlayOneShotAttached(sound, GameManager.PlayerControllerInstance.gameObject);
+        RuntimeManager.PlayOneShotAttached(sound, GameManager.Instance.GetManagedComponent<PlayerController>().gameObject);
     }
 
     public EventInstance CreateEventInstance(EventReference eventReference)

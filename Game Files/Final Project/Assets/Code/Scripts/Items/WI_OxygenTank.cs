@@ -52,7 +52,7 @@ public class WI_OxygenTank : WorldItem
 
     public override void Interact()
     {
-        GameManager.InventoryControllerInstance.AddItemToInventory(oxygenTankData, oxygenLeft);
+        GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(oxygenTankData, oxygenLeft);
         DespawnItem();
     }
 }

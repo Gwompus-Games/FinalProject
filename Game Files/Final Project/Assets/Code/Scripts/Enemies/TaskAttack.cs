@@ -27,7 +27,7 @@ public class TaskAttack : Node
         _attackCounter += Time.deltaTime;
         if (_attackCounter >= _attackTime)
         {
-            GameManager.PlayerControllerInstance.suitSystem.TakeDamage(50);
+            GameManager.Instance.GetManagedComponent<SuitSystem>().TakeDamage(50);
 
             _attackCounter = 0;
             _attackTime = 2;

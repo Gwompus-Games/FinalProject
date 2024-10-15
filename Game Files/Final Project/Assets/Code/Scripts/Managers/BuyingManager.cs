@@ -47,13 +47,13 @@ public class BuyingManager : MonoBehaviour
 
     public void BuyItem(ToolSO toolToBuy)
     {
-        if (GameManager.PlayerControllerInstance.money < toolToBuy.buyValue)
+        if (GameManager.Instance.GetManagedComponent<PlayerController>().money < toolToBuy.buyValue)
         {
             Debug.LogWarning("Player doesn't have enough money to buy this tool.");
             return;
         }
-        GameManager.PlayerControllerInstance.SpendMoney(toolToBuy.buyValue);
-        GameManager.InventoryControllerInstance.AddItemToInventory(toolToBuy);
+        GameManager.Instance.GetManagedComponent<PlayerController>().SpendMoney(toolToBuy.buyValue);
+        GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(toolToBuy);
         UpdateBuySections?.Invoke();
     }
 }
