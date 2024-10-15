@@ -235,7 +235,9 @@ public class OxygenSystem : MonoBehaviour
 
         if (drainAmountInSeconds == 0)
         {
-            OxygenLeftInTank?.Invoke(oxygenTanks[activeOxygenTank].oxygenLeftPercent, oxygenTanks[activeOxygenTank].oxygenFillAmount * 100f);
+            OxygenLeftInTank?.Invoke(oxygenTanks[activeOxygenTank].oxygenLeftPercent, 
+                                     oxygenTanks[activeOxygenTank].oxygenFillAmount * 100f);
+            GameManager.PlayerControllerInstance.OxygenRegained();
         }
     }
 

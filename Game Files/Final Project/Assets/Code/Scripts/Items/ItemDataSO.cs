@@ -6,6 +6,8 @@ public class ItemDataSO : ScriptableObject
 {
     [Header("General Item Data")]
     public string itemName = "Item Name";
+    [TextArea]
+    public string itemDescription = "";
     public bool usedForSelling;
     [Header("World Item Data")]
     public GameObject worldObject;
@@ -14,6 +16,7 @@ public class ItemDataSO : ScriptableObject
     public float angularDrag = 0.15f;
     [Header("Inventory Item Data")]
     public GameObject inventoryObject;
+    public Sprite inventoryItemSprite;
     [Header("Selling Data")]
     public int baseValue = 0;
 }

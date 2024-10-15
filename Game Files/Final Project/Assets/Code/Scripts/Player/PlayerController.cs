@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _runSpeed = 5f;
     [SerializeField] private float _gravity = -2f;
     [SerializeField] [Range(1f, 5f)] private float _runningOxygenDrainMultiplier = 2f;
+    [SerializeField] private float _secondsToRunSpeed = 1.5f;
 
     [Header("Grounded Settings")]
     [SerializeField] private LayerMask _groundMask;
@@ -58,9 +59,18 @@ public class PlayerController : MonoBehaviour
     }
     private int _money;
 
+    [Header("Oxygen Settings")]
+    [SerializeField] private float _bufferSecondsFromNoOxygen = 10f;
+    private bool _outOfOxygen = false;
+
+    [Header("Death Settings")]
+    [SerializeField] private float _deathTime = 7.5f;
+    private bool _dead = false;
+
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
     public float moveSpeed { get; private set; }
+    private float _targetMoveSpeed;
     public bool isRunning { get; private set; }
 
     CharacterController _controller;
@@ -71,12 +81,16 @@ public class PlayerController : MonoBehaviour
     private float _defaultStepOffset;
 
     private Vector2 _movementInput = Vector2.zero;
+    private Vector2 _lastMoveDirection = Vector2.zero;
 
     public OxygenSystem oxygenSystem { get; private set; }
     public SuitSystem suitSystem { get; private set; }
     public OxygenDrainer runningDrainer { get; private set; }
 
     private EventInstance playerFootsteps;
+
+    private Coroutine _oxygenOutCoroutine;
+    private Coroutine _dyingCoroutine;
 
     private void Awake()
     {
@@ -95,10 +109,17 @@ public class PlayerController : MonoBehaviour
         CloseInventory();
         playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.footsteps);
         money = _startingMoney;
+        _dead = false;
+        _outOfOxygen = false;
     }
 
     private void Update()
     {
+        if (_dead)
+        {
+            return;
+        }
+
         // Take player inputs
         MovementInput();
 
@@ -108,6 +129,9 @@ public class PlayerController : MonoBehaviour
         // Update player state and apply state logic
         UpdateState();
         ApplyState();
+
+        // Calculate new movespeed based on acceleration
+        CalculateMoveSpeed();
 
         // Apply player movement
         ApplyMovement();
@@ -165,16 +189,16 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case PlayerState.Idle:
-                moveSpeed = 0;
+                _targetMoveSpeed = 0;
                 break;
             case PlayerState.Walking:
-                moveSpeed = _walkSpeed;
+                _targetMoveSpeed = _walkSpeed;
                 break;
             case PlayerState.Running:
-                moveSpeed = _runSpeed;
+                _targetMoveSpeed = _runSpeed;
                 break;
             default:
-                moveSpeed = 0;
+                _targetMoveSpeed = 0;
                 break;
         }
     }
@@ -211,12 +235,50 @@ public class PlayerController : MonoBehaviour
             _velocity.y = -5f;
         }
 
+        if (_movement != Vector3.zero)
+        {
+            _lastMoveDirection = _movement;
+        }
         _movement = (transform.right * _movementInput.x + transform.forward * _movementInput.y);
+    }
+
+    private void CalculateMoveSpeed()
+    {
+        int accelerationDirection;
+        if (moveSpeed == _targetMoveSpeed)
+        {
+            accelerationDirection = 0;
+        }
+        else
+        {
+            accelerationDirection = MathF.Sign(_targetMoveSpeed - moveSpeed);
+        }
+        float moveMod = (_runSpeed / _secondsToRunSpeed) * Time.deltaTime;
+        if (accelerationDirection != 0)
+        {
+            moveSpeed = moveSpeed + (moveMod * accelerationDirection);
+        }
+        switch (accelerationDirection)
+        {
+            case 1:
+                moveSpeed = Mathf.Clamp(moveSpeed, 0, _targetMoveSpeed);
+                break;
+            case -1:
+                moveSpeed = Mathf.Clamp(moveSpeed, 0, _runSpeed);
+                break;
+        }
     }
 
     private void ApplyMovement()
     {
-        _controller.Move(_movement * moveSpeed * Time.deltaTime);
+        if (_movement != Vector3.zero)
+        {
+            _controller.Move(_movement * moveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            _controller.Move(_lastMoveDirection * moveSpeed * Time.deltaTime);
+        }
     }
 
     private void CalculateGravity()
@@ -322,19 +384,52 @@ public class PlayerController : MonoBehaviour
 
     public void NoOxygenLeft()
     {
-        KillPlayer();
+        _outOfOxygen = true;
+        _oxygenOutCoroutine = StartCoroutine(OxygenOutTimer());
+    }
+
+    public void OxygenRegained()
+    {
+        _outOfOxygen = false;
+        if (_oxygenOutCoroutine != null)
+        {
+            StopCoroutine(_oxygenOutCoroutine);
+        }
     }
 
     public void KillPlayer()
     {
-        UnityEngine.Debug.Log("u ded");
-        RestartGame();
+        _dead = true;
+        _dyingCoroutine = StartCoroutine(DeathTimer());
     }
 
     public void RestartGame()
     {
         AudioManager.instance.CleanUp();
         SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator OxygenOutTimer()
+    {
+        yield return null;
+        //add code for any animations and sounds
+
+        yield return new WaitForSeconds(_bufferSecondsFromNoOxygen);
+        //add any code for things happening after player runs out of buffer seconds
+        if (_outOfOxygen)
+        {
+            KillPlayer();
+        }
+    }
+
+    private IEnumerator DeathTimer()
+    {
+        yield return null;
+        //add code for any animations and sounds
+
+        yield return new WaitForSeconds(_deathTime);
+        //add any code for doing things after player dies
+        RestartGame();
     }
 
     // Input functions using CustomPlayerInput
