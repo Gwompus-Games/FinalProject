@@ -59,7 +59,7 @@ public class WorldItem : MonoBehaviour, IInteractable
 
     public virtual void Interact()
     {
-        GameManager.InventoryControllerInstance.AddItemToInventory(_itemData);
+        GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(_itemData);
         DespawnItem();
     }
 }

@@ -174,17 +174,17 @@ public class InventoryController : MonoBehaviour
 
     public InventoryItem AddItemToInventory(ItemDataSO itemData)
     {
-        bool startedOpen = (GameManager.PlayerControllerInstance.currentState == PlayerController.PlayerState.Inventory);
+        bool startedOpen = (GameManager.Instance.GetManagedComponent<PlayerController>().currentState == PlayerController.PlayerState.Inventory);
         if (!startedOpen)
         {
-            GameManager.PlayerControllerInstance.OpenInventory();
+            GameManager.Instance.GetManagedComponent<PlayerController>().OpenInventory();
         }
         InventoryItem inventoryItem;
         if (CheckInventorySpaceAvailable(itemData, out inventoryItem))
         {
             if (startedOpen == false)
             {
-                GameManager.PlayerControllerInstance.CloseInventory();
+                GameManager.Instance.GetManagedComponent<PlayerController>().CloseInventory();
             }
             return inventoryItem;
         }
@@ -280,7 +280,7 @@ public class InventoryController : MonoBehaviour
         }
         WorldItem worldItemWO = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WorldItem>();
         worldItemWO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        Vector3 spawnPoint = GameManager.PlayerControllerInstance.transform.position + (GameManager.PlayerControllerInstance.transform.forward * 1.25f);
+        Vector3 spawnPoint = GameManager.Instance.GetManagedComponent<PlayerController>().transform.position + (GameManager.Instance.GetManagedComponent<PlayerController>().transform.forward * 1.25f);
         worldItemWO.SpawnItem(spawnPoint, _itemToPlace.itemData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);
@@ -291,7 +291,7 @@ public class InventoryController : MonoBehaviour
         Debug.Log($"Dropping OxygenTank: {oxygenTankToPlace}");
         WI_OxygenTank wI_OxygenTank = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WI_OxygenTank>();
         wI_OxygenTank.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        Vector3 spawnPoint = GameManager.PlayerControllerInstance.transform.position + (GameManager.PlayerControllerInstance.transform.forward * 1.25f);
+        Vector3 spawnPoint = GameManager.Instance.GetManagedComponent<PlayerController>().transform.position + (GameManager.Instance.GetManagedComponent<PlayerController>().transform.forward * 1.25f);
         wI_OxygenTank.SpawnItem(spawnPoint, oxygenTankToPlace.oxygenLeft, oxygenTankToPlace.oxygenTankData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);

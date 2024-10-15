@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(OxygenSystem))]
 [RequireComponent(typeof(SuitSystem))]
 [RequireComponent(typeof(StudioEventEmitter))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : ManagedByGameManager
 {
     public static Action<int> UpdateMoney;
 
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
     private Coroutine _oxygenOutCoroutine;
     private Coroutine _dyingCoroutine;
 
-    private void Awake()
+    public override void Init()
     {
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
         oxygenSystem = GetComponent<OxygenSystem>();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
         _controller = GetComponent<CharacterController>();
         _defaultStepOffset = _controller.stepOffset;
@@ -478,7 +478,7 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeUIState(UIManager.UIToDisplay ui)
     {
-        GameManager.UIManagerInstance.SetUI(ui);
+        GameManager.Instance.GetManagedComponent<UIManager>().SetUI(ui);
         bool enabled = false;
         switch (ui)
         {
@@ -495,7 +495,7 @@ public class PlayerController : MonoBehaviour
         GetComponentInChildren<CameraLook>().enabled = !enabled;
         if (!enabled)
         {
-            GameManager.InventoryControllerInstance.InventoryClosing();
+            GameManager.Instance.GetManagedComponent<InventoryController>().InventoryClosing();
         }
     }
 

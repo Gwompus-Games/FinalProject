@@ -28,7 +28,7 @@ public class SellingZone : MonoBehaviour
             return;
         }
 
-        GameManager.PlayerControllerInstance.GainMoney(itemToSell.sellValue);
+        GameManager.Instance.GetManagedComponent<PlayerController>().GainMoney(itemToSell.sellValue);
         _uiComponent.UpdateUI(0);
         itemToSell.ItemRemovedFromInventory();
         Destroy(itemToSell.gameObject);
