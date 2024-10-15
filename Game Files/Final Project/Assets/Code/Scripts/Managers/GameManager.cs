@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<ManagedByGameManager> _neededStandaloneScripts = new List<ManagedByGameManager>();
     [SerializeField] private List<GameObject> _neededPrefabs = new List<GameObject>();
 
+    [SerializeField] private Transform _playerSpawnPoint;
+
     public static GameManager Instance { get; private set; }
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
 
@@ -26,8 +28,7 @@ public class GameManager : MonoBehaviour
 
 
         List<GameObject> neededObjects = new List<GameObject>();
-        GameObject managers = new GameObject();
-        managers.name = "Dedicated Managers";
+        GameObject managers = new GameObject("Dedicated Managers");
 
         //Adding all needed standalone manager scripts
         for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
@@ -65,6 +66,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
+    }
+
+    private void Start()
+    {
         for (int i = 0; i < _managedObjects.Count; i++)
         {
             _managedObjects[i].CustomStart();

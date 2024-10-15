@@ -106,7 +106,7 @@ public class PlayerController : ManagedByGameManager
         moveSpeed = _walkSpeed;
         isRunning = false;
         CloseInventory();
-        playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.footsteps);
+        playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         money = _startingMoney;
         _dead = false;
         _outOfOxygen = false;
@@ -408,7 +408,7 @@ public class PlayerController : ManagedByGameManager
 
     public void RestartGame()
     {
-        AudioManager.instance.CleanUp();
+        GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();
         SceneManager.LoadScene(0);
     }
 
