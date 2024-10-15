@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine.SceneManagement;
@@ -81,7 +80,7 @@ public class PlayerController : MonoBehaviour
     private float _defaultStepOffset;
 
     private Vector2 _movementInput = Vector2.zero;
-    private Vector2 _lastMoveDirection = Vector2.zero;
+    private Vector3 _lastMoveDirection = Vector2.zero;
 
     public OxygenSystem oxygenSystem { get; private set; }
     public SuitSystem suitSystem { get; private set; }
@@ -240,6 +239,8 @@ public class PlayerController : MonoBehaviour
             _lastMoveDirection = _movement;
         }
         _movement = (transform.right * _movementInput.x + transform.forward * _movementInput.y);
+
+        Debug.Log(_movement);
     }
 
     private void CalculateMoveSpeed()
@@ -267,6 +268,8 @@ public class PlayerController : MonoBehaviour
                 moveSpeed = Mathf.Clamp(moveSpeed, 0, _runSpeed);
                 break;
         }
+
+        //Debug.Log(moveSpeed);
     }
 
     private void ApplyMovement()
