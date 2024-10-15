@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FMODEvents : MonoBehaviour
+public class FMODEvents : ManagedByGameManager
 {
     [field: Header ("Heartbeat SFX")]
     [field: SerializeField] public EventReference heartbeat { get; private set; }
@@ -13,14 +13,14 @@ public class FMODEvents : MonoBehaviour
     
     [field: Header ("Footsteps SFX")]
     [field: SerializeField] public EventReference footsteps { get; private set; }
-    public static FMODEvents instance { get; private set; }
 
-    private void Awake()
+    public override void Init()
     {
-        if (instance != null)
-        {
-            Debug.LogError("Found more than one audio manager in the scene.");
-        }
-        instance = this;
+        
+    }
+
+    public override void CustomStart()
+    {
+        
     }
 }

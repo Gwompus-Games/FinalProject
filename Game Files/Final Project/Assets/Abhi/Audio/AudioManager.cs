@@ -17,7 +17,7 @@ public class AudioManager : ManagedByGameManager
 
     public override void CustomStart()
     {
-        PlayOneShotAttached(FMODEvents.instance.bgm);
+        PlayOneShotAttached(GameManager.Instance.GetManagedComponent<FMODEvents>().bgm);
     }
 
     public StudioEventEmitter InitializeEventEmitter(EventReference eventReference, GameObject emitterSource)

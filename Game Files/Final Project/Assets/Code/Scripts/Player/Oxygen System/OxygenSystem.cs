@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class OxygenSystem : MonoBehaviour
+public class OxygenSystem : ManagedByGameManager
 {
     public static Action<string, float> OxygenLeftInTank;
 
@@ -14,12 +14,12 @@ public class OxygenSystem : MonoBehaviour
     [SerializeField] private OxygenTankSO _starterOxygenTank;
     [SerializeField] private int _numberOfStartingOxygenTanks;
 
-    private void Awake()
+    public override void Init()
     {
 
     }
 
-    private void Start()
+    public override void CustomStart()
     {
         if (_starterOxygenTank != null && _numberOfStartingOxygenTanks > 0)
         {
