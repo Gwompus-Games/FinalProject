@@ -5,6 +5,8 @@ using UnityEngine;
 public class OxygenDrainer : MonoBehaviour
 {
     [field:SerializeField] public float drainMultiplier { get; private set; } = 1.0f;
+    private OxygenSystem _oxygenSystem;
+
 
     public virtual void SetDrainMultiplier(float newMultiplier)
     {
@@ -13,17 +15,33 @@ public class OxygenDrainer : MonoBehaviour
 
     public virtual void ActivateDrainer()
     {
-        if (!GameManager.Instance.GetManagedComponent<OxygenSystem>().DrainingSourceActive(this))
+        if (_oxygenSystem == null)
         {
-            GameManager.Instance.GetManagedComponent<OxygenSystem>().AddDrainingSource(this);
+            _oxygenSystem = GameManager.Instance.GetManagedComponent<OxygenSystem>();
+            if (_oxygenSystem == null)
+            {
+                throw new System.Exception("No Oxygen System assigned in Game Manager");
+            }
+        }
+        if (!_oxygenSystem.DrainingSourceActive(this))
+        {
+            _oxygenSystem.AddDrainingSource(this);
         }
     }
 
     public virtual void DeactivateDrainer()
     {
-        if (GameManager.Instance.GetManagedComponent<OxygenSystem>().DrainingSourceActive(this))
+        if (_oxygenSystem == null)
         {
-            GameManager.Instance.GetManagedComponent<OxygenSystem>().RemoveDrainingSource(this);
+            _oxygenSystem = GameManager.Instance.GetManagedComponent<OxygenSystem>();
+            if (_oxygenSystem == null)
+            {
+                throw new System.Exception("No Oxygen System assigned in Game Manager");
+            }
+        }
+        if (_oxygenSystem.DrainingSourceActive(this))
+        {
+            _oxygenSystem.RemoveDrainingSource(this);
         }
     }
 }

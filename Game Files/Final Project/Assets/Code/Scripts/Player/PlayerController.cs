@@ -94,6 +94,7 @@ public class PlayerController : ManagedByGameManager
     public override void Init()
     {
         base.Init();
+        Debug.Log("Player Has been initilized.");
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
         suitSystem = GetComponent<SuitSystem>();
@@ -241,8 +242,6 @@ public class PlayerController : ManagedByGameManager
             _lastMoveDirection = _movement;
         }
         _movement = (transform.right * _movementInput.x + transform.forward * _movementInput.y);
-
-        Debug.Log(_movement);
     }
 
     private void CalculateMoveSpeed()
@@ -381,6 +380,10 @@ public class PlayerController : ManagedByGameManager
 
     public void TeleportPlayer(Vector3 position)
     {
+        if (_controller == null)
+        {
+            _controller = GetComponent<CharacterController>();
+        }
         _controller.enabled = false;
         transform.position = position;
         _controller.enabled = true;
