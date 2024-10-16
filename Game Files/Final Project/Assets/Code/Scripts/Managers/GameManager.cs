@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Needed Components for Game")]
     [SerializeField] private List<ManagedByGameManager> _neededStandaloneScripts = new List<ManagedByGameManager>();
     [SerializeField] private List<GameObject> _neededPrefabs = new List<GameObject>();
 
     private Transform _playerSpawnPoint;
+    private Transform _dungeonSpawnPoint;
 
     public static GameManager Instance { get; private set; }
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
@@ -16,6 +18,11 @@ public class GameManager : MonoBehaviour
     public bool isPaused { get; private set; } = false;
 
     private void Awake()
+    {
+        InitilizeGameScene();
+    }
+
+    private void InitilizeGameScene()
     {
         if (Instance != null && Instance != this)
         {
@@ -25,14 +32,24 @@ public class GameManager : MonoBehaviour
         //Setting Singleton
         Instance = this;
 
-        GameObject playerSpawnPoint = FindObjectOfType<PlayerSpawnPointTag>().gameObject;
+        PlayerSpawnPointTag playerSpawnPoint = FindObjectOfType<PlayerSpawnPointTag>();
         if (playerSpawnPoint == null)
         {
-            playerSpawnPoint = new GameObject("PlayerSpawnPoint");
-            playerSpawnPoint.transform.parent = null;
-            playerSpawnPoint.transform.position = Vector3.zero;
+            playerSpawnPoint = new GameObject("PlayerSpawnPoint", typeof(PlayerSpawnPointTag)).GetComponent<PlayerSpawnPointTag>();
+            playerSpawnPoint.gameObject.transform.parent = null;
+            playerSpawnPoint.gameObject.transform.position = Vector3.zero;
         }
         _playerSpawnPoint = playerSpawnPoint.transform;
+
+        DungeonGeneratorSpawnPointTag dungeonGeneratorSpawnPoint = FindObjectOfType<DungeonGeneratorSpawnPointTag>();
+        if (dungeonGeneratorSpawnPoint == null)
+        {
+            dungeonGeneratorSpawnPoint = new GameObject("FacilityGeneratorSpawnPoint", typeof(DungeonGeneratorSpawnPointTag)).GetComponent<DungeonGeneratorSpawnPointTag>();
+            dungeonGeneratorSpawnPoint.gameObject.transform.parent = null;
+            dungeonGeneratorSpawnPoint.gameObject.transform.position = Vector3.zero;
+
+        }
+        _dungeonSpawnPoint = dungeonGeneratorSpawnPoint.transform;
 
         List<GameObject> neededObjects = new List<GameObject>();
         GameObject managers = new GameObject("Dedicated Managers");
@@ -65,13 +82,18 @@ public class GameManager : MonoBehaviour
         neededObjects.Add(FindFirstObjectByType<SuitSystem>().gameObject);
         neededObjects.Add(FindFirstObjectByType<OxygenSystem>().gameObject);
         neededObjects.Add(FindFirstObjectByType<InventoryController>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<HandPositionController>().gameObject);
 
         //adding other managers
         GameObject fmodGO = FindFirstObjectByType<FMODEvents>().gameObject;
         fmodGO.transform.parent = managers.transform;
         neededObjects.Add(fmodGO);
-        neededObjects.Add(FindFirstObjectByType<DungeonGenerator>().gameObject);
 
+        GameObject dungGen = FindFirstObjectByType<DungeonGenerator>().gameObject;
+        dungGen.transform.position = _dungeonSpawnPoint.position;
+        neededObjects.Add(dungGen);
+
+        //Set up all managed objects
         for (int o = 0; o < neededObjects.Count; o++)
         {
             if (neededObjects[o].TryGetComponent<ManagedByGameManager>(out ManagedByGameManager managedObject))
@@ -80,40 +102,24 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        for(int o = 0; o < _managedObjects.Count; o++)
+        //Initialize all managed objects
+        for (int o = 0; o < _managedObjects.Count; o++)
         {
             _managedObjects[o].Init();
         }
 
         GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
+
+        StartGameScene();
     }
 
-    private void Start()
+    private void StartGameScene()
     {
+        //Call all managed objects' Custom Start Function
         for (int i = 0; i < _managedObjects.Count; i++)
         {
             _managedObjects[i].CustomStart();
         }
-    }
-
-    private T CreateObject<T>(string objectName, Transform parent = null)
-    {
-        GameObject spawnedObject = new GameObject(objectName, typeof(T));
-        if (parent != null)
-        {
-            spawnedObject.transform.parent = parent;
-        }
-        return spawnedObject.GetComponent<T>();
-    }
-
-    private T CreateObject<T>(string objectName, GameObject parentObject)
-    {
-        GameObject spawnedObject = new GameObject(objectName, typeof(T));
-        if (parentObject != null)
-        {
-            spawnedObject.transform.parent = parentObject.transform;
-        }
-        return spawnedObject.GetComponent<T>();
     }
 
     private GameObject CustomFindObjectByName(List<GameObject> objects, string nameToFind)
