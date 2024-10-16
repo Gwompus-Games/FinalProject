@@ -11,11 +11,12 @@ public class HandPositionController : ManagedByGameManager
 
     public override void Init()
     {
-        
+        base.Init();
     }
 
     public override void CustomStart()
     {
+        base.CustomStart();
         if (_rightHandTransform == null)
         {
             throw new System.Exception("No right hand transform assigned");

@@ -14,12 +14,29 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
     protected override void OnEnable()
     {
         base.OnEnable();
+        if (!_initilized)
+        {
+            return;
+        }
+        if (_enabled)
+        {
+            return;
+        }
         SuitSystem.UpdateSuitUI += UpdateSuitUI;
         GameManager.Instance.GetManagedComponent<SuitSystem>().UpdateUI();
     }
 
     protected override void OnDisable()
     {
+        base.OnDisable();
+        if (!_initilized)
+        {
+            return;
+        }
+        if (!_enabled)
+        {
+            return;
+        }
         base.OnDisable();
         SuitSystem.UpdateSuitUI -= UpdateSuitUI;
     }

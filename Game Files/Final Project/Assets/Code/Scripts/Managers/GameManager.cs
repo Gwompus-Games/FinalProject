@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<ManagedByGameManager> _neededStandaloneScripts = new List<ManagedByGameManager>();
     [SerializeField] private List<GameObject> _neededPrefabs = new List<GameObject>();
 
-    [SerializeField] private Transform _playerSpawnPoint;
+    private Transform _playerSpawnPoint;
 
     public static GameManager Instance { get; private set; }
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
@@ -25,7 +25,14 @@ public class GameManager : MonoBehaviour
         //Setting Singleton
         Instance = this;
 
-
+        GameObject playerSpawnPoint = FindObjectOfType<PlayerSpawnPointTag>().gameObject;
+        if (playerSpawnPoint == null)
+        {
+            playerSpawnPoint = new GameObject("PlayerSpawnPoint");
+            playerSpawnPoint.transform.parent = null;
+            playerSpawnPoint.transform.position = Vector3.zero;
+        }
+        _playerSpawnPoint = playerSpawnPoint.transform;
 
         List<GameObject> neededObjects = new List<GameObject>();
         GameObject managers = new GameObject("Dedicated Managers");
@@ -162,9 +169,9 @@ public class GameManager : MonoBehaviour
     {
         for (int c = 0; c < _managedObjects.Count; c++)
         {
-            if (_managedObjects[c] is T)
+            if (_managedObjects[c].gameObject.TryGetComponent<T>(out T component))
             {
-                return _managedObjects[c].GetComponent<T>();
+                return component;
             }
         }
         return default(T);
