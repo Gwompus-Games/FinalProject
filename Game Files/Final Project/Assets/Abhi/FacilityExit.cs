@@ -24,11 +24,9 @@ public class FacilityExit : MonoBehaviour, IInteractable
         }
         print("interacted");
         //SceneManager.LoadScene(2);
-        GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = false;
         if (facilityExit)
-            GameManager.PlayerControllerInstance.transform.position = facilityExit.position;
+            GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(facilityExit.position);
         else
             print("No transform found");
-        GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = true;
     }
 }

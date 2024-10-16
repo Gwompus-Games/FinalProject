@@ -6,10 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DungeonGenerator : MonoBehaviour
+public class DungeonGenerator : ManagedByGameManager
 {
-    public static DungeonGenerator Instance { get; private set; }
-
     [Header("Generation Settings")]
     [SerializeField] private GameObject entrance;
     [SerializeField] private List<GameObject> rooms;
@@ -34,12 +32,10 @@ public class DungeonGenerator : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
         navMesh = GetComponent<NavMeshSurface>();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
         generatedRooms = new List<DungeonPart>();
         availableRooms = new List<DungeonPart>();
