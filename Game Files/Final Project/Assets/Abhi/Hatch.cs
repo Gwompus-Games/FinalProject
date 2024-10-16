@@ -6,14 +6,19 @@ public class Hatch : MonoBehaviour, IInteractable
 
     private void Awake()
     {
-        transform.tag = "Interactable";
+        transform.tag = "Interactable";        
     }
 
     public void Interact()
     {
         print("interacted");
         GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = false;
+
+        if (teleport == null)        
+            teleport.position = GameObject.Find("FacilityExit").transform.position;        
+        
         GameManager.PlayerControllerInstance.transform.position = teleport.transform.position;
+
         GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = true;
     }
 }
