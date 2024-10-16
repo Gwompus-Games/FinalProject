@@ -93,12 +93,12 @@ public class II_OxygenTank : InventoryItem
     public override void ItemPlacedInInventory()
     {
         base.ItemPlacedInInventory();
-        GameManager.OxygenSystemInstance.AddOxygenTank(this);
+        GameManager.Instance.GetManagedComponent<OxygenSystem>().AddOxygenTank(this);
     }
 
     public override void ItemRemovedFromInventory()
     {
         base.ItemRemovedFromInventory();
-        GameManager.OxygenSystemInstance.RemoveOxygenTank(this);
+        GameManager.Instance.GetManagedComponent<OxygenSystem>().RemoveOxygenTank(this);
     }
 }

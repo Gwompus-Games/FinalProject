@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(OxygenSystem))]
 [RequireComponent(typeof(SuitSystem))]
 [RequireComponent(typeof(StudioEventEmitter))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : ManagedByGameManager
 {
     public static Action<int> UpdateMoney;
 
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
     private float _targetMoveSpeed;
     public bool isRunning { get; private set; }
 
-    CharacterController _controller;
+    private CharacterController _controller;
 
     private Vector3 _movement;
     private Vector3 _velocity;
@@ -91,22 +91,24 @@ public class PlayerController : MonoBehaviour
     private Coroutine _oxygenOutCoroutine;
     private Coroutine _dyingCoroutine;
 
-    private void Awake()
+    public override void Init()
     {
+        base.Init();
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
         suitSystem = GetComponent<SuitSystem>();
         oxygenSystem = GetComponent<OxygenSystem>();
+        _controller = GetComponent<CharacterController>();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
-        _controller = GetComponent<CharacterController>();
+        base.CustomStart();
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         isRunning = false;
         CloseInventory();
-        playerFootsteps = AudioManager.instance.CreateEventInstance(FMODEvents.instance.footsteps);
+        playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         money = _startingMoney;
         _dead = false;
         _outOfOxygen = false;
@@ -379,10 +381,9 @@ public class PlayerController : MonoBehaviour
 
     public void TeleportPlayer(Vector3 position)
     {
-        CharacterController characterController = GetComponent<CharacterController>();
-        characterController.enabled = false;
+        _controller.enabled = false;
         transform.position = position;
-        characterController.enabled = true;
+        _controller.enabled = true;
     }
 
     public void NoOxygenLeft()
@@ -408,7 +409,7 @@ public class PlayerController : MonoBehaviour
 
     public void RestartGame()
     {
-        AudioManager.instance.CleanUp();
+        GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();
         SceneManager.LoadScene(0);
     }
 
@@ -478,7 +479,7 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeUIState(UIManager.UIToDisplay ui)
     {
-        GameManager.UIManagerInstance.SetUI(ui);
+        GameManager.Instance.GetManagedComponent<UIManager>().SetUI(ui);
         bool enabled = false;
         switch (ui)
         {
@@ -495,7 +496,7 @@ public class PlayerController : MonoBehaviour
         GetComponentInChildren<CameraLook>().enabled = !enabled;
         if (!enabled)
         {
-            GameManager.InventoryControllerInstance.InventoryClosing();
+            GameManager.Instance.GetManagedComponent<InventoryController>().InventoryClosing();
         }
     }
 

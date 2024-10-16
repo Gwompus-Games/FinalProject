@@ -5,22 +5,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //Manager Instances (Singletons)
-    public static GameManager Instance;
-    public static UIManager UIManagerInstance;
-    public static ShopUIManager ShopUIManagerInstance;
-    public static BuyingManager BuyingManagerInstance;
-    public static InventoryUI InventoryUIInstance;
+    [SerializeField] private List<ManagedByGameManager> _neededStandaloneScripts = new List<ManagedByGameManager>();
+    [SerializeField] private List<GameObject> _neededPrefabs = new List<GameObject>();
 
-    //Input System
-    public static CustomPlayerInput CustomPlayerInputInstance;
+    private Transform _playerSpawnPoint;
 
-    //Game System Instances (Singletons)
-    public static PlayerController PlayerControllerInstance;
-    public static SuitSystem SuitSystemInstance;
-    public static OxygenSystem OxygenSystemInstance;
-    public static InventoryController InventoryControllerInstance;
-
+    public static GameManager Instance { get; private set; }
+    private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
 
     public bool isPaused { get; private set; } = false;
 
@@ -31,21 +22,115 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        //Setting all the Manager Instances
+        //Setting Singleton
         Instance = this;
-        UIManagerInstance = FindFirstObjectAndDestroyOthers<UIManager>();
-        ShopUIManagerInstance = FindFirstObjectAndDestroyOthers<ShopUIManager>();
-        BuyingManagerInstance = FindFirstObjectAndDestroyOthers<BuyingManager>();
-        InventoryUIInstance = FindFirstObjectAndDestroyOthers<InventoryUI>();
 
-        //Setting Input System
-        CustomPlayerInputInstance = FindFirstObjectAndDestroyOthers<CustomPlayerInput>();
+        GameObject playerSpawnPoint = FindObjectOfType<PlayerSpawnPointTag>().gameObject;
+        if (playerSpawnPoint == null)
+        {
+            playerSpawnPoint = new GameObject("PlayerSpawnPoint");
+            playerSpawnPoint.transform.parent = null;
+            playerSpawnPoint.transform.position = Vector3.zero;
+        }
+        _playerSpawnPoint = playerSpawnPoint.transform;
 
-        //Setting all the System Instances
-        PlayerControllerInstance = FindFirstObjectAndDestroyOthers<PlayerController>();
-        SuitSystemInstance = FindFirstObjectAndDestroyOthers<SuitSystem>();
-        OxygenSystemInstance = FindFirstObjectAndDestroyOthers<OxygenSystem>();
-        InventoryControllerInstance = FindFirstObjectAndDestroyOthers<InventoryController>();
+        List<GameObject> neededObjects = new List<GameObject>();
+        GameObject managers = new GameObject("Dedicated Managers");
+
+        //Adding all needed standalone manager scripts
+        for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
+        {
+            GameObject standaloneManager = new GameObject(_neededStandaloneScripts[ms].GetType().Name, _neededStandaloneScripts[ms].GetType());
+            standaloneManager.transform.parent = managers.transform;
+            neededObjects.Add(standaloneManager);
+        }
+
+        //Adding all needed prefabs to the scene
+        for (int o = 0; o < _neededPrefabs.Count; o++)
+        {
+            neededObjects.Add(Instantiate(_neededPrefabs[o]));
+        }
+
+        //add all the managers contained within the assigned prefabs
+        //adding all canvas related managers
+        neededObjects.Add(FindFirstObjectByType<UIManager>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<ShopUIManager>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<InventoryUI>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<BuyingManager>().gameObject);
+
+        //adding all player related managers
+        neededObjects.Add(FindFirstObjectByType<CustomPlayerInput>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<PlayerController>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<SuitSystem>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<OxygenSystem>().gameObject);
+        neededObjects.Add(FindFirstObjectByType<InventoryController>().gameObject);
+
+        for (int o = 0; o < neededObjects.Count; o++)
+        {
+            if (neededObjects[o].TryGetComponent<ManagedByGameManager>(out ManagedByGameManager managedObject))
+            {
+                Setup(managedObject);
+            }
+        }
+
+        for(int o = 0; o < _managedObjects.Count; o++)
+        {
+            _managedObjects[o].Init();
+        }
+
+        GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < _managedObjects.Count; i++)
+        {
+            _managedObjects[i].CustomStart();
+        }
+    }
+
+    private T CreateObject<T>(string objectName, Transform parent = null)
+    {
+        GameObject spawnedObject = new GameObject(objectName, typeof(T));
+        if (parent != null)
+        {
+            spawnedObject.transform.parent = parent;
+        }
+        return spawnedObject.GetComponent<T>();
+    }
+
+    private T CreateObject<T>(string objectName, GameObject parentObject)
+    {
+        GameObject spawnedObject = new GameObject(objectName, typeof(T));
+        if (parentObject != null)
+        {
+            spawnedObject.transform.parent = parentObject.transform;
+        }
+        return spawnedObject.GetComponent<T>();
+    }
+
+    private GameObject CustomFindObjectByName(List<GameObject> objects, string nameToFind)
+    {
+        for (int o = 0; o < objects.Count; o++)
+        {
+            if (objects[o].name == nameToFind)
+            {
+                return objects[o];
+            }
+        }
+        return null;
+    }
+
+    private GameObject CustomFindObjectByType<T>(List<GameObject> objects)
+    {
+        for (int o = 0; o < objects.Count; o++)
+        {
+            if (objects[o].TryGetComponent<T>(out T type))
+            {
+                return objects[o];
+            }
+        }
+        return null;
     }
 
     private T FindFirstObjectAndDestroyOthers<T>()
@@ -74,6 +159,23 @@ public class GameManager : MonoBehaviour
         }
         return gameObjects[0].GetComponent<T>();
     } 
+
+    private void Setup(ManagedByGameManager managedObject)
+    {
+        _managedObjects.Add(managedObject);
+    }
+
+    public T GetManagedComponent<T>()
+    {
+        for (int c = 0; c < _managedObjects.Count; c++)
+        {
+            if (_managedObjects[c].gameObject.TryGetComponent<T>(out T component))
+            {
+                return component;
+            }
+        }
+        return default(T);
+    }
 
     private void Update()
     {

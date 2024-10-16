@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class OxygenSystem : MonoBehaviour
+public class OxygenSystem : ManagedByGameManager
 {
     public static Action<string, float> OxygenLeftInTank;
 
@@ -14,18 +14,19 @@ public class OxygenSystem : MonoBehaviour
     [SerializeField] private OxygenTankSO _starterOxygenTank;
     [SerializeField] private int _numberOfStartingOxygenTanks;
 
-    private void Awake()
+    public override void Init()
     {
-
+        base.Init();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
+        base.CustomStart();
         if (_starterOxygenTank != null && _numberOfStartingOxygenTanks > 0)
         {
             for (int t = 0; t < _numberOfStartingOxygenTanks; t++)
             {
-                GameManager.InventoryControllerInstance.AddItemToInventory(_starterOxygenTank, float.MaxValue);
+                GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(_starterOxygenTank, float.MaxValue);
             }
         }
     }
@@ -214,7 +215,7 @@ public class OxygenSystem : MonoBehaviour
 
         if (oxygenTanks.Count == 0)
         {
-            GameManager.PlayerControllerInstance.NoOxygenLeft();
+            GameManager.Instance.GetManagedComponent<PlayerController>().NoOxygenLeft();
             OxygenLeftInTank?.Invoke("0", 0f);
             return;
         }
@@ -226,7 +227,7 @@ public class OxygenSystem : MonoBehaviour
             {
                 if (!SwapOxygenTank())
                 {
-                    GameManager.PlayerControllerInstance.NoOxygenLeft();
+                    GameManager.Instance.GetManagedComponent<PlayerController>().NoOxygenLeft();
                     OxygenLeftInTank?.Invoke("0", 0f);
                     break;
                 }
@@ -237,7 +238,7 @@ public class OxygenSystem : MonoBehaviour
         {
             OxygenLeftInTank?.Invoke(oxygenTanks[activeOxygenTank].oxygenLeftPercent, 
                                      oxygenTanks[activeOxygenTank].oxygenFillAmount * 100f);
-            GameManager.PlayerControllerInstance.OxygenRegained();
+            GameManager.Instance.GetManagedComponent<PlayerController>().OxygenRegained();
         }
     }
 

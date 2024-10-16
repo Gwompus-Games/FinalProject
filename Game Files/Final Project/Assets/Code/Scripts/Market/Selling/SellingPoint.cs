@@ -12,9 +12,9 @@ public class SellingPoint : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        GameManager.PlayerControllerInstance.OpenInventory();
+        GameManager.Instance.GetManagedComponent<PlayerController>().OpenInventory();
         playerInventory = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
-        GameManager.PlayerControllerInstance.CloseInventory();
+        GameManager.Instance.GetManagedComponent<PlayerController>().CloseInventory();
     }
 
     private int SellAllTreasuresInInventory()
@@ -35,6 +35,6 @@ public class SellingPoint : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        GameManager.PlayerControllerInstance.ChangeUIState(UIManager.UIToDisplay.SHOP);
+        GameManager.Instance.GetManagedComponent<PlayerController>().ChangeUIState(UIManager.UIToDisplay.SHOP);
     }
 }

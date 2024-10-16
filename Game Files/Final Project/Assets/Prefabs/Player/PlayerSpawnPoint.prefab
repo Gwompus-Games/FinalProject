@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &490257153078077701
+--- !u!1 &9049341574375716591
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5255673896579540351}
-  - component: {fileID: 5169676436866789543}
+  - component: {fileID: 6838282869819179747}
+  - component: {fileID: 4697910762134434805}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: PlayerSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5255673896579540351
+--- !u!4 &6838282869819179747
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490257153078077701}
+  m_GameObject: {fileID: 9049341574375716591}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.372452, y: -6.834194, z: 14.696814}
+  m_LocalPosition: {x: 1.2492945, y: 1.4402443, z: -5.0101776}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5169676436866789543
+--- !u!114 &4697910762134434805
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490257153078077701}
+  m_GameObject: {fileID: 9049341574375716591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e1150bfa8b67405085e2da8d359cc8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 751c0a1cd145320438c347d9aed6791e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _neededStandaloneScripts:
-  - {fileID: 2751221079815206115, guid: 9175516701304094082d54517214c059, type: 3}
-  - {fileID: 1988005365120629417, guid: 33d1fa34a89e76f4da3cfc38ac9f4844, type: 3}
-  _neededPrefabs:
-  - {fileID: 7405976517113462567, guid: fab884ff994c84c42b556ec8fd1f00ad, type: 3}
-  - {fileID: 4586079081141089300, guid: 16b3557e27aa9c942bf1f25b50eefd7e, type: 3}
-  _playerSpawnPoint: {fileID: 0}

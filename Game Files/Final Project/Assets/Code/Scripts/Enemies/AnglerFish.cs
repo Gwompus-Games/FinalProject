@@ -21,7 +21,7 @@ public class AnglerFish : Enemy
 
         base.SetupEnemy();
 
-        emitter = AudioManager.instance.InitializeEventEmitter(FMODEvents.instance.heartbeat, gameObject);
+        emitter = GameManager.Instance.GetManagedComponent<AudioManager>().InitializeEventEmitter(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat, gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

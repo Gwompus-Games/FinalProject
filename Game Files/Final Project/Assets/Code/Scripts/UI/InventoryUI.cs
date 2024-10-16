@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : ManagedByGameManager
 {
     [SerializeField] private GameObject _infoBar;
     public InventoryPopupUI popupUI { get; private set; }
     private RectTransform _infoBarRectTransform;
 
-    private void Awake()
+    public override void Init()
     {
+        base.Init();
         if (_infoBar == null)
         {
             throw new System.Exception("Info Bar not assigned to Inventory UI!");
@@ -21,7 +22,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    private void Start()
+    public override void CustomStart()
     {
         //SyncBarSize();
     }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuyingManager : MonoBehaviour
+public class BuyingManager : ManagedByGameManager
 {
     [field: SerializeField] public ToolListSO toolList { get; private set; }
     public static Action UpdateBuySections;
@@ -11,12 +11,12 @@ public class BuyingManager : MonoBehaviour
     [field: SerializeField] public Color unableToBuyColour { get; private set; }
     [SerializeField] private GameObject _buySectionPrefab;
 
-    private void Awake()
+    public override void Init()
     {
-        
+        base.Init();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
         CreateBuySections();
     }
@@ -47,13 +47,13 @@ public class BuyingManager : MonoBehaviour
 
     public void BuyItem(ToolSO toolToBuy)
     {
-        if (GameManager.PlayerControllerInstance.money < toolToBuy.buyValue)
+        if (GameManager.Instance.GetManagedComponent<PlayerController>().money < toolToBuy.buyValue)
         {
             Debug.LogWarning("Player doesn't have enough money to buy this tool.");
             return;
         }
-        GameManager.PlayerControllerInstance.SpendMoney(toolToBuy.buyValue);
-        GameManager.InventoryControllerInstance.AddItemToInventory(toolToBuy);
+        GameManager.Instance.GetManagedComponent<PlayerController>().SpendMoney(toolToBuy.buyValue);
+        GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(toolToBuy);
         UpdateBuySections?.Invoke();
     }
 }

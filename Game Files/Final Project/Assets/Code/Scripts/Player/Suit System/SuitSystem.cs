@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class SuitSystem : MonoBehaviour, IDamageable
+public class SuitSystem : ManagedByGameManager, IDamageable
 {
     public static Action<int, int, float, int> UpdateSuitUI;
     public int numberOfSections { get; private set; } = 5;
@@ -12,13 +12,14 @@ public class SuitSystem : MonoBehaviour, IDamageable
 
     private OxygenDrainer suitOxygenDrainer;
 
-    private void Awake()
+    public override void Init()
     {
-
+        base.Init();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
+        base.CustomStart();
         if (suitStats == null)
         {
             throw new Exception("No Suit Stats added to suit system!");
@@ -72,7 +73,7 @@ public class SuitSystem : MonoBehaviour, IDamageable
         if (currentSection >= numberOfSections - 1)
         {
             Debug.Log("Kill Player");
-            GameManager.PlayerControllerInstance.KillPlayer();
+            GameManager.Instance.GetManagedComponent<PlayerController>().KillPlayer();
             remainderDamage = 0;
             return;
         }
