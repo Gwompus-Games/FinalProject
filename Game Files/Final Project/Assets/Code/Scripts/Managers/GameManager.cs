@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(StandaloneManagersList))]
 public class GameManager : MonoBehaviour
 {
     [Header("Needed Components for Game")]
@@ -14,15 +15,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
+    private StandaloneManagersList _standaloneManagers;
 
     public bool isPaused { get; private set; } = false;
 
     private void Awake()
-    {
-        InitilizeGameScene();
-    }
-
-    private void InitilizeGameScene()
     {
         if (Instance != null && Instance != this)
         {
@@ -31,7 +28,13 @@ public class GameManager : MonoBehaviour
         }
         //Setting Singleton
         Instance = this;
+        _standaloneManagers = GetComponent<StandaloneManagersList>();
+        _standaloneManagers.SetUpList();
+        InitilizeGameScene();
+    }
 
+    private void InitilizeGameScene()
+    {
         PlayerSpawnPointTag playerSpawnPoint = FindObjectOfType<PlayerSpawnPointTag>();
         if (playerSpawnPoint == null)
         {
@@ -51,7 +54,6 @@ public class GameManager : MonoBehaviour
         }
         _dungeonSpawnPoint = dungeonGeneratorSpawnPoint.transform;
 
-        List<GameObject> neededObjects = new List<GameObject>();
         GameObject managers = new GameObject("Dedicated Managers");
         managers.transform.parent = transform.parent;
 
@@ -60,52 +62,60 @@ public class GameManager : MonoBehaviour
         {
             GameObject standaloneManager = new GameObject(_neededStandaloneScripts[ms].GetType().Name, _neededStandaloneScripts[ms].GetType());
             standaloneManager.transform.parent = managers.transform;
-            neededObjects.Add(standaloneManager);
         }
 
         //Adding all needed prefabs to the scene
         for (int o = 0; o < _neededPrefabs.Count; o++)
         {
-            neededObjects.Add(Instantiate(_neededPrefabs[o]));
+            Instantiate(_neededPrefabs[o]);
         }
 
-        //add all the managers contained within the assigned prefabs
-        //adding all canvas related managers
-        neededObjects.Add(FindFirstObjectByType<UIManager>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<ShopUIManager>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<InventoryUI>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<BuyingManager>().gameObject);
-
-        //adding all player related managers
-        neededObjects.Add(FindFirstObjectByType<CustomPlayerInput>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<PlayerController>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<SuitSystem>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<OxygenSystem>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<InventoryController>().gameObject);
-        neededObjects.Add(FindFirstObjectByType<HandPositionController>().gameObject);
-
-        //adding other managers
-        GameObject fmodGO = FindFirstObjectByType<FMODEvents>().gameObject;
-        fmodGO.transform.parent = managers.transform;
-        neededObjects.Add(fmodGO);
-
-        GameObject dungGen = FindFirstObjectByType<DungeonGenerator>().gameObject;
-        dungGen.transform.position = _dungeonSpawnPoint.position;
-        neededObjects.Add(dungGen);
-
-        //Set up all managed objects
-        for (int o = 0; o < neededObjects.Count; o++)
+        MonoBehaviour[] objects = FindObjectsByType<ManagedByGameManager>(FindObjectsSortMode.None);
+        List<GameObject> gameObjects = new List<GameObject>();
+        List<ManagedByGameManager> managedScripts = new List<ManagedByGameManager>();
+        for (int o = 0; o < objects.Length; o++)
         {
-            if (neededObjects[o].TryGetComponent<ManagedByGameManager>(out ManagedByGameManager managedObject))
+            if (gameObjects.Contains(objects[o].gameObject))
             {
-                Setup(managedObject);
+                continue;
+            }
+            gameObjects.Add(objects[o].gameObject);
+            ManagedByGameManager[] scripts = objects[o].GetComponents<ManagedByGameManager>();
+            for (int s = 0; s < scripts.Length; s++)
+            {
+                if (managedScripts.Contains(scripts[s]))
+                {
+                    continue;
+                }
+                managedScripts.Add(scripts[s]);
             }
         }
+
+        //Set up all managed objects
+        for (int s = 0; s < managedScripts.Count; s++)
+        {
+            ManagedByGameManager managedComponent = managedScripts[s].GetComponent<ManagedByGameManager>();
+            if (_standaloneManagers.standaloneManagers.Contains(managedComponent.GetType()) &&
+                managedComponent.transform.parent != managers.transform)
+            {
+                managedComponent.transform.parent = managers.transform;
+            }
+
+            if (managedComponent.GetType() == typeof(DungeonGenerator))
+            {
+                managedComponent.transform.position = _dungeonSpawnPoint.position;
+            }
+
+            Setup(managedComponent);
+        }
+
+        Debug.Log($"INITIALIZING: {_managedObjects.Count}");
 
         //Initialize all managed objects
         for (int o = 0; o < _managedObjects.Count; o++)
         {
             _managedObjects[o].Init();
+            Debug.Log($"{_managedObjects[o].GetType().Name} initialized");
         }
 
         GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
@@ -120,30 +130,6 @@ public class GameManager : MonoBehaviour
         {
             _managedObjects[i].CustomStart();
         }
-    }
-
-    private GameObject CustomFindObjectByName(List<GameObject> objects, string nameToFind)
-    {
-        for (int o = 0; o < objects.Count; o++)
-        {
-            if (objects[o].name == nameToFind)
-            {
-                return objects[o];
-            }
-        }
-        return null;
-    }
-
-    private GameObject CustomFindObjectByType<T>(List<GameObject> objects)
-    {
-        for (int o = 0; o < objects.Count; o++)
-        {
-            if (objects[o].TryGetComponent<T>(out T type))
-            {
-                return objects[o];
-            }
-        }
-        return null;
     }
 
     private T FindFirstObjectAndDestroyOthers<T>()
@@ -178,28 +164,8 @@ public class GameManager : MonoBehaviour
         _managedObjects.Add(managedObject);
     }
 
-    public T GetManagedComponent<T>()
+    public T GetManagedComponent<T>() where T : ManagedByGameManager
     {
-        for (int c = 0; c < _managedObjects.Count; c++)
-        {
-            if (_managedObjects[c].gameObject.TryGetComponent<T>(out T component))
-            {
-                return component;
-            }
-        }
-        return default(T);
-    }
-
-    private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    isPaused = !isPaused;
-        //}
-
-        //if (Input.GetMouseButton(0) && Application.isFocused)
-        //{
-        //    isPaused = false;
-        //}
+        return _managedObjects.Find(x => x.GetComponent<T>() != null).GetComponent<T>();
     }
 }
