@@ -92,7 +92,7 @@ public class DungeonPart : MonoBehaviour, IHideable
             availableEntryPoints.Remove(entryPoint);
 
             if (availableEntryPoints.Count == 0)
-            DungeonGenerator.Instance.RemoveAvailableRoom(this);
+            GameManager.Instance.GetManagedComponent<DungeonGenerator>().RemoveAvailableRoom(this);
         }
     }
 
@@ -105,7 +105,7 @@ public class DungeonPart : MonoBehaviour, IHideable
 
             entry.SetOccupied(false);
             availableEntryPoints.Add(entryPoint);
-            DungeonGenerator.Instance.AddAvailableRoom(this);
+            GameManager.Instance.GetManagedComponent<DungeonGenerator>().AddAvailableRoom(this);
         }
     }
 
@@ -154,7 +154,7 @@ public class DungeonPart : MonoBehaviour, IHideable
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
         if (newEnemy.TryGetComponent(out Enemy enemyScript))
         {
-            if (enemyScript.HasValidPath(DungeonGenerator.Instance.transform.position))
+            if (enemyScript.HasValidPath(GameManager.Instance.GetManagedComponent<DungeonGenerator>().transform.position))
             {
                 enemyScript.SetupEnemy();
                 return true;

@@ -13,7 +13,7 @@ public class FacilityEntrance : MonoBehaviour, IInteractable
     {
         print("interacted");
         //SceneManager.LoadScene(2);
-        GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(DungeonGenerator.Instance.transform.position);
+        GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(GameManager.Instance.GetManagedComponent<DungeonGenerator>().transform.position);
 
         //Depreciated Code
         /*

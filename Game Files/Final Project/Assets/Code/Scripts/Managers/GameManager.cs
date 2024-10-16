@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 
         List<GameObject> neededObjects = new List<GameObject>();
         GameObject managers = new GameObject("Dedicated Managers");
+        managers.transform.parent = transform.parent;
 
         //Adding all needed standalone manager scripts
         for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
@@ -64,6 +65,12 @@ public class GameManager : MonoBehaviour
         neededObjects.Add(FindFirstObjectByType<SuitSystem>().gameObject);
         neededObjects.Add(FindFirstObjectByType<OxygenSystem>().gameObject);
         neededObjects.Add(FindFirstObjectByType<InventoryController>().gameObject);
+
+        //adding other managers
+        GameObject fmodGO = FindFirstObjectByType<FMODEvents>().gameObject;
+        fmodGO.transform.parent = managers.transform;
+        neededObjects.Add(fmodGO);
+        neededObjects.Add(FindFirstObjectByType<DungeonGenerator>().gameObject);
 
         for (int o = 0; o < neededObjects.Count; o++)
         {
