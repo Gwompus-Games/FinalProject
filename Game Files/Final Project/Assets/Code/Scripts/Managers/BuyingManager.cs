@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuyingManager : MonoBehaviour
+public class BuyingManager : ManagedByGameManager
 {
     [field: SerializeField] public ToolListSO toolList { get; private set; }
     public static Action UpdateBuySections;
@@ -11,12 +11,12 @@ public class BuyingManager : MonoBehaviour
     [field: SerializeField] public Color unableToBuyColour { get; private set; }
     [SerializeField] private GameObject _buySectionPrefab;
 
-    private void Awake()
+    public override void Init()
     {
-        
+        base.Init();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
         CreateBuySections();
     }

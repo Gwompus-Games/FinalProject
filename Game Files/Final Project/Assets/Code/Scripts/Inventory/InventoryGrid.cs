@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryGrid : MonoBehaviour
+public class InventoryGrid : ManagedObject
 {
     [SerializeField] private InventoryGlobalDataSO _globalData;
     public static InventoryGlobalDataSO globalItemData;
@@ -25,33 +25,42 @@ public class InventoryGrid : MonoBehaviour
 
     private bool _initialized = false;
 
-    private void Awake()
+    public override void Init()
     {
+        base.Init();
         globalItemData = _globalData;
         rectTransform = GetComponent<RectTransform>();
         _xScaler = (float)Screen.width / (float)globalItemData.referenceResolution.x;
         _yScaler = (float)Screen.height / (float)globalItemData.referenceResolution.y;
         _inventoryController = FindObjectOfType<InventoryController>();
-        Init(gridSizeWidth, gridSizeHeight);
+        InitGrid(gridSizeWidth, gridSizeHeight);
     }
 
-    private void Start()
+    public override void CustomStart()
     {
-        // where init used to be
-
+        base.CustomStart();
+        OnEnable();
     }
 
     private void OnEnable()
     {
+        if (!_initialized)
+        {
+            return;
+        }
         CustomPlayerInput.UpdateCursorPosition += CursorPosition;
     }
 
     private void OnDisable()
     {
+        if (!_initialized)
+        {
+            return;
+        }
         CustomPlayerInput.UpdateCursorPosition -= CursorPosition;
     }
 
-    private void Init(int width, int height)
+    private void InitGrid(int width, int height)
     {
         if (_initialized)
         {
@@ -198,7 +207,7 @@ public class InventoryGrid : MonoBehaviour
     
     private bool CheckIfSlotAvailable(Vector2Int gridTile)
     {
-        Init(gridSizeWidth, gridSizeHeight);
+        InitGrid(gridSizeWidth, gridSizeHeight);
         if (gridTile.x < 0 || gridTile.y < 0)
         {
             return false;

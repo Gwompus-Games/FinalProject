@@ -11,12 +11,14 @@ public class AudioManager : ManagedByGameManager
 
     public override void Init()
     {
+        base.Init();
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
     }
 
     public override void CustomStart()
     {
+        base.CustomStart();
         PlayOneShotAttached(GameManager.Instance.GetManagedComponent<FMODEvents>().bgm);
     }
 

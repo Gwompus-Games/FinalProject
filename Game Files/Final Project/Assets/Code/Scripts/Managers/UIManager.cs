@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
-public class UIManager : MonoBehaviour
+public class UIManager : ManagedByGameManager
 {
     [SerializeField] private GameObject _inventoryUI;
     [SerializeField] private GameObject _suitUI;
     [SerializeField] private GameObject _shopUI;
+    private List<ManagedObject> _managedObjects = new List<ManagedObject>();
 
     public enum UIToDisplay
     {
@@ -16,13 +18,27 @@ public class UIManager : MonoBehaviour
         SHOP
     }
 
-    private void Awake()
+    public override void Init()
     {
-
+        base.Init();
+        List<InfoBarTextElement> infoElements = new List<InfoBarTextElement>(GetComponentsInChildren<InfoBarTextElement>());
+        List<InventoryGrid> inventoryGrids = new List<InventoryGrid>(GetComponentsInChildren<InventoryGrid>());
+        _managedObjects = new List<ManagedObject>();
+        _managedObjects.Concat(infoElements);
+        _managedObjects.Concat(inventoryGrids);
     }
 
-    private void Start()
+    public override void CustomStart()
     {
+        base.CustomStart();
+        for (int ibe = 0; ibe < _managedObjects.Count; ibe++)
+        {
+            _managedObjects[ibe].Init();
+        }
+        for (int ibe = 0; ibe < _managedObjects.Count; ibe++)
+        {
+            _managedObjects[ibe].CustomStart();
+        }
         SetUI(UIToDisplay.GAME);
     }
 

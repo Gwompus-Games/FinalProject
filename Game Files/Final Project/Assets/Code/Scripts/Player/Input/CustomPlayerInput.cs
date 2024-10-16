@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CustomPlayerInput : MonoBehaviour
+public class CustomPlayerInput : ManagedByGameManager
 {
     public static Action<Vector2> UpdateCursorPosition;
     public static Action<Vector2> UpdateCursorDelta;
@@ -22,9 +22,15 @@ public class CustomPlayerInput : MonoBehaviour
         RELEASED
     }
 
-    private void Awake()
+    public override void Init()
     {
+        base.Init();
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public override void CustomStart()
+    {
+        base.CustomStart();
     }
 
     public void InputMovement(InputAction.CallbackContext context)

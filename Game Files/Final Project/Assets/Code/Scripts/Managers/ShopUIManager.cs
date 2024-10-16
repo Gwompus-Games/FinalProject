@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopUIManager : MonoBehaviour
+public class ShopUIManager : ManagedByGameManager
 {
     [SerializeField] private GameObject _shopTabsButtonSection;
     [SerializeField] private GameObject _buttonPrefab;
@@ -31,13 +31,15 @@ public class ShopUIManager : MonoBehaviour
     private ShopTab[] _shopTabs;
 
 
-    private void Awake()
+    public override void Init()
     {
+        base.Init();
         _shopTabs = GetComponentsInChildren<ShopTab>();
     }
 
-    private void Start()
+    public override void CustomStart()
     {
+        base.CustomStart();
         currentTab = ShopTabEnum.SCRAPING;
         SwapToTab(currentTab);
 

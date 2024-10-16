@@ -5,10 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class InfoBarTextElement : MonoBehaviour
+public abstract class InfoBarTextElement : ManagedObject
 {
     [SerializeField] protected string _uiElementName;
     [SerializeField] protected TMP_Text _uiText;
+    protected bool _enabled;
 
     protected virtual void Awake()
     {
@@ -29,12 +30,37 @@ public abstract class InfoBarTextElement : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-
+        if (!_initilized)
+        {
+            return;
+        }
+        if (_enabled)
+        {
+            return;
+        }
+        _enabled = true;
     }
     
     protected virtual void OnDisable()
     {
+        if (!_initilized)
+        {
+            return;
+        }
+        if (!_enabled)
+        {
+            return;
+        }
+        _enabled = false;
+    }
 
+    public override void CustomStart()
+    {
+        base.CustomStart();
+        if (!_enabled)
+        {
+            OnEnable();
+        }
     }
 
     public virtual void UpdateText(float number)

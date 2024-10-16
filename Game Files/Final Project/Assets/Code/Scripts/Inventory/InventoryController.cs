@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class InventoryController : MonoBehaviour
+public class InventoryController : ManagedByGameManager
 {
     [HideInInspector]
     public InventoryGrid selectedItemGrid;
@@ -18,7 +18,7 @@ public class InventoryController : MonoBehaviour
 
     private Vector3 _mousePosition = Vector3.zero;
 
-    private void Awake()
+    public override void Init()
     {
         InventoryGrid inventoryGrid = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
         if (inventoryGrid != null)
@@ -27,8 +27,18 @@ public class InventoryController : MonoBehaviour
         }
     }
 
+    public override void CustomStart()
+    {
+        base.CustomStart();
+        OnEnable();
+    }
+
     private void OnEnable()
     {
+        if (!_initilized)
+        {
+            return;
+        }
         CustomPlayerInput.UpdateCursorPosition += UpdateMousePos;
         CustomPlayerInput.Rotate += RotateItem;
         CustomPlayerInput.LeftMouseButton += PlaceInput;
@@ -37,6 +47,10 @@ public class InventoryController : MonoBehaviour
 
     private void OnDisable()
     {
+        if (!_initilized)
+        {
+            return;
+        }
         CustomPlayerInput.UpdateCursorPosition -= UpdateMousePos;
         CustomPlayerInput.Rotate -= RotateItem;
         CustomPlayerInput.LeftMouseButton -= PlaceInput;

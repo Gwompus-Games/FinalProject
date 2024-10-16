@@ -16,11 +16,11 @@ public class FMODEvents : ManagedByGameManager
 
     public override void Init()
     {
-        
+        base.Init();
     }
 
     public override void CustomStart()
     {
-        
+        base.CustomStart();
     }
 }

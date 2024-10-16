@@ -16,11 +16,12 @@ public class OxygenSystem : ManagedByGameManager
 
     public override void Init()
     {
-
+        base.Init();
     }
 
     public override void CustomStart()
     {
+        base.CustomStart();
         if (_starterOxygenTank != null && _numberOfStartingOxygenTanks > 0)
         {
             for (int t = 0; t < _numberOfStartingOxygenTanks; t++)

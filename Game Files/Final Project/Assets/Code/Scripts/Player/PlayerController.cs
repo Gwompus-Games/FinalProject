@@ -73,7 +73,7 @@ public class PlayerController : ManagedByGameManager
     private float _targetMoveSpeed;
     public bool isRunning { get; private set; }
 
-    CharacterController _controller;
+    private CharacterController _controller;
 
     private Vector3 _movement;
     private Vector3 _velocity;
@@ -94,15 +94,17 @@ public class PlayerController : ManagedByGameManager
 
     public override void Init()
     {
+        base.Init();
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
         suitSystem = GetComponent<SuitSystem>();
         oxygenSystem = GetComponent<OxygenSystem>();
+        _controller = GetComponent<CharacterController>();
     }
 
     public override void CustomStart()
     {
-        _controller = GetComponent<CharacterController>();
+        base.CustomStart();
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         isRunning = false;

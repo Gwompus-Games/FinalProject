@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoneyInfoBar : InfoBarTextElement
@@ -7,12 +8,28 @@ public class MoneyInfoBar : InfoBarTextElement
     protected override void OnEnable()
     {
         base.OnEnable();
+        if (!_initilized)
+        {
+            return;
+        }
+        if (_enabled)
+        {
+            return;
+        }
         PlayerController.UpdateMoney += UpdateText;
         UpdateText(GameManager.Instance.GetManagedComponent<PlayerController>().money);
     }
 
     protected override void OnDisable()
     {
+        if (!_initilized)
+        {
+            return;
+        }
+        if (!_enabled)
+        {
+            return;
+        }
         base.OnDisable();
         PlayerController.UpdateMoney -= UpdateText;
     }
@@ -20,6 +37,11 @@ public class MoneyInfoBar : InfoBarTextElement
     protected override void Start()
     {
         base.Start();
+    }
+
+    public override void CustomStart()
+    {
+        base.CustomStart();
     }
 
     public override void UpdateText(int money)
