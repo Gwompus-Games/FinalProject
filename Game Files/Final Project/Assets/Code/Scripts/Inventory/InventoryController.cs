@@ -17,13 +17,28 @@ public class InventoryController : ManagedByGameManager
     [SerializeField] GameObject testInventoryItemPrefab2;
 
     private Vector3 _mousePosition = Vector3.zero;
+    private ManagedObject[] _managedObjects;
 
     public override void Init()
     {
+        base.Init();
+        Debug.Log("Init inventory controller");
         InventoryGrid inventoryGrid = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
         if (inventoryGrid != null)
         {
             _inventory = inventoryGrid;
+        }
+
+        _managedObjects = FindObjectsByType<InventoryGrid>(FindObjectsSortMode.None);
+        Debug.Log(_managedObjects.Length);
+        for (int m = 0; m < _managedObjects.Length; m++)
+        {
+            if (_managedObjects[m] == this)
+            {
+                continue;
+            }
+            Debug.Log($"Initializing: {_managedObjects[m].name}");
+            _managedObjects[m].Init();
         }
     }
 
@@ -31,6 +46,15 @@ public class InventoryController : ManagedByGameManager
     {
         base.CustomStart();
         OnEnable();
+        for (int m = 0; m < _managedObjects.Length; m++)
+        {
+            if (_managedObjects[m] == this)
+            {
+                continue;
+            }
+            Debug.Log($"Starting: {_managedObjects[m].name}");
+            _managedObjects[m].CustomStart();
+        }
     }
 
     private void OnEnable()

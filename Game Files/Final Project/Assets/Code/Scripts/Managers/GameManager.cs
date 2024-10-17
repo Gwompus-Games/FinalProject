@@ -70,43 +70,28 @@ public class GameManager : MonoBehaviour
             Instantiate(_neededPrefabs[o]);
         }
 
-        MonoBehaviour[] objects = FindObjectsByType<ManagedByGameManager>(FindObjectsSortMode.None);
-        List<GameObject> gameObjects = new List<GameObject>();
-        List<ManagedByGameManager> managedScripts = new List<ManagedByGameManager>();
-        for (int o = 0; o < objects.Length; o++)
+        //Set up all managed objects
+        for (int s = 0; s < _standaloneManagers.managedChildren.Count; s++)
         {
-            if (gameObjects.Contains(objects[o].gameObject))
+            ManagedByGameManager managedScript = FindObjectOfType(_standaloneManagers.managedChildren[s], true).GetComponent(_standaloneManagers.managedChildren[s]) as ManagedByGameManager;
+            if (managedScript == null)
             {
+                Debug.Log($"No {_standaloneManagers.managedChildren[s].Name} found");
                 continue;
             }
-            gameObjects.Add(objects[o].gameObject);
-            ManagedByGameManager[] scripts = objects[o].GetComponents<ManagedByGameManager>();
-            for (int s = 0; s < scripts.Length; s++)
+            Debug.Log($"{managedScript.GetType().Name} found");
+            if (_standaloneManagers.standaloneManagers.Contains(managedScript.GetType()) &&
+                managedScript.transform.parent != managers.transform)
             {
-                if (managedScripts.Contains(scripts[s]))
-                {
-                    continue;
-                }
-                managedScripts.Add(scripts[s]);
-            }
-        }
-
-        //Set up all managed objects
-        for (int s = 0; s < managedScripts.Count; s++)
-        {
-            ManagedByGameManager managedComponent = managedScripts[s].GetComponent<ManagedByGameManager>();
-            if (_standaloneManagers.standaloneManagers.Contains(managedComponent.GetType()) &&
-                managedComponent.transform.parent != managers.transform)
-            {
-                managedComponent.transform.parent = managers.transform;
+                managedScript.transform.parent = managers.transform;
             }
 
-            if (managedComponent.GetType() == typeof(DungeonGenerator))
+            if (managedScript.GetType() == typeof(DungeonGenerator))
             {
-                managedComponent.transform.position = _dungeonSpawnPoint.position;
+                managedScript.transform.position = _dungeonSpawnPoint.position;
             }
 
-            Setup(managedComponent);
+            Setup(managedScript);
         }
 
         Debug.Log($"INITIALIZING: {_managedObjects.Count}");
