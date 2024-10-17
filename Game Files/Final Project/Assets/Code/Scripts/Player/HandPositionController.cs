@@ -13,8 +13,6 @@ public class HandPositionController : ManagedByGameManager
     public override void Init()
     {
         base.Init();
-        testTimes++;
-        Debug.Log($"Initilized {testTimes} times");
     }
 
     public override void CustomStart()
