@@ -14,6 +14,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : ManagedByGameManager
 {
     public static Action<int> UpdateMoney;
+    public static Action<Vector3> PlayerPosUpdated;
 
     public enum PlayerState
     {
@@ -81,6 +82,8 @@ public class PlayerController : ManagedByGameManager
 
     private Vector2 _movementInput = Vector2.zero;
     private Vector3 _lastMoveDirection = Vector2.zero;
+    private Vector3 _lastPosition;
+    private Transform _headTransform;
 
     public OxygenSystem oxygenSystem { get; private set; }
     public SuitSystem suitSystem { get; private set; }
@@ -100,6 +103,7 @@ public class PlayerController : ManagedByGameManager
         suitSystem = GetComponent<SuitSystem>();
         oxygenSystem = GetComponent<OxygenSystem>();
         _controller = GetComponent<CharacterController>();
+        _headTransform = GetComponentInChildren<CameraLook>().transform;
     }
 
     public override void CustomStart()
@@ -120,6 +124,12 @@ public class PlayerController : ManagedByGameManager
         if (_dead)
         {
             return;
+        }
+
+        if (_lastPosition != transform.position)
+        {
+            PlayerPosUpdated?.Invoke(_headTransform.position);
+            _lastPosition = transform.position;
         }
 
         // Take player inputs
@@ -313,7 +323,14 @@ public class PlayerController : ManagedByGameManager
     private bool CheckIfLookingAtInteractable()
     {
         Transform cameraTransform = Camera.main.transform;
-
+        MonoBehaviour interactable = _interactableLookingAt as MonoBehaviour;
+        if (interactable != null)
+        {
+            if (interactable.TryGetComponent<WorldItem>(out WorldItem worldItem))
+            {
+                worldItem.DisablePopup();
+            }
+        }
         RaycastHit hit;
         bool foundInteractable = false;
         IInteractable interactableItem;
@@ -324,6 +341,10 @@ public class PlayerController : ManagedByGameManager
             {
                 if (hit.rigidbody.gameObject.TryGetComponent<IInteractable>(out interactableItem))
                 {
+                    if (hit.rigidbody.gameObject.TryGetComponent<WorldItem>(out WorldItem worldItem))
+                    {
+                        worldItem.EnablePopup();
+                    }
                     _interactableLookingAt = interactableItem;
                     foundInteractable = true;
                 }
