@@ -436,7 +436,7 @@ PrefabInstance:
     - target: {fileID: 5079689670859933393, guid: d5e7997e00f200547aeb697835e53bea,
         type: 3}
       propertyPath: m_Name
-      value: Hotbar Variant
+      value: Hotbar
       objectReference: {fileID: 0}
     - target: {fileID: 5639059408865309218, guid: d5e7997e00f200547aeb697835e53bea,
         type: 3}
@@ -627,8 +627,34 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4247730263258914884, guid: d5e7997e00f200547aeb697835e53bea, type: 3}
     - {fileID: 6214357609528542887, guid: d5e7997e00f200547aeb697835e53bea, type: 3}
+    - {fileID: 7278765591344027387, guid: d5e7997e00f200547aeb697835e53bea, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6766218608094664070, guid: d5e7997e00f200547aeb697835e53bea, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8222149129229736053, guid: d5e7997e00f200547aeb697835e53bea,
+        type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 9028066069281345523}
   m_SourcePrefab: {fileID: 100100000, guid: d5e7997e00f200547aeb697835e53bea, type: 3}
+--- !u!1 &7671129477878737099 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8222149129229736053, guid: d5e7997e00f200547aeb697835e53bea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1760804701923438782}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9028066069281345523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7671129477878737099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7b91b49df4fca544a4f429383d10a93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _globalData: {fileID: 11400000, guid: 9d58b878e24bac345aac93b0679f2b07, type: 2}
+  <gridSizeWidth>k__BackingField: 10
+  <gridSizeHeight>k__BackingField: 2

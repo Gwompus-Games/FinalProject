@@ -326,9 +326,9 @@ public class PlayerController : ManagedByGameManager
         MonoBehaviour interactable = _interactableLookingAt as MonoBehaviour;
         if (interactable != null)
         {
-            if (interactable.TryGetComponent<WorldItem>(out WorldItem worldItem))
+            if (interactable.TryGetComponent<InteractableObject>(out InteractableObject interactableObject))
             {
-                worldItem.DisablePopup();
+                interactableObject.DisablePopup();
             }
         }
         RaycastHit hit;
@@ -341,9 +341,9 @@ public class PlayerController : ManagedByGameManager
             {
                 if (hit.rigidbody.gameObject.TryGetComponent<IInteractable>(out interactableItem))
                 {
-                    if (hit.rigidbody.gameObject.TryGetComponent<WorldItem>(out WorldItem worldItem))
+                    if (hit.rigidbody.gameObject.TryGetComponent<InteractableObject>(out InteractableObject interactableObject))
                     {
-                        worldItem.EnablePopup();
+                        interactableObject.EnablePopup();
                     }
                     _interactableLookingAt = interactableItem;
                     foundInteractable = true;

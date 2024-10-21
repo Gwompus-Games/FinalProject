@@ -133,7 +133,7 @@ public class InventoryGrid : ManagedObject
     }
 
 
-    public bool PlaceItem(InventoryItem inventoryItem, Vector2Int gridPosition, out InventoryItem returnItem)
+    public virtual bool PlaceItem(InventoryItem inventoryItem, Vector2Int gridPosition, out InventoryItem returnItem)
     {
         returnItem = null;
 

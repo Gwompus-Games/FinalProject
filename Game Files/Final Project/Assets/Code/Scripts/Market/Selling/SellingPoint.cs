@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public class SellingPoint : MonoBehaviour, IInteractable
+public class SellingPoint : InteractableObject
 {
     private InventoryGrid playerInventory;
 
-    private void Awake()
+    protected override void Awake()
     {
-        transform.tag = "Interactable";
+        base.Awake();
         GetComponentInChildren<Canvas>().worldCamera = Camera.main;
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         GameManager.Instance.GetManagedComponent<PlayerController>().OpenInventory();
         playerInventory = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
         GameManager.Instance.GetManagedComponent<PlayerController>().CloseInventory();
@@ -33,7 +34,7 @@ public class SellingPoint : MonoBehaviour, IInteractable
         return sellValue;
     }
 
-    public void Interact()
+    public override void Interact()
     {
         GameManager.Instance.GetManagedComponent<PlayerController>().ChangeUIState(UIManager.UIToDisplay.SHOP);
     }

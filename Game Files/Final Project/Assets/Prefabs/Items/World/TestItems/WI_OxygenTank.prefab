@@ -153,7 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572745e22f805b24494ca77eccc33f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _popupSprite: {fileID: 21300000, guid: f52d20b58fb79e743aca949053a7f82b, type: 3}
+  _popupDistance: 1.5
   _itemData: {fileID: 11400000, guid: 3f867d3391e94f040865196b26eb2d98, type: 2}
   <oxygenTankData>k__BackingField: {fileID: 11400000, guid: 3f867d3391e94f040865196b26eb2d98,
     type: 2}
-  maxTankCapacity: 0
+  maxTankCapacity: 100
