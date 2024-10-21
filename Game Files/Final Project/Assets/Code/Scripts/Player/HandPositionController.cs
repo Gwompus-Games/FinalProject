@@ -60,4 +60,13 @@ public class HandPositionController : ManagedByGameManager
         _rightHandTransform.localPosition = rHTransform.localPosition;
         _leftHandTransform.localPosition = lHTransform.localPosition;
     }
+
+    public Transform GetRightHandTransform()
+    {
+        return _rightHandTransform;
+    }
+    public Transform GetLeftHandTransform()
+    {
+        return _leftHandTransform;
+    }
 }

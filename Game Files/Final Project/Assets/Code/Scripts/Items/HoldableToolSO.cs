@@ -10,6 +10,8 @@ public class HoldableToolSO : ToolSO
         Left,
         Both
     }
+
     [Header("Holdable Settings")]
     public HandsUsed handsUsed;
+    public GameObject toolPrefab;
 }

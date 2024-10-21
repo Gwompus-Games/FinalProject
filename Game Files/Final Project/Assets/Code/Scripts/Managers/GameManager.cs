@@ -104,7 +104,10 @@ public class GameManager : MonoBehaviour
         }
 
         GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
+    }
 
+    private void Start()
+    {
         StartGameScene();
     }
 
