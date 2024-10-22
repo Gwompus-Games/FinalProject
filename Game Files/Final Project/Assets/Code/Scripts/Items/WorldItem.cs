@@ -45,6 +45,7 @@ public class WorldItem : InteractableObject
         _rigidbody.mass = _itemData.density;
         _rigidbody.drag = _itemData.drag;
         _rigidbody.angularDrag = _itemData.angularDrag;
+        _rigidbody.useGravity = !_itemData.floatingItem;
     }
 
     protected void HideItem(bool hideItem)

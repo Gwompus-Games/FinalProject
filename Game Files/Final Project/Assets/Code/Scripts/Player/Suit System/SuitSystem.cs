@@ -73,7 +73,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         if (currentSection >= numberOfSections - 1)
         {
             Debug.Log("Kill Player");
-            GameManager.Instance.GetManagedComponent<PlayerController>().KillPlayer();
+            GameManager.Instance.GetManagedComponent<PlayerController>().KillPlayer(ParentDeath.DeathType.Beaten);
             remainderDamage = 0;
             return;
         }

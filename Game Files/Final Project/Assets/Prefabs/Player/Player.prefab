@@ -329,6 +329,11 @@ MonoBehaviour:
   _startingMoney: 500
   _bufferSecondsFromNoOxygen: 10
   _deathTime: 7.5
+  _deaths:
+  - deathType: 0
+    deathTimeInSeconds: 15
+  - deathType: 0
+    deathTimeInSeconds: 0
 --- !u!114 &5703422146026313089
 MonoBehaviour:
   m_ObjectHideFlags: 0
