@@ -11,19 +11,23 @@ public class GridInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private void Awake()
     {
-        inventoryController = FindObjectOfType(typeof(InventoryController)) as InventoryController;
         inventoryGrid = GetComponent<InventoryGrid>();
+    }
+
+    private void Start()
+    {
+        inventoryController = GameManager.Instance.GetManagedComponent<InventoryController>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //Debug.Log($"Entered Grid {transform.parent.name}");
+        Debug.Log($"Entered Grid {transform.parent.name}");
         inventoryController.selectedItemGrid = inventoryGrid;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        //Debug.Log($"Exited Grid {transform.parent.name}");
+        Debug.Log($"Exited Grid {transform.parent.name}");
         inventoryController.selectedItemGrid = null;
     }
 }

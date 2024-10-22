@@ -14,6 +14,8 @@ public class FlashlightTool : ToolsParent
         {
             GameObject lightGO = new GameObject("Spot Light", typeof(Light));
         }
+
+        _myTool.leftHandPositionTransform
     }
 
     protected override void Start()

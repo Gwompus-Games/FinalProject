@@ -10,8 +10,8 @@ public abstract class ToolsParent : MonoBehaviour
     {
         public GameObject itemGameObject;
         public HoldableToolSO toolData;
-        public Transform rightHandPositionTransforms;
-        public Transform leftHandPositionTransforms;
+        public Transform rightHandPositionTransform;
+        public Transform leftHandPositionTransform;
     }
 
     [SerializeField] protected Tool _myTool;
@@ -50,8 +50,8 @@ public abstract class ToolsParent : MonoBehaviour
         {
             throw new Exception("No child object to manage!");
         }
-        if (_myTool.rightHandPositionTransforms == null &&
-            _myTool.leftHandPositionTransforms == null)
+        if (_myTool.rightHandPositionTransform == null &&
+            _myTool.leftHandPositionTransform == null)
         {
             throw new Exception("No hand positions set!");
         }
