@@ -14,6 +14,7 @@ public class ItemDataSO : ScriptableObject
     public float density = 1f;
     [Range(2.5f, 100f)] public float drag = 15f;
     public float angularDrag = 0.15f;
+    public bool floatingItem = false;
     [Header("Inventory Item Data")]
     public GameObject inventoryObject;
     public Sprite inventoryItemSprite;

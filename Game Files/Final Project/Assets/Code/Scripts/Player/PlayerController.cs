@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(OxygenSystem))]
 [RequireComponent(typeof(SuitSystem))]
 [RequireComponent(typeof(StudioEventEmitter))]
+[RequireComponent(typeof(DeathHandler))]
 public class PlayerController : ManagedByGameManager
 {
     public static Action<int> UpdateMoney;
@@ -65,6 +66,7 @@ public class PlayerController : ManagedByGameManager
 
     [Header("Death Settings")]
     [SerializeField] private float _deathTime = 7.5f;
+
     private bool _dead = false;
 
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
@@ -425,10 +427,10 @@ public class PlayerController : ManagedByGameManager
         }
     }
 
-    public void KillPlayer()
+    public void KillPlayer(ParentDeath.DeathType deathType)
     {
         _dead = true;
-        _dyingCoroutine = StartCoroutine(DeathTimer());
+        _dyingCoroutine = StartCoroutine(DeathTimer(deathType));
     }
 
     public void RestartGame()
@@ -446,16 +448,28 @@ public class PlayerController : ManagedByGameManager
         //add any code for things happening after player runs out of buffer seconds
         if (_outOfOxygen)
         {
-            KillPlayer();
+            KillPlayer(ParentDeath.DeathType.Suffocation);
         }
     }
 
-    private IEnumerator DeathTimer()
+    private IEnumerator DeathTimer(ParentDeath.DeathType deathType)
     {
         yield return null;
         //add code for any animations and sounds
+        switch (deathType)
+        {
+            case ParentDeath.DeathType.Suffocation:
 
-        yield return new WaitForSeconds(_deathTime);
+                break;
+            case ParentDeath.DeathType.Beaten:
+
+                break;
+            //case ParentDeath.DeathType.Eaten:
+
+            //    break;
+        }
+
+        yield return new WaitForSeconds(0);
         //add any code for doing things after player dies
         RestartGame();
     }
