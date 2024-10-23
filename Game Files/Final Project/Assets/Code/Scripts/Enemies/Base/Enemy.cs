@@ -20,6 +20,9 @@ public class Enemy : MonoBehaviour
     [Header("Assign")]
     public Animator animator;
 
+    [Header("Debuging")]
+    [SerializeField] private bool _debugMode;
+
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -59,12 +62,15 @@ public class Enemy : MonoBehaviour
         
         if (navMeshPath.status != NavMeshPathStatus.PathComplete)
         {
-            print("Invalid path");
+            Debug.LogWarning("Invalid path");
             return false;
         }
         else
         {
-            print("Valid path");
+            if (_debugMode)
+            {
+                Debug.Log("Valid path");
+            }
             return true;
         }
     }

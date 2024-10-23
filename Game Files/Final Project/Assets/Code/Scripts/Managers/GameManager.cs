@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     [Header("Needed Components for Game")]
     [SerializeField] private List<ManagedByGameManager> _neededStandaloneScripts = new List<ManagedByGameManager>();
     [SerializeField] private List<GameObject> _neededPrefabs = new List<GameObject>();
+    [Header("Debuging")]
+    [SerializeField] private bool _debugMode = false;
 
     private Transform _playerSpawnPoint;
     private Transform _dungeonSpawnPoint;
@@ -76,10 +78,13 @@ public class GameManager : MonoBehaviour
             ManagedByGameManager managedScript = FindObjectOfType(_standaloneManagers.managedChildren[s], true).GetComponent(_standaloneManagers.managedChildren[s]) as ManagedByGameManager;
             if (managedScript == null)
             {
-                Debug.Log($"No {_standaloneManagers.managedChildren[s].Name} found");
+                Debug.LogWarning($"No {_standaloneManagers.managedChildren[s].Name} found");
                 continue;
             }
-            Debug.Log($"{managedScript.GetType().Name} found");
+            if (_debugMode)
+            {
+                Debug.Log($"{managedScript.GetType().Name} found");
+            }
             if (_standaloneManagers.standaloneManagers.Contains(managedScript.GetType()) &&
                 managedScript.transform.parent != managers.transform)
             {
@@ -94,13 +99,19 @@ public class GameManager : MonoBehaviour
             Setup(managedScript);
         }
 
-        Debug.Log($"INITIALIZING: {_managedObjects.Count}");
+        if (_debugMode)
+        {
+            Debug.Log($"INITIALIZING: {_managedObjects.Count}");
+        }
 
         //Initialize all managed objects
         for (int o = 0; o < _managedObjects.Count; o++)
         {
             _managedObjects[o].Init();
-            Debug.Log($"{_managedObjects[o].GetType().Name} initialized");
+            if (_debugMode)
+            {
+                Debug.Log($"{_managedObjects[o].GetType().Name} initialized");
+            }
         }
 
         GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);

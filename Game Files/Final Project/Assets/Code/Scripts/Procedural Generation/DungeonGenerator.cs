@@ -24,6 +24,9 @@ public class DungeonGenerator : ManagedByGameManager
     [SerializeField] private int minRoomsToSpawn = 50;
     [SerializeField] private int minDistanceToSpawn = 50;
 
+    [Header("Debugging")]
+    [SerializeField] private bool _debugMode;
+
     private NavMeshSurface navMesh;
     private List<DungeonPart> generatedRooms;
     private List<DungeonPart> availableRooms;
@@ -60,7 +63,10 @@ public class DungeonGenerator : ManagedByGameManager
         while (generatedRooms.Count < numOfRooms)
         {
             tries++;
-            Debug.Log(generatedRooms.Count);
+            if (_debugMode)
+            {
+                Debug.Log(generatedRooms.Count);
+            }
 
             if (tries > 100)
             {
@@ -72,7 +78,10 @@ public class DungeonGenerator : ManagedByGameManager
         }
 
         FinishGeneration();
-        Debug.Log($"Room Count: {generatedRooms.Count}, Tries: {tries}");
+        if (_debugMode)
+        {
+            Debug.Log($"Room Count: {generatedRooms.Count}, Tries: {tries}");
+        }
     }
 
     private void Despawn()

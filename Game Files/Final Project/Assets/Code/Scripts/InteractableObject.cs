@@ -45,11 +45,6 @@ public class InteractableObject : MonoBehaviour, IInteractable
         DisablePopup();
     }
 
-    public void DespawnItem()
-    {
-        Destroy(gameObject);
-    }
-
     public void EnablePopup()
     {
         PlayerController.PlayerPosUpdated += CalculatePositionAndDirectionOfPopup;
