@@ -228,13 +228,13 @@ public class PlayerController : ManagedByGameManager
 
     public void ChangeState(PlayerState newState)
     {
+        if (currentState == PlayerState.Running)
+        {
+            runningDrainer.DeactivateDrainer();
+        }
         if (newState == PlayerState.Running)
         {
             runningDrainer.ActivateDrainer();
-        }
-        else
-        {
-            runningDrainer.DeactivateDrainer();
         }
         currentState = newState;
     }

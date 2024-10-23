@@ -81,6 +81,11 @@ public abstract class ToolsParent : ManagedObject
         toolEnabled = set;
     }
 
+    public HoldableToolSO GetToolData()
+    {
+        return _myTool.toolData;
+    }
+
     public abstract void UseTool();
     public abstract void CancelUseTool();
 }

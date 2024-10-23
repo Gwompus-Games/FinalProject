@@ -23,13 +23,46 @@ public class ToolBarGridScript : InventoryGrid
         return base.PlaceItem(inventoryItem, gridPosition, out returnItem);
     }
 
-    public void AddItemToTools(HoldableToolSO holdableToolSO, Vector2Int gridOriginPos)
+    public void AddItemToTools(II_Tool tool, HoldableToolSO holdableToolData, Vector2Int gridOriginPos)
     {
-
+        _toolController.AddTool(tool, holdableToolData, gridOriginPos);
     }
 
-    public void RemoveItemFromTools(HoldableToolSO holdableToolSO)
+    public void RemoveItemFromTools(II_Tool tool)
     {
+        _toolController.RemoveTool(tool);
+    }
 
+    protected override IEnumerator Hover(InventoryItem item)
+    {
+        InventoryPopupUI popupUI = GetComponentInParent<ToolBarUI>().popupUI;
+        if (popupUI == null)
+        {
+            item = null;
+        }
+        yield return null;
+        if (_hoveredItem == item && item != null)
+        {
+            yield return new WaitForSeconds(popupUI.popupHoverTimeInSeconds);
+            if (_hoveredItem == item)
+            {
+                popupUI.EnablePopup(_cursorPos);
+                popupUI.SetPopupData(item);
+                II_OxygenTank oxygenItem = item as II_OxygenTank;
+                do
+                {
+                    if (oxygenItem != null)
+                    {
+                        popupUI.UpdatePopup(_cursorPos, oxygenItem);
+                    }
+                    else
+                    {
+                        popupUI.UpdatePopup(_cursorPos);
+                    }
+                    yield return new WaitForSeconds(0.15f);
+                } while (_hoveredItem == item);
+            }
+        }
+        popupUI.DisablePopup();
     }
 }

@@ -15,7 +15,7 @@ public class InventoryItem : MonoBehaviour
     protected Coroutine _flashingRoutune = null;
     protected bool _initialized = false;
     [SerializeField] private Image _itemImage;
-    public ItemDataSO itemData { get; private set; }
+    [field: SerializeField] public ItemDataSO itemData { get; private set; }
     public int sellValue { get; private set; }
 
     protected virtual void Awake()

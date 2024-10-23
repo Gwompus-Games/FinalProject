@@ -8,8 +8,8 @@ public class InventoryGrid : ManagedObject
     [SerializeField] private InventoryGlobalDataSO _globalData;
     public static InventoryGlobalDataSO globalItemData;
     private InventoryController _inventoryController;
-    private InventoryItem _hoveredItem;
-    private Vector2 _cursorPos = Vector2.zero;
+    protected InventoryItem _hoveredItem;
+    protected Vector2 _cursorPos = Vector2.zero;
 
     public InventoryItem[,] inventoryItemSlot { get; private set; }
 
@@ -409,7 +409,7 @@ public class InventoryGrid : ManagedObject
         }
     }
 
-    private IEnumerator Hover(InventoryItem item)
+    protected virtual IEnumerator Hover(InventoryItem item)
     {
         InventoryPopupUI popupUI = GetComponentInParent<InventoryUI>().popupUI;
         if (popupUI == null)

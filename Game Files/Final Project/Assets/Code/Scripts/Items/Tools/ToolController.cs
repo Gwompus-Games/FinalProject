@@ -8,9 +8,24 @@ using UnityEngine;
 [RequireComponent(typeof(HandPositionController))]
 public class ToolController : ManagedByGameManager
 {
+    public struct ToolData
+    {
+        public ToolData(HoldableToolSO htd, Vector2Int gPos, int tIndex = -1)
+        {
+            holdableToolData = htd;
+            gridOriginPosition = gPos;
+            toolIndex = tIndex;
+        }
+
+        public HoldableToolSO holdableToolData;
+        public Vector2Int gridOriginPosition;
+        public int toolIndex;
+    }
+
     private HandPositionController _handPositionController;
     private List<ToolsParent> _tools = new List<ToolsParent>();
-    private Dictionary<II_Tool, Vector2Int> _equipedTools = new Dictionary<II_Tool, Vector2Int>();
+    private Dictionary<II_Tool, ToolData> _equippedTools = new Dictionary<II_Tool, ToolData>();
+    private List<int> _toolsOrder = new List<int>();
     private int _equippedTool = -1;
     [field :SerializeField] public bool debugMode { get; private set; } = false;
 
@@ -48,32 +63,35 @@ public class ToolController : ManagedByGameManager
         {
             _tools[_equippedTool].SetToolEnabled(true);
         }
+        SetToolOrder();
     }
 
-    public void SwapTool(int direction)
+    public void SwapTool(int direction = 0)
     {
         if (direction == 0)
         {
-            Debug.LogWarning("Tried to swap tool in no direction!");
-            return;
+            if (debugMode)
+            {
+                Debug.LogWarning("Swapping tool in no direction!");
+            }
         }
         if (_equippedTool != -1)
         {
-            _tools[_equippedTool].SetToolEnabled(false);
+            _tools[_toolsOrder[_equippedTool]].SetToolEnabled(false);
         }
         direction = (int)Mathf.Sign(direction);
         _equippedTool += direction;
-        if (_equippedTool >= _tools.Count)
+        if (_equippedTool >= _toolsOrder.Count)
         {
             _equippedTool = -1;
         }
         else if (_equippedTool < -1)
         {
-            _equippedTool = _tools.Count - 1;
+            _equippedTool = _toolsOrder.Count - 1;
         }
         if (_equippedTool != -1)
         {
-            _tools[_equippedTool].SetToolEnabled(true);
+            _tools[_toolsOrder[_equippedTool]].SetToolEnabled(true);
         }
     }
 
@@ -85,15 +103,29 @@ public class ToolController : ManagedByGameManager
         }
         if (_tools.Count == 0)
         {
+            if (debugMode)
+            {
+                Debug.LogWarning("No tools found!");
+            }
             return;
         }
-
+        if (_toolsOrder.Count == 0)
+        {
+            if (debugMode)
+            {
+                Debug.Log("No equipped tools to use.");
+            }
+            return;
+        }
         if (_equippedTool == -1)
         {
+            if (debugMode)
+            {
+                Debug.Log("Current equipped tool is none.");
+            }
             return;
         }
-        
-        if (_equippedTool >= _tools.Count || 
+        if (_equippedTool >= _toolsOrder.Count || 
             _equippedTool < -1)
         {
             Debug.LogWarning("Equiped tool out of tools range!");
@@ -108,28 +140,104 @@ public class ToolController : ManagedByGameManager
         switch (data)
         {
             case CustomPlayerInput.CustomInputData.PRESSED:
-                _tools[_equippedTool].UseTool();
+                _tools[_toolsOrder[_equippedTool]].UseTool();
                 break;
             case CustomPlayerInput.CustomInputData.RELEASED:
-                _tools[_equippedTool].CancelUseTool();
+                _tools[_toolsOrder[_equippedTool]].CancelUseTool();
                 break;
         }
         
     }
 
-    public void AddTool(II_Tool tool, Vector2Int gridOriginPos)
+    public void AddTool(II_Tool tool, HoldableToolSO holdableToolData, Vector2Int gridOriginPos)
     {
+        if (_equippedTools.ContainsKey(tool))
+        {
+            if (debugMode)
+            {
+                Debug.Log($"{tool} already in equiped tools!");
+            }
+            return;
+        }
+        int index = _tools.IndexOf(_tools.Find(x => x.GetToolData() == holdableToolData));
+        
+        ToolData toolData = new ToolData(holdableToolData, gridOriginPos, index);
+        _equippedTools.Add(tool, toolData);
 
+        SetToolOrder();
     }
 
     public void RemoveTool(II_Tool tool)
     {
+        if (!_equippedTools.ContainsKey(tool))
+        {
+            if (debugMode)
+            {
+                Debug.Log($"{tool} not found in equiped tools!");
+            }
+            return;
+        }
+        _equippedTools.Remove(tool);
 
+        SetToolOrder();
     }
 
     private void SetToolOrder()
     {
-
+        _equippedTool = -1;
+        _toolsOrder.Clear();
+        List<II_Tool> tools;
+        switch (_equippedTools.Count)
+        {
+            case 0:
+                break;
+            case 1:
+                tools = new List<II_Tool>(_equippedTools.Keys);
+                HoldableToolSO holdableToolData = tools[0].itemData as HoldableToolSO;
+                if (holdableToolData == null)
+                {
+                    throw new Exception("Null tool data or non holdable tool data found!");
+                }
+                _toolsOrder.Add(_tools.IndexOf(_tools.Find(x => x.GetToolData() == holdableToolData)));
+                break;
+            default:
+                tools = new List<II_Tool>(_equippedTools.Keys);
+                List<II_Tool> orderedTools = new List<II_Tool>();
+                orderedTools.Add(tools[0]);
+                for (int t = 1; t < tools.Count; t++)
+                {
+                    int orderedCount = orderedTools.Count;
+                    Vector2Int currentElementGridOrigin = tools[t].originTile;
+                    for (int o = 0; o < orderedCount; o++)
+                    {
+                        Vector2Int orderedGridOrigin = tools[t].originTile;
+                        if (currentElementGridOrigin.x < orderedGridOrigin.x)
+                        {
+                            orderedTools.Insert(o, tools[t]);
+                            break;
+                        }
+                        if (currentElementGridOrigin.x == orderedGridOrigin.x)
+                        {
+                            if (currentElementGridOrigin.y <= orderedGridOrigin.y)
+                            {
+                                orderedTools.Insert(o, tools[t]);
+                                break;
+                            }
+                        }
+                        if (o == orderedCount - 1)
+                        {
+                            orderedTools.Add(tools[t]);
+                        }
+                    }
+                }
+                Debug.Log(orderedTools);
+                for (int i = 0; i < orderedTools.Count; i++)
+                {
+                    _toolsOrder.Add(_tools.IndexOf(_tools.Find(x => x.GetToolData() == orderedTools[i].itemData)));
+                }
+                break;
+        }
+        Debug.Log(_toolsOrder);
     }
 
     private void OnEnable()

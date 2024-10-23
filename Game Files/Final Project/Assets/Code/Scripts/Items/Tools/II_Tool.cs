@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class II_Tool : InventoryItem
 {
+    protected HoldableToolSO holdableToolData;
+
     protected override void Awake()
     {
         base.Awake();
-        HoldableToolSO holdableToolSO = itemData as HoldableToolSO;
-        if (holdableToolSO == null)
+        holdableToolData = itemData as HoldableToolSO;
+        if (holdableToolData == null)
         {
             throw new System.Exception("Item data is not a Holdable Tool type!");
         }
@@ -17,10 +19,9 @@ public class II_Tool : InventoryItem
     public override void ItemPlacedInInventory()
     {
         base.ItemPlacedInInventory();
-
         if (transform.parent.TryGetComponent<ToolBarGridScript>(out ToolBarGridScript toolBarGrid))
         {
-            toolBarGrid.AddItemToTools(this, originTile);
+            toolBarGrid.AddItemToTools(this, holdableToolData, originTile);
         }
     }
 
@@ -30,7 +31,7 @@ public class II_Tool : InventoryItem
 
         if (transform.parent.TryGetComponent<ToolBarGridScript>(out ToolBarGridScript toolBarGrid))
         {
-
+            toolBarGrid.RemoveItemFromTools(this);
         }
     }
 }

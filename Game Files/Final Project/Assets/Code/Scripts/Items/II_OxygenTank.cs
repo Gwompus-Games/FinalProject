@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class II_OxygenTank : InventoryItem
 {
-    [field: SerializeField] public OxygenTankSO oxygenTankData { get; protected set; }
+    public OxygenTankSO oxygenTankData { get; protected set; }
     public float oxygenLeft { 
         get
         {
@@ -27,6 +27,11 @@ public class II_OxygenTank : InventoryItem
     protected override void Awake()
     {
         base.Awake();
+        oxygenTankData = itemData as OxygenTankSO;
+        if (oxygenTankData == null)
+        {
+            throw new System.Exception("Item data not set to an Oxygen Tank Data!");
+        }
         //maxOxygenCapacity = oxygenTankData.minutesUntilEmpty * 60f;
         //SetTankToFull();
     }
