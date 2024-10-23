@@ -18,18 +18,14 @@ public class FacilityExit : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (!facilityExit)
+        if(!facilityExit)
         {
             facilityExit = GameObject.Find("FacilityExit").transform;
         }
         print("interacted");
         //SceneManager.LoadScene(2);
         if (facilityExit)
-        {
-            GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = false;
-            GameManager.PlayerControllerInstance.transform.position = facilityExit.position;
-            GameManager.PlayerControllerInstance.GetComponent<CharacterController>().enabled = true;
-        }
+            GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(facilityExit.position);
         else
             print("No transform found");
     }
