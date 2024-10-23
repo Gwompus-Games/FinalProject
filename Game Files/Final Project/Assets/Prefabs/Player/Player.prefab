@@ -225,16 +225,17 @@ GameObject:
   m_Component:
   - component: {fileID: 2518273171994542862}
   - component: {fileID: 2280515401531514968}
-  - component: {fileID: 3410801928085682937}
-  - component: {fileID: 8859362829662093870}
   - component: {fileID: 5703422146026313089}
+  - component: {fileID: 8859362829662093870}
   - component: {fileID: 5864806220124439931}
+  - component: {fileID: 3410801928085682937}
   - component: {fileID: 1915408573951989081}
   - component: {fileID: 505155305859489429}
   - component: {fileID: 8716103006985781635}
   - component: {fileID: 4765867987772039652}
   - component: {fileID: 8672683170310346580}
   - component: {fileID: 4122007023428012745}
+  - component: {fileID: 1422241895368899077}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -288,52 +289,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3410801928085682937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4586079081141089300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 309483da541e0de4c9b44746d5db30c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rightHandTransform: {fileID: 341204042431859794}
-  _leftHandTransform: {fileID: 2506555870494192130}
---- !u!114 &8859362829662093870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4586079081141089300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4a92e1551bb499fa901bef368818ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _debugMode: 1
-  _walkSpeed: 1.75
-  _runSpeed: 3
-  _gravity: -2
-  _runningOxygenDrainMultiplier: 2
-  _secondsToRunSpeed: 0.5
-  _groundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _groundCheck: {fileID: 5115705277198490957}
-  _groundCheckRadius: 0.4
-  _grabLength: 4
-  _startingMoney: 500
-  _bufferSecondsFromNoOxygen: 10
-  _deathTime: 7.5
-  _deaths:
-  - deathType: 0
-    deathTimeInSeconds: 15
-  - deathType: 0
-    deathTimeInSeconds: 0
 --- !u!114 &5703422146026313089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,11 +459,54 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3edf982e-f017-4d44-8249-9e8465f5b3e3
     m_ActionName: Player/Inventory Pickup Item[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5864806220124439931}
+        m_TargetAssemblyTypeName: CustomPlayerInput, Assembly-CSharp
+        m_MethodName: SwapToolInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c657cee3-6641-42d2-bd77-50229570de3f
+    m_ActionName: Player/Swap Tool[/Mouse/scroll/up,/Mouse/scroll/down]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &8859362829662093870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586079081141089300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4a92e1551bb499fa901bef368818ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _debugMode: 0
+  _walkSpeed: 1.75
+  _runSpeed: 3
+  _gravity: -2
+  _runningOxygenDrainMultiplier: 2
+  _secondsToRunSpeed: 0.5
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _groundCheck: {fileID: 5115705277198490957}
+  _groundCheckRadius: 0.4
+  _grabLength: 4
+  _startingMoney: 500
+  _bufferSecondsFromNoOxygen: 10
+  _deathTime: 7.5
 --- !u!114 &5864806220124439931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,6 +519,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae3176054fab3742b8eeb7e3d101907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3410801928085682937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586079081141089300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309483da541e0de4c9b44746d5db30c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rightHandTransform: {fileID: 341204042431859794}
+  _leftHandTransform: {fileID: 2506555870494192130}
 --- !u!114 &1915408573951989081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,6 +644,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1422241895368899077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586079081141089300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfc34fef8486ce04eb85da64efb6605b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deaths: []
 --- !u!1 &4812904704552666074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,6 +1173,7 @@ MonoBehaviour:
     type: 3}
   testInventoryItemPrefab2: {fileID: 3969134843577476104, guid: c74a81766c8d52a449ad7518c7e8397c,
     type: 3}
+  _debugMode: 0
 --- !u!114 &7841615646224310817
 MonoBehaviour:
   m_ObjectHideFlags: 0
