@@ -169,6 +169,10 @@ public class ToolController : ManagedByGameManager
 
     public void RemoveTool(II_Tool tool)
     {
+        if (_equippedTool > -1 && _equippedTool < _toolsOrder.Count)
+        {
+            _tools[_toolsOrder[_equippedTool]].SetToolEnabled(false);
+        }
         if (!_equippedTools.ContainsKey(tool))
         {
             if (debugMode)
@@ -230,14 +234,12 @@ public class ToolController : ManagedByGameManager
                         }
                     }
                 }
-                Debug.Log(orderedTools);
                 for (int i = 0; i < orderedTools.Count; i++)
                 {
                     _toolsOrder.Add(_tools.IndexOf(_tools.Find(x => x.GetToolData() == orderedTools[i].itemData)));
                 }
                 break;
         }
-        Debug.Log(_toolsOrder);
     }
 
     private void OnEnable()
