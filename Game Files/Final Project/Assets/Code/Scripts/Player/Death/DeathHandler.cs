@@ -36,7 +36,7 @@ public class DeathHandler : ManagedByGameManager
         {
             if (_deaths.Find(x => x.GetComponent<ParentDeath>().causeOfDeath == allTypes[t]) == null)
             {
-                throw new Exception($"{allTypes[t]} type not found in deaths list!");
+                //throw new Exception($"{allTypes[t]} type not found in deaths list!");
             }
         }
 

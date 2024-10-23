@@ -8,7 +8,6 @@ public class HandPositionController : ManagedByGameManager
     [SerializeField] private Transform _leftHandTransform;
     private Vector3 _rightHandDefaultPosition;
     private Vector3 _leftHandDefaultPosition;
-    private int testTimes = 0;
 
     public override void Init()
     {

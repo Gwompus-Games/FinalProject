@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(SuitSystem))]
 [RequireComponent(typeof(StudioEventEmitter))]
 [RequireComponent(typeof(DeathHandler))]
+[RequireComponent(typeof(ToolController))]
 public class PlayerController : ManagedByGameManager
 {
     public static Action<int> UpdateMoney;
@@ -64,9 +65,6 @@ public class PlayerController : ManagedByGameManager
     [SerializeField] private float _bufferSecondsFromNoOxygen = 10f;
     private bool _outOfOxygen = false;
 
-    [Header("Death Settings")]
-    [SerializeField] private float _deathTime = 7.5f;
-
     private bool _dead = false;
 
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
@@ -99,7 +97,10 @@ public class PlayerController : ManagedByGameManager
     public override void Init()
     {
         base.Init();
-        Debug.Log("Player Has been initilized.");
+        if (_debugMode)
+        {
+            Debug.Log("Player Has been initilized.");
+        }
         runningDrainer = gameObject.AddComponent<OxygenDrainer>();
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
         suitSystem = GetComponent<SuitSystem>();

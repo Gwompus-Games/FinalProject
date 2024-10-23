@@ -15,6 +15,7 @@ public class CustomPlayerInput : ManagedByGameManager
     public static Action<CustomInputData> RightMouseButton;
     public static Action Interact;
     public static Action<bool> UpdateRunning;
+    public static Action<int> SwapTool;
 
     public enum CustomInputData
     {
@@ -113,6 +114,15 @@ public class CustomPlayerInput : ManagedByGameManager
         if (context.canceled)
         {
             LeftMouseButton?.Invoke(CustomInputData.RELEASED);
+        }
+    }
+
+    public void SwapToolInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            int direction = (int)Mathf.Sign(context.ReadValue<float>());
+            SwapTool?.Invoke(direction);
         }
     }
 }

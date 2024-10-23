@@ -15,12 +15,12 @@ public class FlashlightTool : ToolsParent
             GameObject lightGO = new GameObject("Spot Light", typeof(Light));
         }
 
-        _myTool.leftHandPositionTransform
+        _myTool.rightHandPositionTransform = _handPositionController.GetRightHandTransform();
     }
 
     protected override void Start()
     {
-
+        base.Start();
     }
 
     public override void UseTool()

@@ -16,6 +16,7 @@ public abstract class ToolsParent : MonoBehaviour
 
     [SerializeField] protected Tool _myTool;
 
+    protected HandPositionController _handPositionController;
     protected Vector3[] _handPositions;
     public bool toolEnabled 
     {
@@ -50,16 +51,16 @@ public abstract class ToolsParent : MonoBehaviour
         {
             throw new Exception("No child object to manage!");
         }
+        _handPositionController = GameManager.Instance.GetManagedComponent<HandPositionController>();
+    }
+
+    protected virtual void Start()
+    {
         if (_myTool.rightHandPositionTransform == null &&
             _myTool.leftHandPositionTransform == null)
         {
             throw new Exception("No hand positions set!");
         }
-    }
-
-    protected virtual void Start()
-    {
-
     }
 
     protected virtual void OnEnable()
