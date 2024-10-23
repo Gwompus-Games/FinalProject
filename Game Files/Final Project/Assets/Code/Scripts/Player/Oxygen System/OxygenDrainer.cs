@@ -18,6 +18,7 @@ public class OxygenDrainer : MonoBehaviour
         if (_oxygenSystem == null)
         {
             _oxygenSystem = GameManager.Instance.GetManagedComponent<OxygenSystem>();
+            //Debug.Log($"{_oxygenSystem} gotten for {gameObject.name}'s oxygen drainer!");
             if (_oxygenSystem == null)
             {
                 throw new System.Exception("No Oxygen System assigned in Game Manager");
@@ -34,6 +35,7 @@ public class OxygenDrainer : MonoBehaviour
         if (_oxygenSystem == null)
         {
             _oxygenSystem = GameManager.Instance.GetManagedComponent<OxygenSystem>();
+            //Debug.Log($"{_oxygenSystem} gotten for {gameObject.name}!");
             if (_oxygenSystem == null)
             {
                 throw new System.Exception("No Oxygen System assigned in Game Manager");

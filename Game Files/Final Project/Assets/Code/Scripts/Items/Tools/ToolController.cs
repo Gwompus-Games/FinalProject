@@ -10,7 +10,9 @@ public class ToolController : ManagedByGameManager
 {
     private HandPositionController _handPositionController;
     private List<ToolsParent> _tools = new List<ToolsParent>();
-    private int _equippedTool = 0;
+    private Dictionary<II_Tool, Vector2Int> _equipedTools = new Dictionary<II_Tool, Vector2Int>();
+    private int _equippedTool = -1;
+    [field :SerializeField] public bool debugMode { get; private set; } = false;
 
     public override void Init()
     {
@@ -28,12 +30,24 @@ public class ToolController : ManagedByGameManager
             {
                 continue;
             }
+            _tools.Add(tool);
+            tool.Init();            
         }
+
     }
 
     public override void CustomStart()
     {
         base.CustomStart();
+
+        for (int t = 0; t < _tools.Count; t++)
+        {
+            _tools[t].CustomStart();
+        }
+        if (_equippedTool >= 0 && _equippedTool < _tools.Count)
+        {
+            _tools[_equippedTool].SetToolEnabled(true);
+        }
     }
 
     public void SwapTool(int direction)
@@ -42,6 +56,10 @@ public class ToolController : ManagedByGameManager
         {
             Debug.LogWarning("Tried to swap tool in no direction!");
             return;
+        }
+        if (_equippedTool != -1)
+        {
+            _tools[_equippedTool].SetToolEnabled(false);
         }
         direction = (int)Mathf.Sign(direction);
         _equippedTool += direction;
@@ -53,11 +71,18 @@ public class ToolController : ManagedByGameManager
         {
             _equippedTool = _tools.Count - 1;
         }
-
+        if (_equippedTool != -1)
+        {
+            _tools[_equippedTool].SetToolEnabled(true);
+        }
     }
 
     private void UseEquippedTool(CustomPlayerInput.CustomInputData data)
     {
+        if (debugMode)
+        {
+            Debug.Log("Use input detected!");
+        }
         if (_tools.Count == 0)
         {
             return;
@@ -75,20 +100,47 @@ public class ToolController : ManagedByGameManager
             return;
         }
 
-
-        if (data == CustomPlayerInput.CustomInputData.PRESSED)
+        if (debugMode)
         {
-            _tools[_equippedTool].UseTool();
+            Debug.Log(_equippedTool);
         }
+
+        switch (data)
+        {
+            case CustomPlayerInput.CustomInputData.PRESSED:
+                _tools[_equippedTool].UseTool();
+                break;
+            case CustomPlayerInput.CustomInputData.RELEASED:
+                _tools[_equippedTool].CancelUseTool();
+                break;
+        }
+        
+    }
+
+    public void AddTool(II_Tool tool, Vector2Int gridOriginPos)
+    {
+
+    }
+
+    public void RemoveTool(II_Tool tool)
+    {
+
+    }
+
+    private void SetToolOrder()
+    {
+
     }
 
     private void OnEnable()
     {
         CustomPlayerInput.SwapTool += SwapTool;
+        CustomPlayerInput.UseTool += UseEquippedTool;
     }
 
     private void OnDisable()
     {
         CustomPlayerInput.SwapTool -= SwapTool;
+        CustomPlayerInput.UseTool -= UseEquippedTool;
     }
 }

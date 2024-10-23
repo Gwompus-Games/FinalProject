@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Use Tool",
+                    "type": "Button",
+                    "id": "6e2ab4cd-e940-4545-99da-2a70e7504745",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -270,6 +279,17 @@
                     "processors": "",
                     "groups": "Mouse & Keyboard",
                     "action": "Swap Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "781285ee-1cbd-417f-8d13-f21bbc0d95e4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse & Keyboard",
+                    "action": "Use Tool",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

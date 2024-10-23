@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ToolsParent : MonoBehaviour
+public abstract class ToolsParent : ManagedObject
 {
+
     [Serializable]
     public struct Tool
     {
@@ -17,7 +18,6 @@ public abstract class ToolsParent : MonoBehaviour
     [SerializeField] protected Tool _myTool;
 
     protected HandPositionController _handPositionController;
-    protected Vector3[] _handPositions;
     public bool toolEnabled 
     {
         get
@@ -37,8 +37,9 @@ public abstract class ToolsParent : MonoBehaviour
         } 
     }
 
-    protected virtual void Awake()
+    public override void Init()
     {
+        base.Init();
         if (_myTool.toolData == null)
         {
             throw new Exception("Tool data not set!");
@@ -54,13 +55,15 @@ public abstract class ToolsParent : MonoBehaviour
         _handPositionController = GameManager.Instance.GetManagedComponent<HandPositionController>();
     }
 
-    protected virtual void Start()
+    public override void CustomStart()
     {
+        base.CustomStart();
         if (_myTool.rightHandPositionTransform == null &&
             _myTool.leftHandPositionTransform == null)
         {
             throw new Exception("No hand positions set!");
         }
+        SetToolEnabled(false);
     }
 
     protected virtual void OnEnable()
@@ -79,4 +82,5 @@ public abstract class ToolsParent : MonoBehaviour
     }
 
     public abstract void UseTool();
+    public abstract void CancelUseTool();
 }

@@ -16,6 +16,7 @@ public class CustomPlayerInput : ManagedByGameManager
     public static Action Interact;
     public static Action<bool> UpdateRunning;
     public static Action<int> SwapTool;
+    public static Action<CustomInputData> UseTool; 
 
     public enum CustomInputData
     {
@@ -123,6 +124,18 @@ public class CustomPlayerInput : ManagedByGameManager
         {
             int direction = (int)Mathf.Sign(context.ReadValue<float>());
             SwapTool?.Invoke(direction);
+        }
+    }
+
+    public void UseToolInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            UseTool?.Invoke(CustomInputData.PRESSED);
+        }
+        if (context.canceled)
+        {
+            UseTool?.Invoke(CustomInputData.RELEASED);
         }
     }
 }

@@ -96,6 +96,10 @@ public class PlayerController : ManagedByGameManager
 
     public override void Init()
     {
+        if (_initilized)
+        {
+            return;
+        }
         base.Init();
         if (_debugMode)
         {
@@ -105,6 +109,10 @@ public class PlayerController : ManagedByGameManager
         runningDrainer.SetDrainMultiplier(_runningOxygenDrainMultiplier);
         suitSystem = GetComponent<SuitSystem>();
         oxygenSystem = GetComponent<OxygenSystem>();
+        if (_debugMode)
+        {
+            Debug.Log($"{oxygenSystem} gotten for {gameObject.name}!");
+        }
         _controller = GetComponent<CharacterController>();
         _headTransform = GetComponentInChildren<CameraLook>().transform;
     }

@@ -5,10 +5,11 @@ using UnityEngine;
 public class FlashlightTool : ToolsParent
 {
     private Light _light;
+    private ToolController _controller;
 
-    protected override void Awake()
+    public override void Init()
     {
-        base.Awake();
+        base.Init();
         _light = GetComponentInChildren<Light>();
         if (_light == null)
         {
@@ -16,15 +17,33 @@ public class FlashlightTool : ToolsParent
         }
 
         _myTool.rightHandPositionTransform = _handPositionController.GetRightHandTransform();
+        _controller = GameManager.Instance.GetManagedComponent<ToolController>();
     }
 
-    protected override void Start()
+    public override void CustomStart()
     {
-        base.Start();
+        base.CustomStart();
     }
 
     public override void UseTool()
     {
         _light.enabled = !_light.enabled;
+        if (_controller.debugMode)
+        {
+            if (_light.enabled)
+            {
+                Debug.Log("Flashlight turned on!");
+            }
+            else
+            {
+                Debug.Log("Flashlight turned off!");
+            }
+            
+        }
+    }
+
+    public override void CancelUseTool()
+    {
+        
     }
 }

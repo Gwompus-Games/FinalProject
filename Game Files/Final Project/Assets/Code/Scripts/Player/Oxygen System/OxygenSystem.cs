@@ -47,7 +47,7 @@ public class OxygenSystem : ManagedByGameManager
                 break;
             case 1:
                 oxygenTanks[0].SetOxygenTankID(0);
-                SwapOxygenTank(0);
+                SwapOxygenTank();
                 break;
             default:
                 oxygenTanks = SortOxygenTanks(oxygenTanks.ToArray());

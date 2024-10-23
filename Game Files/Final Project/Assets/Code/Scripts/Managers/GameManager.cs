@@ -170,6 +170,11 @@ public class GameManager : MonoBehaviour
 
     public T GetManagedComponent<T>() where T : ManagedByGameManager
     {
-        return _managedObjects.Find(x => x.GetComponent<T>() != null).GetComponent<T>();
+        T managedObject = _managedObjects.Find(x => x.GetComponent<T>() != null).GetComponent<T>();
+        if (_debugMode)
+        {
+            //Debug.Log($"{managedObject.GetType()} gotten!");
+        }
+        return managedObject;
     }
 }
