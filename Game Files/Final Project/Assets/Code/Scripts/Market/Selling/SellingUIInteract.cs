@@ -9,9 +9,9 @@ public class SellingUIInteract : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private SellingZone _sellingZone;
     private SellValueUIScript _uiComponent;
 
-    private void Awake()
+    private void Start()
     {
-        _inventoryController = FindObjectOfType(typeof(InventoryController)) as InventoryController;
+        _inventoryController = GameManager.Instance.GetManagedComponent<InventoryController>();
         _sellingZone = GetComponent<SellingZone>();
         _uiComponent = _sellingZone.GetSellComponentUI();
     }

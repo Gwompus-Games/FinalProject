@@ -22,6 +22,10 @@ public class UIManager : ManagedByGameManager
     {
         base.Init();
         List<InfoBarTextElement> infoElements = new List<InfoBarTextElement>(GetComponentsInChildren<InfoBarTextElement>());
+        for (int i = 0; i < infoElements.Count; i++)
+        {
+            Debug.Log(infoElements.GetType());
+        }
         List<InventoryGrid> inventoryGrids = new List<InventoryGrid>(GetComponentsInChildren<InventoryGrid>());
         _managedObjects = new List<ManagedObject>();
         _managedObjects.Concat(infoElements);

@@ -34,14 +34,15 @@ public class MoneyInfoBar : InfoBarTextElement
         PlayerController.UpdateMoney -= UpdateText;
     }
 
-    protected override void Start()
+    public override void Init()
     {
-        base.Start();
+        base.Init();
     }
 
     public override void CustomStart()
     {
         base.CustomStart();
+        OnEnable();
     }
 
     public override void UpdateText(int money)

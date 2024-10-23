@@ -11,8 +11,14 @@ public abstract class InfoBarTextElement : ManagedObject
     [SerializeField] protected TMP_Text _uiText;
     protected bool _enabled;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
+
+    }
+
+    public override void Init()
+    {
+        base.Init();
         if (_uiText == null)
         {
             _uiText = GetComponentInChildren<TMP_Text>();
@@ -21,11 +27,6 @@ public abstract class InfoBarTextElement : ManagedObject
         {
             throw new System.Exception("No text component found!");
         }
-    }
-
-    protected virtual void Start()
-    {
-
     }
 
     protected virtual void OnEnable()
