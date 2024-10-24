@@ -13,12 +13,28 @@ public class OxygenInfoBar : InfoBarTextElement
 
     protected override void OnEnable()
     {
+        if (!_initilized)
+        {
+            return;
+        }
+        if (_enabled)
+        {
+            return;
+        }
         base.OnEnable();
         OxygenSystem.OxygenLeftInTank += OxygenUpdateListener;
     }
 
     protected override void OnDisable()
     {
+        if (!_initilized)
+        {
+            return;
+        }
+        if (!_enabled)
+        {
+            return;
+        }
         base.OnDisable();
         OxygenSystem.OxygenLeftInTank -= OxygenUpdateListener;
     }

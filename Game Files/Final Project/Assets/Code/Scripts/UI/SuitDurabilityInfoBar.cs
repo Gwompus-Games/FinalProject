@@ -13,7 +13,6 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
 
     protected override void OnEnable()
     {
-        base.OnEnable();
         if (!_initilized)
         {
             return;
@@ -22,13 +21,13 @@ public class SuitDurabilityInfoBar : InfoBarTextElement
         {
             return;
         }
+        base.OnEnable();
         SuitSystem.UpdateSuitUI += UpdateSuitUI;
         GameManager.Instance.GetManagedComponent<SuitSystem>().UpdateUI();
     }
 
     protected override void OnDisable()
     {
-        base.OnDisable();
         if (!_initilized)
         {
             return;
