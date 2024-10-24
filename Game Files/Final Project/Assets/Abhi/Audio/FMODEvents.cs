@@ -10,6 +10,7 @@ public class FMODEvents : ManagedByGameManager
     
     [field: Header ("BGM")]
     [field: SerializeField] public EventReference bgm { get; private set; }
+    [field: SerializeField] public EventReference facilityAmbience { get; private set; }
     
     [field: Header ("Footsteps SFX")]
     [field: SerializeField] public EventReference footsteps { get; private set; }

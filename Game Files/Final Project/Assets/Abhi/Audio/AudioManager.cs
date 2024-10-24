@@ -20,6 +20,12 @@ public class AudioManager : ManagedByGameManager
     {
         base.CustomStart();
         PlayOneShotAttached(GameManager.Instance.GetManagedComponent<FMODEvents>().bgm);
+        Invoke(nameof(PlayFacilityAmbience), 200);
+    }
+
+    private void PlayFacilityAmbience()
+    {
+        PlayOneShotAttached(GameManager.Instance.GetManagedComponent<FMODEvents>().facilityAmbience);
     }
 
     public StudioEventEmitter InitializeEventEmitter(EventReference eventReference, GameObject emitterSource)

@@ -125,10 +125,12 @@ public class PlayerController : ManagedByGameManager
         moveSpeed = _walkSpeed;
         isRunning = false;
         CloseInventory();
-        playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         money = _startingMoney;
         _dead = false;
         _outOfOxygen = false;
+        
+        playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
+        playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
     }
 
     private void Update()
@@ -186,6 +188,10 @@ public class PlayerController : ManagedByGameManager
         }
 
         playerHeartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        if (!AnglerFish.Instance)
+            return;
+
         if (Vector3.Distance(transform.position, AnglerFish.Instance.transform.position) <= 30)
         {
             PLAYBACK_STATE playbackState;
@@ -199,8 +205,6 @@ public class PlayerController : ManagedByGameManager
         {
             playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
-        //enemy heartbeat logic
-        //AudioManager.instance.PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
     }
 
     private void UpdateState()
