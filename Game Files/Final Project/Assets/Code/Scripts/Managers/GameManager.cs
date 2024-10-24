@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _debugMode = false;
 
     private Transform _playerSpawnPoint;
+    public Transform playerSpawnPoint;
     private Transform _dungeonSpawnPoint;
 
     public static GameManager Instance { get; private set; }
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
         _standaloneManagers = GetComponent<StandaloneManagersList>();
         _standaloneManagers.SetUpList();
         InitilizeGameScene();
+        playerSpawnPoint = _playerSpawnPoint;
     }
 
     private void InitilizeGameScene()
