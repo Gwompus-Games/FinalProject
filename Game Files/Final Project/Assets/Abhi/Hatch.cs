@@ -8,6 +8,11 @@ public class Hatch : MonoBehaviour, IInteractable
     private float startRot;
     private Vector3 rotation;
 
+    public Transform from;
+    public Transform to;
+    public float speed = 0.01f;
+    public float timeCount = 0.0f;
+
     private void Awake()
     {
         transform.tag = "Interactable";
@@ -23,24 +28,17 @@ public class Hatch : MonoBehaviour, IInteractable
 
     private IEnumerator RotateRamp()
     {
-        Vector3 tempRot;
-        if (endRot > startRot)
-            tempRot = rotation;
-        else
-            tempRot = rotation * -1;
-
-        while(ramp.transform.localRotation.x - endRot != 0)
+        while(ramp.transform.rotation != to.rotation)
         {
-            ramp.Rotate(tempRot);
+            ramp.transform.rotation = Quaternion.Lerp(from.rotation, to.rotation, timeCount * speed);
+            timeCount = timeCount + Time.deltaTime;
             yield return null;
         }
-        
-        Quaternion tempEuler = ramp.transform.localRotation;
-        tempEuler.eulerAngles = new Vector3 (0, endRot, 0);
-        ramp.transform.localRotation = tempEuler;
 
-        var temp = startRot;
-        startRot = endRot;
-        endRot = temp;
+        var temp = from;
+        from = to;
+        to = temp;
+        timeCount = 0;
     }
+
 }
