@@ -114,11 +114,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        for(int o = 0; o < _managedObjects.Count; o++)
-        {
-            _managedObjects[o].Init();
-        }
-
         GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
     }
 

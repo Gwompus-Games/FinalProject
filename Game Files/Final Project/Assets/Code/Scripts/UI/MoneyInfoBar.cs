@@ -7,7 +7,6 @@ public class MoneyInfoBar : InfoBarTextElement
 {
     protected override void OnEnable()
     {
-        base.OnEnable();
         if (!_initilized)
         {
             return;
@@ -16,6 +15,7 @@ public class MoneyInfoBar : InfoBarTextElement
         {
             return;
         }
+        base.OnEnable();
         PlayerController.UpdateMoney += UpdateText;
         UpdateText(GameManager.Instance.GetManagedComponent<PlayerController>().money);
     }

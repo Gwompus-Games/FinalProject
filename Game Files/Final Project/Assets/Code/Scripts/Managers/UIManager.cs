@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using System;
+using System.Reflection;
 
 public class UIManager : ManagedByGameManager
 {
@@ -10,6 +12,7 @@ public class UIManager : ManagedByGameManager
     [SerializeField] private GameObject _suitUI;
     [SerializeField] private GameObject _shopUI;
     private List<ManagedObject> _managedObjects = new List<ManagedObject>();
+    [SerializeField] private bool _debugMode = false;
 
     public enum UIToDisplay
     {
@@ -21,15 +24,36 @@ public class UIManager : ManagedByGameManager
     public override void Init()
     {
         base.Init();
-        List<InfoBarTextElement> infoElements = new List<InfoBarTextElement>(GetComponentsInChildren<InfoBarTextElement>());
-        for (int i = 0; i < infoElements.Count; i++)
+        if (_debugMode)
         {
-            Debug.Log(infoElements.GetType());
+            Debug.Log("UI Manager Initilized");
+        }
+        List<Type> infoElementChildren = Assembly.GetAssembly(typeof(InfoBarTextElement)).GetTypes().Where(t => t.IsSubclassOf(typeof(InfoBarTextElement))).ToList();
+        List<InfoBarTextElement> infoElements = new List<InfoBarTextElement>();
+        for (int t = 0; t < infoElementChildren.Count; t++)
+        {
+            infoElements.Add(GetComponentInChildren(infoElementChildren[t]) as InfoBarTextElement);
         }
         List<InventoryGrid> inventoryGrids = new List<InventoryGrid>(GetComponentsInChildren<InventoryGrid>());
         _managedObjects = new List<ManagedObject>();
-        _managedObjects.Concat(infoElements);
-        _managedObjects.Concat(inventoryGrids);
+        _managedObjects = _managedObjects.Concat(infoElements).ToList();
+        _managedObjects = _managedObjects.Concat(inventoryGrids).ToList();
+        if (_debugMode)
+        {
+            Debug.Log($"Found a total of {_managedObjects.Count}  objects.");
+        }
+        for (int ibe = 0; ibe < _managedObjects.Count; ibe++)
+        {
+            if (_debugMode)
+            {
+                Debug.Log($"{_managedObjects[ibe].gameObject.name} is being initilized by {gameObject.name}");
+            }
+            _managedObjects[ibe].Init();
+            if (_debugMode)
+            {
+                Debug.Log($"{_managedObjects[ibe].gameObject.name} initilized!");
+            }
+        }
     }
 
     public override void CustomStart()
@@ -37,11 +61,15 @@ public class UIManager : ManagedByGameManager
         base.CustomStart();
         for (int ibe = 0; ibe < _managedObjects.Count; ibe++)
         {
-            _managedObjects[ibe].Init();
-        }
-        for (int ibe = 0; ibe < _managedObjects.Count; ibe++)
-        {
+            if (_debugMode)
+            {
+                Debug.Log($"{_managedObjects[ibe].gameObject.name} is being Started by {gameObject.name}!");
+            }
             _managedObjects[ibe].CustomStart();
+            if (_debugMode)
+            {
+                Debug.Log($"{_managedObjects[ibe].gameObject.name} Started!");
+            }
         }
         SetUI(UIToDisplay.GAME);
     }
