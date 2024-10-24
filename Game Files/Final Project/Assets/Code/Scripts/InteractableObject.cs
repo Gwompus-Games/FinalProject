@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +8,10 @@ public class InteractableObject : MonoBehaviour, IInteractable
     [SerializeField] private Image _popupImage;
     [SerializeField] private Sprite _popupSprite;
     [SerializeField] private float _popupDistance = 1.5f;
+    [SerializeField] private TMP_Text _popupText;
+    [SerializeField] private char _popupKey = 'E';
+    private Transform _playerCamera;
+    public bool popupEnabled { get; private set; } = true;
 
     protected virtual void Awake()
     {
@@ -20,6 +23,11 @@ public class InteractableObject : MonoBehaviour, IInteractable
         if (_popupImage == null) 
         { 
             _popupImage = GetComponentInChildren<Image>();
+        }
+
+        if (_popupText == null && _popupImage != null)
+        {
+            _popupText = _popupImage.gameObject.GetComponentInChildren<TMP_Text>();
         }
 
         if (_popupCanvas == null)
@@ -34,10 +42,16 @@ public class InteractableObject : MonoBehaviour, IInteractable
         {
             throw new System.Exception("Popup sprite not assigned");
         }
+        if (_popupText == null)
+        {
+            throw new System.Exception("No text object found!");
+        }
 
         _popupImage.sprite = _popupSprite;
+        _popupText.text = _popupKey.ToString();
 
         transform.tag = "Interactable";
+        _playerCamera = Camera.main.transform;
     }
 
     protected virtual void Start()
@@ -47,14 +61,25 @@ public class InteractableObject : MonoBehaviour, IInteractable
 
     public void EnablePopup()
     {
+        if (popupEnabled)
+        {
+            return;
+        }
+        popupEnabled = true;
         PlayerController.PlayerPosUpdated += CalculatePositionAndDirectionOfPopup;
-        _popupImage.enabled = true;
+        CalculatePositionAndDirectionOfPopup(_playerCamera.position);
+        _popupImage.gameObject.SetActive(true);
     }
 
     public void DisablePopup()
     {
+        if (!popupEnabled) 
+        { 
+            return;
+        }
+        popupEnabled = false;
         OnDisable();
-        _popupImage.enabled = false;
+        _popupImage.gameObject.SetActive(false);
     }
 
     public void CalculatePositionAndDirectionOfPopup(Vector3 playerPosition)

@@ -28,6 +28,7 @@ public class GridInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerExit(PointerEventData eventData)
     {
         //Debug.Log($"Exited Grid {transform.parent.name}");
+        inventoryController.DisablePopup();
         inventoryController.selectedItemGrid = null;
     }
 }

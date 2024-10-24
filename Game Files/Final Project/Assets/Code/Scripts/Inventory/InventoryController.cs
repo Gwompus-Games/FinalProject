@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -348,5 +349,34 @@ public class InventoryController : ManagedByGameManager
         wI_OxygenTank.SpawnItem(spawnPoint, oxygenTankToPlace.oxygenLeft, oxygenTankToPlace.oxygenTankData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);
+    }
+
+    internal void DisablePopup()
+    {
+        if (selectedItemGrid == null)
+        {
+            return;
+        }
+        InventoryPopupUI popup = null;
+        InventoryUI ui = selectedItemGrid.GetComponentInParent<InventoryUI>();
+        if (ui != null)
+        {
+            popup = ui.popupUI;
+        }
+        if (popup == null)
+        {
+            ToolBarUI tbUI = selectedItemGrid.GetComponentInParent<ToolBarUI>();
+            if (tbUI != null)
+            {
+                popup = tbUI.popupUI;
+            }
+        }
+
+        if (popup == null)
+        {
+            throw new Exception($"No popup UI found!");
+        }
+
+        popup.DisablePopup();
     }
 }
