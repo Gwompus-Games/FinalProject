@@ -445,7 +445,8 @@ public class PlayerController : ManagedByGameManager
     public void RestartGame()
     {
         GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
+        TeleportPlayer(GameManager.Instance.playerSpawnPoint.position);
     }
 
     private IEnumerator OxygenOutTimer()
