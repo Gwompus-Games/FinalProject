@@ -100,7 +100,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0.0688, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -116,7 +116,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0.0696, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -706,7 +706,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.0688
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -769,7 +769,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.0696
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1024,7 +1024,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Ramp
+    path: Door
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1036,7 +1036,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Ramp
+    path: Door
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1048,7 +1048,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Ramp
+    path: Door
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1060,7 +1060,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Door
+    path: Ramp
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1072,7 +1072,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Door
+    path: Ramp
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1084,7 +1084,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Door
+    path: Ramp
     classID: 4
     script: {fileID: 0}
     flags: 0

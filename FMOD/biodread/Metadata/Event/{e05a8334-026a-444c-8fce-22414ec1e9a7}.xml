@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{e05a8334-026a-444c-8fce-22414ec1e9a7}">
 		<property name="name">
-			<value>AnglerFish1</value>
+			<value>AnglerFishSpotted</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{3c8eae35-b6bb-4efd-9c6d-f452b05e1a51}">
+		<property name="volume">
+			<value>-14</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{1087e442-ce81-4b00-9fe5-40eb6d0f95e7}</destination>
 		</relationship>

@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8276910235429485772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFishSpotted
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFishSpotted
+  Guid:
+    Data1: -530939084
+    Data2: 1145832042
+    Data3: 1092800143
+    Data4: -1477852850
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-7761830305126152602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +108,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 199541
+--- !u!114 &-4988029392552390683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFishDistant1
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFishDistant1
+  Guid:
+    Data1: -1817565478
+    Data2: 1183436203
+    Data3: -1373715543
+    Data4: 1096584152
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-4896080357024731871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFishAttacking
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFishAttacking
+  Guid:
+    Data1: 112835786
+    Data2: 1134620111
+    Data3: -2108524401
+    Data4: -981101093
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4134072461434040205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,10 +177,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638655359717090114
+  lastModified: 638656388258158814
   FileSizes:
   - Name: Desktop
-    Value: 1058
+    Value: 1198
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -120,15 +201,18 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: 3621135079556206930}
   - {fileID: -7761830305126152602}
-  - {fileID: 6009349811071528123}
   - {fileID: -7418670947285440663}
   - {fileID: -6224968617068998442}
+  - {fileID: -8276910235429485772}
+  - {fileID: -4896080357024731871}
+  - {fileID: 8522064902551632361}
+  - {fileID: -4988029392552390683}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1103463962044765846}
   StringsBanks:
   - {fileID: -4134072461434040205}
-  cacheTime: 638655359717180012
+  cacheTime: 638656388261006295
   cacheVersion: 131619
 --- !u!114 &1103463962044765846
 MonoBehaviour:
@@ -145,7 +229,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638631226604316386
+  lastModified: 638656388258138805
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -193,10 +277,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638655359717180012
+  lastModified: 638656388261006295
   FileSizes:
   - Name: Desktop
-    Value: 2643200
+    Value: 2939520
   Exists: 1
 --- !u!114 &5312996799108760689
 MonoBehaviour:
@@ -222,7 +306,7 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &6009349811071528123
+--- !u!114 &8522064902551632361
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,17 +316,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/AnglerFish1
+  m_Name: event:/AnglerFishDistant2
   m_EditorClassIdentifier: 
-  Path: event:/AnglerFish1
+  Path: event:/AnglerFishDistant2
   Guid:
-    Data1: -530939084
-    Data2: 1145832042
-    Data3: 1092800143
-    Data4: -1477852850
+    Data1: 913677521
+    Data2: 1172310523
+    Data3: 1495668154
+    Data4: 1845038691
   Banks:
   - {fileID: 4495579087837898468}
-  IsStream: 0
+  IsStream: 1
   Is3D: 1
   IsOneShot: 1
   Parameters: []
