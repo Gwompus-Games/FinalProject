@@ -14,11 +14,13 @@ public class OxygenSystem : ManagedByGameManager
     [SerializeField] private OxygenTankSO _starterOxygenTank;
     [SerializeField] private int _numberOfStartingOxygenTanks;
     private PlayerController _playerController;
+    private GameManager.GameState currentGameState;
 
     public override void Init()
     {
         base.Init();
         _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
+        currentGameState = GameManager.Instance.currentGameState;
     }
 
     public override void CustomStart()
@@ -36,7 +38,10 @@ public class OxygenSystem : ManagedByGameManager
 
     private void Update()
     {
-        DrainActiveTank(Time.deltaTime);
+        if (currentGameState == GameManager.GameState.LandedAtFacility)
+        {
+            DrainActiveTank(Time.deltaTime);
+        }
     }
 
     private void SortAndLabelOxygenTanks()
@@ -258,5 +263,20 @@ public class OxygenSystem : ManagedByGameManager
             modifiedDrainAmountInSeconds *= _oxygenDrainMultipliers[d].drainMultiplier;
         }
         return modifiedDrainAmountInSeconds;
+    }
+
+    public void UpdateGameState(GameManager.GameState newGameState)
+    {
+        currentGameState = newGameState;
+    }
+
+    private void OnEnable()
+    {
+        GameManager.UpdateGameState += UpdateGameState;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.UpdateGameState -= UpdateGameState;        
     }
 }
