@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,6 +7,12 @@ using UnityEngine;
 [RequireComponent(typeof(StandaloneManagersList))]
 public class GameManager : MonoBehaviour
 {
+    public enum GameState
+    {
+        InBetweenFacitilies,
+        LandedAtFacility
+    }
+
     [Header("Needed Components for Game")]
     [SerializeField] private List<ManagedByGameManager> _neededStandaloneScripts = new List<ManagedByGameManager>();
     [SerializeField] private List<GameObject> _neededPrefabs = new List<GameObject>();
@@ -17,6 +24,21 @@ public class GameManager : MonoBehaviour
     private Transform _dungeonSpawnPoint;
 
     public static GameManager Instance { get; private set; }
+    public static Action<GameState> UpdateGameState;
+
+    public GameState currentGameState 
+    { 
+        get
+        {
+            return _curState;
+        }
+        private set
+        {
+            _curState = value;
+            UpdateGameState?.Invoke(_curState);
+        }
+    }
+    private GameState _curState;
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
     private StandaloneManagersList _standaloneManagers;
 
