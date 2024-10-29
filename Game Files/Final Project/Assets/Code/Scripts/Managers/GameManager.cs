@@ -212,11 +212,17 @@ public class GameManager : MonoBehaviour
         return managedObject;
     }
 
+    /// <summary>
+    /// This function should only be called from the Submarine and PlayerController scripts
+    /// </summary>
     public void ExitLevel()
     {
         currentGameState = GameState.InBetweenFacitilies;
     }
 
+    /// <summary>
+    /// This function should only be called from the Submarine script
+    /// </summary>
     public void EnterLevel()
     {
         currentGameState = GameState.LandedAtFacility;

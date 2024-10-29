@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Submarine : ManagedByGameManager
 {
+
+    [SerializeField] private Transform _movementParentTransform;
     public bool playerInSubmarine { get; private set; }
     private bool _inTransit = false;
     private Transform _landedTransform;
@@ -29,21 +31,29 @@ public class Submarine : ManagedByGameManager
 
         _landedTransform = submarineLandingPoint.transform;
         _shoppingPlacementTransform = submarineShoppingPoint.transform;
+
+        if (_movementParentTransform == null)
+        {
+            _movementParentTransform = transform.GetChild(0);
+        }
     }
 
     public override void CustomStart()
     {
         base.CustomStart();
-
+        _playerDefaultParent = GameManager.Instance.GetManagedComponent<PlayerController>().transform.parent;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<PlayerController>(out PlayerController playerController))
         {
+            if (_playerDefaultParent == null)
+            {
+                _playerDefaultParent = playerController.transform.parent;
+            }
             playerInSubmarine = true;
-            _playerDefaultParent = playerController.transform.parent;
-            playerController.gameObject.transform.parent = transform;
+            playerController.gameObject.transform.parent = _movementParentTransform;
         }
     }
 
