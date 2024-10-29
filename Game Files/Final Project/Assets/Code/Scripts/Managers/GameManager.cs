@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private Transform _playerSpawnPoint;
     public Transform playerSpawnPoint;
     private Transform _dungeonSpawnPoint;
+    private Transform _submarineSpawnPoint;
 
     public static GameManager Instance { get; private set; }
     public static Action<GameState> UpdateGameState;
@@ -80,6 +81,16 @@ public class GameManager : MonoBehaviour
         }
         _dungeonSpawnPoint = dungeonGeneratorSpawnPoint.transform;
 
+        SubmarineShoppingPoint submarineShoppingPoint = FindObjectOfType<SubmarineShoppingPoint>();
+        if (submarineShoppingPoint == null)
+        {
+            Debug.LogError("No submarine shopping point located in scene! Please place the ShoppingPoint prefab into the scene!");
+        }
+        else
+        {
+            _submarineSpawnPoint = submarineShoppingPoint.transform;
+        }
+
         GameObject managers = new GameObject("Dedicated Managers");
         managers.transform.parent = transform.parent;
 
@@ -114,10 +125,14 @@ public class GameManager : MonoBehaviour
             {
                 managedScript.transform.parent = managers.transform;
             }
-
-            if (managedScript.GetType() == typeof(DungeonGenerator))
+            Type type = managedScript.GetType();
+            if (type == typeof(DungeonGenerator))
             {
                 managedScript.transform.position = _dungeonSpawnPoint.position;
+            }
+            else if (type == typeof(Submarine) && _submarineSpawnPoint != null)
+            {
+                managedScript.transform.position = _submarineSpawnPoint.position;
             }
 
             Setup(managedScript);
@@ -157,7 +172,7 @@ public class GameManager : MonoBehaviour
 
     private T FindFirstObjectAndDestroyOthers<T>()
     {
-        Object[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
+        UnityEngine.Object[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
         GameObject[] gameObjects = new GameObject[objects.Length];
         int index = 0;
         for (int o = 0; o < objects.Length; o++)
@@ -195,5 +210,15 @@ public class GameManager : MonoBehaviour
             //Debug.Log($"{managedObject.GetType()} gotten!");
         }
         return managedObject;
+    }
+
+    public void ExitLevel()
+    {
+        currentGameState = GameState.InBetweenFacitilies;
+    }
+
+    public void EnterLevel()
+    {
+        currentGameState = GameState.LandedAtFacility;
     }
 }
