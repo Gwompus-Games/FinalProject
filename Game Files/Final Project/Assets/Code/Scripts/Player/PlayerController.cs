@@ -90,6 +90,7 @@ public class PlayerController : ManagedByGameManager
     public OxygenDrainer runningDrainer { get; private set; }
 
     private EventInstance playerFootsteps;
+    private EventInstance playerHeartbeat;
 
     private Coroutine _oxygenOutCoroutine;
     private Coroutine _dyingCoroutine;
@@ -181,7 +182,22 @@ public class PlayerController : ManagedByGameManager
         }
         else
         {
-            playerFootsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            playerFootsteps.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+
+        playerHeartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (Vector3.Distance(transform.position, AnglerFish.Instance.transform.position) <= 30)
+        {
+            PLAYBACK_STATE playbackState;
+            playerHeartbeat.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                playerHeartbeat.start();
+            }
+        }
+        else
+        {
+            playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         //enemy heartbeat logic
         //AudioManager.instance.PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
@@ -445,7 +461,9 @@ public class PlayerController : ManagedByGameManager
     public void RestartGame()
     {
         GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
+        TeleportPlayer(GameManager.Instance.playerSpawnPoint.position);
+        _dead = false;
     }
 
     private IEnumerator OxygenOutTimer()

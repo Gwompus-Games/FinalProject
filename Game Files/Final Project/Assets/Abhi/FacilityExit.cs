@@ -23,9 +23,11 @@ public class FacilityExit : MonoBehaviour, IInteractable
             facilityExit = GameObject.Find("FacilityExit").transform;
         }
         print("interacted");
-        //SceneManager.LoadScene(2);
         if (facilityExit)
+        {
             GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(facilityExit.position);
+            GameManager.Instance.GetManagedComponent<DungeonGenerator>().StartGeneration();
+        }
         else
             print("No transform found");
     }
