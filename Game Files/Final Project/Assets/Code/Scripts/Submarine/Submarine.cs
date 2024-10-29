@@ -31,6 +31,7 @@ public class Submarine : ManagedByGameManager
 
         _landedTransform = submarineLandingPoint.transform;
         _shoppingPlacementTransform = submarineShoppingPoint.transform;
+        transform.position = _shoppingPlacementTransform.position;
 
         if (_movementParentTransform == null)
         {

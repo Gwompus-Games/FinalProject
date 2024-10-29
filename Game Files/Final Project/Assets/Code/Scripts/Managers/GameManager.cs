@@ -91,14 +91,14 @@ public class GameManager : MonoBehaviour
             _submarineSpawnPoint = submarineShoppingPoint.transform;
         }
 
-        GameObject managers = new GameObject("Dedicated Managers");
-        managers.transform.parent = transform.parent;
+        GameObject managersParent = new GameObject("Dedicated Managers");
+        managersParent.transform.parent = transform.parent;
 
         //Adding all needed standalone manager scripts
         for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
         {
             GameObject standaloneManager = new GameObject(_neededStandaloneScripts[ms].GetType().Name, _neededStandaloneScripts[ms].GetType());
-            standaloneManager.transform.parent = managers.transform;
+            standaloneManager.transform.parent = managersParent.transform;
         }
 
         //Adding all needed prefabs to the scene
@@ -120,22 +120,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log($"{managedScript.GetType().Name} found");
             }
-            if (_standaloneManagers.standaloneManagers.Contains(managedScript.GetType()) &&
-                managedScript.transform.parent != managers.transform)
-            {
-                managedScript.transform.parent = managers.transform;
-            }
-            Type type = managedScript.GetType();
-            if (type == typeof(DungeonGenerator))
-            {
-                managedScript.transform.position = _dungeonSpawnPoint.position;
-            }
-            else if (type == typeof(Submarine) && _submarineSpawnPoint != null)
-            {
-                managedScript.transform.position = _submarineSpawnPoint.position;
-            }
-
-            Setup(managedScript);
+            Setup(managedScript, managersParent);
         }
 
         if (_debugMode)
@@ -152,8 +137,6 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"{_managedObjects[o].GetType().Name} initialized");
             }
         }
-
-        GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
     }
 
     private void Start()
@@ -197,9 +180,32 @@ public class GameManager : MonoBehaviour
         return gameObjects[0].GetComponent<T>();
     } 
 
-    private void Setup(ManagedByGameManager managedObject)
+    private void Setup(ManagedByGameManager managedScript, GameObject managersParent)
     {
-        _managedObjects.Add(managedObject);
+        _managedObjects.Add(managedScript);
+        if (_standaloneManagers.standaloneManagers.Contains(managedScript.GetType()) &&
+                managedScript.transform.parent != managersParent.transform)
+        {
+            managedScript.transform.parent = managersParent.transform;
+        }
+        Type type = managedScript.GetType();
+        if (type == typeof(PlayerController))
+        {
+            PlayerController player = managedScript as PlayerController;
+            if (player != null && _playerSpawnPoint != null)
+            {
+                player.TeleportPlayer(_playerSpawnPoint.transform.position);
+            }
+        }
+        else if (type == typeof(DungeonGenerator))
+        {
+            managedScript.transform.position = _dungeonSpawnPoint.position;
+        }
+        else if (type == typeof(Submarine) && _submarineSpawnPoint != null)
+        {
+            managedScript.transform.position = _submarineSpawnPoint.position;
+        }
+
     }
 
     public T GetManagedComponent<T>() where T : ManagedByGameManager
