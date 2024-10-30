@@ -103,6 +103,10 @@ public class InventoryGrid : ManagedObject
 
     private Vector2Int GetTileGridPosition(Vector2 worldPosition)
     {
+        if (rectTransform == null)
+        {
+            return new Vector2Int(-1, -1);
+        }
         positionOnTheGrid.x = worldPosition.x - rectTransform.position.x;
         positionOnTheGrid.y = rectTransform.position.y - worldPosition.y;
 

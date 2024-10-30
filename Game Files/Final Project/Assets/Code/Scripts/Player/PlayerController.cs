@@ -94,6 +94,8 @@ public class PlayerController : ManagedByGameManager
 
     private Coroutine _oxygenOutCoroutine;
     private Coroutine _dyingCoroutine;
+    
+    private List<IHeartbeat> _heartbeatElements = new List<IHeartbeat>();
 
     public override void Init()
     {
@@ -189,10 +191,11 @@ public class PlayerController : ManagedByGameManager
 
         playerHeartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
 
-        if (!AnglerFish.Instance)
-            return;
-
-        if (Vector3.Distance(transform.position, AnglerFish.Instance.transform.position) <= 30)
+        if (_heartbeatElements.Count == 0)
+        {
+            playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+        else
         {
             PLAYBACK_STATE playbackState;
             playerHeartbeat.getPlaybackState(out playbackState);
@@ -200,10 +203,6 @@ public class PlayerController : ManagedByGameManager
             {
                 playerHeartbeat.start();
             }
-        }
-        else
-        {
-            playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
 
@@ -592,5 +591,28 @@ public class PlayerController : ManagedByGameManager
     {
         ChangeUIState(UIManager.UIToDisplay.GAME);
         ChangeState(PlayerState.Idle);
+    }
+
+    public void AddHeartBeat(IHeartbeat heartbeatElement)
+    {
+        if (CheckHeartbeatInList(heartbeatElement))
+        {
+            return;
+        }
+        _heartbeatElements.Add(heartbeatElement);
+    }
+
+    public bool CheckHeartbeatInList(IHeartbeat heartbeatElement)
+    {
+        return _heartbeatElements.Contains(heartbeatElement);
+    }
+
+    public void RemoveHeartBeat(IHeartbeat heartbeatElement)
+    {
+        if (!CheckHeartbeatInList(heartbeatElement))
+        {
+            return;
+        }
+        _heartbeatElements.Remove(heartbeatElement);
     }
 }
