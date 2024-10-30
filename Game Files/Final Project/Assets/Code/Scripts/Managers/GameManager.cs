@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public static Action<GameState> UpdateGameState;
 
+    private DungeonGenerator _dungeonGenerator;
+
+    private bool _waitingForSubmarineAnimation = false;
+
     public GameState currentGameState 
     { 
         get
@@ -56,6 +60,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         _standaloneManagers = GetComponent<StandaloneManagersList>();
         _standaloneManagers.SetUpList();
+        _waitingForSubmarineAnimation = false;
         InitilizeGameScene();
         playerSpawnPoint = _playerSpawnPoint;
     }
@@ -119,6 +124,10 @@ public class GameManager : MonoBehaviour
             if (_debugMode)
             {
                 Debug.Log($"{managedScript.GetType().Name} found");
+            }
+            if (managedScript.GetType() == typeof(DungeonGenerator))
+            {
+                _dungeonGenerator = managedScript as DungeonGenerator;
             }
             Setup(managedScript, managersParent);
         }
@@ -221,9 +230,27 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// This function should only be called from the Submarine and PlayerController scripts
     /// </summary>
-    public void ExitLevel()
+    public void ExitLevel(bool takingSubmarine = false)
     {
-        currentGameState = GameState.InBetweenFacitilies;
+        if (!takingSubmarine)
+        {
+            ApplyGameState(GameState.InBetweenFacitilies);
+            return;
+        }
+        if (_waitingForSubmarineAnimation)
+        {
+            return;
+        }
+        StartCoroutine(WaitForSubmarineAnimation());
+    }
+
+    /// <summary>
+    /// This function should only be called from the Submarine script and only
+    /// from the animation coroutine
+    /// </summary>
+    public void SubmarineAnimationFinished()
+    {
+        _waitingForSubmarineAnimation = false;
     }
 
     /// <summary>
@@ -231,6 +258,29 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EnterLevel()
     {
-        currentGameState = GameState.LandedAtFacility;
+        ApplyGameState(GameState.LandedAtFacility);
+    }
+
+    private IEnumerator WaitForSubmarineAnimation()
+    {
+        _waitingForSubmarineAnimation = true;
+        while (_waitingForSubmarineAnimation)
+        {
+            yield return null;
+        }
+        ApplyGameState(GameState.InBetweenFacitilies);
+    }
+
+    private void ApplyGameState(GameState gameState)
+    {
+        currentGameState = gameState;
+        switch (gameState)
+        {
+            case GameState.InBetweenFacitilies:
+                break;
+            case GameState.LandedAtFacility:
+                _dungeonGenerator.StartGeneration();
+                break;
+        }
     }
 }
