@@ -7,8 +7,6 @@ public class BuyingManager : ManagedByGameManager
 {
     [field: SerializeField] public ToolListSO toolList { get; private set; }
     public static Action UpdateBuySections;
-    [field: SerializeField] public Color ableToBuyColour { get; private set; }
-    [field: SerializeField] public Color unableToBuyColour { get; private set; }
     [SerializeField] private GameObject _buySectionPrefab;
 
     public override void Init()

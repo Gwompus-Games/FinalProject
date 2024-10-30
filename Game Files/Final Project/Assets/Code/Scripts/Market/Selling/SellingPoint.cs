@@ -7,7 +7,11 @@ public class SellingPoint : InteractableObject
     protected override void Awake()
     {
         base.Awake();
-        GetComponentInChildren<Canvas>().worldCamera = Camera.main;
+        Canvas[] canvases = GetComponentsInChildren<Canvas>();
+        for (int c = 0; c < canvases.Length; c++)
+        {
+            canvases[c].worldCamera = Camera.main;
+        }
     }
 
     protected override void Start()
