@@ -6,8 +6,6 @@ using FMODUnity;
 
 public class AnglerFish : Enemy
 {
-    public static AnglerFish Instance;
-
     private StudioEventEmitter emitter;
 
     protected override void Awake()
@@ -17,8 +15,6 @@ public class AnglerFish : Enemy
 
     public override void SetupEnemy()
     {
-        Instance = this;
-
         base.SetupEnemy();
 
         emitter = GameManager.Instance.GetManagedComponent<AudioManager>().InitializeEventEmitter(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat, gameObject);
