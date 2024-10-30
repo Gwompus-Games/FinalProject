@@ -90,9 +90,12 @@ public class PlayerController : ManagedByGameManager
     public OxygenDrainer runningDrainer { get; private set; }
 
     private EventInstance playerFootsteps;
+    private EventInstance playerHeartbeat;
 
     private Coroutine _oxygenOutCoroutine;
     private Coroutine _dyingCoroutine;
+    
+    private List<IHeartbeat> _heartbeatElements = new List<IHeartbeat>();
 
     public override void Init()
     {
@@ -124,10 +127,12 @@ public class PlayerController : ManagedByGameManager
         moveSpeed = _walkSpeed;
         isRunning = false;
         CloseInventory();
-        playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         money = _startingMoney;
         _dead = false;
         _outOfOxygen = false;
+        
+        playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
+        playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
     }
 
     private void Update()
@@ -181,10 +186,24 @@ public class PlayerController : ManagedByGameManager
         }
         else
         {
-            playerFootsteps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            playerFootsteps.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
-        //enemy heartbeat logic
-        //AudioManager.instance.PlayOneShot(FMODEvents.instance.heartbeat, transform.position);
+
+        playerHeartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        if (_heartbeatElements.Count == 0)
+        {
+            playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+        else
+        {
+            PLAYBACK_STATE playbackState;
+            playerHeartbeat.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                playerHeartbeat.start();
+            }
+        }
     }
 
     private void UpdateState()
@@ -445,7 +464,9 @@ public class PlayerController : ManagedByGameManager
     public void RestartGame()
     {
         GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
+        TeleportPlayer(GameManager.Instance.playerSpawnPoint.position);
+        _dead = false;
     }
 
     private IEnumerator OxygenOutTimer()
@@ -570,5 +591,28 @@ public class PlayerController : ManagedByGameManager
     {
         ChangeUIState(UIManager.UIToDisplay.GAME);
         ChangeState(PlayerState.Idle);
+    }
+
+    public void AddHeartBeat(IHeartbeat heartbeatElement)
+    {
+        if (CheckHeartbeatInList(heartbeatElement))
+        {
+            return;
+        }
+        _heartbeatElements.Add(heartbeatElement);
+    }
+
+    public bool CheckHeartbeatInList(IHeartbeat heartbeatElement)
+    {
+        return _heartbeatElements.Contains(heartbeatElement);
+    }
+
+    public void RemoveHeartBeat(IHeartbeat heartbeatElement)
+    {
+        if (!CheckHeartbeatInList(heartbeatElement))
+        {
+            return;
+        }
+        _heartbeatElements.Remove(heartbeatElement);
     }
 }

@@ -14,6 +14,8 @@ public class BuySection : MonoBehaviour
     [SerializeField] private TMP_Text _buyButtonText;
     private bool _initialized = false;
     private bool _canAfford = false;
+    private Color _canAffordColour;
+    private Color _unableToAffordColour;
 
     private void OnEnable()
     {
@@ -23,6 +25,12 @@ public class BuySection : MonoBehaviour
     private void OnDisable()
     {
         BuyingManager.UpdateBuySections -= UpdateSection;
+    }
+
+    private void Start()
+    {
+        _canAffordColour = GameManager.Instance.GetManagedComponent<ShopUIManager>().ableToBuyColour;
+        _unableToAffordColour = GameManager.Instance.GetManagedComponent<ShopUIManager>().unableToBuyColour;
     }
 
     public void UpdateSection()
@@ -41,11 +49,11 @@ public class BuySection : MonoBehaviour
         }
         if (_canAfford)
         {
-            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().ableToBuyColour;
+            _buyButtonImage.color = _canAffordColour;
         }
         else
         {
-            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().unableToBuyColour;
+            _buyButtonImage.color = _unableToAffordColour;
         }
     }
 
@@ -61,11 +69,11 @@ public class BuySection : MonoBehaviour
         _toolCostText.text = $"${_toolData.buyValue}";
         if (_canAfford)
         {
-            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().ableToBuyColour;
+            _buyButtonImage.color = _canAffordColour;
         }
         else
         {
-            _buyButtonImage.color = GameManager.Instance.GetManagedComponent<BuyingManager>().unableToBuyColour;
+            _buyButtonImage.color = _unableToAffordColour;
         }
         _initialized = true;
     }

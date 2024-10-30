@@ -20,10 +20,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _debugMode = false;
 
     private Transform _playerSpawnPoint;
+    public Transform playerSpawnPoint;
     private Transform _dungeonSpawnPoint;
+    private Transform _submarineSpawnPoint;
 
     public static GameManager Instance { get; private set; }
     public static Action<GameState> UpdateGameState;
+
+    private DungeonGenerator _dungeonGenerator;
+
+    private bool _waitingForSubmarineAnimation = false;
 
     public GameState currentGameState 
     { 
@@ -54,7 +60,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
         _standaloneManagers = GetComponent<StandaloneManagersList>();
         _standaloneManagers.SetUpList();
+        _waitingForSubmarineAnimation = false;
         InitilizeGameScene();
+        playerSpawnPoint = _playerSpawnPoint;
     }
 
     private void InitilizeGameScene()
@@ -78,14 +86,24 @@ public class GameManager : MonoBehaviour
         }
         _dungeonSpawnPoint = dungeonGeneratorSpawnPoint.transform;
 
-        GameObject managers = new GameObject("Dedicated Managers");
-        managers.transform.parent = transform.parent;
+        SubmarineShoppingPoint submarineShoppingPoint = FindObjectOfType<SubmarineShoppingPoint>();
+        if (submarineShoppingPoint == null)
+        {
+            Debug.LogError("No submarine shopping point located in scene! Please place the ShoppingPoint prefab into the scene!");
+        }
+        else
+        {
+            _submarineSpawnPoint = submarineShoppingPoint.transform;
+        }
+
+        GameObject managersParent = new GameObject("Dedicated Managers");
+        managersParent.transform.parent = transform.parent;
 
         //Adding all needed standalone manager scripts
         for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
         {
             GameObject standaloneManager = new GameObject(_neededStandaloneScripts[ms].GetType().Name, _neededStandaloneScripts[ms].GetType());
-            standaloneManager.transform.parent = managers.transform;
+            standaloneManager.transform.parent = managersParent.transform;
         }
 
         //Adding all needed prefabs to the scene
@@ -107,18 +125,11 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log($"{managedScript.GetType().Name} found");
             }
-            if (_standaloneManagers.standaloneManagers.Contains(managedScript.GetType()) &&
-                managedScript.transform.parent != managers.transform)
-            {
-                managedScript.transform.parent = managers.transform;
-            }
-
             if (managedScript.GetType() == typeof(DungeonGenerator))
             {
-                managedScript.transform.position = _dungeonSpawnPoint.position;
+                _dungeonGenerator = managedScript as DungeonGenerator;
             }
-
-            Setup(managedScript);
+            Setup(managedScript, managersParent);
         }
 
         if (_debugMode)
@@ -135,8 +146,6 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"{_managedObjects[o].GetType().Name} initialized");
             }
         }
-
-        GetManagedComponent<PlayerController>().TeleportPlayer(_playerSpawnPoint.position);
     }
 
     private void Start()
@@ -155,7 +164,7 @@ public class GameManager : MonoBehaviour
 
     private T FindFirstObjectAndDestroyOthers<T>()
     {
-        Object[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
+        UnityEngine.Object[] objects = FindObjectsByType(typeof(T), FindObjectsSortMode.None);
         GameObject[] gameObjects = new GameObject[objects.Length];
         int index = 0;
         for (int o = 0; o < objects.Length; o++)
@@ -180,9 +189,32 @@ public class GameManager : MonoBehaviour
         return gameObjects[0].GetComponent<T>();
     } 
 
-    private void Setup(ManagedByGameManager managedObject)
+    private void Setup(ManagedByGameManager managedScript, GameObject managersParent)
     {
-        _managedObjects.Add(managedObject);
+        _managedObjects.Add(managedScript);
+        if (_standaloneManagers.standaloneManagers.Contains(managedScript.GetType()) &&
+                managedScript.transform.parent != managersParent.transform)
+        {
+            managedScript.transform.parent = managersParent.transform;
+        }
+        Type type = managedScript.GetType();
+        if (type == typeof(PlayerController))
+        {
+            PlayerController player = managedScript as PlayerController;
+            if (player != null && _playerSpawnPoint != null)
+            {
+                player.TeleportPlayer(_playerSpawnPoint.transform.position);
+            }
+        }
+        else if (type == typeof(DungeonGenerator))
+        {
+            managedScript.transform.position = _dungeonSpawnPoint.position;
+        }
+        else if (type == typeof(Submarine) && _submarineSpawnPoint != null)
+        {
+            managedScript.transform.position = _submarineSpawnPoint.position;
+        }
+
     }
 
     public T GetManagedComponent<T>() where T : ManagedByGameManager
@@ -193,5 +225,62 @@ public class GameManager : MonoBehaviour
             //Debug.Log($"{managedObject.GetType()} gotten!");
         }
         return managedObject;
+    }
+
+    /// <summary>
+    /// This function should only be called from the Submarine and PlayerController scripts
+    /// </summary>
+    public void ExitLevel(bool takingSubmarine = false)
+    {
+        if (!takingSubmarine)
+        {
+            ApplyGameState(GameState.InBetweenFacitilies);
+            return;
+        }
+        if (_waitingForSubmarineAnimation)
+        {
+            return;
+        }
+        StartCoroutine(WaitForSubmarineAnimation());
+    }
+
+    /// <summary>
+    /// This function should only be called from the Submarine script and only
+    /// from the animation coroutine
+    /// </summary>
+    public void SubmarineAnimationFinished()
+    {
+        _waitingForSubmarineAnimation = false;
+    }
+
+    /// <summary>
+    /// This function should only be called from the Submarine script
+    /// </summary>
+    public void EnterLevel()
+    {
+        ApplyGameState(GameState.LandedAtFacility);
+    }
+
+    private IEnumerator WaitForSubmarineAnimation()
+    {
+        _waitingForSubmarineAnimation = true;
+        while (_waitingForSubmarineAnimation)
+        {
+            yield return null;
+        }
+        ApplyGameState(GameState.InBetweenFacitilies);
+    }
+
+    private void ApplyGameState(GameState gameState)
+    {
+        currentGameState = gameState;
+        switch (gameState)
+        {
+            case GameState.InBetweenFacitilies:
+                break;
+            case GameState.LandedAtFacility:
+                _dungeonGenerator.StartGeneration();
+                break;
+        }
     }
 }

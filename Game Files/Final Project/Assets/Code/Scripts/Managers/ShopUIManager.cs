@@ -7,12 +7,15 @@ public class ShopUIManager : ManagedByGameManager
 {
     [SerializeField] private GameObject _shopTabsButtonSection;
     [SerializeField] private GameObject _buttonPrefab;
+    [field: SerializeField] public Color ableToBuyColour { get; private set; }
+    [field: SerializeField] public Color unableToBuyColour { get; private set; }
 
     public enum ShopTabEnum
     {
         SHOP,
         SCRAPING,
-        AUCTIONING
+        //AUCTIONING,
+        REPAIRS
     }
 
     public ShopTabEnum currentTab

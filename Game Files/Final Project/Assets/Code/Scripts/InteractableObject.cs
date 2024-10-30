@@ -92,7 +92,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
         {
             distance = distanceBetween - (distanceBetween / divisorDistance);
         }
-        _popupCanvas.transform.localPosition = direction * distance;
+        _popupCanvas.transform.position = transform.position + (direction * distance);
         _popupCanvas.transform.forward = Camera.main.transform.forward;
         //_popupCanvas.transform.eulerAngles.
     }
