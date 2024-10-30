@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IHeartbeat
 {
+    protected PlayerController _playerController;
     private NavMeshAgent agent;
 
     [Header("Settings")]
@@ -32,7 +33,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void SetupEnemy()
     {
-
+        _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
     }
 
     public void MoveToPoint(Vector3 pos, float speedMultiplier = 1)

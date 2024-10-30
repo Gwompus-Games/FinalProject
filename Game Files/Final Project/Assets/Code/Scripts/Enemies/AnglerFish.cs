@@ -6,6 +6,8 @@ using FMODUnity;
 
 public class AnglerFish : Enemy
 {
+    [SerializeField] private float _heartbeatRange = 30;
+
     private StudioEventEmitter emitter;
 
     protected override void Awake()
@@ -18,6 +20,18 @@ public class AnglerFish : Enemy
         base.SetupEnemy();
 
         emitter = GameManager.Instance.GetManagedComponent<AudioManager>().InitializeEventEmitter(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat, gameObject);
+    }
+
+    private void Update()
+    {
+        if (_playerController != null)
+        {
+            if(Vector3.Distance(transform.position, _playerController.transform.position) <= _heartbeatRange)
+            {
+                IHeartbeat wtfIsThisWorkAround = this;
+                wtfIsThisWorkAround.AddHeartbeat(_playerController);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
