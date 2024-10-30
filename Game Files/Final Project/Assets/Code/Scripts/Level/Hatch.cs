@@ -8,7 +8,6 @@ public class Hatch : InteractableObject
     protected override void Awake()
     {
         base.Awake();
-        GetComponentInChildren<Canvas>().worldCamera = Camera.main;
     }
 
     public override void Interact()

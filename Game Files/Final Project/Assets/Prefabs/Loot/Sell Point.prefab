@@ -439,15 +439,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: SELL ITEMS HERE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2da410eef868fd84c9faa0739371a2ff, type: 2}
+  m_sharedMaterial: {fileID: -5036836353473640709, guid: 2da410eef868fd84c9faa0739371a2ff,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4281069824
+  m_fontColor: {r: 0, g: 0.9433962, b: 0.16784488, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -464,13 +465,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.3
+  m_fontSize: 0.4
   m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -616,6 +617,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3119018401369226506}
     m_Modifications:
+    - target: {fileID: 345313885585341016, guid: 824e84461b560a143a9f328f364ec971,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2166455014595808134, guid: 824e84461b560a143a9f328f364ec971,
         type: 3}
       propertyPath: m_Pivot.x
@@ -716,20 +722,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4552825469041216072, guid: 824e84461b560a143a9f328f364ec971,
-        type: 3}
-      propertyPath: m_Name
-      value: Button Text
-      objectReference: {fileID: 0}
     - target: {fileID: 6071262880858967648, guid: 824e84461b560a143a9f328f364ec971,
         type: 3}
       propertyPath: m_Name
       value: Popup Button Prompt
-      objectReference: {fileID: 0}
-    - target: {fileID: 6246624313467058780, guid: 824e84461b560a143a9f328f364ec971,
-        type: 3}
-      propertyPath: m_Name
-      value: Background Image
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
