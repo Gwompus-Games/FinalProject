@@ -465,7 +465,7 @@ public class PlayerController : ManagedByGameManager
     {
         GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();
         //SceneManager.LoadScene(0);
-        TeleportPlayer(GameManager.Instance.playerSpawnPoint.position);
+        //TeleportPlayer(GameManager.Instance.playerSpawnPoint.position);
         _dead = false;
     }
 

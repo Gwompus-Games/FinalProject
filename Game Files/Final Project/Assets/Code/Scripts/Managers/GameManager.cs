@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _debugMode = false;
 
     private Transform _playerSpawnPoint;
-    public Transform playerSpawnPoint;
     private Transform _dungeonSpawnPoint;
     private Transform _submarineSpawnPoint;
 
@@ -59,10 +58,13 @@ public class GameManager : MonoBehaviour
         //Setting Singleton
         Instance = this;
         _standaloneManagers = GetComponent<StandaloneManagersList>();
+        if (_debugMode)
+        {
+            Debug.Log($"Standalone managers found: {_standaloneManagers != null}");
+        }
         _standaloneManagers.SetUpList();
         _waitingForSubmarineAnimation = false;
         InitilizeGameScene();
-        playerSpawnPoint = _playerSpawnPoint;
     }
 
     private void InitilizeGameScene()
@@ -102,6 +104,10 @@ public class GameManager : MonoBehaviour
         //Adding all needed standalone manager scripts
         for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"Creating {_neededStandaloneScripts[ms].GetType().Name}");
+            }
             GameObject standaloneManager = new GameObject(_neededStandaloneScripts[ms].GetType().Name, _neededStandaloneScripts[ms].GetType());
             standaloneManager.transform.parent = managersParent.transform;
         }
@@ -113,12 +119,12 @@ public class GameManager : MonoBehaviour
         }
 
         //Set up all managed objects
-        for (int s = 0; s < _standaloneManagers.managedChildren.Count; s++)
+        for (int s = 0; s < _standaloneManagers.managedComponents.Count; s++)
         {
-            ManagedByGameManager managedScript = FindObjectOfType(_standaloneManagers.managedChildren[s], true).GetComponent(_standaloneManagers.managedChildren[s]) as ManagedByGameManager;
+            ManagedByGameManager managedScript = FindObjectOfType(_standaloneManagers.managedComponents[s], true).GetComponent(_standaloneManagers.managedComponents[s]) as ManagedByGameManager;
             if (managedScript == null)
             {
-                Debug.LogWarning($"No {_standaloneManagers.managedChildren[s].Name} found");
+                Debug.LogWarning($"No {_standaloneManagers.managedComponents[s].Name} found");
                 continue;
             }
             if (_debugMode)
