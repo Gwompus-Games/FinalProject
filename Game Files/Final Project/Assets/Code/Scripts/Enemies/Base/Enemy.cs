@@ -63,7 +63,10 @@ public class Enemy : MonoBehaviour, IHeartbeat
         
         if (navMeshPath.status != NavMeshPathStatus.PathComplete)
         {
-            Debug.LogWarning("Invalid path");
+            if (_debugMode)
+            {
+                Debug.LogWarning("Invalid path");
+            }
             return false;
         }
         else

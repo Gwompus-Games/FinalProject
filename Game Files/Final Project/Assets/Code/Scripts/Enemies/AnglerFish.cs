@@ -7,8 +7,9 @@ using FMODUnity;
 public class AnglerFish : Enemy
 {
     [SerializeField] private float _heartbeatRange = 30;
-
-    private StudioEventEmitter emitter;
+    private string parameterName = "Heartbeat_Intensity";
+    private float parameterIntensity = 0f, distanceFromPlayer;
+    public bool playHeartbeat = false;
 
     protected override void Awake()
     {
@@ -18,37 +19,28 @@ public class AnglerFish : Enemy
     public override void SetupEnemy()
     {
         base.SetupEnemy();
-
-        emitter = GameManager.Instance.GetManagedComponent<AudioManager>().InitializeEventEmitter(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat, gameObject);
     }
 
     private void Update()
     {
         if (_playerController != null)
         {
-            if(Vector3.Distance(transform.position, _playerController.transform.position) <= _heartbeatRange)
+            distanceFromPlayer = Vector3.Distance(transform.position, _playerController.transform.position);
+            if (distanceFromPlayer <= _heartbeatRange)
             {
+                //uh
                 IHeartbeat wtfIsThisWorkAround = this;
                 wtfIsThisWorkAround.AddHeartbeat(_playerController);
+
+                //set parameter intensity in fmod
+                parameterIntensity = ((_heartbeatRange - distanceFromPlayer)/_heartbeatRange);
+                GameManager.Instance.GetManagedComponent<AudioManager>().SetHeartbeatParameter(parameterName, parameterIntensity);
+                playHeartbeat = true;
             }
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (emitter != null)
-                emitter.Play();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (emitter != null)
-                emitter.Stop();
+            else
+            {
+                playHeartbeat = false;
+            }
         }
     }
 }

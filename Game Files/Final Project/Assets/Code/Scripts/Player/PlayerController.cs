@@ -96,6 +96,7 @@ public class PlayerController : ManagedByGameManager
     private Coroutine _dyingCoroutine;
     
     private List<IHeartbeat> _heartbeatElements = new List<IHeartbeat>();
+    private AnglerFish anglerFish;
 
     public override void Init()
     {
@@ -133,6 +134,7 @@ public class PlayerController : ManagedByGameManager
         
         playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
+        anglerFish = FindObjectOfType<AnglerFish>();
     }
 
     private void Update()
@@ -197,6 +199,10 @@ public class PlayerController : ManagedByGameManager
         }
         else
         {
+            if (!anglerFish)
+                return;
+            if (!anglerFish.playHeartbeat)
+                return;
             PLAYBACK_STATE playbackState;
             playerHeartbeat.getPlaybackState(out playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))

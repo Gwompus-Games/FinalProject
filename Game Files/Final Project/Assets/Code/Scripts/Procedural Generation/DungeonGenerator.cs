@@ -32,6 +32,7 @@ public class DungeonGenerator : ManagedByGameManager
     private List<DungeonPart> availableRooms;
     private bool isGenerated = false;
     private bool isEnemySpawned = false;
+    public List<Enemy> enemies = new List<Enemy>();
 
     private void Awake()
     {
@@ -58,6 +59,11 @@ public class DungeonGenerator : ManagedByGameManager
 
     public void StartGeneration()
     {
+        if (generatedRooms.Count > 0 && enemies.Count > 0)
+        {
+            Despawn();
+        }
+
         int tries = 0;
 
         while (generatedRooms.Count < numOfRooms)
@@ -90,10 +96,16 @@ public class DungeonGenerator : ManagedByGameManager
         {
             DestroyImmediate(room.gameObject);
         }
+        foreach(Enemy enemy in enemies)
+        {
+            DestroyImmediate(enemy.gameObject);
+        }
 
         generatedRooms.Clear();
         availableRooms.Clear();
+        enemies.Clear();
         isGenerated = false;
+        isEnemySpawned = false;
     }
 
     private void FinishGeneration()
@@ -119,8 +131,10 @@ public class DungeonGenerator : ManagedByGameManager
 
     private void Generate()
     {
-        if (generatedRooms.Count > 0)
+        if (generatedRooms.Count > 0 && enemies.Count > 0)
+        {
             Despawn();
+        }
 
         CreateEntranceRoom();
 

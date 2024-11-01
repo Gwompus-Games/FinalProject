@@ -157,6 +157,7 @@ public class DungeonPart : MonoBehaviour, IHideable
             if (enemyScript.HasValidPath(GameManager.Instance.GetManagedComponent<DungeonGenerator>().transform.position))
             {
                 enemyScript.SetupEnemy();
+                GameManager.Instance.GetManagedComponent<DungeonGenerator>().enemies.Add(newEnemy.GetComponent<Enemy>());
                 return true;
             }
             else
