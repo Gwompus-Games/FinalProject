@@ -9,7 +9,7 @@ public class AnglerFish : Enemy
     [SerializeField] private float _heartbeatRange = 30;
     private string parameterName = "Heartbeat_Intensity";
     private float parameterIntensity = 0f, distanceFromPlayer;
-    public bool playHeartbeat = false;
+    public bool playHeartbeat = false;    
 
     protected override void Awake()
     {

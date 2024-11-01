@@ -33,6 +33,7 @@ public class CheckPlayerInAttackRange : Node
             _animator.SetBool("Walking", false);
 
             state = NodeState.SUCCESS;
+            _enemyScript.ChangeEnemyState(Enemy.EnemyState.Spotted);
             return state;
         }
 

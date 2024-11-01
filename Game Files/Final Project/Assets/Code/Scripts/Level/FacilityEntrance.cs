@@ -11,7 +11,7 @@ public class FacilityEntrance : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        print("interacted");
+        GameManager.Instance.isPlayerInsideFacility = true;
         GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(GameManager.Instance.GetManagedComponent<DungeonGenerator>().transform.position);
     }
 }

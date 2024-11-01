@@ -132,9 +132,10 @@ public class PlayerController : ManagedByGameManager
         _dead = false;
         _outOfOxygen = false;
         
+        anglerFish = FindObjectOfType<AnglerFish>();
+
         playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
-        anglerFish = FindObjectOfType<AnglerFish>();
     }
 
     private void Update()
@@ -192,7 +193,7 @@ public class PlayerController : ManagedByGameManager
         }
 
         playerHeartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-
+        print(_heartbeatElements.Count);
         if (_heartbeatElements.Count == 0)
         {
             playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -208,6 +209,10 @@ public class PlayerController : ManagedByGameManager
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
             {
                 playerHeartbeat.start();
+            }
+            else
+            {
+                playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
         }
     }

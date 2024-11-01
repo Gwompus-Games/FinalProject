@@ -58,8 +58,8 @@ public class TaskPatrol : Node
             }
         }
 
-
         state = NodeState.RUNNING;
+        _enemyScript.ChangeEnemyState(Enemy.EnemyState.Patrolling);
         return state;
     }
 

@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
 
     private bool _waitingForSubmarineAnimation = false;
 
-    private GameState _curState;
     public GameState currentGameState 
     { 
         get
@@ -44,11 +43,13 @@ public class GameManager : MonoBehaviour
             UpdateGameState?.Invoke(_curState);
         }
     }
+    private GameState _curState;
 
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
     private StandaloneManagersList _standaloneManagers;
 
     public bool isPaused { get; private set; } = false;
+    public bool isPlayerInsideFacility = false;
 
     private void Awake()
     {

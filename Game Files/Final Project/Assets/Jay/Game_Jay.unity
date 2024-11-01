@@ -963,6 +963,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 660133991}
     m_Modifications:
+    - target: {fileID: 1988005365120629417, guid: 33d1fa34a89e76f4da3cfc38ac9f4844,
+        type: 3}
+      propertyPath: <AFSpotted>k__BackingField.Path
+      value: event:/AFSpotted
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988005365120629417, guid: 33d1fa34a89e76f4da3cfc38ac9f4844,
+        type: 3}
+      propertyPath: <AFAttacking>k__BackingField.Path
+      value: event:/AFAttacking
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988005365120629417, guid: 33d1fa34a89e76f4da3cfc38ac9f4844,
+        type: 3}
+      propertyPath: <AFDistantInside>k__BackingField.Path
+      value: event:/AFDistantInside
+      objectReference: {fileID: 0}
     - target: {fileID: 2355434391505917429, guid: 33d1fa34a89e76f4da3cfc38ac9f4844,
         type: 3}
       propertyPath: m_LocalPosition.x
