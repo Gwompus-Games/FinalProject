@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
@@ -8,6 +7,7 @@ public class AudioManager : ManagedByGameManager
 {
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
+    private EventInstance heartbeatInstance;
 
     public override void Init()
     {
@@ -20,7 +20,13 @@ public class AudioManager : ManagedByGameManager
     {
         base.CustomStart();
         PlayOneShotAttached(GameManager.Instance.GetManagedComponent<FMODEvents>().bgm);
-        Invoke(nameof(PlayFacilityAmbience), 200);
+        Invoke(nameof(PlayFacilityAmbience), 199);
+        heartbeatInstance = CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
+    }
+
+    public void SetHeartbeatParameter(string name, float value)
+    {
+        heartbeatInstance.setParameterByName(name, value);
     }
 
     private void PlayFacilityAmbience()

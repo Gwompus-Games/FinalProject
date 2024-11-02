@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class FacilityExit : MonoBehaviour, IInteractable
 {
-    public Transform facilityExit;
+    public FacilityEntrance[] facilityEntrances;
 
     private void Awake()
     {
@@ -13,22 +13,17 @@ public class FacilityExit : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        facilityExit = GameObject.Find("FacilityExit").transform;
+        facilityEntrances = FindObjectsOfType<FacilityEntrance>();
+        if(facilityEntrances.Length <= 0 )
+        {
+            Debug.LogError("No facility entrances found");
+        }
     }
 
     public void Interact()
     {
-        if(!facilityExit)
-        {
-            facilityExit = GameObject.Find("FacilityExit").transform;
-        }
-        print("interacted");
-        if (facilityExit)
-        {
-            GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(facilityExit.position);
-            GameManager.Instance.GetManagedComponent<DungeonGenerator>().StartGeneration();
-        }
-        else
-            print("No transform found");
+        Transform randomFacilityEntrance = facilityEntrances[Random.Range(0, facilityEntrances.Length)].transform;
+        GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(randomFacilityEntrance.position);
+        GameManager.Instance.GetManagedComponent<DungeonGenerator>().StartGeneration();
     }
 }

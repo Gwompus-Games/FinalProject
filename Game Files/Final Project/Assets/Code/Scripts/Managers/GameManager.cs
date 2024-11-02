@@ -43,10 +43,12 @@ public class GameManager : MonoBehaviour
         }
     }
     private GameState _curState;
+
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
     private StandaloneManagersList _standaloneManagers;
 
     public bool isPaused { get; private set; } = false;
+    public bool isPlayerInsideFacility = false;
 
     private void Awake()
     {

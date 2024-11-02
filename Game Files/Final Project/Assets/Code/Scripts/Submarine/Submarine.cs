@@ -17,12 +17,14 @@ public class Submarine : ManagedByGameManager
     [SerializeField] private float _movementSnap = 0.05f;
     [SerializeField] private AnimationCurves _landingCurves;
     [SerializeField] private AnimationCurves _takeOffCurves;
-    [SerializeField] private float _speed = 0.25f;
-    
+    [SerializeField] private float _speed = 0.25f;    
 
     private PlayerController _playerController;
+
     public bool playerInSubmarine { get; private set; }
     private bool _inTransit = false;
+    public bool landed = false;
+
     private Transform _landedTransform;
     private Transform _shoppingPlacementTransform;
     private Transform _playerDefaultParent;
@@ -89,6 +91,7 @@ public class Submarine : ManagedByGameManager
     /// </summary>
     public void ButtonPushed()
     {
+        GetComponentInChildren<Hatch>().CloseHatch();
         if (_inTransit)
         {
             return;
@@ -143,6 +146,11 @@ public class Submarine : ManagedByGameManager
 
             //Apply movement 
             transform.position = newPosition;
+            if (transform.position == _landedTransform.position)
+                landed = true;
+            else
+                landed = false;
+
             yield return null;
         }
 

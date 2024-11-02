@@ -46,6 +46,7 @@ public class TaskAttack : Node
         }
 
         state = NodeState.RUNNING;
+        _enemyScript.ChangeEnemyState(Enemy.EnemyState.Attacking);
         return state;
     }
 

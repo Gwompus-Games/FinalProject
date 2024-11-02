@@ -49,11 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e59d536833ec44ab7869293811c605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popupCanvas: {fileID: 0}
-  _popupImage: {fileID: 0}
+  _popupCanvas: {fileID: 4643098895579187348}
+  _popupImage: {fileID: 6202319228976662362}
   _popupSprite: {fileID: 21300000, guid: 9a423811ef569084182d2d915123ad33, type: 3}
   _popupDistance: 1.25
-  _popupText: {fileID: 0}
+  _popupText: {fileID: 6691850998253781904}
   _popupKey: 69
   _itemData: {fileID: 11400000, guid: 7fd36add2938a7c48a6eb956f51bce58, type: 2}
   _pickupEffect: {fileID: 0}
@@ -279,3 +279,33 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4058833231091890670}
   m_PrefabAsset: {fileID: 0}
+--- !u!223 &4643098895579187348 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 8663877340696801658, guid: 824e84461b560a143a9f328f364ec971,
+    type: 3}
+  m_PrefabInstance: {fileID: 4058833231091890670}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6202319228976662362 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7944577528812994228, guid: 824e84461b560a143a9f328f364ec971,
+    type: 3}
+  m_PrefabInstance: {fileID: 4058833231091890670}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6691850998253781904 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7245698435759405694, guid: 824e84461b560a143a9f328f364ec971,
+    type: 3}
+  m_PrefabInstance: {fileID: 4058833231091890670}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

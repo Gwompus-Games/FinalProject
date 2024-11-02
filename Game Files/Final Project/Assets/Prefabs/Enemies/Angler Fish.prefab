@@ -563,8 +563,6 @@ GameObject:
   - component: {fileID: 8641332338968694515}
   - component: {fileID: 3387660441205239120}
   - component: {fileID: 1673952998344467424}
-  - component: {fileID: 1912482794835341909}
-  - component: {fileID: 2638763523898406521}
   m_Layer: 0
   m_Name: Angler Fish
   m_TagString: Enemy
@@ -607,6 +605,8 @@ MonoBehaviour:
   fovRadius: 4
   attackRadius: 1.5
   animator: {fileID: 5829206917758833173}
+  _debugMode: 0
+  _heartbeatRange: 30
 --- !u!114 &3387660441205239120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,58 +641,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!135 &1912482794835341909
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5827894065527653237}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 40
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2638763523898406521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5827894065527653237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 800433928
-      Data2: 1286228201
-      Data3: 745080967
-      Data4: -92704395
-    Path: event:/Heartbeat
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 40
 --- !u!1 &8085970012863640488
 GameObject:
   m_ObjectHideFlags: 0

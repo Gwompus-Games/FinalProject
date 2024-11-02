@@ -29,6 +29,7 @@ public class TaskGoToTarget : Node
         }
 
         state = NodeState.RUNNING;
+        _enemyScript.ChangeEnemyState(Enemy.EnemyState.Searching);
         return state;
     }
 

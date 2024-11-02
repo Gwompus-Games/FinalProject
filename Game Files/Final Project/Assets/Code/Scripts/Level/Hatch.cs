@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Hatch : InteractableObject
@@ -8,12 +9,16 @@ public class Hatch : InteractableObject
     protected override void Awake()
     {
         base.Awake();
-        GetComponentInChildren<Canvas>().worldCamera = Camera.main;
     }
 
     public override void Interact()
     {
-        //GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(teleport.position);
-        anim.SetBool("open", !anim.GetBool("open"));
+        if (GameManager.Instance.GetManagedComponent<Submarine>().landed)
+            anim.SetBool("open", !anim.GetBool("open"));
+    }
+
+    public void CloseHatch()
+    {
+        anim.SetBool("open", false);
     }
 }
