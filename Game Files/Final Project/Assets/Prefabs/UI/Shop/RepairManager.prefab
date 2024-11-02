@@ -51,7 +51,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca4cc20e23ca4984089274cd1f94e25f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _repairValues: []
+  _repairValues:
+  - type: 0
+    nameString: Repair
+    basePrice: 500
+    currentPrice: 0
+    scaleAdditive: 50
+    minimumPercentToBuy: 85
+  - type: 1
+    nameString: Refurbish
+    basePrice: 1000
+    currentPrice: 0
+    scaleAdditive: 500
+    minimumPercentToBuy: 0
+  - type: 2
+    nameString: Replace
+    basePrice: 7500
+    currentPrice: 0
+    scaleAdditive: 0
+    minimumPercentToBuy: 0
   _repairSectionPrefab: {fileID: 6957279943354495806, guid: ae9569aad5c5af94c94bd86a28d36506,
     type: 3}
 --- !u!222 &502741492785775698
@@ -105,12 +123,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 5
-    m_Bottom: 5
+    m_Left: 2
+    m_Right: 2
+    m_Top: 2
+    m_Bottom: 2
   m_ChildAlignment: 0
-  m_Spacing: 5
+  m_Spacing: 1.5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1

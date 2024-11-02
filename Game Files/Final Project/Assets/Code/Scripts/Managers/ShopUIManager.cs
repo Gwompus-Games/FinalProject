@@ -7,8 +7,12 @@ public class ShopUIManager : ManagedByGameManager
 {
     [SerializeField] private GameObject _shopTabsButtonSection;
     [SerializeField] private GameObject _buttonPrefab;
-    [field: SerializeField] public Color ableToBuyColour { get; private set; }
-    [field: SerializeField] public Color unableToBuyColour { get; private set; }
+    [field: SerializeField] public Color ableToBuyBackgroundColour { get; private set; }
+    [field: SerializeField] public Color ableToBuyTextColour { get; private set; }
+    [field: SerializeField] public Color unableToBuyBackgroundColour { get; private set; }
+    [field: SerializeField] public Color unableToBuyTextColour { get; private set; }
+    [field: SerializeField] public Color cannotBuyBackgroundColour { get; private set; }
+    [field: SerializeField] public Color cannotBuyTextColour { get; private set; }
 
     public enum ShopTabEnum
     {

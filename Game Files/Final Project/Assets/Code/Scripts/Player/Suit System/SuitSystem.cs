@@ -10,6 +10,8 @@ public class SuitSystem : ManagedByGameManager, IDamageable
 
     [field: SerializeField] public SuitStatsSO suitStats { get; private set; }
 
+    public int maxSectionDurabitity => suitStats.maxDurabilityForSections;
+
     private OxygenDrainer suitOxygenDrainer;
 
     public override void Init()
@@ -55,7 +57,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
 
     public void DebugTakeDamage()
     {
-        TakeDamage(25f);
+        TakeDamage(maxSectionDurabitity / 4f);
     }
 
     public void TakeDamage(float damage)
@@ -89,6 +91,20 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         UpdateSuitUI?.Invoke(numberOfSections - currentSection,
                              numberOfSections,
                              currentSectionDurability,
-                             suitStats.maxDurabilityForSections);
+                             maxSectionDurabitity);
+    }
+
+    public void Repair(RepairManager.RepairTypes repairType)
+    {
+        currentSectionDurability = maxSectionDurabitity;
+        switch (repairType)
+        {
+            case RepairManager.RepairTypes.MINOR:
+                break;
+            default:
+                currentSection = 0;
+                break;
+        }
+        UpdateUI();
     }
 }

@@ -98,6 +98,8 @@ public class PlayerController : ManagedByGameManager
     private List<IHeartbeat> _heartbeatElements = new List<IHeartbeat>();
     private AnglerFish anglerFish;
 
+    private Transform _playerSpawnPoint;
+
     public override void Init()
     {
         if (_initilized)
@@ -124,6 +126,14 @@ public class PlayerController : ManagedByGameManager
     public override void CustomStart()
     {
         base.CustomStart();
+
+        PlayerSpawnPointTag playerSpawnPoint = FindObjectOfType<PlayerSpawnPointTag>();
+        if (playerSpawnPoint == null)
+        {
+            throw new Exception("No spawn point in scene!");
+        }
+        _playerSpawnPoint = playerSpawnPoint.transform;
+
         _defaultStepOffset = _controller.stepOffset;
         moveSpeed = _walkSpeed;
         isRunning = false;
@@ -136,6 +146,8 @@ public class PlayerController : ManagedByGameManager
 
         playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
+
+        TeleportPlayer(_playerSpawnPoint.transform.position);
     }
 
     private void Update()
@@ -193,7 +205,10 @@ public class PlayerController : ManagedByGameManager
         }
 
         playerHeartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        print(_heartbeatElements.Count);
+        if (_debugMode)
+        {
+            Debug.Log($"Number of heartbeat elements: {_heartbeatElements.Count}");
+        }
         if (_heartbeatElements.Count == 0)
         {
             playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

@@ -76,6 +76,8 @@ public class UIManager : ManagedByGameManager
 
     public void SetUI(UIToDisplay ui)
     {
+        RepairManager repairManager = null;
+
         switch (ui)
         {
             case UIToDisplay.GAME:
@@ -95,10 +97,16 @@ public class UIManager : ManagedByGameManager
                 SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), true);
                 SetVisable(_suitUI.GetComponent<CanvasGroup>(), false);
                 SetVisable(_shopUI.GetComponent<CanvasGroup>(), true);
+                repairManager = FindObjectOfType<RepairManager>();
                 break;
             default:
 
                 break;
+        }
+
+        if (repairManager != null)
+        {
+            repairManager.UpdateAllSections();
         }
     }
 

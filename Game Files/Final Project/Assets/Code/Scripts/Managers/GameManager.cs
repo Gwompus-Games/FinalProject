@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     [Header("Debuging")]
     [SerializeField] private bool _debugMode = false;
 
-    private Transform _playerSpawnPoint;
     private Transform _dungeonSpawnPoint;
     private Transform _submarineSpawnPoint;
 
@@ -71,15 +70,6 @@ public class GameManager : MonoBehaviour
 
     private void InitilizeGameScene()
     {
-        PlayerSpawnPointTag playerSpawnPoint = FindObjectOfType<PlayerSpawnPointTag>();
-        if (playerSpawnPoint == null)
-        {
-            playerSpawnPoint = new GameObject("PlayerSpawnPoint", typeof(PlayerSpawnPointTag)).GetComponent<PlayerSpawnPointTag>();
-            playerSpawnPoint.gameObject.transform.parent = null;
-            playerSpawnPoint.gameObject.transform.position = Vector3.zero;
-        }
-        _playerSpawnPoint = playerSpawnPoint.transform;
-
         DungeonGeneratorSpawnPointTag dungeonGeneratorSpawnPoint = FindObjectOfType<DungeonGeneratorSpawnPointTag>();
         if (dungeonGeneratorSpawnPoint == null)
         {
@@ -206,15 +196,7 @@ public class GameManager : MonoBehaviour
             managedScript.transform.parent = managersParent.transform;
         }
         Type type = managedScript.GetType();
-        if (type == typeof(PlayerController))
-        {
-            PlayerController player = managedScript as PlayerController;
-            if (player != null && _playerSpawnPoint != null)
-            {
-                player.TeleportPlayer(_playerSpawnPoint.transform.position);
-            }
-        }
-        else if (type == typeof(DungeonGenerator))
+        if (type == typeof(DungeonGenerator))
         {
             managedScript.transform.position = _dungeonSpawnPoint.position;
         }

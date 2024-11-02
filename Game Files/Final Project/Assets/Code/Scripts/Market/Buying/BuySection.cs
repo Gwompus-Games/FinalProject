@@ -29,8 +29,8 @@ public class BuySection : MonoBehaviour
 
     private void Start()
     {
-        _canAffordColour = GameManager.Instance.GetManagedComponent<ShopUIManager>().ableToBuyColour;
-        _unableToAffordColour = GameManager.Instance.GetManagedComponent<ShopUIManager>().unableToBuyColour;
+        _canAffordColour = GameManager.Instance.GetManagedComponent<ShopUIManager>().ableToBuyBackgroundColour;
+        _unableToAffordColour = GameManager.Instance.GetManagedComponent<ShopUIManager>().unableToBuyBackgroundColour;
     }
 
     public void UpdateSection()

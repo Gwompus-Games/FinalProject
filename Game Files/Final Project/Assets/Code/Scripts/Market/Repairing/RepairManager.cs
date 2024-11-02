@@ -17,47 +17,40 @@ public class RepairManager : MonoBehaviour
     [Serializable]
     public struct RepairValues
     {
-        public RepairValues(RepairTypes repairType = RepairTypes.MINOR)
+        public void SetupValues(RepairTypes repairTypes, string name, int assignedBasePrice, int assignedScaleAdditive, float assignedMinPercentToBuy)
         {
-            initialized = false;
-            type = repairType;
-            nameString = string.Empty;
-            basePrice = 0;
-            currentPrice = 0;
-            scaleAdditive = 0;
-        }
-
-        public void Initilize(RepairTypes repairTypes, string name, int assignedBasePrice, int assignedScaleAdditive)
-        {
-            initialized = true;
             type = repairTypes;
             nameString = name;
             basePrice = assignedBasePrice;
             currentPrice = basePrice;
             scaleAdditive = assignedScaleAdditive;
+            minimumPercentToBuy = assignedMinPercentToBuy;
         }
 
-        public void Initilize(RepairValues values)
+        public void SetupValues(RepairValues values)
         {
-            initialized = true;
             type = values.type;
             nameString = values.nameString;
             basePrice = values.basePrice;
-            currentPrice = values.currentPrice;
+            currentPrice = basePrice;
             scaleAdditive = values.scaleAdditive;
+            minimumPercentToBuy = values.minimumPercentToBuy;
         }
 
-        public bool initialized;
         public RepairTypes type;
         public string nameString;
         public int basePrice;
+        [HideInInspector]
         public int currentPrice;
         public int scaleAdditive;
+        [Range(0f, 100f)] public float minimumPercentToBuy;
     }
 
     [SerializeField] private RepairValues[] _repairValues;
     [SerializeField] private GameObject _repairSectionPrefab;
     private Dictionary<RepairTypes, RepairValues> _repairs = new Dictionary<RepairTypes, RepairValues>();
+    private SuitSystem _suitSystem;
+    private RepairSection[] _repairSections;
 
     public int repairCount
     {
@@ -74,17 +67,17 @@ public class RepairManager : MonoBehaviour
     public Action<int> RepairMade;
     private int _rpc;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        _suitSystem = GameManager.Instance.GetManagedComponent<SuitSystem>();
         for (int r = 0; r < _repairValues.Length; r++)
         {
             if (_repairs.ContainsKey(_repairValues[r].type))
             {
                 throw new Exception($"MORE THAN ONE {_repairValues[r].type.DisplayName()} FOUND!");
             }
-            _repairValues[r].Initilize(_repairValues[r]);
+            _repairValues[r].SetupValues(_repairValues[r]);
             _repairs.Add(_repairValues[r].type, _repairValues[r]);
         }
 
@@ -110,7 +103,6 @@ public class RepairManager : MonoBehaviour
             if (!_repairs.ContainsKey(repairTypes[r]))
             {
                 throw new Exception($"{repairTypes[r].DisplayName()} REPAIR NOT ASSIGNED A VALUE!");
-                return false;
             }
         }
         return true;
@@ -119,10 +111,11 @@ public class RepairManager : MonoBehaviour
     private void SpawnSections()
     {
         List<RepairTypes> repairTypes = (Enum.GetValues(typeof(RepairTypes)) as RepairTypes[]).ToList();
+        _repairSections = new RepairSection[repairTypes.Count];
         for (int t = 0; t < repairTypes.Count; t++)
         {
-            RepairSection section = Instantiate(_repairSectionPrefab, transform).GetComponent<RepairSection>();
-            section.InitilizeRepairSection(this, _repairs[repairTypes[t]]);
+            _repairSections[t] = Instantiate(_repairSectionPrefab, transform).GetComponent<RepairSection>();
+            _repairSections[t].InitilizeRepairSection(this, _repairs[repairTypes[t]]);
         }
     }
 
@@ -132,10 +125,24 @@ public class RepairManager : MonoBehaviour
         {
             case RepairTypes.MAJOR:
                 repairCount++;
+                
                 break;
             case RepairTypes.REPLACEMENT:
                 repairCount = 0;
                 break;
+            default:
+                RepairMade?.Invoke(repairCount);
+                break;
+        }
+
+        _suitSystem.Repair(repairType);
+    }
+
+    public void UpdateAllSections()
+    {
+        for (int s = 0; s < _repairSections.Length; s++)
+        {
+            _repairSections[s].UpdateRepairSection();
         }
     }
 }
