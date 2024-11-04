@@ -15,9 +15,12 @@ public class SuitSystem : ManagedByGameManager, IDamageable
 
     private OxygenDrainer suitOxygenDrainer;
 
+    private Submarine _submarine;
+
     public override void Init()
     {
         base.Init();
+        _submarine = GameManager.Instance.GetManagedComponent<Submarine>();
     }
 
     public override void CustomStart()
@@ -27,6 +30,8 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         {
             throw new Exception("No Suit Stats added to suit system!");
         }
+
+        _damageToSuitPerSecond = (suitStats.numberOfMinutesForSectionDurability * 60) / suitStats.maxDurabilityForSections;
 
         numberOfSections = suitStats.numberOfSections;
         currentSection = 0;
@@ -50,6 +55,17 @@ public class SuitSystem : ManagedByGameManager, IDamageable
 
     private void Update()
     {
+        if (GameManager.Instance.currentGameState == GameManager.GameState.LandedAtFacility)
+        {
+            if (_submarine != null)
+            {
+                if (!_submarine.playerInSubmarine)
+                {
+                    TakeDamage(_damageToSuitPerSecond * Time.deltaTime);
+                }
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             DebugTakeDamage();
