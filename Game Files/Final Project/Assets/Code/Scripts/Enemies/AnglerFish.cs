@@ -29,8 +29,7 @@ public class AnglerFish : Enemy
             if (distanceFromPlayer <= _heartbeatRange)
             {
                 //uh
-                IHeartbeat wtfIsThisWorkAround = this;
-                wtfIsThisWorkAround.AddHeartbeat(_playerController);
+                AddHeartbeat();
 
                 //set parameter intensity in fmod
                 parameterIntensity = ((_heartbeatRange - distanceFromPlayer)/_heartbeatRange);
@@ -40,6 +39,7 @@ public class AnglerFish : Enemy
             else
             {
                 playHeartbeat = false;
+                RemoveHeartbeat();
             }
         }
     }

@@ -8,4 +8,5 @@ public class SuitStatsSO : ScriptableObject
     public int numberOfSections = 5;
     public int maxDurabilityForSections;
     public float[] oxygenDrainMultiplierForSections;
+    public float numberOfMinutesForSectionDurability = 15f;
 }

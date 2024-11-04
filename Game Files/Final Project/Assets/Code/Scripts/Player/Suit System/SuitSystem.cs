@@ -9,6 +9,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
     public float currentSectionDurability { get; private set; }
 
     [field: SerializeField] public SuitStatsSO suitStats { get; private set; }
+    private float _damageToSuitPerSecond;
 
     public int maxSectionDurabitity => suitStats.maxDurabilityForSections;
 

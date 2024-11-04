@@ -619,7 +619,7 @@ public class PlayerController : ManagedByGameManager
         ChangeState(PlayerState.Idle);
     }
 
-    public void AddHeartBeat(IHeartbeat heartbeatElement)
+    public void AddHeartbeat(IHeartbeat heartbeatElement)
     {
         if (CheckHeartbeatInList(heartbeatElement))
         {
@@ -633,7 +633,7 @@ public class PlayerController : ManagedByGameManager
         return _heartbeatElements.Contains(heartbeatElement);
     }
 
-    public void RemoveHeartBeat(IHeartbeat heartbeatElement)
+    public void RemoveHeartbeat(IHeartbeat heartbeatElement)
     {
         if (!CheckHeartbeatInList(heartbeatElement))
         {
