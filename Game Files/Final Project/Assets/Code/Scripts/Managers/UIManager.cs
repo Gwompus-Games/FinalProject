@@ -5,6 +5,8 @@ using TMPro;
 using System.Linq;
 using System;
 using System.Reflection;
+using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 public class UIManager : ManagedByGameManager
 {
@@ -13,12 +15,18 @@ public class UIManager : ManagedByGameManager
     [SerializeField] private GameObject _shopUI;
     private List<ManagedObject> _managedObjects = new List<ManagedObject>();
     [SerializeField] private bool _debugMode = false;
+    [SerializeField] private Volume crtShader;
 
     public enum UIToDisplay
     {
         GAME,
         INVENTORY,
         SHOP
+    }
+
+    private void Awake()
+    {
+        crtShader = GameObject.Find("CRT_PostProcess_Prefab").GetComponent<Volume>();
     }
 
     public override void Init()
@@ -85,12 +93,14 @@ public class UIManager : ManagedByGameManager
                 SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), false);
                 SetVisable(_suitUI.GetComponent<CanvasGroup>(), true);
                 SetVisable(_shopUI.GetComponent<CanvasGroup>(), false);
+                crtShader.weight = 0f;
                 break;
             case UIToDisplay.INVENTORY:
                 Cursor.lockState = CursorLockMode.None;
                 SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), true);
                 SetVisable(_suitUI.GetComponent<CanvasGroup>(), false);
                 SetVisable(_shopUI.GetComponent<CanvasGroup>(), false);
+                crtShader.weight = 1f;
                 break;
             case UIToDisplay.SHOP:
                 Cursor.lockState = CursorLockMode.None;
@@ -98,6 +108,7 @@ public class UIManager : ManagedByGameManager
                 SetVisable(_suitUI.GetComponent<CanvasGroup>(), false);
                 SetVisable(_shopUI.GetComponent<CanvasGroup>(), true);
                 repairManager = FindObjectOfType<RepairManager>();
+                crtShader.weight = 1f;
                 break;
             default:
 
