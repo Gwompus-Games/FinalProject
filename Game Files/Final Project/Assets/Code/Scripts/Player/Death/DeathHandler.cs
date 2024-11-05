@@ -50,4 +50,21 @@ public class DeathHandler : ManagedByGameManager
             death = Instantiate(death, transform);
         }
     }
+
+    public void DeathFinished(ParentDeath death)
+    {
+        if (death == null)
+        {
+            Debug.LogError("Death finished called with a null death! ");
+            return;
+        }
+
+        if (!death.deathFinished)
+        {
+            Debug.LogError("Death finished called before death was finished!");
+            return;
+        }
+
+        
+    }
 }

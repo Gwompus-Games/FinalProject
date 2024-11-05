@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Needed Components for Game")]
     [SerializeField] private List<ManagedByGameManager> _neededStandaloneScripts = new List<ManagedByGameManager>();
     [SerializeField] private List<GameObject> _neededPrefabs = new List<GameObject>();
+    [SerializeField] private GameObject _endScreenManagerPrefab;
     [Header("Debuging")]
     [SerializeField] private bool _debugMode = false;
 
@@ -207,6 +208,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+    
     public T GetManagedComponent<T>() where T : ManagedByGameManager
     {
         T managedObject = _managedObjects.Find(x => x.GetComponent<T>() != null).GetComponent<T>();
@@ -272,5 +274,11 @@ public class GameManager : MonoBehaviour
                 _dungeonGenerator.StartGeneration();
                 break;
         }
+    }
+
+    public void EndScene(EndScreenManager.EndState endState)
+    {
+        EndScreenManager endScreenManager = Instantiate(_endScreenManagerPrefab).GetComponent<EndScreenManager>();
+        endScreenManager.SetUpEndState(endState);
     }
 }
