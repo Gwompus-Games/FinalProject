@@ -22,6 +22,7 @@ public class FacilityExit : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        GameManager.Instance.isPlayerInsideFacility = false;
         Transform randomFacilityEntrance = facilityEntrances[Random.Range(0, facilityEntrances.Length)].transform;
         GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(randomFacilityEntrance.position);
         GameManager.Instance.GetManagedComponent<DungeonGenerator>().StartGeneration();

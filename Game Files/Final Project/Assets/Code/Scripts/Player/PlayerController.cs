@@ -23,7 +23,8 @@ public class PlayerController : ManagedByGameManager
         Idle,
         Walking,
         Running,
-        Inventory
+        Inventory,
+        Paused
     }
 
     [Header("Debug Settings")]
@@ -145,6 +146,7 @@ public class PlayerController : ManagedByGameManager
         playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
 
         TeleportPlayer(_playerSpawnPoint.transform.position);
+        Camera.main.gameObject.GetComponent<StudioListener>().attenuationObject = gameObject;
     }
 
     private void Update()
@@ -228,6 +230,10 @@ public class PlayerController : ManagedByGameManager
     private void UpdateState()
     {
         if (currentState == PlayerState.Inventory)
+        {
+            return;
+        }
+        if (currentState == PlayerState.Paused)
         {
             return;
         }
@@ -529,6 +535,7 @@ public class PlayerController : ManagedByGameManager
     {
         CustomPlayerInput.UpdateMovement += UpdateMovement;
         CustomPlayerInput.OpenInventory += ToggleInventory;
+        CustomPlayerInput.Pause += TogglePause;
         CustomPlayerInput.UpdateRunning += RunInput;
         CustomPlayerInput.Interact += InteractWithInteractable;
     }
@@ -537,6 +544,7 @@ public class PlayerController : ManagedByGameManager
     {
         CustomPlayerInput.UpdateMovement -= UpdateMovement;
         CustomPlayerInput.OpenInventory -= ToggleInventory;
+        CustomPlayerInput.Pause -= TogglePause;
         CustomPlayerInput.UpdateRunning -= RunInput;
         CustomPlayerInput.Interact -= InteractWithInteractable;
     }
@@ -557,6 +565,10 @@ public class PlayerController : ManagedByGameManager
         {
             return;
         }
+        if (currentState == PlayerState.Paused)
+        {
+            return;
+        }
         if (_interactableLookingAt == null)
         {
             return;
@@ -574,6 +586,10 @@ public class PlayerController : ManagedByGameManager
                 ChangeState(PlayerState.Idle);
                 enabled = false;
                 break;
+            case UIManager.UIToDisplay.PAUSE:
+                ChangeState(PlayerState.Paused);
+                enabled = false;
+                break;
             default:
                 ChangeState(PlayerState.Inventory);
                 enabled = true;
@@ -589,6 +605,7 @@ public class PlayerController : ManagedByGameManager
 
     public void ToggleInventory()
     {
+        print("tab");
         switch (currentState)
         {
             case PlayerState.Inventory:
@@ -600,6 +617,20 @@ public class PlayerController : ManagedByGameManager
         }
     }
 
+    public void TogglePause()
+    {
+        print("Paused");
+        switch (currentState)
+        {
+            case PlayerState.Paused:
+                ClosePauseMenu();
+                break;
+            default:
+                OpenPauseMenu();
+                break;
+        }
+    }
+
     public void OpenInventory()
     {
         ChangeUIState(UIManager.UIToDisplay.INVENTORY);
@@ -607,6 +638,18 @@ public class PlayerController : ManagedByGameManager
     }
 
     public void CloseInventory()
+    {
+        ChangeUIState(UIManager.UIToDisplay.GAME);
+        ChangeState(PlayerState.Idle);
+    }
+
+    public void OpenPauseMenu()
+    {
+        ChangeUIState(UIManager.UIToDisplay.PAUSE);
+        ChangeState(PlayerState.Paused);
+    }
+
+    public void ClosePauseMenu()
     {
         ChangeUIState(UIManager.UIToDisplay.GAME);
         ChangeState(PlayerState.Idle);

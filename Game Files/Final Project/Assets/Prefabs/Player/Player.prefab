@@ -460,6 +460,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6e2ab4cd-e940-4545-99da-2a70e7504745
     m_ActionName: Player/Use Tool[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5864806220124439931}
+        m_TargetAssemblyTypeName: CustomPlayerInput, Assembly-CSharp
+        m_MethodName: InputPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 51fc87e7-b7e5-4d83-8f84-2e83c62097c1
+    m_ActionName: Player/Pause[/Keyboard/backquote]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1172,7 +1188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 4586079081141089300}
+  attenuationObject: {fileID: 0}
 --- !u!1 &6967684902608255528
 GameObject:
   m_ObjectHideFlags: 0
