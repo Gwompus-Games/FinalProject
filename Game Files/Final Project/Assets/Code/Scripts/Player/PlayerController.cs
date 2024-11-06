@@ -605,7 +605,6 @@ public class PlayerController : ManagedByGameManager
 
     public void ToggleInventory()
     {
-        print("tab");
         switch (currentState)
         {
             case PlayerState.Inventory:
@@ -619,7 +618,6 @@ public class PlayerController : ManagedByGameManager
 
     public void TogglePause()
     {
-        print("Paused");
         switch (currentState)
         {
             case PlayerState.Paused:

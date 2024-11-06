@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class PauseFunctions : ManagedByGameManager
+public class PauseFunctions : MonoBehaviour
 {
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;

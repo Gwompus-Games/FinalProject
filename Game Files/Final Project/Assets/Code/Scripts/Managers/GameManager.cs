@@ -114,6 +114,10 @@ public class GameManager : MonoBehaviour
         //Set up all managed objects
         for (int s = 0; s < _standaloneManagers.managedComponents.Count; s++)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"Attempting to find {_standaloneManagers.managedComponents[s]}");
+            }
             ManagedByGameManager managedScript = FindObjectOfType(_standaloneManagers.managedComponents[s], true).GetComponent(_standaloneManagers.managedComponents[s]) as ManagedByGameManager;
             if (managedScript == null)
             {
