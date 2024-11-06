@@ -11,7 +11,6 @@ public class CustomPlayerInput : ManagedByGameManager
     public static Action<int> Rotate;
     public static Action<Vector2> UpdateMovement;
     public static Action OpenInventory;
-    public static Action Pause;
     public static Action<CustomInputData> LeftMouseButton;
     public static Action<CustomInputData> RightMouseButton;
     public static Action Interact;
@@ -72,14 +71,6 @@ public class CustomPlayerInput : ManagedByGameManager
         if (context.started)
         {
             OpenInventory?.Invoke();
-        }
-    }
-    
-    public void InputPause(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            Pause?.Invoke();
         }
     }
 

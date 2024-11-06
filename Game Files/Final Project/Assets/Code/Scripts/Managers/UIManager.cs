@@ -13,24 +13,20 @@ public class UIManager : ManagedByGameManager
     [SerializeField] private GameObject _inventoryUI;
     [SerializeField] private GameObject _suitUI;
     [SerializeField] private GameObject _shopUI;
-    [SerializeField] private GameObject _pauseUI;
     private List<ManagedObject> _managedObjects = new List<ManagedObject>();
     [SerializeField] private bool _debugMode = false;
     [SerializeField] private Volume crtShader;
-    [SerializeField] private float crtShaderWeight = 0.75f;
 
     public enum UIToDisplay
     {
         GAME,
         INVENTORY,
-        SHOP,
-        PAUSE
+        SHOP
     }
 
     private void Awake()
     {
-        //crtShader = GameObject.Find("CRT_PostProcess_Prefab").GetComponent<Volume>();
-        _pauseUI = GameObject.Find("PauseUI");
+        crtShader = GameObject.Find("CRT_PostProcess_Prefab").GetComponent<Volume>();
     }
 
     public override void Init()
@@ -89,39 +85,30 @@ public class UIManager : ManagedByGameManager
     public void SetUI(UIToDisplay ui)
     {
         RepairManager repairManager = null;
-        crtShader.weight = crtShaderWeight;
 
         switch (ui)
         {
             case UIToDisplay.GAME:
-                crtShader.weight = 0f;
                 Cursor.lockState = CursorLockMode.Locked;
-                SetVisible(_inventoryUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_suitUI.GetComponent<CanvasGroup>(), true);
-                SetVisible(_shopUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_pauseUI.GetComponent<CanvasGroup>(), false);
-                break;
-            case UIToDisplay.PAUSE:
-                Cursor.lockState = CursorLockMode.None;
-                SetVisible(_inventoryUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_suitUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_shopUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_pauseUI.GetComponent<CanvasGroup>(), true);
+                SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_suitUI.GetComponent<CanvasGroup>(), true);
+                SetVisable(_shopUI.GetComponent<CanvasGroup>(), false);
+                crtShader.weight = 0f;
                 break;
             case UIToDisplay.INVENTORY:
                 Cursor.lockState = CursorLockMode.None;
-                SetVisible(_inventoryUI.GetComponent<CanvasGroup>(), true);
-                SetVisible(_suitUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_shopUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_pauseUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), true);
+                SetVisable(_suitUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_shopUI.GetComponent<CanvasGroup>(), false);
+                crtShader.weight = 1f;
                 break;
             case UIToDisplay.SHOP:
                 Cursor.lockState = CursorLockMode.None;
-                SetVisible(_inventoryUI.GetComponent<CanvasGroup>(), true);
-                SetVisible(_suitUI.GetComponent<CanvasGroup>(), false);
-                SetVisible(_shopUI.GetComponent<CanvasGroup>(), true);
-                SetVisible(_pauseUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_inventoryUI.GetComponent<CanvasGroup>(), true);
+                SetVisable(_suitUI.GetComponent<CanvasGroup>(), false);
+                SetVisable(_shopUI.GetComponent<CanvasGroup>(), true);
                 repairManager = FindObjectOfType<RepairManager>();
+                crtShader.weight = 1f;
                 break;
             default:
 
@@ -134,7 +121,7 @@ public class UIManager : ManagedByGameManager
         }
     }
 
-    private void SetVisible(CanvasGroup canvasGroup, bool visible)
+    private void SetVisable(CanvasGroup canvasGroup, bool visable)
     {
         if (canvasGroup == null)
         {
@@ -142,12 +129,12 @@ public class UIManager : ManagedByGameManager
             return;
         }
         float alpha = 0;
-        if (visible)
+        if (visable)
         {
             alpha = 1;
         }
         canvasGroup.alpha = alpha;
-        canvasGroup.interactable = visible;
-        canvasGroup.blocksRaycasts = visible;
+        canvasGroup.interactable = visable;
+        canvasGroup.blocksRaycasts = visable;
     }
 }
