@@ -75,7 +75,9 @@ public class RepairManager : MonoBehaviour
         {
             if (_repairs.ContainsKey(_repairValues[r].type))
             {
+#if UNITY_EDITOR
                 throw new Exception($"MORE THAN ONE {_repairValues[r].type.DisplayName()} FOUND!");
+#endif
             }
             _repairValues[r].SetupValues(_repairValues[r]);
             _repairs.Add(_repairValues[r].type, _repairValues[r]);
@@ -102,7 +104,9 @@ public class RepairManager : MonoBehaviour
         {
             if (!_repairs.ContainsKey(repairTypes[r]))
             {
+#if UNITY_EDITOR
                 throw new Exception($"{repairTypes[r].DisplayName()} REPAIR NOT ASSIGNED A VALUE!");
+#endif
             }
         }
         return true;
