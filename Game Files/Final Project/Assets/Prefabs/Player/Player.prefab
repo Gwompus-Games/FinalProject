@@ -572,6 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f8d7445102f2b94f9e7b3053a985275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camShake: {fileID: 1238036006694002166}
   <suitStats>k__BackingField: {fileID: 11400000, guid: 38a6d0546c9a60a4ba896db26efcd231,
     type: 2}
 --- !u!114 &4765867987772039652
@@ -951,6 +952,7 @@ GameObject:
   - component: {fileID: 7210416837440170363}
   - component: {fileID: 752392146625522760}
   - component: {fileID: 7841615646224310817}
+  - component: {fileID: 1238036006694002166}
   m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1189,6 +1191,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
+--- !u!114 &1238036006694002166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604277345570955366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5df807a54299d74987a16a21c019c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6967684902608255528
 GameObject:
   m_ObjectHideFlags: 0

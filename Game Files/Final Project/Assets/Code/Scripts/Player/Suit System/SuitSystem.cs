@@ -8,6 +8,8 @@ public class SuitSystem : ManagedByGameManager, IDamageable
     public int currentSection { get; private set; } = 5;
     public float currentSectionDurability { get; private set; }
 
+    public CameraShakeAndHitFeedback camShake;
+
     [field: SerializeField] public SuitStatsSO suitStats { get; private set; }
     private float _damageToSuitPerSecond;
 
@@ -84,6 +86,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
             DamageSection(damage, out damage);
         }
         currentSectionDurability -= damage;
+        StartCoroutine(camShake.ShakeUrBooty(.15f, .4f));
         UpdateUI();
     }
 
