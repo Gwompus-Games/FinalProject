@@ -96,7 +96,6 @@ public class PlayerController : ManagedByGameManager
     private Coroutine _dyingCoroutine;
     
     private List<IHeartbeat> _heartbeatElements = new List<IHeartbeat>();
-    private AnglerFish anglerFish;
 
     private Transform _playerSpawnPoint;
 
@@ -141,8 +140,6 @@ public class PlayerController : ManagedByGameManager
         money = _startingMoney;
         _dead = false;
         _outOfOxygen = false;
-        
-        anglerFish = FindObjectOfType<AnglerFish>();
 
         playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
         playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
@@ -215,10 +212,6 @@ public class PlayerController : ManagedByGameManager
         }
         else
         {
-            if (!anglerFish)
-                return;
-            if (!anglerFish.playHeartbeat)
-                return;
             PLAYBACK_STATE playbackState;
             playerHeartbeat.getPlaybackState(out playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))

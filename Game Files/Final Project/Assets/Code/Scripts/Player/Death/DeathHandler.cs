@@ -44,10 +44,14 @@ public class DeathHandler : ManagedByGameManager
 
     public void CreateDeathAnimation(ParentDeath.DeathType deathType)
     {
-        GameObject death = _deaths.Find(x => x.GetComponent<ParentDeath>().causeOfDeath == deathType);
-        if (death != null)
+        GameObject deathGameObject = _deaths.Find(x => x.GetComponent<ParentDeath>().causeOfDeath == deathType);
+        if (deathGameObject != null)
         {
-            death = Instantiate(death, transform);
+            deathGameObject = Instantiate(deathGameObject, transform);
+            ParentDeath death = deathGameObject.GetComponent<ParentDeath>();
+            death.SetDeathHandler(this);
+            death.Init();
+            death.CustomStart();
         }
     }
 
@@ -55,11 +59,11 @@ public class DeathHandler : ManagedByGameManager
     {
         if (death == null)
         {
-            Debug.LogError("Death finished called with a null death! ");
+            Debug.LogError("Death finished called with a null death!");
             return;
         }
 
-        if (!death.deathFinished)
+        if (!(death.deathFinished == true))
         {
             Debug.LogError("Death finished called before death was finished!");
             return;

@@ -129,6 +129,11 @@ public class BuyingManager : ManagedByGameManager
 
     public void BuyFreedom()
     {
-        //this does nothing now :)
+        if (_playerController.money < _freedomCost)
+        {
+            return;
+        }
+
+        GameManager.Instance.EndScene(EndScreenManager.EndState.Won);
     }
 }

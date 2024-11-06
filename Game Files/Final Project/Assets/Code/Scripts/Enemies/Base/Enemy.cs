@@ -198,20 +198,12 @@ public class Enemy : MonoBehaviour, IHeartbeat
         {
             return;
         }
-        if (_playerController.CheckHeartbeatInList(this))
-        {
-            return;
-        }
         _playerController.AddHeartbeat(this);
     }
 
     public void RemoveHeartbeat()
     {
         if (_playerController == null)
-        {
-            return;
-        }
-        if (!_playerController.CheckHeartbeatInList(this))
         {
             return;
         }
