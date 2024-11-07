@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class FacilityExit : MonoBehaviour, IInteractable
 {
-    public FacilityEntrance[] facilityEntrances;
+    public GameObject[] facilityExits;
 
     private void Awake()
     {
@@ -13,17 +13,17 @@ public class FacilityExit : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        facilityEntrances = FindObjectsOfType<FacilityEntrance>();
-        if(facilityEntrances.Length <= 0 )
+        facilityExits = GameObject.FindGameObjectsWithTag("ExitMarker");
+        if(facilityExits.Length <= 0 )
         {
-            Debug.LogError("No facility entrances found");
+            Debug.LogError("No facility Exit Markers found");
         }
     }
 
     public void Interact()
     {
         GameManager.Instance.isPlayerInsideFacility = false;
-        Transform randomFacilityEntrance = facilityEntrances[Random.Range(0, facilityEntrances.Length)].transform;
+        Transform randomFacilityEntrance = facilityExits[Random.Range(0, facilityExits.Length)].transform;
         GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(randomFacilityEntrance.position);
         GameManager.Instance.GetManagedComponent<DungeonGenerator>().StartGeneration();
     }
