@@ -96,12 +96,12 @@ public class ToolController : ManagedByGameManager
         {
             int toolEquiped = _toolsOrder[_equippedTool];
             _tools[toolEquiped].SetToolEnabled(true);
-            if (_glowstickPositions.ContainsKey(toolEquiped))
+            if (_glowstickPositions.ContainsKey(_equippedTool))
             {
                 GlowstickTool glowstickTool = _tools[toolEquiped] as GlowstickTool;
                 if (glowstickTool != null)
                 {
-                    glowstickTool.SetToolData(_glowstickPositions[toolEquiped]);
+                    glowstickTool.SetToolData(_glowstickPositions[_equippedTool]);
                 }
             }
         }
