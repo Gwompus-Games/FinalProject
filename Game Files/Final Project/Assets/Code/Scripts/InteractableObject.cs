@@ -59,7 +59,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
         DisablePopup();
     }
 
-    public void EnablePopup()
+    public virtual void EnablePopup()
     {
         if (popupEnabled)
         {

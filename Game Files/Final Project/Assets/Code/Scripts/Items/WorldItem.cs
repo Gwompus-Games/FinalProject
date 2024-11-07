@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class WorldItem : InteractableObject
 {
-    [SerializeField] private ItemDataSO _itemData;
+    [SerializeField] protected ItemDataSO _itemData;
     [SerializeField] private GameObject _pickupEffect;
     private MeshRenderer _meshRenderer;
     private Rigidbody _rigidbody;

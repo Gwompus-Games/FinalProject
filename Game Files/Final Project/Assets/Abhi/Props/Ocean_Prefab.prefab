@@ -4603,7 +4603,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04ccc7667f898334aa67c109171a323c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleport: {fileID: 8167241867752128921}
+  _popupCanvas: {fileID: 0}
+  _popupImage: {fileID: 0}
+  _popupSprite: {fileID: 0}
+  _popupDistance: 1.5
+  _popupText: {fileID: 0}
+  _popupKey: 69
+  anim: {fileID: 0}
 --- !u!135 &7899487235293091203
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4964,7 +4970,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04ccc7667f898334aa67c109171a323c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleport: {fileID: 6808355524242880321}
+  _popupCanvas: {fileID: 0}
+  _popupImage: {fileID: 0}
+  _popupSprite: {fileID: 0}
+  _popupDistance: 1.5
+  _popupText: {fileID: 0}
+  _popupKey: 69
+  anim: {fileID: 0}
 --- !u!135 &4950475064699982673
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5099,6 +5111,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Light_Pole (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 8375490991312796413, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}
@@ -6374,6 +6391,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Light_Pole (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 8375490991312796413, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6448,6 +6470,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Light_Pole (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 8375490991312796413, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6521,6 +6548,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Light_Pole (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 8375490991312796413, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}
@@ -6878,6 +6910,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Light_Pole
       objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 8375490991312796413, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6951,6 +6988,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Light_Pole (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 8375490991312796413, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}
@@ -7120,6 +7162,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Light_Pole (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
+      objectReference: {fileID: 0}
     - target: {fileID: 8375490991312796413, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7193,6 +7240,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Light_Pole (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 795.7747
       objectReference: {fileID: 0}
     - target: {fileID: 2783252198765427222, guid: 80e64aea6a785cd4ab36979b255e15e4,
         type: 3}

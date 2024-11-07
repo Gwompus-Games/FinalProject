@@ -18,6 +18,7 @@ public abstract class ToolsParent : ManagedObject
     [SerializeField] protected Tool _myTool;
 
     protected HandPositionController _handPositionController;
+
     public bool toolEnabled 
     {
         get

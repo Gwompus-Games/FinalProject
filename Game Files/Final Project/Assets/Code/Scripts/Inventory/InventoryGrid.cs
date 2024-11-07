@@ -445,4 +445,14 @@ public class InventoryGrid : ManagedObject
         }
         popupUI.DisablePopup();
     }
+
+    public void RemoveItem(InventoryItem item)
+    {
+        ClearSlotsWithItem(item);
+    }
+
+    public void RemoveItem(Vector2Int gridPosition)
+    {
+        RemoveItem(GetItemInSlot(gridPosition));
+    }
 }
