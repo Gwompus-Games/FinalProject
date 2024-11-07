@@ -89,6 +89,8 @@ public class PlayerController : ManagedByGameManager
     public OxygenSystem oxygenSystem { get; private set; }
     public SuitSystem suitSystem { get; private set; }
     public OxygenDrainer runningDrainer { get; private set; }
+    public InventoryController inventoryController { get; private set; }
+    public UIManager uiManager { get; private set; }
 
     private EventInstance playerFootsteps;
     private EventInstance playerHeartbeat;
@@ -121,6 +123,8 @@ public class PlayerController : ManagedByGameManager
         }
         _controller = GetComponent<CharacterController>();
         _headTransform = GetComponentInChildren<CameraLook>().transform;
+        inventoryController = GameManager.Instance.GetManagedComponent<InventoryController>();
+        uiManager = GameManager.Instance.GetManagedComponent<UIManager>();
     }
 
     public override void CustomStart()
@@ -578,7 +582,7 @@ public class PlayerController : ManagedByGameManager
 
     public void ChangeUIState(UIManager.UIToDisplay ui)
     {
-        GameManager.Instance.GetManagedComponent<UIManager>().SetUI(ui);
+        uiManager.SetUI(ui);
         bool enabled = false;
         switch (ui)
         {
@@ -599,7 +603,7 @@ public class PlayerController : ManagedByGameManager
         GetComponentInChildren<CameraLook>().enabled = !enabled;
         if (!enabled)
         {
-            GameManager.Instance.GetManagedComponent<InventoryController>().InventoryClosing();
+            inventoryController.InventoryClosing();
         }
     }
 
@@ -632,25 +636,21 @@ public class PlayerController : ManagedByGameManager
     public void OpenInventory()
     {
         ChangeUIState(UIManager.UIToDisplay.INVENTORY);
-        ChangeState(PlayerState.Inventory);
     }
 
     public void CloseInventory()
     {
         ChangeUIState(UIManager.UIToDisplay.GAME);
-        ChangeState(PlayerState.Idle);
     }
 
     public void OpenPauseMenu()
     {
         ChangeUIState(UIManager.UIToDisplay.PAUSE);
-        ChangeState(PlayerState.Paused);
     }
 
     public void ClosePauseMenu()
     {
         ChangeUIState(UIManager.UIToDisplay.GAME);
-        ChangeState(PlayerState.Idle);
     }
 
     public void AddHeartbeat(IHeartbeat heartbeatElement)

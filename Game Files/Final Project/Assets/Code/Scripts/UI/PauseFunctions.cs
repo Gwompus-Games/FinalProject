@@ -10,6 +10,12 @@ public class PauseFunctions : MonoBehaviour
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private string mainMenuScene = "";
     private bool paused = false;
+    private PlayerController _playerController;
+
+    private void Start()
+    {
+        _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
+    }
 
     public void Logout()
     {
@@ -18,8 +24,7 @@ public class PauseFunctions : MonoBehaviour
 
     public void Resume()
     {
-        GameManager.Instance.GetManagedComponent<UIManager>().SetUI(UIManager.UIToDisplay.GAME);
-        GameManager.Instance.GetManagedComponent<PlayerController>().ChangeState(PlayerController.PlayerState.Idle);
+        _playerController.ChangeUIState(UIManager.UIToDisplay.GAME);
     }
 
     public void SwapToReadme()
