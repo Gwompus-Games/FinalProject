@@ -449,7 +449,6 @@ public class InventoryGrid : ManagedObject
     public void RemoveItem(InventoryItem item)
     {
         ClearSlotsWithItem(item);
-        item.ItemRemovedFromInventory();
     }
 
     public void RemoveItem(Vector2Int gridPosition)

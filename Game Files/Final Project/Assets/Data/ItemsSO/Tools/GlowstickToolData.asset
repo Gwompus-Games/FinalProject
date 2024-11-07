@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GlowstickToolData
   m_EditorClassIdentifier: 
   itemName: Glowstick
-  itemDescription: A tool used for lighting up the way. Useful for not getting lost.
+  itemDescription: 
   usedForSelling: 0
   worldObject: {fileID: 8199509910857268879, guid: 9c6d982b54e504347af5a95d203bf3ac,
     type: 3}
@@ -28,7 +28,8 @@ MonoBehaviour:
   shopIcon: {fileID: 0}
   buyValue: 5
   handsUsed: 0
-  toolPrefab: {fileID: 4285405455323443241, guid: 1d157eb4a9b68fe49990e38f7141abb8,
-    type: 3}
+  toolPrefab: {fileID: 0}
   possibleColours:
   - {r: 0.061409745, g: 0.8679245, b: 0.17283608, a: 1}
+  - {r: 0.8666667, g: 0.07061695, b: 0.062745094, a: 1}
+  - {r: 0.062745094, g: 0.3734511, b: 0.8666667, a: 1}
