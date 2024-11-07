@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(Collider))]
+
 [RequireComponent(typeof(Rigidbody))]
 public class WorldItem : InteractableObject
 {
-    [SerializeField] private ItemDataSO _itemData;
+    [SerializeField] protected ItemDataSO _itemData;
     [SerializeField] private GameObject _pickupEffect;
     private MeshRenderer _meshRenderer;
     private Rigidbody _rigidbody;
@@ -17,7 +15,7 @@ public class WorldItem : InteractableObject
     protected override void Awake()
     {
         base.Awake();
-        _meshRenderer = GetComponent<MeshRenderer>();
+        _meshRenderer = GetComponentInChildren<MeshRenderer>();
         _rigidbody = GetComponent<Rigidbody>();
         if (_itemData != null)
         {

@@ -39,6 +39,7 @@ public class InventoryGrid : ManagedObject
     public override void CustomStart()
     {
         base.CustomStart();
+        _inventoryController.inventoryUI.SyncBarSize(rectTransform.sizeDelta.x);
         OnEnable();
     }
 
@@ -98,7 +99,6 @@ public class InventoryGrid : ManagedObject
             position.y = parentRectTransform.position.y + (parentRectTransform.sizeDelta.y - rectTransform.sizeDelta.y) / 2;
         }
         rectTransform.position = position;
-        GameManager.Instance.GetManagedComponent<InventoryUI>().SyncBarSize(rectTransform.sizeDelta.x);
     }
 
     private Vector2Int GetTileGridPosition(Vector2 worldPosition)
@@ -444,5 +444,16 @@ public class InventoryGrid : ManagedObject
             }
         }
         popupUI.DisablePopup();
+    }
+
+    public void RemoveItem(InventoryItem item)
+    {
+        ClearSlotsWithItem(item);
+        item.ItemRemovedFromInventory();
+    }
+
+    public void RemoveItem(Vector2Int gridPosition)
+    {
+        RemoveItem(GetItemInSlot(gridPosition));
     }
 }

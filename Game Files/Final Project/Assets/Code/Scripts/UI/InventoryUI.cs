@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryUI : ManagedByGameManager
+public class InventoryUI : ManagedObject
 {
     [SerializeField] private GameObject _infoBar;
     public InventoryPopupUI popupUI { get; private set; }

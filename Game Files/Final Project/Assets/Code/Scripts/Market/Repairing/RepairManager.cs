@@ -73,10 +73,12 @@ public class RepairManager : MonoBehaviour
         _suitSystem = GameManager.Instance.GetManagedComponent<SuitSystem>();
         for (int r = 0; r < _repairValues.Length; r++)
         {
+#if UNITY_EDITOR
             if (_repairs.ContainsKey(_repairValues[r].type))
             {
                 throw new Exception($"MORE THAN ONE {_repairValues[r].type.DisplayName()} FOUND!");
             }
+#endif
             _repairValues[r].SetupValues(_repairValues[r]);
             _repairs.Add(_repairValues[r].type, _repairValues[r]);
         }
@@ -100,10 +102,12 @@ public class RepairManager : MonoBehaviour
         List<RepairTypes> repairTypes = (Enum.GetValues(typeof(RepairTypes)) as RepairTypes[]).ToList();
         for (int r = 0; r < repairTypes.Count; r++)
         {
+#if UNITY_EDITOR
             if (!_repairs.ContainsKey(repairTypes[r]))
             {
                 throw new Exception($"{repairTypes[r].DisplayName()} REPAIR NOT ASSIGNED A VALUE!");
             }
+#endif
         }
         return true;
     }

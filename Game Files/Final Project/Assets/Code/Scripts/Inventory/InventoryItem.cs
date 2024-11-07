@@ -14,7 +14,7 @@ public class InventoryItem : MonoBehaviour
     protected RectTransform _myRectTransform;
     protected Coroutine _flashingRoutune = null;
     protected bool _initialized = false;
-    [SerializeField] private Image _itemImage;
+    [SerializeField] protected Image _itemImage;
     [field: SerializeField] public ItemDataSO itemData { get; private set; }
     public int sellValue { get; private set; }
 
@@ -169,5 +169,15 @@ public class InventoryItem : MonoBehaviour
     public Sprite GetItemSprite()
     {
         return _itemImage.sprite;
+    }
+
+    private void OnDestroy()
+    {
+        InventoryGrid inventory = GetComponentInParent<InventoryGrid>();
+        if (inventory == null)
+        {
+            return;
+        }
+        inventory.RemoveItem(this);
     }
 }

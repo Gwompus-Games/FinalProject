@@ -4,12 +4,18 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class PauseFunctions : ManagedByGameManager
+public class PauseFunctions : MonoBehaviour
 {
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private string mainMenuScene = "";
     private bool paused = false;
+    private PlayerController _playerController;
+
+    private void Start()
+    {
+        _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
+    }
 
     public void Logout()
     {
@@ -18,8 +24,7 @@ public class PauseFunctions : ManagedByGameManager
 
     public void Resume()
     {
-        GameManager.Instance.GetManagedComponent<UIManager>().SetUI(UIManager.UIToDisplay.GAME);
-        GameManager.Instance.GetManagedComponent<PlayerController>().ChangeState(PlayerController.PlayerState.Idle);
+        _playerController.ChangeUIState(UIManager.UIToDisplay.GAME);
     }
 
     public void SwapToReadme()

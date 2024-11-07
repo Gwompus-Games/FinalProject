@@ -21,7 +21,8 @@ public class InventoryController : ManagedByGameManager
     [SerializeField] private bool _debugMode = false;
 
     private Vector3 _mousePosition = Vector3.zero;
-    private ManagedObject[] _managedObjects;
+    private List<ManagedObject> _managedObjects = new List<ManagedObject>();
+    public InventoryUI inventoryUI { get; private set; }
 
     public override void Init()
     {
@@ -36,12 +37,17 @@ public class InventoryController : ManagedByGameManager
             _inventory = inventoryGrid;
         }
 
-        _managedObjects = FindObjectsByType<InventoryGrid>(FindObjectsSortMode.None);
+        inventoryUI = FindFirstObjectByType<InventoryUI>();
+        ManagedObject[] inventoryGrids = FindObjectsByType<InventoryGrid>(FindObjectsSortMode.None);
+        
+        _managedObjects.Add(inventoryUI);
+        _managedObjects.AddRange(inventoryGrids);
+
         if (_debugMode)
         {
-            Debug.Log($"Number of managed objects by Inventory Controller: {_managedObjects.Length}");
+            Debug.Log($"Number of managed objects by Inventory Controller: {_managedObjects.Count}");
         }
-        for (int m = 0; m < _managedObjects.Length; m++)
+        for (int m = 0; m < _managedObjects.Count; m++)
         {
             if (_managedObjects[m] == this)
             {
@@ -59,7 +65,7 @@ public class InventoryController : ManagedByGameManager
     {
         base.CustomStart();
         OnEnable();
-        for (int m = 0; m < _managedObjects.Length; m++)
+        for (int m = 0; m < _managedObjects.Count; m++)
         {
             if (_managedObjects[m] == this)
             {
