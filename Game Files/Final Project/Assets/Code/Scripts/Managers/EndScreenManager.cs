@@ -37,7 +37,6 @@ public class EndScreenManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log(scene.name);
         if (scene.name == endSceneName)
         {
             if (endedState == EndState.None)
@@ -51,6 +50,7 @@ public class EndScreenManager : MonoBehaviour
     private void UpdateEndState()
     {
         EndStateUpdate?.Invoke(endedState);
+        Destroy(gameObject, 0.5f);
     }
 
     private void OnEnable()
