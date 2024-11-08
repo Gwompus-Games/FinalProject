@@ -273,6 +273,7 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameState.InBetweenFacitilies:
+                TreasureSpawnPoint.ResetUniqueTreasures();
                 break;
             case GameState.LandedAtFacility:
                 _dungeonGenerator.StartGeneration();
