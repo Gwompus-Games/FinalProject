@@ -34,6 +34,7 @@ public class BuyingManager : ManagedByGameManager
 
     private PlayerController _playerController;
     private ShopUIManager _shopUIManager;
+    private InventoryController _inventoryController;
 
     private Color _ableToAffordBackgroundColour;
     private Color _ableToAffordTextColour;
@@ -45,6 +46,7 @@ public class BuyingManager : ManagedByGameManager
         base.Init();
         _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
         _shopUIManager = GameManager.Instance.GetManagedComponent<ShopUIManager>();
+        _inventoryController = GameManager.Instance.GetManagedComponent<InventoryController>();
 
         OnEnable();
     }
@@ -98,13 +100,21 @@ public class BuyingManager : ManagedByGameManager
 
     public void BuyItem(ToolSO toolToBuy)
     {
-        if (GameManager.Instance.GetManagedComponent<PlayerController>().money < toolToBuy.buyValue)
+        if (_playerController.money < toolToBuy.buyValue)
         {
             Debug.LogWarning("Player doesn't have enough money to buy this tool.");
             return;
         }
-        GameManager.Instance.GetManagedComponent<PlayerController>().SpendMoney(toolToBuy.buyValue);
-        GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(toolToBuy);
+        _playerController.SpendMoney(toolToBuy.buyValue);
+        OxygenTankSO oxygenTank = toolToBuy as OxygenTankSO;
+        if (oxygenTank != null)
+        {
+            _inventoryController.AddItemToInventory(oxygenTank, float.MaxValue);
+        }
+        else
+        {
+            _inventoryController.AddItemToInventory(toolToBuy);
+        }
         UpdateBuySections?.Invoke();
     }
 

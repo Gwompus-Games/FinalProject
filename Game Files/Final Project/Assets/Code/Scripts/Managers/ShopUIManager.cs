@@ -71,10 +71,20 @@ public class ShopUIManager : ManagedByGameManager
                 _shopTabs[t].gameObject.SetActive(false);
             }
         }
+
+        if (tabToSwitchTo == ShopTabEnum.SHOP)
+        {
+            Invoke("UpdateBuySections", 0.01f);
+        }
     }
 
     public void SwapToTab(ShopTabEnum tabToSwapTo)
     {
         currentTab = tabToSwapTo;
+    }
+
+    private void UpdateBuySections()
+    {
+            BuyingManager.UpdateBuySections?.Invoke();
     }
 }
