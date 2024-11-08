@@ -224,10 +224,6 @@ public class PlayerController : ManagedByGameManager
             {
                 playerHeartbeat.start();
             }
-            else
-            {
-                playerHeartbeat.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            }
         }
     }
 
