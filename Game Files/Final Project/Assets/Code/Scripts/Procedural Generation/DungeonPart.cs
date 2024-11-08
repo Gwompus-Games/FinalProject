@@ -41,13 +41,7 @@ public class DungeonPart : MonoBehaviour, IHideable
 
         foreach (TreasureSpawnPoint point in spawnPoints)
         {
-            point.SpawnTreasureByRarity
-            (
-                TreasureSO.TreasureRarity.COMMON, 
-                TreasureSO.TreasureRarity.UNCOMMON, 
-                TreasureSO.TreasureRarity.RARE, 
-                TreasureSO.TreasureRarity.UNIQUE
-            );
+            point.SpawnTreasure();
         }
     }
 

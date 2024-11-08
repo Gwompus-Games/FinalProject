@@ -44,5 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3bfb9f081883d64a8bb087688bf1d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _treasureList: {fileID: 11400000, guid: f4f8728d66da6ff4ab75dafd586e6362, type: 2}
-  _useWeightedSpawning: 0
+  _treasureRaritiesToChooseFrom: 
+  _ableToSpawnUniqueTreasures: 0
+  _manualSpawnTreasuresList: {fileID: 0}
+  _masterTreasureList: {fileID: 11400000, guid: 49912dd33c7562f46a5bac9b917a3749,
+    type: 2}
