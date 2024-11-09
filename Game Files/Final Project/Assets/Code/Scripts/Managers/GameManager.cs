@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private bool _waitingForSubmarineAnimation = false;
 
+    private Coroutine _deathSequence;
+
     public GameState currentGameState 
     { 
         get
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"Standalone managers found: {_standaloneManagers != null}");
         }
+        _deathSequence = null;
         _standaloneManagers.SetUpList();
         _waitingForSubmarineAnimation = false;
         InitilizeGameScene();
@@ -281,9 +284,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PlayerDied()
+    {
+        if (_deathSequence != null)
+        {
+            return;
+        }
+        _deathSequence = StartCoroutine(PlayerDeadSequence());
+    }
+
     public void EndScene(EndScreenManager.EndState endState)
     {
         EndScreenManager endScreenManager = Instantiate(_endScreenManagerPrefab).GetComponent<EndScreenManager>();
         endScreenManager.SetUpEndState(endState);
+    }
+
+    private IEnumerator PlayerDeadSequence()
+    {
+        Submarine submarine = GetManagedComponent<Submarine>();
+        PlayerController player = GetManagedComponent<PlayerController>();
+        Camera playerCamera = Camera.main;
+        Camera submarineCamera = submarine.GetDeadCamera();
+        yield return null;
+        playerCamera.enabled = false;
+        submarineCamera.enabled = true;
+        submarine.ExitLevel();
+        while (_waitingForSubmarineAnimation)
+        {
+            yield return null;
+        }
+        player.RespawnPlayer();
+        playerCamera.enabled = true;
+        submarineCamera.enabled = false;
     }
 }

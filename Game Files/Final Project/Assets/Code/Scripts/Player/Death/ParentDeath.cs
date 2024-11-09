@@ -15,12 +15,13 @@ public class ParentDeath : ManagedObject
     }
 
     [field :SerializeField] public DeathType causeOfDeath { get; protected set; }
-    [SerializeField] private GameObject _deathVisualPrefab;
+    [SerializeField] private GameObject _deathEffectsPrefab;
     [SerializeField] private float _deathTimeInSeconds = 5f;
     private float _currentTime;
     private Canvas _canvas;
-    private GameObject _deathVisualGameObject;
+    private GameObject _deathEffectGameObject;
     private DeathVisualComponent[] _deathVisualComponents;
+    private DeathAudioComponent[] _deathAudioComponents;
     private DeathHandler _deathHandler;
 
     public bool? deathFinished { get; protected set; }
@@ -40,8 +41,9 @@ public class ParentDeath : ManagedObject
     public override void CustomStart()
     {
         base.CustomStart();
-        _deathVisualGameObject = Instantiate(_deathVisualPrefab, _canvas.transform);
-        _deathVisualComponents = _deathVisualGameObject.GetComponentsInChildren<DeathVisualComponent>();
+        _deathEffectGameObject = Instantiate(_deathEffectsPrefab, _canvas.transform);
+        _deathVisualComponents = _deathEffectGameObject.GetComponentsInChildren<DeathVisualComponent>();
+        _deathAudioComponents = _deathEffectGameObject.GetComponentsInChildren<DeathAudioComponent>();
         deathFinished = false;
     }
 
@@ -52,7 +54,7 @@ public class ParentDeath : ManagedObject
             return;
         }
 
-        if (!(deathFinished == false))
+        if (deathFinished != false)
         {
             return;
         }
@@ -76,7 +78,7 @@ public class ParentDeath : ManagedObject
     protected void CleanUp()
     {
         deathFinished = true;
-        Destroy(_deathVisualGameObject);
+        Destroy(_deathEffectGameObject);
         Destroy(gameObject);
     }
 }

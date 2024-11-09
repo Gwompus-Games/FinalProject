@@ -105,6 +105,7 @@ public class InventoryController : ManagedByGameManager
 
     private void Update()
     {
+#if UNITY_EDITOR
         if (_itemToPlace == null)
         {
             if (Input.GetKeyDown(KeyCode.O))
@@ -119,6 +120,7 @@ public class InventoryController : ManagedByGameManager
                 _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<Canvas>().GetComponent<RectTransform>());
             }
         }
+#endif
     }
 
     public void SwapItemInHand(InventoryItem item)
@@ -254,15 +256,28 @@ public class InventoryController : ManagedByGameManager
         return _itemToPlace;
     }
 
-    public void AddItemToInventory(OxygenTankSO tankData, float oxygen)
+    public II_OxygenTank AddItemToInventory(OxygenTankSO tankData, float oxygen)
     {
         II_OxygenTank oxygenTank = AddItemToInventory(tankData as ItemDataSO) as II_OxygenTank;
         if (oxygenTank == null)
         {
             Debug.Log($"Added null oxygen tank to inventory!");
-            return;
+            return null;
         }
         oxygenTank.SetTankOxygenLevel(oxygen);
+        return oxygenTank;
+    }
+
+    public InventoryItem AddItemToInventory(ItemDataSO itemData, Vector2Int gridPosition)
+    {
+        InventoryItem inventoryItem = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
+        if (!_inventory.CheckIfSlotsAvailable(gridPosition, inventoryItem.tilesUsed.ToArray()))
+        {
+            Debug.LogWarning("Tried to add to a specific slot that isn't free!");
+            return AddItemToInventory(itemData);
+        }
+
+        return PlaceItem(inventoryItem, gridPosition);
     }
 
     private bool CheckInventorySpaceAvailable(ItemDataSO itemData, out InventoryItem inventoryItem)
@@ -293,28 +308,45 @@ public class InventoryController : ManagedByGameManager
             }
             for (int y = 0; y < _inventory.gridSizeHeight; y++)
             {
+                Vector2Int coordinate = new Vector2Int(x, y);
                 if (y + minSpaceDistance.y < 0 ||
                     y + maxSpaceDistance.y > _inventory.gridSizeHeight)
                 {
                     continue;
                 }
-                if (_inventory.CheckIfSlotsAvailable(new Vector2Int(x, y), inventoryItem.tilesUsed.ToArray()))
+                if (_inventory.CheckIfSlotsAvailable(coordinate, inventoryItem.tilesUsed.ToArray()))
                 {
-                    _inventory.PlaceItem(inventoryItem, new Vector2Int(x, y));
-                    RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
-                    rectTransform.SetParent(_inventory.GetComponent<RectTransform>());
-                    Vector2 position = new Vector2();
-                    position.x = (float)x * InventoryGrid.globalItemData.tileWidth + InventoryGrid.globalItemData.tileWidth / 2f;
-                    position.y = -((float)y * InventoryGrid.globalItemData.tileHeight + InventoryGrid.globalItemData.tileHeight / 2f);
-
-                    rectTransform.localPosition = position;
-                    inventoryItem.InitializeInventoryItem(itemData);
+                    PlaceItem(inventoryItem, coordinate);
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    private InventoryItem PlaceItem(InventoryItem item, Vector2Int placementPosition)
+    {
+        _inventory.PlaceItem(item, placementPosition);
+        RectTransform rectTransform = item.GetComponent<RectTransform>();
+        rectTransform.SetParent(_inventory.GetComponent<RectTransform>());
+        Vector2 position = new Vector2();
+        position.x = (float)placementPosition.x * InventoryGrid.globalItemData.tileWidth + InventoryGrid.globalItemData.tileWidth / 2f;
+        position.y = -((float)placementPosition.y * InventoryGrid.globalItemData.tileHeight + InventoryGrid.globalItemData.tileHeight / 2f);
+
+        rectTransform.localPosition = position;
+        item.InitializeInventoryItem(item.itemData);
+        return item;
+    } 
+
+    public void RemoveItemFromInventory(InventoryItem itemToRemove)
+    {
+        _inventory.RemoveItem(itemToRemove);
+    }
+
+    public void RemoveItemFromInventory(Vector2Int gridPosToRemove)
+    {
+        _inventory.RemoveItem(gridPosToRemove);
     }
 
     private void ScrapItem()

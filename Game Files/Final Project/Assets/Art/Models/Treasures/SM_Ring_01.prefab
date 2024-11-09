@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8849742679713106512}
   - component: {fileID: 2694161155609315715}
   - component: {fileID: 667075190881852776}
-  - component: {fileID: 4002882245730184338}
+  - component: {fileID: 1533997813563354092}
   m_Layer: 0
   m_Name: SM_Ring_01
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4002882245730184338
-MeshCollider:
+--- !u!65 &1533997813563354092
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4828935969449048, guid: 8af825f48aa6b7c45accff6b296e56c1, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.00070674677, y: 0.0007067466, z: 0.00013292483}
+  m_Center: {x: 0, y: -1.4551913e-11, z: 0.00006641576}

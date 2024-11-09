@@ -483,6 +483,11 @@ public class PlayerController : ManagedByGameManager
         _dyingCoroutine = StartCoroutine(DeathTimer(deathType));
     }
 
+    public void RespawnPlayer()
+    {
+        TeleportPlayer(_playerSpawnPoint.position);
+    }
+
     public void RestartGame()
     {
         GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();

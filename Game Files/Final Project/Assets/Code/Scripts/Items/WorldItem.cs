@@ -11,6 +11,7 @@ public class WorldItem : InteractableObject
     private MeshRenderer _meshRenderer;
     private Rigidbody _rigidbody;
     public bool hidden { get; private set; } = false;
+    private float _pushForce;
 
     protected override void Awake()
     {
@@ -45,6 +46,7 @@ public class WorldItem : InteractableObject
         _rigidbody.drag = _itemData.drag;
         _rigidbody.angularDrag = _itemData.angularDrag;
         _rigidbody.useGravity = !_itemData.floatingItem;
+        _pushForce = 50f / (_itemData.density * _itemData.drag);
     }
 
     public void DespawnItem()
@@ -65,5 +67,15 @@ public class WorldItem : InteractableObject
             Instantiate(_pickupEffect, transform.parent).transform.localPosition = transform.localPosition;
         }
         DespawnItem();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            Vector3 direction = (transform.position - other.transform.position).normalized;
+            Vector3 force = direction * _pushForce;
+            _rigidbody.AddForce(force);
+        }
     }
 }

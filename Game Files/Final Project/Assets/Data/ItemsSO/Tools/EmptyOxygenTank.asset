@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0c3f7d6837d4a408da447b2fac4111, type: 3}
+  m_Name: EmptyOxygenTank
+  m_EditorClassIdentifier: 
+  itemName: Empty Oxygen Tank
+  itemDescription: This oxygen tank is empty. Pretty useless now.
+  usedForSelling: 1
+  worldObject: {fileID: 6917390834503983150, guid: 52d1f5e6ae9298447b5344ec0b82939c,
+    type: 3}
+  density: 1
+  drag: 7.8
+  angularDrag: 0.15
+  floatingItem: 0
+  inventoryObject: {fileID: 1328867478320826771, guid: fdeea51fd0406324382c166eda28bcbe,
+    type: 3}
+  inventoryItemSprite: {fileID: 0}
+  baseValue: 5
