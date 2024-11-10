@@ -10,9 +10,6 @@ public class MenuFunctions : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private string PlayButtonTargetScene = "";
-    [SerializeField] private AudioSource UIAudioSource;
-    [SerializeField] private AudioClip ClickSound;
-    [SerializeField] private AudioClip HoverSound;
 
     public void StartGame()
     {
@@ -36,17 +33,6 @@ public class MenuFunctions : MonoBehaviour
             optionsPanel.SetActive(false);
         }
     }
-
-    public void PlayClickSound()
-    {
-        UIAudioSource.PlayOneShot(ClickSound, 1f);
-    }
-
-    public void PlayHoverSound()
-    {
-        UIAudioSource.PlayOneShot(HoverSound, 1f);
-    }
-
 
     public void ExitGame()
     {
