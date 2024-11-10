@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +10,7 @@ public class MenuFunctions : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private string PlayButtonTargetScene = "";
-    [SerializeField] private AudioSource ClickSource;
-    [SerializeField] private AudioSource HoverSource;
+    [SerializeField] private AudioSource UIAudioSource;
     [SerializeField] private AudioClip ClickSound;
     [SerializeField] private AudioClip HoverSound;
 
@@ -39,12 +39,12 @@ public class MenuFunctions : MonoBehaviour
 
     public void PlayClickSound()
     {
-        ClickSource.Play();
+        UIAudioSource.PlayOneShot(ClickSound, 1f);
     }
 
     public void PlayHoverSound()
     {
-        HoverSource.Play();
+        UIAudioSource.PlayOneShot(HoverSound, 1f);
     }
 
 
