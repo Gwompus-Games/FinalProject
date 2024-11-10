@@ -6,6 +6,8 @@ public class FlashlightTool : ToolsParent
 {
     private Light _light;
     private ToolController _controller;
+    [SerializeField] private AudioSource _flashlightSource;
+    [SerializeField] private AudioClip _flashlightClick;
 
     public override void Init()
     {
@@ -33,10 +35,12 @@ public class FlashlightTool : ToolsParent
             if (_light.enabled)
             {
                 Debug.Log("Flashlight turned on!");
+                _flashlightSource.PlayOneShot(_flashlightClick);
             }
             else
             {
                 Debug.Log("Flashlight turned off!");
+                _flashlightSource.PlayOneShot(_flashlightClick);
             }
             
         }

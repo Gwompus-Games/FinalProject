@@ -651,7 +651,6 @@ public class PlayerController : ManagedByGameManager
         ChangeUIState(UIManager.UIToDisplay.GAME);
         //adding timescale to unpause game when menu is closed and relocking player cursor - Logan
         Time.timeScale = 1;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void AddHeartbeat(IHeartbeat heartbeatElement)
