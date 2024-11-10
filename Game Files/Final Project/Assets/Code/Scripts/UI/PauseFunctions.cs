@@ -28,6 +28,7 @@ public class PauseFunctions : MonoBehaviour
     public void Resume()
     {
         _playerController.ChangeUIState(UIManager.UIToDisplay.GAME);
+        Time.timeScale = 1;
     }
 
     public void SwapToReadme()

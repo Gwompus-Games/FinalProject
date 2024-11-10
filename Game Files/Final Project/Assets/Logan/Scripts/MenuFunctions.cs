@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -10,10 +9,12 @@ public class MenuFunctions : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private string PlayButtonTargetScene = "";
+    [SerializeField] private string SceneToUnload = "";
 
     public void StartGame()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(PlayButtonTargetScene);
+        AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(SceneToUnload);
     }
 
     public void SwapToOptions()
