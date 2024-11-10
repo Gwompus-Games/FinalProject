@@ -9,6 +9,7 @@ public class PauseFunctions : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
     [SerializeField] private string mainMenuScene = "";
+    [SerializeField] private string sceneToUnload = "";
     private bool paused = false;
     private PlayerController _playerController;
 
@@ -20,6 +21,8 @@ public class PauseFunctions : MonoBehaviour
     public void Logout()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(mainMenuScene);
+        //seeing if unloading the scene stops the audio from playing
+        AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneToUnload);
     }
 
     public void Resume()

@@ -642,11 +642,15 @@ public class PlayerController : ManagedByGameManager
     public void OpenPauseMenu()
     {
         ChangeUIState(UIManager.UIToDisplay.PAUSE);
+        //adding timescale stop to pause game while menu is open - Logan
+        Time.timeScale = 0;
     }
 
     public void ClosePauseMenu()
     {
         ChangeUIState(UIManager.UIToDisplay.GAME);
+        //adding timescale to unpause game when menu is closed - Logan
+        Time.timeScale = 1;
     }
 
     public void AddHeartbeat(IHeartbeat heartbeatElement)
