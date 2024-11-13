@@ -289,17 +289,14 @@ public class PlayerController : ManagedByGameManager
 
         isGrounded = Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundMask);
 
-        if (_velocity.y > 0.2f)
-            isGrounded = false;
-
         if (isGrounded != oldIsGrounded)
         {
             IsGroundedChanged();
         }
 
-        if (isGrounded && _velocity.y < 0.5f)
+        if (isGrounded)
         {
-            _velocity.y = -5f;
+            _velocity.y = -1.5f;
         }
 
         if (_movement != Vector3.zero)
