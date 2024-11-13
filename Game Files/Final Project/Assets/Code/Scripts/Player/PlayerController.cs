@@ -75,6 +75,7 @@ public class PlayerController : ManagedByGameManager
     public bool isRunning { get; private set; }
     public bool lockedInput { get; private set; } = false;
     public bool onSub { get; private set; } = true;
+    public bool applyGravity { get; private set; } = true;
 
     private CharacterController _controller;
 
@@ -310,6 +311,10 @@ public class PlayerController : ManagedByGameManager
         {
             _velocity.y = -1.5f;
         }
+        else
+        {
+            _velocity.y = -1.5f;
+        }
 
         if (_movement != Vector3.zero)
         {
@@ -355,12 +360,18 @@ public class PlayerController : ManagedByGameManager
         }
         if (_movement != Vector3.zero)
         {
-            _controller.Move(_movement * moveSpeed * Time.deltaTime);
+            MovePlayer(_movement * moveSpeed * Time.deltaTime);
         }
         else
         {
-            _controller.Move(_lastMoveDirection * moveSpeed * Time.deltaTime);
+            MovePlayer(_lastMoveDirection * moveSpeed * Time.deltaTime);
         }
+    }
+
+    public void MovePlayer(Vector3 motion)
+    {
+        Debug.Log(motion);
+        _controller.Move(motion);
     }
 
     private void CalculateGravity()
@@ -368,12 +379,15 @@ public class PlayerController : ManagedByGameManager
         if (isGrounded)
             return;
 
-        _velocity.y += _gravity * Time.deltaTime;
+        //_velocity.y += _gravity * Time.deltaTime;
     }
 
     private void ApplyGravity()
     {
-        _controller.Move(_velocity * Time.deltaTime);
+        if (!applyGravity)
+            return;
+
+        MovePlayer(_velocity * Time.deltaTime);
     }
 
     private void IsGroundedChanged()
@@ -599,7 +613,7 @@ public class PlayerController : ManagedByGameManager
         if (other.TryGetComponent<Submarine>(out Submarine sub))
         {
             onSub = true;
-            transform.SetParent(sub.transform);
+            //transform.SetParent(sub.transform);
         }
     }
 
@@ -608,7 +622,7 @@ public class PlayerController : ManagedByGameManager
         if (other.TryGetComponent<Submarine>(out Submarine sub))
         {
             onSub = false;
-            transform.SetParent(null);
+            //transform.SetParent(null);
         }
     }
 
@@ -778,4 +792,6 @@ public class PlayerController : ManagedByGameManager
         }
         _heartbeatElements.Remove(heartbeatElement);
     }
+
+    public void SetApplyGravity(bool newValue) { applyGravity = newValue; }
 }
