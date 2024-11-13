@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1321805316901629638}
   - component: {fileID: 3460853051569902615}
   m_Layer: 0
-  m_Name: Game Name (1)
+  m_Name: EmployeeNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1227,6 +1227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3401941418117308527}
   - component: {fileID: 7717762175950346672}
+  - component: {fileID: 4610348370298195276}
   m_Layer: 0
   m_Name: Buttons
   m_TagString: Untagged
@@ -1282,6 +1283,36 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4610348370298195276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4263686890888508382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioManager: {fileID: 4412419860865933679}
+  menuPanel: {fileID: 6773223698534932397}
+  optionsPanel: {fileID: 8693964265749924815}
+  PlayButtonTargetScene: Game_MainArea
+  uiClickedSound:
+    Guid:
+      Data1: 165045910
+      Data2: 1330450168
+      Data3: -1779319924
+      Data4: 2103919965
+    Path: event:/UIButtonClick
+  uiHoveredSound:
+    Guid:
+      Data1: 140153628
+      Data2: 1316394827
+      Data3: 1901256380
+      Data4: -1252072327
+    Path: event:/UIButtonHover
 --- !u!1 &5171020867845451727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2234,7 +2265,6 @@ GameObject:
   - component: {fileID: 6052953293020455241}
   - component: {fileID: 1417154887429657263}
   - component: {fileID: 5756927103203970990}
-  - component: {fileID: 3337325814986935850}
   - component: {fileID: 8985503140475907256}
   - component: {fileID: 2077735015904092247}
   m_Layer: 0
@@ -2347,7 +2377,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3337325814986935850}
+      - m_Target: {fileID: 4610348370298195276}
         m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
         m_MethodName: SwapToOptions
         m_Mode: 1
@@ -2359,36 +2389,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3337325814986935850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6516200025042574422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioManager: {fileID: 4412419860865933679}
-  menuPanel: {fileID: 6773223698534932397}
-  optionsPanel: {fileID: 8693964265749924815}
-  PlayButtonTargetScene: 
-  uiClickedSound:
-    Guid:
-      Data1: 165045910
-      Data2: 1330450168
-      Data3: -1779319924
-      Data4: 2103919965
-    Path: event:/UIButtonClick
-  uiHoveredSound:
-    Guid:
-      Data1: 140153628
-      Data2: 1316394827
-      Data3: 1901256380
-      Data4: -1252072327
-    Path: event:/UIButtonHover
 --- !u!95 &8985503140475907256
 Animator:
   serializedVersion: 5
@@ -2427,7 +2427,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3337325814986935850}
+        - m_Target: {fileID: 4610348370298195276}
           m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
           m_MethodName: UIHoverSound
           m_Mode: 1
@@ -2443,7 +2443,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3337325814986935850}
+        - m_Target: {fileID: 4610348370298195276}
           m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
           m_MethodName: UIClickSound
           m_Mode: 1
@@ -2680,7 +2680,6 @@ GameObject:
   - component: {fileID: 8989311420191452948}
   - component: {fileID: 270296552315831939}
   - component: {fileID: 4569954238033429212}
-  - component: {fileID: 3768834650875045745}
   - component: {fileID: 8428304617244354244}
   - component: {fileID: 4519169099533897938}
   m_Layer: 0
@@ -2793,7 +2792,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3768834650875045745}
+      - m_Target: {fileID: 4610348370298195276}
         m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -2805,36 +2804,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3768834650875045745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7035469531777521472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioManager: {fileID: 4412419860865933679}
-  menuPanel: {fileID: 6773223698534932397}
-  optionsPanel: {fileID: 8693964265749924815}
-  PlayButtonTargetScene: Game_MainArea
-  uiClickedSound:
-    Guid:
-      Data1: 165045910
-      Data2: 1330450168
-      Data3: -1779319924
-      Data4: 2103919965
-    Path: event:/UIButtonClick
-  uiHoveredSound:
-    Guid:
-      Data1: 140153628
-      Data2: 1316394827
-      Data3: 1901256380
-      Data4: -1252072327
-    Path: event:/UIButtonHover
 --- !u!95 &8428304617244354244
 Animator:
   serializedVersion: 5
@@ -2873,7 +2842,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3768834650875045745}
+        - m_Target: {fileID: 4610348370298195276}
           m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
           m_MethodName: UIHoverSound
           m_Mode: 1
@@ -2889,7 +2858,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3768834650875045745}
+        - m_Target: {fileID: 4610348370298195276}
           m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
           m_MethodName: UIClickSound
           m_Mode: 1
@@ -3314,7 +3283,6 @@ GameObject:
   - component: {fileID: 6384682016144079560}
   - component: {fileID: 6625478196688577842}
   - component: {fileID: 266178132431969501}
-  - component: {fileID: 3370378878406628132}
   - component: {fileID: 1435489874123876283}
   - component: {fileID: 8868387329056977790}
   m_Layer: 0
@@ -3427,7 +3395,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3370378878406628132}
+      - m_Target: {fileID: 4610348370298195276}
         m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
@@ -3439,36 +3407,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3370378878406628132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8926261469377122034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioManager: {fileID: 0}
-  menuPanel: {fileID: 6773223698534932397}
-  optionsPanel: {fileID: 8693964265749924815}
-  PlayButtonTargetScene: 
-  uiClickedSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  uiHoveredSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
 --- !u!95 &1435489874123876283
 Animator:
   serializedVersion: 5
@@ -3507,14 +3445,13 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: PlayOneShot
-          m_Mode: 2
+        - m_Target: {fileID: 4610348370298195276}
+          m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
+          m_MethodName: UIHoverSound
+          m_Mode: 1
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 29bb1447885fcbe4c891c83e897679ff,
-              type: 3}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -3524,14 +3461,13 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-          m_MethodName: PlayOneShot
-          m_Mode: 2
+        - m_Target: {fileID: 4610348370298195276}
+          m_TargetAssemblyTypeName: MenuFunctions, Assembly-CSharp
+          m_MethodName: UIClickSound
+          m_Mode: 1
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: b74f843b02fd07142aee9ce97bb17d1d,
-              type: 3}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
