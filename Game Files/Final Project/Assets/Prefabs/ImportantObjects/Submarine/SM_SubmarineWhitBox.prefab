@@ -182,7 +182,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: a4ad9499a3faa7c4d84a6d332e2d21e1, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -1808,6 +1808,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3027101840132660494}
   - component: {fileID: 8560010209676866421}
+  - component: {fileID: 1690758825042814217}
   m_Layer: 0
   m_Name: SM_SubmarineWhitBox
   m_TagString: Untagged
@@ -2010,6 +2011,27 @@ MonoBehaviour:
   _speed: 2.5
   _deadCamera: {fileID: 5991815643264845193}
   landed: 0
+--- !u!65 &1690758825042814217
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3431788581235947485}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 17.23, y: 3.2641058, z: 4.6}
+  m_Center: {x: 0, y: 1.3420529, z: 0}
 --- !u!1 &4210467169887095286
 GameObject:
   m_ObjectHideFlags: 0

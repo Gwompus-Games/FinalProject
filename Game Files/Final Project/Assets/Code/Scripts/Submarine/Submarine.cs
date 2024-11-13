@@ -22,7 +22,6 @@ public class Submarine : ManagedByGameManager
 
     private PlayerController _playerController;
 
-    public bool playerInSubmarine { get; private set; }
     private bool _inTransit = false;
     public bool landed = false;
 
@@ -62,30 +61,8 @@ public class Submarine : ManagedByGameManager
         _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
         _playerDefaultParent = _playerController.transform.parent;
         _playerController.transform.parent = _movementParentTransform;
-        playerInSubmarine = true;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<PlayerController>(out PlayerController playerController))
-        {
-            if (_playerDefaultParent == null)
-            {
-                _playerDefaultParent = playerController.transform.parent;
-            }
-            playerInSubmarine = true;
-            playerController.gameObject.transform.parent = _movementParentTransform;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent<PlayerController>(out PlayerController playerController))
-        {
-            playerInSubmarine = false;
-            playerController.gameObject.transform.parent = _playerDefaultParent;
-        }
-    }
 
     /// <summary>
     /// This function shouldn't be called anywhere other than in the SubmarineLandingButton script

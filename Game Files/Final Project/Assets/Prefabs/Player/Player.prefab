@@ -682,6 +682,7 @@ MonoBehaviour:
   camShake: {fileID: 1238036006694002166}
   <suitStats>k__BackingField: {fileID: 11400000, guid: 38a6d0546c9a60a4ba896db26efcd231,
     type: 2}
+  _damageToSuitPerSecond: 0.1
 --- !u!114 &4765867987772039652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,7 +766,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc34fef8486ce04eb85da64efb6605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deaths: []
+  _deaths:
+  - {fileID: 6781253662163464272, guid: d7d476253f108c74cb95af41261f9991, type: 3}
+  - {fileID: 3703317875823446099, guid: fe6821f2815a51e45930faf31ac6c83d, type: 3}
+  - {fileID: 6245475169428911195, guid: f8a9f2eb0e7620041b34187368eb3374, type: 3}
 --- !u!136 &6519155364474769600
 CapsuleCollider:
   m_ObjectHideFlags: 0

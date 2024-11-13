@@ -6,6 +6,8 @@ using UnityEngine;
 public class DeathHandler : ManagedByGameManager
 {
     [SerializeField] private List<GameObject> _deaths = new List<GameObject>();
+    public bool finished { get; private set; }
+    private GameObject _deathObject;
 
     public override void Init()
     {
@@ -15,10 +17,10 @@ public class DeathHandler : ManagedByGameManager
         }
         base.Init();
 
-        HashSet<ParentDeath.DeathType> deaths = new HashSet<ParentDeath.DeathType>();
+        HashSet<DeathObject.DeathType> deaths = new HashSet<DeathObject.DeathType>();
         for (int d = 0; d < _deaths.Count; d++)
         {
-            if (!_deaths[d].TryGetComponent<ParentDeath>(out ParentDeath death))
+            if (!_deaths[d].TryGetComponent<DeathObject>(out DeathObject death))
             {
                 throw new System.Exception("Non death assigned in the deaths list!");
             }
@@ -31,31 +33,35 @@ public class DeathHandler : ManagedByGameManager
             deaths.Add(death.causeOfDeath);
         }
 
-        ParentDeath.DeathType[] allTypes = Enum.GetValues(typeof(ParentDeath.DeathType)) as ParentDeath.DeathType[];
+        DeathObject.DeathType[] allTypes = Enum.GetValues(typeof(DeathObject.DeathType)) as DeathObject.DeathType[];
         for (int t = 0; t < allTypes.Length; t++)
         {
-            if (_deaths.Find(x => x.GetComponent<ParentDeath>().causeOfDeath == allTypes[t]) == null)
+            if (_deaths.Find(x => x.GetComponent<DeathObject>().causeOfDeath == allTypes[t]) == null)
             {
-                //throw new Exception($"{allTypes[t]} type not found in deaths list!");
+                throw new Exception($"{allTypes[t]} type not found in deaths list!");
             }
         }
-
     }
 
-    public void CreateDeathAnimation(ParentDeath.DeathType deathType)
+    public void CreateDeath(DeathObject.DeathType deathType)
     {
-        GameObject deathGameObject = _deaths.Find(x => x.GetComponent<ParentDeath>().causeOfDeath == deathType);
-        if (deathGameObject != null)
+        if (_deathObject != null)
         {
-            deathGameObject = Instantiate(deathGameObject, transform);
-            ParentDeath death = deathGameObject.GetComponent<ParentDeath>();
+            return;
+        }
+        finished = false;
+        _deathObject = _deaths.Find(x => x.GetComponent<DeathObject>().causeOfDeath == deathType);
+        if (_deathObject != null)
+        {
+            _deathObject = Instantiate(_deathObject, transform);
+            DeathObject death = _deathObject.GetComponent<DeathObject>();
             death.SetDeathHandler(this);
             death.Init();
             death.CustomStart();
         }
     }
 
-    public void DeathFinished(ParentDeath death)
+    public void DeathFinished(DeathObject death)
     {
         if (death == null)
         {
@@ -69,6 +75,6 @@ public class DeathHandler : ManagedByGameManager
             return;
         }
 
-        
+        finished = true;
     }
 }

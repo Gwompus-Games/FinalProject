@@ -41,10 +41,16 @@ public class OxygenSystem : ManagedByGameManager
 
     private void Update()
     {
-        if (currentGameState == GameManager.GameState.LandedAtFacility)
+        if (currentGameState != GameManager.GameState.LandedAtFacility)
         {
-            DrainActiveTank(Time.deltaTime);
+            return;
         }
+        if (_playerController.onSub)
+        {
+            return;
+        }
+        
+        DrainActiveTank(Time.deltaTime);
     }
 
     private void SortAndLabelOxygenTanks()

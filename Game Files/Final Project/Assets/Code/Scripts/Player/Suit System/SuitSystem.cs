@@ -11,18 +11,18 @@ public class SuitSystem : ManagedByGameManager, IDamageable
     public CameraShakeAndHitFeedback camShake;
 
     [field: SerializeField] public SuitStatsSO suitStats { get; private set; }
-    private float _damageToSuitPerSecond;
+    [SerializeField] private float _damageToSuitPerSecond;
 
     public int maxSectionDurabitity => suitStats.maxDurabilityForSections;
 
     private OxygenDrainer suitOxygenDrainer;
 
-    private Submarine _submarine;
+    private PlayerController _playerController;
 
     public override void Init()
     {
         base.Init();
-        _submarine = GameManager.Instance.GetManagedComponent<Submarine>();
+        _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
     }
 
     public override void CustomStart()
@@ -32,8 +32,6 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         {
             throw new Exception("No Suit Stats added to suit system!");
         }
-
-        _damageToSuitPerSecond = (suitStats.numberOfMinutesForSectionDurability * 60) / suitStats.maxDurabilityForSections;
 
         numberOfSections = suitStats.numberOfSections;
         currentSection = 0;
@@ -59,11 +57,11 @@ public class SuitSystem : ManagedByGameManager, IDamageable
     {
         if (GameManager.Instance.currentGameState == GameManager.GameState.LandedAtFacility)
         {
-            if (_submarine != null)
+            if (_playerController != null)
             {
-                if (!_submarine.playerInSubmarine)
+                if (!_playerController.onSub)
                 {
-                    TakeDamage(_damageToSuitPerSecond * Time.deltaTime);
+                    TakeDamage(_damageToSuitPerSecond * Time.deltaTime, false);
                 }
             }
         }
@@ -81,12 +79,20 @@ public class SuitSystem : ManagedByGameManager, IDamageable
 
     public void TakeDamage(float damage)
     {
+        TakeDamage(damage, true);
+    }
+
+    public void TakeDamage(float damage, bool screenShake)
+    {
         while (damage >= currentSectionDurability)
         {
             DamageSection(damage, out damage);
         }
         currentSectionDurability -= damage;
-        StartCoroutine(camShake.ShakeUrBooty(.15f, .4f));
+        if (screenShake)
+        {
+            StartCoroutine(camShake.ShakeUrBooty(.15f, .4f));
+        }
         UpdateUI();
     }
 
@@ -95,7 +101,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         if (currentSection >= numberOfSections - 1)
         {
             Debug.Log("Kill Player");
-            GameManager.Instance.GetManagedComponent<PlayerController>().KillPlayer(ParentDeath.DeathType.Beaten);
+            GameManager.Instance.GetManagedComponent<PlayerController>().KillPlayer(DeathObject.DeathType.Beaten);
             remainderDamage = 0;
             return;
         }

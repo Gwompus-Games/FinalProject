@@ -6,13 +6,15 @@ public class CameraLook : MonoBehaviour
 {
     public float mouseSensitivity = 400f;
     public Transform playerBody;
-
+    
+    private PlayerController _playerController;
     float _xRotation = 0f;
     private Vector2 _cursorInput = Vector2.zero;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
     }
 
     private void OnEnable()
@@ -41,6 +43,11 @@ public class CameraLook : MonoBehaviour
 
     public void CursorUpdate(Vector2 cursorDelta)
     {
+        if (_playerController.lockedInput)
+        {
+            _cursorInput = Vector2.zero;
+            return;
+        }
         _cursorInput = cursorDelta;
     }
 }

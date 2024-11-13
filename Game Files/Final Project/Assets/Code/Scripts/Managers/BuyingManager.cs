@@ -144,6 +144,6 @@ public class BuyingManager : ManagedByGameManager
             return;
         }
 
-        GameManager.Instance.EndScene(EndScreenManager.EndState.Won);
+        _playerController.KillPlayer(DeathObject.DeathType.Won);
     }
 }

@@ -127,7 +127,7 @@ public class InventoryController : ManagedByGameManager
     {
         if (item != null)
         {
-            item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
+            item.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<MainCanvasTag>().GetComponent<RectTransform>());
             item.GetComponent<RectTransform>().position = _mousePosition;
         }
         _itemToPlace = item;
@@ -251,7 +251,7 @@ public class InventoryController : ManagedByGameManager
             return inventoryItem;
         }
         _itemToPlace = inventoryItem;
-        _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<InventoryCanvasTag>().GetComponent<RectTransform>());
+        _itemToPlace.GetComponent<RectTransform>().SetParent(FindFirstObjectByType<MainCanvasTag>().GetComponent<RectTransform>());
         _itemToPlace.InitializeInventoryItem(itemData);
         return _itemToPlace;
     }

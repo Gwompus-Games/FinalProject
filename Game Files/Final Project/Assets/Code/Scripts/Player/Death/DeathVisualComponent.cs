@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class DeathVisualComponent : MonoBehaviour
+public class DeathVisualComponent : DeathComponent
 {
     private CanvasGroup _canvasGroup;
 
@@ -12,8 +12,27 @@ public class DeathVisualComponent : MonoBehaviour
         _canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    public override void StartDeathComponent()
+    {
+        SetAlpha(1.0f);
+    }
+
+    public override void UpdateDeathComponent(float normalizedTime)
+    {
+        
+    }
+
+    public override void EndDeathComponent()
+    {
+        SetAlpha(0);
+    }
+
     public void SetAlpha(float alpha)
     {
+        if (_canvasGroup == null)
+        {
+            return;
+        }
         alpha = Mathf.Clamp(alpha, 0f, 1f);
         _canvasGroup.alpha = alpha;
     }

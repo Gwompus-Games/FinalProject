@@ -49,11 +49,30 @@ public class GameManager : MonoBehaviour
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
     private StandaloneManagersList _standaloneManagers;
 
-    public bool isPaused { get; private set; } = false;
+    public bool isPaused
+    {
+        get
+        {
+            return _paused;
+        }
+        private set
+        {
+            _paused = value;
+            PlayerController playerController = GetManagedComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.SetLockInput(_paused);
+            }
+        }
+    }
+    private bool _paused;
+
+
     public bool isPlayerInsideFacility = false;
 
     private void Awake()
     {
+        isPaused = false;
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -218,10 +237,15 @@ public class GameManager : MonoBehaviour
     
     public T GetManagedComponent<T>() where T : ManagedByGameManager
     {
-        T managedObject = _managedObjects.Find(x => x.GetComponent<T>() != null).GetComponent<T>();
-        if (_debugMode)
+        if (_managedObjects.Count == 0)
         {
-            //Debug.Log($"{managedObject.GetType()} gotten!");
+            return null;
+        }
+        T managedObject = null;
+        _managedObjects.Find(x => x.TryGetComponent<T>(out managedObject));
+        if (_debugMode && managedObject != null)
+        {
+            Debug.Log($"{managedObject.GetType()} gotten!");
         }
         return managedObject;
     }
@@ -303,18 +327,16 @@ public class GameManager : MonoBehaviour
     {
         Submarine submarine = GetManagedComponent<Submarine>();
         PlayerController player = GetManagedComponent<PlayerController>();
-        Camera playerCamera = Camera.main;
         Camera submarineCamera = submarine.GetDeadCamera();
         yield return null;
-        playerCamera.enabled = false;
         submarineCamera.enabled = true;
         submarine.ExitLevel();
+        _waitingForSubmarineAnimation = true;
         while (_waitingForSubmarineAnimation)
         {
             yield return null;
         }
         player.RespawnPlayer();
-        playerCamera.enabled = true;
         submarineCamera.enabled = false;
     }
 }
