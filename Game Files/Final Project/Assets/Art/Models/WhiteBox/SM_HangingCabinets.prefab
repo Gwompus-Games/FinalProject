@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4839641144365195121}
   - component: {fileID: 8041896459045328083}
   - component: {fileID: 5523015243177399531}
-  - component: {fileID: 5585024622072105969}
+  - component: {fileID: 2366690672698787005}
   m_Layer: 0
   m_Name: SM_HangingCabinets
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5585024622072105969
-MeshCollider:
+--- !u!65 &2366690672698787005
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6854556774861236240, guid: d9aa42efc4ba37a49b10acc58bd3b842, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.45405453, y: 3.9999995, z: 0.9830771}
+  m_Center: {x: -0.22368371, y: 0, z: 0.4935163}

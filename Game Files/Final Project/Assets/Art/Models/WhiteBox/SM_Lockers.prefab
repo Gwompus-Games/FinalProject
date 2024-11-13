@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2720471127794280148}
   - component: {fileID: 8893334386360229884}
   - component: {fileID: 5357230226661617624}
-  - component: {fileID: 922361785966383648}
+  - component: {fileID: 6571097194787716253}
   m_Layer: 0
   m_Name: SM_Lockers
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &922361785966383648
-MeshCollider:
+--- !u!65 &6571097194787716253
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2195447855459715351, guid: d9aa42efc4ba37a49b10acc58bd3b842, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.42885432, y: 1.7999997, z: 1.1999999}
+  m_Center: {x: -0.014427155, y: 0, z: 0.59999996}

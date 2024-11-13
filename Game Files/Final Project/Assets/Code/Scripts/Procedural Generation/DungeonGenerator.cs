@@ -33,6 +33,7 @@ public class DungeonGenerator : ManagedByGameManager
     private bool isGenerated = false;
     private bool isEnemySpawned = false;
     public List<Enemy> enemies = new List<Enemy>();
+    private int spawnAttempts = 0;
 
     private void Awake()
     {
@@ -43,8 +44,6 @@ public class DungeonGenerator : ManagedByGameManager
     {
         generatedRooms = new List<DungeonPart>();
         availableRooms = new List<DungeonPart>();
-
-        StartGeneration();
     }
 
     private void Update()
@@ -83,6 +82,8 @@ public class DungeonGenerator : ManagedByGameManager
             Generate();
         }
 
+        spawnAttempts++;
+
         FinishGeneration();
         if (_debugMode)
         {
@@ -101,6 +102,7 @@ public class DungeonGenerator : ManagedByGameManager
             DestroyImmediate(enemy.gameObject);
         }
 
+        navMesh.RemoveData();
         generatedRooms.Clear();
         availableRooms.Clear();
         enemies.Clear();
@@ -113,12 +115,28 @@ public class DungeonGenerator : ManagedByGameManager
         //GenerateAlternateEntrances();
         FillEmptyEntrances();
 
-        isGenerated = true;
-
         navMesh.BuildNavMesh();
 
-        SpawnEnemy();
+        //if (!SpawnEnemy())
+        //{
+        //    if (spawnAttempts > 20)
+        //    {
+        //        Debug.LogError("Reached maximum generation attempts without success!");
+        //        spawnAttempts = 0;
+        //        return;
+        //    }
+                
+        //    StartGeneration();
+        //    return;
+        //}
+
         SpawnAllLoot();
+
+        isGenerated = true;
+
+        Despawn();
+
+        spawnAttempts = 0;
     }
 
     private void SpawnAllLoot()
@@ -361,7 +379,7 @@ public class DungeonGenerator : ManagedByGameManager
         return true;
     }
 
-    private void SpawnEnemy()
+    private bool SpawnEnemy()
     {
         for (int i = minRoomsToSpawn; i < generatedRooms.Count; i++)
         {
@@ -371,11 +389,12 @@ public class DungeonGenerator : ManagedByGameManager
             if (generatedRooms[i].SpawnEnemy(enemyPrefab))
             {
                 isEnemySpawned = true;
-                return;
+                return true;
             }
         }
 
-        //Debug.LogError("Reached maximum spawn attempts without success!");
+        Debug.LogError("Reached maximum enemy spawn attempts without success!");
+        return false;
     }
 
     public void EnemyFailedToSpawn()

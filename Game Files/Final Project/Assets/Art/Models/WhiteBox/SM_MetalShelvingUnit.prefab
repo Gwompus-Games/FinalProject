@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1833816943480106230}
   - component: {fileID: 1602052948964956183}
   - component: {fileID: 5127430981790646656}
-  - component: {fileID: 6879176779568206829}
+  - component: {fileID: 989246984031513577}
   m_Layer: 0
   m_Name: SM_MetalShelvingUnit
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6879176779568206829
-MeshCollider:
+--- !u!65 &989246984031513577
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3327035018261991773, guid: d9aa42efc4ba37a49b10acc58bd3b842, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.62945575, y: 1.2379408, z: 1.8299997}
+  m_Center: {x: 0, y: 0, z: 0.91499984}

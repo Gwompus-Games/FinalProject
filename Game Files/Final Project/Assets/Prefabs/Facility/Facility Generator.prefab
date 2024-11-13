@@ -65,14 +65,14 @@ MonoBehaviour:
   - {fileID: 8857224470717509373, guid: 03acbfae53c668a448057e82f1a43b2b, type: 3}
   - {fileID: 8857224470717509373, guid: a5dc300a812b2604380009b24082942f, type: 3}
   door: {fileID: 1293551178090617148, guid: b1e3ecf6bc301f0429ce124d301592be, type: 3}
-  numOfRooms: 100
+  numOfRooms: 150
   roomLayerMask:
     serializedVersion: 2
     m_Bits: 128
   enemyPrefab: {fileID: 5827894065527653237, guid: 108871f710f0eae45a7e5ee9871b44c6,
     type: 3}
-  minRoomsToSpawn: 65
-  minDistanceToSpawn: 55
+  minRoomsToSpawn: 50
+  minDistanceToSpawn: 40
   _debugMode: 0
   enemies: []
 --- !u!114 &7102847078085645767

@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828f5eb3cf1a12648804b8d3af98d087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 10
+  mouseSensitivity: 0.03
   playerBody: {fileID: 2518273171994542862}
 --- !u!1 &3904104045581887344
 GameObject:
@@ -501,7 +501,7 @@ MonoBehaviour:
   _secondsToRunSpeed: 0.5
   _groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   _groundCheck: {fileID: 5115705277198490957}
   _groundCheckRadius: 0.4
   _grabLength: 4

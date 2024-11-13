@@ -30,7 +30,7 @@ public class CameraLook : MonoBehaviour
         if (GameManager.Instance.isPaused)
             return;
 
-        Vector2 mouseInput = _cursorInput * mouseSensitivity * Time.deltaTime;
+        Vector2 mouseInput = _cursorInput * mouseSensitivity;
 
         _xRotation -= mouseInput.y;
         _xRotation = Mathf.Clamp(_xRotation, -80f, 80f);
