@@ -28,13 +28,11 @@ public class PauseFunctions : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public void SwapToReadme()
+    public void SwapActivePanels()
     {
-        optionsPanel.SetActive(true);
+        bool menuActive = menuPanel.activeInHierarchy;
+        menuPanel.SetActive(!menuActive);
+        optionsPanel.SetActive(menuActive);
     }
 
-    public void SwapToMenu()
-    {
-        optionsPanel.SetActive(false);
-    }
 }
