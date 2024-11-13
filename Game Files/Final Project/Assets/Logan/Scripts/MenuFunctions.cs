@@ -14,28 +14,19 @@ public class MenuFunctions : MonoBehaviour
     [SerializeField] private EventReference uiClickedSound;
     [SerializeField] private EventReference uiHoveredSound;
 
+
     public void StartGame()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(PlayButtonTargetScene);
     }
 
-    public void SwapToOptions()
+    public void SwapActivePanelsMM()
     {
-        if(menuPanel.activeInHierarchy == true)
-        {
-            menuPanel.SetActive(false);
-            optionsPanel.SetActive(true);
-        }
+        bool menuActive = menuPanel.activeInHierarchy;
+        menuPanel.SetActive(!menuActive);
+        optionsPanel.SetActive(menuActive);
     }
 
-    public void SwapToMenu()
-    {
-        if (optionsPanel.activeInHierarchy == true)
-        {
-            menuPanel.SetActive(true);
-            optionsPanel.SetActive(false);
-        }
-    }
 
     public void UIClickSound()
     {

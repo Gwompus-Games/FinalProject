@@ -681,7 +681,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: readme
+  m_text: controls
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2da410eef868fd84c9faa0739371a2ff, type: 2}
   m_sharedMaterial: {fileID: -5036836353473640709, guid: 2da410eef868fd84c9faa0739371a2ff,
@@ -877,7 +877,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5594212755060177131}
         m_TargetAssemblyTypeName: PauseFunctions, Assembly-CSharp
-        m_MethodName: SwapToReadme
+        m_MethodName: SwapActivePanels
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -899,9 +899,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   menuPanel: {fileID: 2842703978342866046}
   optionsPanel: {fileID: 5630042948597143808}
   PlayButtonTargetScene: 
+  uiClickedSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  uiHoveredSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!95 &8626645307619907239
 Animator:
   serializedVersion: 5
@@ -1614,7 +1629,6 @@ MonoBehaviour:
   menuPanel: {fileID: 2842703978342866046}
   optionsPanel: {fileID: 5630042948597143808}
   mainMenuScene: Main Menu
-  sceneToUnload: Game_MainArea
 --- !u!1 &4311105329142220812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,8 +1936,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -29.644775, y: 38.70511}
-  m_SizeDelta: {x: 59.290394, y: 77.40978}
+  m_AnchoredPosition: {x: 19.968994, y: 36.994324}
+  m_SizeDelta: {x: 435.6716, y: 324.5288}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8976383269781522637
 CanvasRenderer:
@@ -2111,9 +2125,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   menuPanel: {fileID: 2842703978342866046}
   optionsPanel: {fileID: 5630042948597143808}
   PlayButtonTargetScene: Gym_Abhi
+  uiClickedSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  uiHoveredSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!95 &975416683647151630
 Animator:
   serializedVersion: 5
@@ -2394,7 +2423,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5594212755060177131}
         m_TargetAssemblyTypeName: PauseFunctions, Assembly-CSharp
-        m_MethodName: SwapToMenu
+        m_MethodName: SwapActivePanels
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2416,9 +2445,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   menuPanel: {fileID: 2842703978342866046}
   optionsPanel: {fileID: 5630042948597143808}
   PlayButtonTargetScene: 
+  uiClickedSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  uiHoveredSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &7256304976919491736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2567,9 +2611,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7213116063f9b9342994e9f4e2dffc81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   menuPanel: {fileID: 2842703978342866046}
   optionsPanel: {fileID: 5630042948597143808}
   PlayButtonTargetScene: 
+  uiClickedSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  uiHoveredSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!95 &4053097295258369860
 Animator:
   serializedVersion: 5
