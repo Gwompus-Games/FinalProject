@@ -39,12 +39,18 @@ public class MenuFunctions : MonoBehaviour
 
     public void UIClickSound()
     {
-        audioManager.PlayOneShot(uiClickedSound, transform.position);
+        PlayOneShot(uiClickedSound, transform.position);
     }
 
     public void UIHoverSound()
     {
-        audioManager.PlayOneShot(uiHoveredSound, transform.position);
+        PlayOneShot(uiHoveredSound, transform.position);
+        Debug.Log("ButtonHovered");
+    }
+
+    public void PlayOneShot(EventReference sound, Vector3 worldPos)
+    {
+        RuntimeManager.PlayOneShot(sound, worldPos);
     }
 
     public void ExitGame()
