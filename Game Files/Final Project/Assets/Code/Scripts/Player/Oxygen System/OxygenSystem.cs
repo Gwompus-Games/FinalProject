@@ -14,12 +14,16 @@ public class OxygenSystem : ManagedByGameManager
     [SerializeField] private OxygenTankSO _starterOxygenTank;
     [SerializeField] private int _numberOfStartingOxygenTanks;
     private PlayerController _playerController;
+    private InventoryController _inventoryController;
     private GameManager.GameState currentGameState;
+    [Header("Debug Settings")]
+    [SerializeField] private bool _debugMode = false;
 
     public override void Init()
     {
         base.Init();
         _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
+        _inventoryController = GameManager.Instance.GetManagedComponent<InventoryController>();
         currentGameState = GameManager.Instance.currentGameState;
     }
 
@@ -28,33 +32,54 @@ public class OxygenSystem : ManagedByGameManager
         base.CustomStart();
         if (_starterOxygenTank != null && _numberOfStartingOxygenTanks > 0)
         {
-            InventoryController inventory = GameManager.Instance.GetManagedComponent<InventoryController>();
             for (int t = 0; t < _numberOfStartingOxygenTanks; t++)
             {
-                inventory.AddItemToInventory(_starterOxygenTank, float.MaxValue);
+                _inventoryController.AddItemToInventory(_starterOxygenTank, float.MaxValue);
             }
         }
     }
 
     private void Update()
     {
-        if (currentGameState == GameManager.GameState.LandedAtFacility)
+        if (currentGameState != GameManager.GameState.LandedAtFacility)
         {
-            DrainActiveTank(Time.deltaTime);
+            return;
         }
+        if (_playerController.onSub)
+        {
+            return;
+        }
+        
+        DrainActiveTank(Time.deltaTime);
     }
 
     private void SortAndLabelOxygenTanks()
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Sorting oxygen tanks.");
+        }
         switch (oxygenTanks.Count)
         {
             case < 1:
+                if (_debugMode)
+                {
+                    Debug.Log($"No oxygen tanks found!");
+                }
                 break;
             case 1:
+                if (_debugMode)
+                {
+                    Debug.Log($"Only one oxygen tank found!");
+                }
                 oxygenTanks[0].SetOxygenTankID(0);
                 SwapOxygenTank();
                 break;
             default:
+                if (_debugMode)
+                {
+                    Debug.Log($"{oxygenTanks.Count} oxygen tanks found!");
+                }
                 oxygenTanks = SortOxygenTanks(oxygenTanks.ToArray());
                 for (int t = 0; t < oxygenTanks.Count; t++)
                 {
@@ -151,21 +176,36 @@ public class OxygenSystem : ManagedByGameManager
         int selectedTank = 0;
         if (oxygenTanks.Count < 1)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"No oxygen tanks in oxygen tanks list!");
+            }
             return false;
         }
         if (!oxygenTanks[selectedTank].containsOxygen)
         {
-            for (int t = 0; t < oxygenTanks.Count; t++)
+            if (oxygenTanks.Count > 1)
             {
-                if (oxygenTanks[t].containsOxygen)
+                for (int t = 1; t < oxygenTanks.Count; t++)
                 {
-                    selectedTank = t;
-                    break;
+                    if (oxygenTanks[t].containsOxygen)
+                    {
+                        selectedTank = t;
+                        break;
+                    }
+                    if (t >= oxygenTanks.Count - 1)
+                    {
+                        return false;
+                    }
                 }
-                if (t >= oxygenTanks.Count - 1)
+            }
+            else
+            {
+                if (_debugMode)
                 {
-                    return false;
+                    Debug.Log($"Only one oxygen tank and it is empty!");
                 }
+                return false;
             }
         }
 
@@ -230,9 +270,19 @@ public class OxygenSystem : ManagedByGameManager
 
         while (drainAmountInSeconds > 0)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"Draining oxygen!");
+            }
             oxygenTanks[activeOxygenTank].DrainOxygen(drainAmountInSeconds, out drainAmountInSeconds);
             if (drainAmountInSeconds > 0)
             {
+                if (_debugMode)
+                {
+                    Debug.Log($"Roll over to the next tank!");
+                }
+                ReplaceOxygenTankWithEmpty(oxygenTanks[activeOxygenTank]);
+                SortAndLabelOxygenTanks();
                 if (!SwapOxygenTank())
                 {
                     _playerController.NoOxygenLeft();
@@ -263,6 +313,14 @@ public class OxygenSystem : ManagedByGameManager
             modifiedDrainAmountInSeconds *= _oxygenDrainMultipliers[d].drainMultiplier;
         }
         return modifiedDrainAmountInSeconds;
+    }
+
+    private void ReplaceOxygenTankWithEmpty(II_OxygenTank oxygenTank)
+    {
+        Vector2Int gridPosition = oxygenTank.originTile;
+        ItemDataSO emptyOxygenTankData = oxygenTank.oxygenTankData.emptyTankData;
+        _inventoryController.RemoveItemFromInventory(oxygenTank);
+        _inventoryController.AddItemToInventory(emptyOxygenTankData, gridPosition);
     }
 
     public void UpdateGameState(GameManager.GameState newGameState)

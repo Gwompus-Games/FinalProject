@@ -7,4 +7,5 @@ public class OxygenTankSO : ToolSO
 {
     [Header("Oxygen Tank Data")]
     public float minutesUntilEmpty = 5f;
+    public ItemDataSO emptyTankData;
 }

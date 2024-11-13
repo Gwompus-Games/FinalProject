@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(OxygenSystem))]
@@ -24,7 +25,8 @@ public class PlayerController : ManagedByGameManager
         Walking,
         Running,
         Inventory,
-        Paused
+        Paused,
+        Dying
     }
 
     [Header("Debug Settings")]
@@ -66,13 +68,13 @@ public class PlayerController : ManagedByGameManager
     [SerializeField] private float _bufferSecondsFromNoOxygen = 10f;
     private bool _outOfOxygen = false;
 
-    private bool _dead = false;
-
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
     public float moveSpeed { get; private set; }
     private float _targetMoveSpeed;
     public bool isRunning { get; private set; }
+    public bool lockedInput { get; private set; } = false;
+    public bool onSub { get; private set; } = true;
 
     private CharacterController _controller;
 
@@ -91,6 +93,8 @@ public class PlayerController : ManagedByGameManager
     public OxygenDrainer runningDrainer { get; private set; }
     public InventoryController inventoryController { get; private set; }
     public UIManager uiManager { get; private set; }
+    public DeathHandler deathHandler { get; private set; }
+
 
     private EventInstance playerFootsteps;
     private EventInstance playerHeartbeat;
@@ -125,6 +129,8 @@ public class PlayerController : ManagedByGameManager
         _headTransform = GetComponentInChildren<CameraLook>().transform;
         inventoryController = GameManager.Instance.GetManagedComponent<InventoryController>();
         uiManager = GameManager.Instance.GetManagedComponent<UIManager>();
+        deathHandler = GameManager.Instance.GetManagedComponent<DeathHandler>();
+        lockedInput = false;
     }
 
     public override void CustomStart()
@@ -143,7 +149,6 @@ public class PlayerController : ManagedByGameManager
         isRunning = false;
         CloseInventory();
         money = _startingMoney;
-        _dead = false;
         _outOfOxygen = false;
 
         playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
@@ -155,7 +160,7 @@ public class PlayerController : ManagedByGameManager
 
     private void Update()
     {
-        if (_dead)
+        if (currentState == PlayerState.Dying)
         {
             return;
         }
@@ -188,6 +193,14 @@ public class PlayerController : ManagedByGameManager
 
         //FMOD
         UpdateSound();
+    }
+
+    /// <summary>
+    /// ONLY USE THIS FUNCTION IN THE GAMEMANAGER!!!!
+    /// </summary>
+    public void SetLockInput(bool locked)
+    {
+        lockedInput = locked;
     }
 
     private void UpdateSound()
@@ -229,11 +242,9 @@ public class PlayerController : ManagedByGameManager
 
     private void UpdateState()
     {
-        if (currentState == PlayerState.Inventory)
-        {
-            return;
-        }
-        if (currentState == PlayerState.Paused)
+        if (currentState == PlayerState.Inventory ||
+            currentState == PlayerState.Paused || 
+            currentState == PlayerState.Dying)
         {
             return;
         }
@@ -280,6 +291,7 @@ public class PlayerController : ManagedByGameManager
         {
             runningDrainer.ActivateDrainer();
         }
+
         currentState = newState;
     }
 
@@ -337,6 +349,10 @@ public class PlayerController : ManagedByGameManager
 
     private void ApplyMovement()
     {
+        if (currentState == PlayerState.Dying)
+        {
+            return;
+        }
         if (_movement != Vector3.zero)
         {
             _controller.Move(_movement * moveSpeed * Time.deltaTime);
@@ -462,14 +478,49 @@ public class PlayerController : ManagedByGameManager
         _controller.enabled = true;
     }
 
+    public void SetupDeath()
+    {
+        if (_controller == null)
+        {
+            _controller = GetComponent<CharacterController>();
+        }
+        _controller.enabled = false;
+        lockedInput = true;
+        ChangeState(PlayerState.Dying);
+        CameraLook cameraLook = GetComponentInChildren<CameraLook>();
+        cameraLook.enabled = false;
+    }
+
+    public void DisableDeath()
+    {
+        if (_controller == null)
+        {
+            _controller = GetComponent<CharacterController>();
+        }
+        transform.up = Vector3.up;
+        _controller.enabled = true;
+        lockedInput = false;
+        CameraLook cameraLook = GetComponentInChildren<CameraLook>();
+        cameraLook.enabled = true;
+        ChangeState(PlayerState.Idle);
+    }
+
     public void NoOxygenLeft()
     {
+        if (currentState == PlayerState.Dying)
+        {
+            return;
+        }
         _outOfOxygen = true;
         _oxygenOutCoroutine = StartCoroutine(OxygenOutTimer());
     }
 
     public void OxygenRegained()
     {
+        if (currentState == PlayerState.Dying)
+        {
+            return;
+        }
         _outOfOxygen = false;
         if (_oxygenOutCoroutine != null)
         {
@@ -477,18 +528,32 @@ public class PlayerController : ManagedByGameManager
         }
     }
 
-    public void KillPlayer(ParentDeath.DeathType deathType)
+    public void KillPlayer(DeathObject.DeathType deathType)
     {
-        _dead = true;
-        _dyingCoroutine = StartCoroutine(DeathTimer(deathType));
+        if (currentState == PlayerState.Dying)
+        {
+            if (_debugMode)
+            {
+                Debug.Log($"Player already dying!");
+            }
+            return;
+        }
+
+        if (_dyingCoroutine != null)
+        {
+            if (_debugMode)
+            {
+                Debug.Log("Already playing a death routine!");
+            }
+            return;
+        }
+        _dyingCoroutine = StartCoroutine(DeathRoutine(deathType));
     }
 
-    public void RestartGame()
+    public void RespawnPlayer()
     {
-        GameManager.Instance.GetManagedComponent<AudioManager>().CleanUp();
-        //SceneManager.LoadScene(0);
-        //TeleportPlayer(GameManager.Instance.playerSpawnPoint.position);
-        _dead = false;
+        TeleportPlayer(_playerSpawnPoint.position);
+        DisableDeath();
     }
 
     private IEnumerator OxygenOutTimer()
@@ -500,30 +565,51 @@ public class PlayerController : ManagedByGameManager
         //add any code for things happening after player runs out of buffer seconds
         if (_outOfOxygen)
         {
-            KillPlayer(ParentDeath.DeathType.Suffocation);
+            KillPlayer(DeathObject.DeathType.Suffocation);
         }
     }
 
-    private IEnumerator DeathTimer(ParentDeath.DeathType deathType)
+    private IEnumerator DeathRoutine(DeathObject.DeathType deathType)
     {
+        SetupDeath();
+        ChangeUIState(UIManager.UIToDisplay.GAME);
         yield return null;
+
         //add code for any animations and sounds
-        switch (deathType)
+        deathHandler.CreateDeath(deathType);
+
+        while (!deathHandler.finished)
         {
-            case ParentDeath.DeathType.Suffocation:
-
-                break;
-            case ParentDeath.DeathType.Beaten:
-
-                break;
-            //case ParentDeath.DeathType.Eaten:
-
-            //    break;
+            yield return null;
         }
 
-        yield return new WaitForSeconds(0);
         //add any code for doing things after player dies
-        RestartGame();
+        if (deathType == DeathObject.DeathType.Won)
+        {
+            GameManager.Instance.EndScene(EndScreenManager.EndState.Won);
+        }
+        else
+        {
+            GameManager.Instance.PlayerDied();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<Submarine>(out Submarine sub))
+        {
+            onSub = true;
+            transform.SetParent(sub.transform);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent<Submarine>(out Submarine sub))
+        {
+            onSub = false;
+            transform.SetParent(null);
+        }
     }
 
     // Input functions using CustomPlayerInput
@@ -548,21 +634,33 @@ public class PlayerController : ManagedByGameManager
 
     public void UpdateMovement(Vector2 newMovementInput)
     {
+        if (lockedInput)
+        {
+            _movementInput = Vector2.zero;
+            return;
+        }
         _movementInput = newMovementInput;
     }
 
     public void RunInput(bool running)
     {
+        if (lockedInput)
+        {
+            isRunning = false;
+            return;
+        }
         isRunning = running;
     }
 
     public void InteractWithInteractable()
     {
-        if (currentState == PlayerState.Inventory)
+        if (lockedInput)
         {
             return;
         }
-        if (currentState == PlayerState.Paused)
+        if (currentState == PlayerState.Inventory ||
+            currentState == PlayerState.Paused ||
+            currentState == PlayerState.Dying)
         {
             return;
         }
@@ -602,6 +700,10 @@ public class PlayerController : ManagedByGameManager
 
     public void ToggleInventory()
     {
+        if (lockedInput)
+        {
+            return;
+        }
         switch (currentState)
         {
             case PlayerState.Inventory:
@@ -615,6 +717,10 @@ public class PlayerController : ManagedByGameManager
 
     public void TogglePause()
     {
+        if (lockedInput)
+        {
+            return;
+        }
         switch (currentState)
         {
             case PlayerState.Paused:

@@ -23,6 +23,8 @@ public class II_OxygenTank : InventoryItem
     protected int _myOxygenTankID = 0;
     public string oxygenLeftPercent { get; protected set; }
     public float oxygenFillAmount { get; protected set; }
+    private OxygenSystem _oxygenSystem;
+
 
     protected override void Awake()
     {
@@ -32,6 +34,7 @@ public class II_OxygenTank : InventoryItem
         {
             throw new System.Exception("Item data not set to an Oxygen Tank Data!");
         }
+        _oxygenSystem = GameManager.Instance.GetManagedComponent<OxygenSystem>();
         //maxOxygenCapacity = oxygenTankData.minutesUntilEmpty * 60f;
         //SetTankToFull();
     }
@@ -52,13 +55,14 @@ public class II_OxygenTank : InventoryItem
 
     public void DrainOxygen(float drainAmountInSeconds, out float remainder)
     {
+        if (drainAmountInSeconds > oxygenLeft)
+        {
+            remainder = drainAmountInSeconds - oxygenLeft;
+            oxygenLeft = 0;
+            return;
+        }
         oxygenLeft -= drainAmountInSeconds;
         remainder = 0;
-        if (oxygenLeft < 0)
-        {
-            remainder = -oxygenLeft;
-            oxygenLeft = 0;
-        }
     }
 
     public void AddOxygen(float oxygenToAddInSeconds, out float remainder)
@@ -98,12 +102,12 @@ public class II_OxygenTank : InventoryItem
     public override void ItemPlacedInInventory()
     {
         base.ItemPlacedInInventory();
-        GameManager.Instance.GetManagedComponent<OxygenSystem>().AddOxygenTank(this);
+        _oxygenSystem.AddOxygenTank(this);
     }
 
     public override void ItemRemovedFromInventory()
     {
         base.ItemRemovedFromInventory();
-        GameManager.Instance.GetManagedComponent<OxygenSystem>().RemoveOxygenTank(this);
+        _oxygenSystem.RemoveOxygenTank(this);
     }
 }

@@ -14,18 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Oxygen Tank
   itemDescription: This is a basic oxygen tank, it holds 5 minutes of oxygen. Assuming
-    that you are calm of course.
+    that I am calm of course.
   usedForSelling: 0
   worldObject: {fileID: 6917390834503983150, guid: 52d1f5e6ae9298447b5344ec0b82939c,
     type: 3}
   density: 5
   drag: 7.8
   angularDrag: 0.15
+  floatingItem: 0
   inventoryObject: {fileID: 5981246460863149047, guid: 94a8d6089e2fe2e4da8d5ba07fe6ed14,
     type: 3}
   inventoryItemSprite: {fileID: 21300000, guid: 7915790c8f452af499f4b29a507ca644,
     type: 3}
-  baseValue: 5
+  baseValue: 10
   shopIcon: {fileID: 21300000, guid: a2232914279725b4b854da5ed95b45f5, type: 3}
   buyValue: 100
-  minutesUntilEmpty: 5
+  minutesUntilEmpty: 0.25
+  emptyTankData: {fileID: 11400000, guid: 71d60cfbaf9dab448b7f28661b9c33e6, type: 2}

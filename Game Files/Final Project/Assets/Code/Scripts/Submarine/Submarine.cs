@@ -17,11 +17,11 @@ public class Submarine : ManagedByGameManager
     [SerializeField] private float _movementSnap = 0.05f;
     [SerializeField] private AnimationCurves _landingCurves;
     [SerializeField] private AnimationCurves _takeOffCurves;
-    [SerializeField] private float _speed = 0.25f;    
+    [SerializeField] private float _speed = 0.25f;
+    [SerializeField] private Camera _deadCamera;
 
     private PlayerController _playerController;
 
-    public bool playerInSubmarine { get; private set; }
     private bool _inTransit = false;
     public bool landed = false;
 
@@ -34,7 +34,6 @@ public class Submarine : ManagedByGameManager
         base.Init();
         SubmarineLandingPoint submarineLandingPoint = FindObjectOfType<SubmarineLandingPoint>();
         SubmarineShoppingPoint submarineShoppingPoint = FindObjectOfType<SubmarineShoppingPoint>();
-
         if (submarineLandingPoint == null)
         {
             throw new System.Exception("No landing point found in scene! Please add LandingPoint prefab to scene!");
@@ -48,6 +47,7 @@ public class Submarine : ManagedByGameManager
         _landedTransform = submarineLandingPoint.transform;
         _shoppingPlacementTransform = submarineShoppingPoint.transform;
         transform.position = _shoppingPlacementTransform.position;
+        _deadCamera.enabled = false;
 
         if (_movementParentTransform == null)
         {
@@ -61,30 +61,8 @@ public class Submarine : ManagedByGameManager
         _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
         _playerDefaultParent = _playerController.transform.parent;
         _playerController.transform.parent = _movementParentTransform;
-        playerInSubmarine = true;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<PlayerController>(out PlayerController playerController))
-        {
-            if (_playerDefaultParent == null)
-            {
-                _playerDefaultParent = playerController.transform.parent;
-            }
-            playerInSubmarine = true;
-            playerController.gameObject.transform.parent = _movementParentTransform;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent<PlayerController>(out PlayerController playerController))
-        {
-            playerInSubmarine = false;
-            playerController.gameObject.transform.parent = _playerDefaultParent;
-        }
-    }
 
     /// <summary>
     /// This function shouldn't be called anywhere other than in the SubmarineLandingButton script
@@ -98,6 +76,26 @@ public class Submarine : ManagedByGameManager
         }
         _inTransit = true;
         StartCoroutine(WaitForAnimation());
+    }
+
+    public void ExitLevel()
+    {
+        if (GameManager.Instance.currentGameState != GameManager.GameState.LandedAtFacility)
+        {
+            return;
+        }
+        GetComponentInChildren<Hatch>().CloseHatch();
+        if (_inTransit)
+        {
+            return;
+        }
+        _inTransit = true;
+        StartCoroutine(WaitForAnimation());
+    }
+    
+    public Camera GetDeadCamera()
+    {
+        return _deadCamera;
     }
 
     private IEnumerator WaitForAnimation()

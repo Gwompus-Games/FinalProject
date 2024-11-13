@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private bool _waitingForSubmarineAnimation = false;
 
+    private Coroutine _deathSequence;
+
     public GameState currentGameState 
     { 
         get
@@ -47,11 +49,30 @@ public class GameManager : MonoBehaviour
     private List<ManagedByGameManager> _managedObjects = new List<ManagedByGameManager>();
     private StandaloneManagersList _standaloneManagers;
 
-    public bool isPaused { get; private set; } = false;
+    public bool isPaused
+    {
+        get
+        {
+            return _paused;
+        }
+        private set
+        {
+            _paused = value;
+            PlayerController playerController = GetManagedComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.SetLockInput(_paused);
+            }
+        }
+    }
+    private bool _paused;
+
+
     public bool isPlayerInsideFacility = false;
 
     private void Awake()
     {
+        isPaused = false;
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -64,6 +85,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"Standalone managers found: {_standaloneManagers != null}");
         }
+        _deathSequence = null;
         _standaloneManagers.SetUpList();
         _waitingForSubmarineAnimation = false;
         InitilizeGameScene();
@@ -215,10 +237,15 @@ public class GameManager : MonoBehaviour
     
     public T GetManagedComponent<T>() where T : ManagedByGameManager
     {
-        T managedObject = _managedObjects.Find(x => x.GetComponent<T>() != null).GetComponent<T>();
-        if (_debugMode)
+        if (_managedObjects.Count == 0)
         {
-            //Debug.Log($"{managedObject.GetType()} gotten!");
+            return null;
+        }
+        T managedObject = null;
+        _managedObjects.Find(x => x.TryGetComponent<T>(out managedObject));
+        if (_debugMode && managedObject != null)
+        {
+            Debug.Log($"{managedObject.GetType()} gotten!");
         }
         return managedObject;
     }
@@ -281,9 +308,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PlayerDied()
+    {
+        if (_deathSequence != null)
+        {
+            return;
+        }
+        _deathSequence = StartCoroutine(PlayerDeadSequence());
+    }
+
     public void EndScene(EndScreenManager.EndState endState)
     {
         EndScreenManager endScreenManager = Instantiate(_endScreenManagerPrefab).GetComponent<EndScreenManager>();
         endScreenManager.SetUpEndState(endState);
+    }
+
+    private IEnumerator PlayerDeadSequence()
+    {
+        Submarine submarine = GetManagedComponent<Submarine>();
+        PlayerController player = GetManagedComponent<PlayerController>();
+        Camera submarineCamera = submarine.GetDeadCamera();
+        yield return null;
+        submarineCamera.enabled = true;
+        submarine.ExitLevel();
+        _waitingForSubmarineAnimation = true;
+        while (_waitingForSubmarineAnimation)
+        {
+            yield return null;
+        }
+        player.RespawnPlayer();
+        submarineCamera.enabled = false;
     }
 }
