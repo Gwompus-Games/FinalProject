@@ -19,19 +19,12 @@ public class AudioManager : ManagedByGameManager
     public override void CustomStart()
     {
         base.CustomStart();
-        PlayOneShotAttached(GameManager.Instance.GetManagedComponent<FMODEvents>().bgm);
-        Invoke(nameof(PlayFacilityAmbience), 199);
         heartbeatInstance = CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
     }
 
     public void SetHeartbeatParameter(string name, float value)
     {
         heartbeatInstance.setParameterByName(name, value);
-    }
-
-    private void PlayFacilityAmbience()
-    {
-        PlayOneShotAttached(GameManager.Instance.GetManagedComponent<FMODEvents>().facilityAmbience);
     }
 
     public StudioEventEmitter InitializeEventEmitter(EventReference eventReference, GameObject emitterSource)
