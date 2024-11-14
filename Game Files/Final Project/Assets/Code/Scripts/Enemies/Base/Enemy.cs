@@ -53,10 +53,10 @@ public class Enemy : MonoBehaviour, IHeartbeat
     {
         ResetAudioTimes();
 
-        AFDistantInside = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().AFDistantInside);
-        AFDistantOutside = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().AFDistantOutside);
-        AFSpotted = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().AFSpotted);
-        AFAttacking = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().AFAttacking);
+        AFDistantInside = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFDistantInside);
+        AFDistantOutside = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFDistantOutside);
+        AFSpotted = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFSpotted);
+        AFAttacking = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFAttacking);
     }
 
     private void Update()

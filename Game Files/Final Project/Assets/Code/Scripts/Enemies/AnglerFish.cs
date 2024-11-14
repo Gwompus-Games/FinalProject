@@ -32,7 +32,7 @@ public class AnglerFish : Enemy
 
                 //set parameter intensity in fmod
                 parameterIntensity = ((_heartbeatRange - distanceFromPlayer)/_heartbeatRange);
-                GameManager.Instance.GetManagedComponent<AudioManager>().SetHeartbeatParameter(parameterName, parameterIntensity);
+                AudioManager.Instance.SetHeartbeatParameter(parameterName, parameterIntensity);
             }
             else
             {
