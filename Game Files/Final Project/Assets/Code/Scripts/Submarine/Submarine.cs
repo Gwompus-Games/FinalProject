@@ -27,11 +27,14 @@ public class Submarine : ManagedByGameManager
 
     private Transform _landedTransform;
     private Transform _shoppingPlacementTransform;
-    private Transform _playerDefaultParent;
+    private Rigidbody _rb;
 
     public override void Init()
     {
         base.Init();
+
+        _rb = GetComponent<Rigidbody>();
+
         SubmarineLandingPoint submarineLandingPoint = FindObjectOfType<SubmarineLandingPoint>();
         SubmarineShoppingPoint submarineShoppingPoint = FindObjectOfType<SubmarineShoppingPoint>();
         if (submarineLandingPoint == null)
@@ -59,8 +62,6 @@ public class Submarine : ManagedByGameManager
     {
         base.CustomStart();
         _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
-        _playerDefaultParent = _playerController.transform.parent;
-        _playerController.transform.parent = _movementParentTransform;
     }
 
 
@@ -101,6 +102,9 @@ public class Submarine : ManagedByGameManager
     private IEnumerator WaitForAnimation()
     {
         yield return null;
+
+        //_playerController.SetApplyGravity(false);
+
         Vector3 target = Vector3.zero;
         AnimationCurves movementCurves = new AnimationCurves();
 
@@ -143,7 +147,9 @@ public class Submarine : ManagedByGameManager
             }
 
             //Apply movement 
+            Vector3 lastPos = transform.position;
             transform.position = newPosition;
+            _playerController.MovePlayer(transform.position - lastPos);
             if (transform.position == _landedTransform.position)
                 landed = true;
             else
@@ -152,6 +158,7 @@ public class Submarine : ManagedByGameManager
             yield return null;
         }
 
+        //_playerController.SetApplyGravity(true);
         GameManager.Instance.SubmarineAnimationFinished();
         _inTransit = false;
     }

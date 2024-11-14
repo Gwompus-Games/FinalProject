@@ -116,15 +116,18 @@ public class GameManager : MonoBehaviour
         GameObject managersParent = new GameObject("Dedicated Managers");
         managersParent.transform.parent = transform.parent;
 
-        //Adding all needed standalone manager scripts
-        for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
+        if(_neededStandaloneScripts.Count > 0)
         {
-            if (_debugMode)
+            //Adding all needed standalone manager scripts
+            for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
             {
-                Debug.Log($"Creating {_neededStandaloneScripts[ms].GetType().Name}");
+                if (_debugMode)
+                {
+                    Debug.Log($"Creating {_neededStandaloneScripts[ms].GetType().Name}");
+                }
+                GameObject standaloneManager = new GameObject(_neededStandaloneScripts[ms].GetType().Name, _neededStandaloneScripts[ms].GetType());
+                standaloneManager.transform.parent = managersParent.transform;
             }
-            GameObject standaloneManager = new GameObject(_neededStandaloneScripts[ms].GetType().Name, _neededStandaloneScripts[ms].GetType());
-            standaloneManager.transform.parent = managersParent.transform;
         }
 
         //Adding all needed prefabs to the scene

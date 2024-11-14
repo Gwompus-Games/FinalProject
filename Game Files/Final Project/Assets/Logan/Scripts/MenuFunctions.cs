@@ -4,15 +4,16 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using FMODUnity;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 public class MenuFunctions : MonoBehaviour
 {
-    [SerializeField] public AudioManager audioManager;
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private GameObject settingsPanel;
     [SerializeField] private string PlayButtonTargetScene = "";
-    [SerializeField] private EventReference uiClickedSound;
-    [SerializeField] private EventReference uiHoveredSound;
+    [SerializeField] private Volume CRT;
 
 
     public void StartGame()
@@ -26,22 +27,31 @@ public class MenuFunctions : MonoBehaviour
         menuPanel.SetActive(!menuActive);
         optionsPanel.SetActive(menuActive);
     }
+    
+    public void SwapActivePanelsSettings()
+    {
+        bool menuActive = menuPanel.activeInHierarchy;
+        menuPanel.SetActive(!menuActive);
+        settingsPanel.SetActive(menuActive);
+        if(menuActive)
+        {
+            CRT.weight = 0;
+        }
+        else
+        {
+            CRT.weight = 1;
+        }
+    }
 
 
     public void UIClickSound()
     {
-        PlayOneShot(uiClickedSound, transform.position);
+        AudioManager.Instance.OnClick();
     }
 
     public void UIHoverSound()
     {
-        PlayOneShot(uiHoveredSound, transform.position);
-        Debug.Log("ButtonHovered");
-    }
-
-    public void PlayOneShot(EventReference sound, Vector3 worldPos)
-    {
-        RuntimeManager.PlayOneShot(sound, worldPos);
+        AudioManager.Instance.OnHover();
     }
 
     public void ExitGame()
