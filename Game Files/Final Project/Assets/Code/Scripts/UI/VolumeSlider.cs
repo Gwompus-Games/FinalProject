@@ -8,15 +8,34 @@ public class VolumeSlider : MonoBehaviour
     private Slider slider;
     public AudioManager.VolumeBus volumeBus;
     private float volume = 1;
+    private bool updateVolume = false;
 
     private void Awake()
     {
         slider = GetComponent<Slider>();
     }
 
-    public void OnSliderChanged()
+    //private void Update()
+    //{
+    //    if (!updateVolume)
+    //        return;
+    //    volume = slider.value;
+    //    AudioManager.Instance.ChangeVolume(volumeBus, volume);
+    //}
+
+    public void UpdateVolume(bool update)
     {
-        volume = slider.value;
-        AudioManager.Instance.ChangeVolume(volumeBus, volume);
+        updateVolume = update;
+        StartCoroutine(UpdateVolumeCoroutine());
+    }
+
+    private IEnumerator UpdateVolumeCoroutine()
+    {
+        while(updateVolume)
+        {
+            volume = slider.value;
+            AudioManager.Instance.ChangeVolume(volumeBus, volume);
+            yield return null;
+        }
     }
 }
