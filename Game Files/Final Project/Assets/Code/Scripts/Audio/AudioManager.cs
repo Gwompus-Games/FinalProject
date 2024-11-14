@@ -55,6 +55,7 @@ public class AudioManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
 
@@ -71,7 +72,8 @@ public class AudioManager : MonoBehaviour
         eventEmitters = new List<StudioEventEmitter>();
         bgmInstance = CreateEventInstance(FMODEvents.Instance.bgm);
         menuInstance = CreateEventInstance(FMODEvents.Instance.menuMusic);
-        menuInstance.start();
+        //menuInstance.start();
+        UpdateBGM(SceneName.Menu);
     }
 
     public void ChangeVolume(VolumeBus bus, float value)
@@ -109,7 +111,7 @@ public class AudioManager : MonoBehaviour
         PlayOneShot(FMODEvents.Instance.click, transform.position);
     }
 
-    private void UpdateBGM(SceneName scene)
+    public void UpdateBGM(SceneName scene)
     {
         switch (scene)
         {
@@ -192,20 +194,26 @@ public class AudioManager : MonoBehaviour
 
     public void CleanUp()
     {
-        foreach(EventInstance eventInstance in eventInstances)
+        if(eventInstances.Count > 0)
         {
-            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            eventInstance.release();
+            foreach(EventInstance eventInstance in eventInstances)
+            {
+                eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                eventInstance.release();
+            }
         }
-        foreach(StudioEventEmitter emitter in eventEmitters)
+        if(eventEmitters.Count > 0)
         {
-            emitter.Stop();
+            foreach(StudioEventEmitter emitter in eventEmitters)
+            {
+                emitter.Stop();
+            }
         }
     }
 
-    private void OnDestroy()
-    {
-        CleanUp();
-    }
+    //private void OnDestroy()
+    //{
+    //    CleanUp();
+    //}
 #endregion
 }
