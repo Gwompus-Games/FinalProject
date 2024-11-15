@@ -263,10 +263,18 @@ public class GameManager : MonoBehaviour
     {
         if (currentGameState == GameState.InBetweenFacitilies)
         {
+            if (_debugMode)
+            {
+                Debug.Log("ALREADY LEFT THE LEVEL!");
+            }
             return;
         }
         if (!takingSubmarine)
         {
+            if (_debugMode)
+            {
+                Debug.Log("NOT TAKING SUB!");
+            }
             ApplyGameState(GameState.InBetweenFacitilies);
             return;
         }
@@ -313,6 +321,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitForSubmarineAnimation(GameState stateToApply)
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Game Manager waiting for submarine animation to play before applying: {stateToApply}");
+        }
         _waitingForSubmarineAnimation = true;
         while (_waitingForSubmarineAnimation)
         {
@@ -323,6 +335,10 @@ public class GameManager : MonoBehaviour
 
     private void ApplyGameState(GameState gameState)
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Applying state {gameState} as current state");
+        }
         currentGameState = gameState;
         switch (gameState)
         {
@@ -363,10 +379,12 @@ public class GameManager : MonoBehaviour
         yield return null;
         submarineCamera.enabled = true;
         submarine.ExitLevel();
-        _waitingForSubmarineAnimation = true;
-        while (_waitingForSubmarineAnimation)
+        yield return new WaitForSeconds(0.5f);
+        bool waitForSub = true;
+        while (waitForSub)
         {
             yield return null;
+            waitForSub = _waitingForSubmarineAnimation;
         }
         player.RespawnPlayer();
         submarineCamera.enabled = false;
