@@ -116,9 +116,9 @@ public class GameManager : MonoBehaviour
         GameObject managersParent = new GameObject("Dedicated Managers");
         managersParent.transform.parent = transform.parent;
 
-        if(_neededStandaloneScripts.Count > 0)
+        //Adding all needed standalone manager scripts
+        if (_neededStandaloneScripts.Count > 0)
         {
-            //Adding all needed standalone manager scripts
             for (int ms = 0; ms < _neededStandaloneScripts.Count; ms++)
             {
                 if (_debugMode)
@@ -131,9 +131,12 @@ public class GameManager : MonoBehaviour
         }
 
         //Adding all needed prefabs to the scene
-        for (int o = 0; o < _neededPrefabs.Count; o++)
+        if (_neededPrefabs.Count > 0)
         {
-            Instantiate(_neededPrefabs[o]);
+            for (int o = 0; o < _neededPrefabs.Count; o++)
+            {
+                Instantiate(_neededPrefabs[o]);
+            }
         }
 
         //Set up all managed objects
@@ -258,6 +261,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ExitLevel(bool takingSubmarine = false)
     {
+        if (currentGameState == GameState.InBetweenFacitilies)
+        {
+            return;
+        }
         if (!takingSubmarine)
         {
             ApplyGameState(GameState.InBetweenFacitilies);
@@ -267,7 +274,7 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        StartCoroutine(WaitForSubmarineAnimation());
+        StartCoroutine(WaitForSubmarineAnimation(GameState.InBetweenFacitilies));
     }
 
     /// <summary>
@@ -282,19 +289,36 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// This function should only be called from the Submarine script
     /// </summary>
-    public void EnterLevel()
+    public void EnterLevel(bool takingSubmarine)
     {
-        ApplyGameState(GameState.LandedAtFacility);
+        if (currentGameState == GameState.LandedAtFacility)
+        {
+            return;
+        }
+
+        _dungeonGenerator.StartGeneration();
+
+        if (!takingSubmarine)
+        {
+            ApplyGameState(GameState.LandedAtFacility);
+            return;
+        }
+        if (_waitingForSubmarineAnimation)
+        {
+            return;
+        }
+
+        StartCoroutine(WaitForSubmarineAnimation(GameState.LandedAtFacility));
     }
 
-    private IEnumerator WaitForSubmarineAnimation()
+    private IEnumerator WaitForSubmarineAnimation(GameState stateToApply)
     {
         _waitingForSubmarineAnimation = true;
         while (_waitingForSubmarineAnimation)
         {
             yield return null;
         }
-        ApplyGameState(GameState.InBetweenFacitilies);
+        ApplyGameState(stateToApply);
     }
 
     private void ApplyGameState(GameState gameState)
@@ -306,13 +330,18 @@ public class GameManager : MonoBehaviour
                 TreasureSpawnPoint.ResetUniqueTreasures();
                 break;
             case GameState.LandedAtFacility:
-                _dungeonGenerator.StartGeneration();
+                
                 break;
         }
     }
 
     public void PlayerDied()
     {
+        if (currentGameState == GameState.InBetweenFacitilies)
+        {
+            return;
+        }
+
         if (_deathSequence != null)
         {
             return;

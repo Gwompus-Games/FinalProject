@@ -312,7 +312,7 @@ public class InventoryGrid : ManagedObject
         InventoryItem item = GetItemInSlot(origin);
         if (item == null)
         {
-            Debug.LogError("No item to clear.");
+            Debug.LogWarning("No item to clear.");
             return;
         }
         for (int t = 0; t < tileCoordinates.Length; t++)
