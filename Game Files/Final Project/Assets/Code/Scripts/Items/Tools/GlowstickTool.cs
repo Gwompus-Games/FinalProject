@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GlowstickTool : ToolsParent
 {
+    [SerializeField] private float _throwForce = 15;
+
     private Material _material;
     private Color _chosenColour;
     private II_Glowstick _myInventoryItem;
@@ -47,6 +49,9 @@ public class GlowstickTool : ToolsParent
         Transform worldItemParent = FindFirstObjectByType<WorldItemsTag>().transform;
         WI_Glowstick glowstickWorldItem = Instantiate(_myInventoryItem.itemData.worldObject, worldItemParent, true).GetComponent<WI_Glowstick>();
         glowstickWorldItem.transform.position = transform.position;
+        glowstickWorldItem.transform.rotation = transform.rotation;
+        glowstickWorldItem.GetComponent<Rigidbody>().AddForce(transform.forward * (_throwForce * Random.Range(0.8f, 1.2f)), ForceMode.Impulse);
+        glowstickWorldItem.GetComponent<Rigidbody>().AddTorque(transform.up * (_throwForce / 2 * Random.Range(0.8f, 1.2f)), ForceMode.Impulse);
         glowstickWorldItem.UseGlowstick(_chosenColour);
         Destroy(_myInventoryItem.gameObject);
         SetToolEnabled(false);

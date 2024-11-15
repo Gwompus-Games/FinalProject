@@ -12,6 +12,7 @@ public class WI_Glowstick : WorldItem
     {
         base.Awake();
         _light = GetComponentInChildren<Light>();
+        _light.enabled = false;
     }
 
     protected override void Start()
@@ -26,7 +27,6 @@ public class WI_Glowstick : WorldItem
         {
             AssignColour(glowstickData.possibleColours[Random.Range(0, glowstickData.possibleColours.Length)]);
         }
-        _light.enabled = false;
     }
 
     public void AssignColour(Color cColour)
@@ -41,7 +41,6 @@ public class WI_Glowstick : WorldItem
         }
         chosenColour = cColour;
         _light.color = (Color)chosenColour;
-        GetComponent<MeshRenderer>().material.color = (Color)chosenColour;
     }
 
     public void UseGlowstick(Color cColour)

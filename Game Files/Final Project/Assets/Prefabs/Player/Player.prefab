@@ -308,7 +308,6 @@ GameObject:
   - component: {fileID: 8716103006985781635}
   - component: {fileID: 4765867987772039652}
   - component: {fileID: 8672683170310346580}
-  - component: {fileID: 4122007023428012745}
   - component: {fileID: 1422241895368899077}
   - component: {fileID: 6519155364474769600}
   m_Layer: 3
@@ -733,29 +732,6 @@ MonoBehaviour:
   OverrideAttenuation: 1
   OverrideMinDistance: 1
   OverrideMaxDistance: 30
---- !u!136 &4122007023428012745
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4586079081141089300}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.32
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &1422241895368899077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,8 +767,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
-  m_Height: 2.5
+  m_Radius: 0.65
+  m_Height: 2.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.84, z: 0}
 --- !u!1 &4812904704552666074
@@ -1705,36 +1681,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2407527969883400766, guid: c7fb5ca9c336f4d4c8355389b423c174,
-        type: 3}
-      propertyPath: m_Intensity
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 2407527969883400766, guid: c7fb5ca9c336f4d4c8355389b423c174,
-        type: 3}
-      propertyPath: m_ShapeRadius
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2407527969883400766, guid: c7fb5ca9c336f4d4c8355389b423c174,
-        type: 3}
-      propertyPath: useVolumetric
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2407527969883400766, guid: c7fb5ca9c336f4d4c8355389b423c174,
-        type: 3}
-      propertyPath: m_VolumetricDimmer
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 8680468963716485461, guid: c7fb5ca9c336f4d4c8355389b423c174,
-        type: 3}
-      propertyPath: m_Intensity
-      value: 231.3075
-      objectReference: {fileID: 0}
-    - target: {fileID: 8680468963716485461, guid: c7fb5ca9c336f4d4c8355389b423c174,
-        type: 3}
-      propertyPath: m_ShadowRadius
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8916323759355417435, guid: c7fb5ca9c336f4d4c8355389b423c174,
         type: 3}

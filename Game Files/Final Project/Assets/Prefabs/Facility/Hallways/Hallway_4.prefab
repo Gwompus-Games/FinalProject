@@ -230,7 +230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7814645737575121345
 Transform:
   m_ObjectHideFlags: 0
@@ -299,6 +299,7 @@ MonoBehaviour:
   entryPoints:
   - {fileID: 9018719829511361548}
   - {fileID: 8471999666205678267}
+  enemySpawnPoint: {fileID: 0}
   collider: {fileID: 8671722119277807236}
 --- !u!65 &8671722119277807236
 BoxCollider:
