@@ -26,7 +26,7 @@ public class WI_Glowstick : WorldItem
         {
             AssignColour(glowstickData.possibleColours[Random.Range(0, glowstickData.possibleColours.Length)]);
         }
-        _light.enabled = false;
+        //_light.enabled = false;
     }
 
     public void AssignColour(Color cColour)
