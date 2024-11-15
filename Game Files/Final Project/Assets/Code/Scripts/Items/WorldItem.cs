@@ -46,7 +46,7 @@ public class WorldItem : InteractableObject
         _rigidbody.drag = _itemData.drag;
         _rigidbody.angularDrag = _itemData.angularDrag;
         _rigidbody.useGravity = !_itemData.floatingItem;
-        _pushForce = 50f / (_itemData.density * _itemData.drag);
+        _pushForce = 80f / (_itemData.density * _itemData.drag);
     }
 
     public void DespawnItem()
@@ -69,12 +69,13 @@ public class WorldItem : InteractableObject
         DespawnItem();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {
             Vector3 direction = (transform.position - other.transform.position).normalized;
             Vector3 force = direction * _pushForce;
+            Debug.Log(force);
             _rigidbody.AddForce(force);
         }
     }

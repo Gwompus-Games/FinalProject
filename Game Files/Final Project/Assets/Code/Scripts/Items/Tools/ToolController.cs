@@ -82,7 +82,7 @@ public class ToolController : ManagedByGameManager
         {
             _tools[_toolsOrder[_equippedTool]].SetToolEnabled(false);
         }
-        direction = (int)Mathf.Sign(direction);
+        direction = -(int)Mathf.Sign(direction);
         _equippedTool += direction;
         if (_equippedTool >= _toolsOrder.Count)
         {
