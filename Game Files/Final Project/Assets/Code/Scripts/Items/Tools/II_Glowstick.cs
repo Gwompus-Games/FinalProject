@@ -5,11 +5,12 @@ using UnityEngine;
 public class II_Glowstick : II_Tool
 {
     private Color _chosenColour;
+    
 
     protected override void Awake()
     {
         base.Awake();
-        GlowstickSO glowstickSO = holdableToolData as GlowstickSO;
+        GlowstickSO glowstickSO = _holdableToolData as GlowstickSO;
         if (glowstickSO == null)
         {
             throw new System.Exception("Non glowstick data assigned to glowstick item!");
@@ -26,5 +27,17 @@ public class II_Glowstick : II_Tool
     public Color GetColour()
     {
         return _chosenColour;
+    }
+
+    public override void ItemPlacedInInventory()
+    {
+        base.ItemPlacedInInventory();
+        _toolController.AddGlowstickToQueue(this);
+    }
+
+    public override void ItemRemovedFromInventory()
+    {
+        base.ItemRemovedFromInventory();
+        _toolController.RemoveGlowstickFromQueue(this);
     }
 }

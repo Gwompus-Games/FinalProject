@@ -25,12 +25,15 @@ public class ToolController : ManagedByGameManager
     }
 
     private HandPositionController _handPositionController;
+    private UIManager _uiManager;
+
     private List<ToolsParent> _tools = new List<ToolsParent>();
     private Dictionary<II_Tool, ToolData> _equippedTools = new Dictionary<II_Tool, ToolData>();
     private List<int> _toolsOrder = new List<int>();
     private int _equippedTool = -1;
     private Dictionary<int, II_Glowstick> _glowstickPositions = new Dictionary<int, II_Glowstick>();
     [field :SerializeField] public bool debugMode { get; private set; } = false;
+    private Queue<II_Glowstick> _glowsticksToUse = new Queue<II_Glowstick>();
 
     public override void Init()
     {
@@ -39,7 +42,10 @@ public class ToolController : ManagedByGameManager
             return;
         }
         base.Init();
+
         _handPositionController = GameManager.Instance.GetManagedComponent<HandPositionController>();
+        _uiManager = GameManager.Instance.GetManagedComponent<UIManager>();
+
         Type[] toolsTypes = Assembly.GetAssembly(typeof(ToolsParent)).GetTypes().Where(t => t.IsSubclassOf(typeof(ToolsParent))).ToArray();
         for (int t = 0; t < toolsTypes.Length; t++)
         {
@@ -80,10 +86,22 @@ public class ToolController : ManagedByGameManager
         }
         if (_equippedTool >= 0 && _equippedTool < _toolsOrder.Count)
         {
+            if (debugMode)
+            {
+                Debug.Log($"Deactivating tool: {_tools[_toolsOrder[_equippedTool]].name} | In position: {_equippedTool}");
+            }
             _tools[_toolsOrder[_equippedTool]].SetToolEnabled(false);
         }
+
+        if (debugMode)
+        {
+            Debug.Log($"Swapping from tool {_equippedTool}");
+        }
+
         direction = -(int)Mathf.Sign(direction);
         _equippedTool += direction;
+
+
         if (_equippedTool >= _toolsOrder.Count)
         {
             _equippedTool = -1;
@@ -92,19 +110,128 @@ public class ToolController : ManagedByGameManager
         {
             _equippedTool = _toolsOrder.Count - 1;
         }
+
+        if (debugMode)
+        {
+            Debug.Log($"Swapping to tool {_equippedTool}");
+        }
+
         if (_equippedTool != -1)
         {
             int toolEquiped = _toolsOrder[_equippedTool];
             _tools[toolEquiped].SetToolEnabled(true);
-            if (_glowstickPositions.ContainsKey(toolEquiped))
+            if (_glowstickPositions.ContainsKey(_equippedTool))
             {
                 GlowstickTool glowstickTool = _tools[toolEquiped] as GlowstickTool;
                 if (glowstickTool != null)
                 {
-                    glowstickTool.SetToolData(_glowstickPositions[toolEquiped]);
+                    if (debugMode)
+                    {
+                        Debug.Log($"Swapping to: {_glowstickPositions[_equippedTool].itemData.itemName} | Colour: {_glowstickPositions[_equippedTool].GetColour()}");
+                    }
+                    glowstickTool.SetToolData(_glowstickPositions[_equippedTool]);
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Use this function in the glowstick inventory item script to add it to the queue whenever it is added to inventory
+    /// </summary>
+    /// <param name="glowstickToAdd">this is for what glowstick is supposed to be added</param>
+    public void AddGlowstickToQueue(II_Glowstick glowstickToAdd)
+    {
+        if (_glowsticksToUse.Contains(glowstickToAdd))
+        {
+            return;
+        }
+        _glowsticksToUse.Enqueue(glowstickToAdd);
+    }
+
+    /// <summary>
+    /// Use this function to remove a glowstick from the queue
+    /// </summary>
+    /// <param name="glowstickToRemove">this is for what glowstick is supposed to be removed</param>
+    public void RemoveGlowstickFromQueue(II_Glowstick glowstickToRemove)
+    {
+        if (!_glowsticksToUse.Contains(glowstickToRemove))
+        {
+            return;
+        }
+
+        int glowstickCount = _glowsticksToUse.Count;
+        if (glowstickCount == 0)
+        {
+            return;
+        }
+
+        II_Glowstick firstGlowstickInQueue = _glowsticksToUse.Peek();
+
+        if (firstGlowstickInQueue == glowstickToRemove)
+        {
+            _glowsticksToUse.Dequeue();
+            return;
+        }
+
+        _glowsticksToUse.Enqueue(_glowsticksToUse.Dequeue());
+        while (_glowsticksToUse.Peek() != firstGlowstickInQueue)
+        {
+            if (_glowsticksToUse.Peek() == glowstickToRemove)
+            {
+                _glowsticksToUse.Dequeue();
+                continue;
+            }
+
+            _glowsticksToUse.Enqueue(_glowsticksToUse.Dequeue());
+        }
+    }
+
+    /// <summary>
+    /// Use the next glowstick in the queue
+    /// </summary>
+    public void UseNextGlowstickFromQueue()
+    {
+        //Exit out if glowsticks count is 0
+        if (_glowsticksToUse.Count == 0)
+        {
+            return;
+        }
+
+        //Make sure we never let a null value through
+        while (_glowsticksToUse.Peek() == null)
+        {
+            _glowsticksToUse.Dequeue();
+            //Exit out if glowsticks count is 0
+            if (_glowsticksToUse.Count == 0)
+            {
+                return;
+            }
+        }
+
+        //Get the glowstick tool
+        GlowstickTool glowstickTool = null;
+        for (int t = 0; t < _tools.Count; t++)
+        {
+            glowstickTool = _tools[t] as GlowstickTool;
+            if (glowstickTool != null)
+            {
+                break;
+            }
+        }
+
+        //Break out if no glowstick tool in tools list
+        if (glowstickTool == null)
+        {
+            Debug.LogError("No glowstick tool created in player!");
+            return;
+        }
+
+        //Get data for next glowstick
+        II_Glowstick glowstick = _glowsticksToUse.Dequeue();
+        Color glowstickColour = glowstick.GetColour();
+        
+        //Use the next glowstick in the queue
+        glowstickTool.ThrowGlowstick(glowstick, glowstickColour);
     }
 
     private void UseEquippedTool(CustomPlayerInput.CustomInputData data)
@@ -113,6 +240,16 @@ public class ToolController : ManagedByGameManager
         {
             Debug.Log("Use input detected!");
         }
+
+        if (_uiManager.currentUIState != UIManager.UIToDisplay.GAME)
+        {
+            if (debugMode)
+            {
+                Debug.Log("Not currently on game view!");
+            }
+            return;
+        }
+
         if (_tools.Count == 0)
         {
             if (debugMode)
@@ -144,18 +281,21 @@ public class ToolController : ManagedByGameManager
             return;
         }
 
-        if (debugMode)
-        {
-            Debug.Log(_equippedTool);
-        }
-
         switch (data)
         {
             case CustomPlayerInput.CustomInputData.PRESSED:
                 _tools[_toolsOrder[_equippedTool]].UseTool();
+                if (debugMode)
+                {
+                    Debug.Log($"Using tool: {_equippedTool}");
+                }
                 break;
             case CustomPlayerInput.CustomInputData.RELEASED:
                 _tools[_toolsOrder[_equippedTool]].CancelUseTool();
+                if (debugMode)
+                {
+                    Debug.Log($"Canceling Using tool: {_equippedTool}");
+                }
                 break;
         }
         
@@ -275,18 +415,20 @@ public class ToolController : ManagedByGameManager
         int equipedTool = _equippedTool;
         SetToolOrder();
         _equippedTool = equipedTool;
-        SwapTool(-1);
+        SwapTool(1);
     }
 
     private void OnEnable()
     {
         CustomPlayerInput.SwapTool += SwapTool;
         CustomPlayerInput.UseTool += UseEquippedTool;
+        CustomPlayerInput.QuickUseGlowstick += UseNextGlowstickFromQueue;
     }
 
     private void OnDisable()
     {
         CustomPlayerInput.SwapTool -= SwapTool;
         CustomPlayerInput.UseTool -= UseEquippedTool;
+        CustomPlayerInput.QuickUseGlowstick -= UseNextGlowstickFromQueue;
     }
 }
