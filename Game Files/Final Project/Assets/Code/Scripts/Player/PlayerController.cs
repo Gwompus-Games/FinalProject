@@ -370,7 +370,6 @@ public class PlayerController : ManagedByGameManager
 
     public void MovePlayer(Vector3 motion)
     {
-        Debug.Log(motion);
         _controller.Move(motion);
     }
 
