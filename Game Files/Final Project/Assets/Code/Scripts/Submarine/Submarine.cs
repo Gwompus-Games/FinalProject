@@ -23,7 +23,7 @@ public class Submarine : ManagedByGameManager
     private PlayerController _playerController;
 
     private bool _inTransit = false;
-    public bool landed = false;
+    public bool landed { get; private set; } = false;
 
     private Transform _landedTransform;
     private Transform _shoppingPlacementTransform;
@@ -114,7 +114,7 @@ public class Submarine : ManagedByGameManager
             case GameManager.GameState.InBetweenFacitilies:
                 target = _landedTransform.position;
                 movementCurves = _landingCurves;
-                GameManager.Instance.EnterLevel();
+                GameManager.Instance.EnterLevel(true);
                 break;
             case GameManager.GameState.LandedAtFacility:
                 target = _shoppingPlacementTransform.position;
@@ -123,39 +123,49 @@ public class Submarine : ManagedByGameManager
                 break;
         }
 
-        float timeTakenForAnimation = Vector3.Distance(transform.position, target) / _speed;
-        float timeStep = 0f;
-        Vector3 startingPosition = transform.position;
-        Vector3 newPosition = Vector3.zero;
+        float distance = Vector3.Distance(transform.position, target);
 
-        //Play animation
-        while (newPosition != target)
+        if (distance != 0)
         {
-            float timeLerpAmount = timeStep / timeTakenForAnimation;
+            float timeTakenForAnimation = distance / _speed;
+            float timeStep = 0f;
+            Vector3 startingPosition = transform.position;
+            Vector3 newPosition = Vector3.zero;
 
-            //Calculate next position based on curves
-            newPosition.x = Mathf.Lerp(startingPosition.x, target.x, movementCurves._sideMovementCurve.Evaluate(timeLerpAmount));
-            newPosition.y = Mathf.Lerp(startingPosition.y, target.y, movementCurves._upMovementCurve.Evaluate(timeLerpAmount));
-            newPosition.z = Mathf.Lerp(startingPosition.z, target.z, movementCurves._forwardMovementCurve.Evaluate(timeLerpAmount));
-            
-            timeStep += Time.deltaTime;
-
-            //Check if submarine is withing snapping distance
-            if (Vector3.Distance(newPosition, target) <= _movementSnap)
+            //Play animation
+            while (newPosition != target)
             {
-                newPosition = target;
+                float timeLerpAmount = timeStep / timeTakenForAnimation;
+
+                //Calculate next position based on curves
+                newPosition.x = Mathf.Lerp(startingPosition.x, target.x, movementCurves._sideMovementCurve.Evaluate(timeLerpAmount));
+                newPosition.y = Mathf.Lerp(startingPosition.y, target.y, movementCurves._upMovementCurve.Evaluate(timeLerpAmount));
+                newPosition.z = Mathf.Lerp(startingPosition.z, target.z, movementCurves._forwardMovementCurve.Evaluate(timeLerpAmount));
+
+                timeStep += Time.deltaTime;
+
+                //Check if submarine is withing snapping distance
+                if (Vector3.Distance(newPosition, target) <= _movementSnap)
+                {
+                    newPosition = target;
+                }
+
+                //Apply movement 
+                Vector3 lastPos = transform.position;
+                transform.position = newPosition;
+                _playerController.MovePlayer(transform.position - lastPos);
+
+                yield return null;
             }
+        }
 
-            //Apply movement 
-            Vector3 lastPos = transform.position;
-            transform.position = newPosition;
-            _playerController.MovePlayer(transform.position - lastPos);
-            if (transform.position == _landedTransform.position)
-                landed = true;
-            else
-                landed = false;
-
-            yield return null;
+        if (transform.position == _landedTransform.position)
+        {
+            landed = true;
+        }
+        else
+        {
+            landed = false;
         }
 
         //_playerController.SetApplyGravity(true);
