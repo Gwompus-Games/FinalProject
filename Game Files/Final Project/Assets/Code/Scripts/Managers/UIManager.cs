@@ -17,7 +17,8 @@ public class UIManager : ManagedByGameManager
     private List<ManagedObject> _managedObjects = new List<ManagedObject>();
     [SerializeField] private bool _debugMode = false;
     [SerializeField] private Volume crtShader;
-    [SerializeField] private float crtShaderWeight = 0.75f;
+    [Range(0,1)]
+    [SerializeField] private float crtShaderWeight = 1;
 
     public enum UIToDisplay
     {
@@ -30,7 +31,7 @@ public class UIManager : ManagedByGameManager
     private void Awake()
     {
         //crtShader = GameObject.Find("CRT_PostProcess_Prefab").GetComponent<Volume>();
-        _pauseUI = GameObject.Find("PauseUI");
+        //_pauseUI = GameObject.Find("PauseUI");
     }
 
     public override void Init()
@@ -38,7 +39,7 @@ public class UIManager : ManagedByGameManager
         base.Init();
         if (_debugMode)
         {
-            Debug.Log("UI Manager Initilized");
+            Debug.Log("UI Manager Initialized");
         }
         List<Type> infoElementChildren = Assembly.GetAssembly(typeof(InfoBarTextElement)).GetTypes().Where(t => t.IsSubclassOf(typeof(InfoBarTextElement))).ToList();
         List<InfoBarTextElement> infoElements = new List<InfoBarTextElement>();
@@ -58,12 +59,12 @@ public class UIManager : ManagedByGameManager
         {
             if (_debugMode)
             {
-                Debug.Log($"{_managedObjects[ibe].gameObject.name} is being initilized by {gameObject.name}");
+                Debug.Log($"{_managedObjects[ibe].gameObject.name} is being Initialized by {gameObject.name}");
             }
             _managedObjects[ibe].Init();
             if (_debugMode)
             {
-                Debug.Log($"{_managedObjects[ibe].gameObject.name} initilized!");
+                Debug.Log($"{_managedObjects[ibe].gameObject.name} Initialized!");
             }
         }
     }

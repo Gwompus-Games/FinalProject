@@ -10,7 +10,7 @@ public class DeathAudioComponent : DeathComponent
 
     public override void StartDeathComponent()
     {
-        _audioManager = GameManager.Instance.GetManagedComponent<AudioManager>();
+        _audioManager = AudioManager.Instance;
 
         if (_startingAudio.Length > 0)
         {

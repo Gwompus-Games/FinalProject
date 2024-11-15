@@ -152,8 +152,8 @@ public class PlayerController : ManagedByGameManager
         money = _startingMoney;
         _outOfOxygen = false;
 
-        playerFootsteps = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().footsteps);
-        playerHeartbeat = GameManager.Instance.GetManagedComponent<AudioManager>().CreateEventInstance(GameManager.Instance.GetManagedComponent<FMODEvents>().heartbeat);
+        playerFootsteps = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.footsteps);
+        playerHeartbeat = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.heartbeat);
 
         TeleportPlayer(_playerSpawnPoint.transform.position);
         Camera.main.gameObject.GetComponent<StudioListener>().attenuationObject = gameObject;

@@ -8,6 +8,7 @@ public class PauseFunctions : MonoBehaviour
 {
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject optionsPanel;
+    [SerializeField] private GameObject settingsPanel;
     [SerializeField] private string mainMenuScene = "";
     private bool paused = false;
     private PlayerController _playerController;
@@ -33,6 +34,13 @@ public class PauseFunctions : MonoBehaviour
         bool menuActive = menuPanel.activeInHierarchy;
         menuPanel.SetActive(!menuActive);
         optionsPanel.SetActive(menuActive);
+    }
+    
+    public void SwapSettingsPanels()
+    {
+        bool menuActive = menuPanel.activeInHierarchy;
+        menuPanel.SetActive(!menuActive);
+        settingsPanel.SetActive(menuActive);
     }
 
 }
