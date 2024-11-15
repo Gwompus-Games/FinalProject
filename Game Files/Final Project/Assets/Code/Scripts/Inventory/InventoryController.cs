@@ -380,7 +380,10 @@ public class InventoryController : ManagedByGameManager
 
     private void DropOxygenTank(II_OxygenTank oxygenTankToPlace)
     {
-        Debug.Log($"Dropping OxygenTank: {oxygenTankToPlace}");
+        if (_debugMode)
+        {
+            Debug.Log($"Dropping OxygenTank: {oxygenTankToPlace}");
+        }
         WI_OxygenTank wI_OxygenTank = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WI_OxygenTank>();
         wI_OxygenTank.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
         Vector3 spawnPoint = GameManager.Instance.GetManagedComponent<PlayerController>().transform.position + (GameManager.Instance.GetManagedComponent<PlayerController>().transform.forward * 1.25f);
