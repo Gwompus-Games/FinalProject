@@ -16,6 +16,6 @@ public class HandSway : MonoBehaviour
 
         Quaternion targetRotation = rotationX * rotationY;
 
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, smoothing * Time.deltaTime);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, smoothing * 0.01f);
     }
 }
