@@ -9,7 +9,7 @@ public class InventoryItem : MonoBehaviour
 {
     public List<Vector2Int> tilesUsed { get; private set; } = new List<Vector2Int>();
     protected List<Image> tileBackgroundImages = new List<Image>();
-    [HideInInspector]
+    //[HideInInspector]
     public Vector2Int originTile = new Vector2Int(-1, -1);
     protected RectTransform _myRectTransform;
     protected Coroutine _flashingRoutune = null;
@@ -17,19 +17,20 @@ public class InventoryItem : MonoBehaviour
     [SerializeField] protected Image _itemImage;
     [field: SerializeField] public ItemDataSO itemData { get; private set; }
     public int sellValue { get; private set; }
+    private bool _removedFromInventory = false;
 
     protected virtual void Awake()
     {
         _myRectTransform = GetComponent<RectTransform>();
-    }
-
-    protected virtual void Start()
-    {
         if (itemData != null)
         {
             InitializeInventoryItem(itemData);
         }
         InitializeGridSpaces();
+    }
+
+    protected virtual void Start()
+    {
         ResizeForScreen();
         if (itemData.inventoryItemSprite == null)
         {
@@ -65,7 +66,7 @@ public class InventoryItem : MonoBehaviour
         InventoryTileComponent[] inventoryTiles = GetComponentsInChildren<InventoryTileComponent>();
         for (int tile = 0; tile < inventoryTiles.Length; tile++)
         {
-            inventoryTiles[tile].InitializeTileComponent();
+            inventoryTiles[tile].Init();
             if (tilesUsed.Contains(inventoryTiles[tile].gridPosition))
             {
                 Destroy(inventoryTiles[tile].gameObject);
@@ -96,7 +97,7 @@ public class InventoryItem : MonoBehaviour
 
     public virtual void ItemRemovedFromInventory()
     {
-
+        _removedFromInventory = true;
     }
 
     public void RotateClockwise()
@@ -173,11 +174,16 @@ public class InventoryItem : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_removedFromInventory)
+        {
+            return;
+        }
+
         InventoryGrid inventory = GetComponentInParent<InventoryGrid>();
         if (inventory == null)
         {
             return;
         }
-        inventory.RemoveItem(this);
+        inventory.RemoveItem(this, true);
     }
 }

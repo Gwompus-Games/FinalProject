@@ -349,11 +349,6 @@ public class InventoryController : ManagedByGameManager
         _inventory.RemoveItem(gridPosToRemove);
     }
 
-    private void ScrapItem()
-    {
-
-    }
-
     private void DropItemIntoWorld()
     {
         if (_itemToPlace == null)
