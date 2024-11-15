@@ -58,7 +58,9 @@ public class DungeonGenerator : ManagedByGameManager
 
     public void StartGeneration()
     {
-        if (generatedRooms.Count > 0 && enemies.Count > 0)
+        Debug.Log("test1");
+
+        if (generatedRooms.Count > 0 || enemies.Count > 0)
         {
             Despawn();
         }
@@ -117,25 +119,22 @@ public class DungeonGenerator : ManagedByGameManager
 
         navMesh.BuildNavMesh();
 
-        //if (!SpawnEnemy())
-        //{
-        //    if (spawnAttempts > 20)
-        //    {
-        //        Debug.LogError("Reached maximum generation attempts without success!");
-        //        spawnAttempts = 0;
-        //        return;
-        //    }
-                
-        //    StartGeneration();
-        //    return;
-        //}
+        if (!SpawnEnemy())
+        {
+            if (spawnAttempts > 20)
+            {
+                Debug.LogError("Reached maximum generation attempts without success!");
+                spawnAttempts = 0;
+                return;
+            }
+
+            StartGeneration();
+            return;
+        }
 
         SpawnAllLoot();
 
         isGenerated = true;
-
-        Despawn();
-
         spawnAttempts = 0;
     }
 
@@ -393,7 +392,6 @@ public class DungeonGenerator : ManagedByGameManager
             }
         }
 
-        Debug.LogError("Reached maximum enemy spawn attempts without success!");
         return false;
     }
 
