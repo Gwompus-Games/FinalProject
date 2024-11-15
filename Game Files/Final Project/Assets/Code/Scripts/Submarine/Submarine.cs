@@ -114,7 +114,7 @@ public class Submarine : ManagedByGameManager
             case GameManager.GameState.InBetweenFacitilies:
                 target = _landedTransform.position;
                 movementCurves = _landingCurves;
-                GameManager.Instance.EnterLevel();
+                GameManager.Instance.EnterLevel(true);
                 break;
             case GameManager.GameState.LandedAtFacility:
                 target = _shoppingPlacementTransform.position;
@@ -123,7 +123,14 @@ public class Submarine : ManagedByGameManager
                 break;
         }
 
-        float timeTakenForAnimation = Vector3.Distance(transform.position, target) / _speed;
+        float distance = Vector3.Distance(transform.position, target);
+
+        if (distance != 0)
+        {
+
+        }
+
+        float timeTakenForAnimation = distance / _speed;
         float timeStep = 0f;
         Vector3 startingPosition = transform.position;
         Vector3 newPosition = Vector3.zero;

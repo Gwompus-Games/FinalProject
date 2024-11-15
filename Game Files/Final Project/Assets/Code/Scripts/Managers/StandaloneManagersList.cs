@@ -15,32 +15,34 @@ public class StandaloneManagersList : MonoBehaviour
         {
             Debug.Log("Setting Up Standalone managers");
         }
-        standaloneManagers = new List<Type> 
-        { 
-            typeof(AudioManager),
-            typeof(FMODEvents)
-        };
+        standaloneManagers = new List<Type>();
 
         managedComponents = Assembly.GetAssembly(typeof(ManagedByGameManager)).GetTypes().Where(t => t.IsSubclassOf(typeof(ManagedByGameManager))).ToList();
         if (_debugMode)
         {
             string standaloneManagersString = "";
-            for (int s = 0; s < standaloneManagers.Count; s++)
+            if (standaloneManagers.Count > 0)
             {
-                standaloneManagersString += standaloneManagers[s].Name;
-                if (s != standaloneManagers.Count - 1)
+                for (int s = 0; s < standaloneManagers.Count; s++)
                 {
-                    standaloneManagersString += ", ";
+                    standaloneManagersString += standaloneManagers[s].Name;
+                    if (s != standaloneManagers.Count - 1)
+                    {
+                        standaloneManagersString += ", ";
+                    }
                 }
             }
 
             string managedManagersString = "";
-            for (int m = 0; m < managedComponents.Count; m++)
+            if (managedComponents.Count > 0)
             {
-                managedManagersString += managedComponents[m].Name;
-                if(m != managedComponents.Count - 1)
+                for (int m = 0; m < managedComponents.Count; m++)
                 {
-                    managedManagersString += ", ";
+                    managedManagersString += managedComponents[m].Name;
+                    if(m != managedComponents.Count - 1)
+                    {
+                        managedManagersString += ", ";
+                    }
                 }
             }
 

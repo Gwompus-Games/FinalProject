@@ -370,7 +370,10 @@ public class PlayerController : ManagedByGameManager
 
     public void MovePlayer(Vector3 motion)
     {
-        Debug.Log(motion);
+        if (_debugMode)
+        {
+            Debug.Log($"Player moved in direction: {motion}");
+        }
         _controller.Move(motion);
     }
 
@@ -521,6 +524,10 @@ public class PlayerController : ManagedByGameManager
 
     public void NoOxygenLeft()
     {
+        if (onSub)
+        {
+            return;
+        }
         if (currentState == PlayerState.Dying)
         {
             return;
@@ -572,12 +579,18 @@ public class PlayerController : ManagedByGameManager
 
     private IEnumerator OxygenOutTimer()
     {
+        if (onSub)
+        {
+            yield break;
+        }
         yield return null;
         //add code for any animations and sounds
 
         yield return new WaitForSeconds(_bufferSecondsFromNoOxygen);
         //add any code for things happening after player runs out of buffer seconds
-        if (_outOfOxygen)
+        if (_outOfOxygen && 
+            !onSub && 
+            GameManager.Instance.currentGameState == GameManager.GameState.LandedAtFacility)
         {
             KillPlayer(DeathObject.DeathType.Suffocation);
         }
