@@ -20,6 +20,9 @@ public class Submarine : ManagedByGameManager
     [SerializeField] private float _speed = 0.25f;
     [SerializeField] private Camera _deadCamera;
 
+    [Header("Debug Settings")]
+    [SerializeField] private bool _debugMode = false;
+
     private PlayerController _playerController;
 
     private bool _inTransit = false;
@@ -108,6 +111,11 @@ public class Submarine : ManagedByGameManager
         Vector3 target = Vector3.zero;
         AnimationCurves movementCurves = new AnimationCurves();
 
+        if (_debugMode)
+        {
+            Debug.Log($"Current game state: {GameManager.Instance.currentGameState}");
+        }
+
         //Select proper change
         switch (GameManager.Instance.currentGameState)
         {
@@ -171,5 +179,12 @@ public class Submarine : ManagedByGameManager
         //_playerController.SetApplyGravity(true);
         GameManager.Instance.SubmarineAnimationFinished();
         _inTransit = false;
+
+        yield return null;
+
+        if (_debugMode)
+        {
+            Debug.Log($"Current game state after animation: {GameManager.Instance.currentGameState}");
+        }
     }
 }

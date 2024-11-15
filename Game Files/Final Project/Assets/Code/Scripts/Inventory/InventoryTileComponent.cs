@@ -12,7 +12,7 @@ public class InventoryTileComponent : MonoBehaviour
     [HideInInspector]
     public Vector2Int gridPosition;
 
-    private void Awake()
+    public void Init()
     {
         _myRectTransform = GetComponent<RectTransform>();
         _myTileImage = GetComponent<Image>();
