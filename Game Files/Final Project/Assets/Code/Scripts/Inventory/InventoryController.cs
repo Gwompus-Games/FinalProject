@@ -393,6 +393,9 @@ public class InventoryController : ManagedByGameManager
         {
             return;
         }
+
+        selectedItemGrid.ClearHoveredItem();
+
         InventoryPopupUI popup = null;
         InventoryUI ui = selectedItemGrid.GetComponentInParent<InventoryUI>();
         if (ui != null)

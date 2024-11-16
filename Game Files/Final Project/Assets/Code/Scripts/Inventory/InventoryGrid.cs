@@ -427,6 +427,11 @@ public class InventoryGrid : ManagedObject
         ClearItemSlots(item.originTile, item.tilesUsed.ToArray());
     }
 
+    internal void ClearHoveredItem()
+    {
+        _hoveredItem = null;
+    }
+
     private void ClearSlotsWithItem(InventoryItem item)
     {
         if (item == null)

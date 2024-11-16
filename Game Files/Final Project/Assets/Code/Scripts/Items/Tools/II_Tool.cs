@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class II_Tool : InventoryItem
 {
-    protected HoldableToolSO holdableToolData;
+    protected HoldableToolSO _holdableToolData;
+    protected ToolController _toolController;
 
     protected override void Awake()
     {
         base.Awake();
-        holdableToolData = itemData as HoldableToolSO;
-        if (holdableToolData == null)
+        _holdableToolData = itemData as HoldableToolSO;
+        if (_holdableToolData == null)
         {
             throw new System.Exception("Item data is not a Holdable Tool type!");
+        }
+
+        _toolController = GameManager.Instance.GetManagedComponent<ToolController>();
+        if (_toolController == null)
+        {
+            throw new System.Exception("Tool controller not found!");
         }
     }
 
@@ -21,7 +24,7 @@ public class II_Tool : InventoryItem
         base.ItemPlacedInInventory();
         if (transform.parent.TryGetComponent<ToolBarGridScript>(out ToolBarGridScript toolBarGrid))
         {
-            toolBarGrid.AddItemToTools(this, holdableToolData, originTile);
+            toolBarGrid.AddItemToTools(this, _holdableToolData, originTile);
         }
     }
 
