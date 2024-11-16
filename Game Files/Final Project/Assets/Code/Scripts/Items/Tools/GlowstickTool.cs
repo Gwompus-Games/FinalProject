@@ -44,16 +44,15 @@ public class GlowstickTool : ToolsParent
     {
         if (_myInventoryItem == null)
         {
+            Debug.LogWarning("Inventory item is null!");
             return;
         }
-        Transform worldItemParent = FindFirstObjectByType<WorldItemsTag>().transform;
-        WI_Glowstick glowstickWorldItem = Instantiate(_myInventoryItem.itemData.worldObject, worldItemParent, true).GetComponent<WI_Glowstick>();
-        glowstickWorldItem.transform.position = transform.position;
-        glowstickWorldItem.transform.rotation = transform.rotation;
-        glowstickWorldItem.GetComponent<Rigidbody>().AddForce(transform.forward * (_throwForce * Random.Range(0.8f, 1.2f)), ForceMode.Impulse);
-        glowstickWorldItem.GetComponent<Rigidbody>().AddTorque(transform.up * (_throwForce / 2 * Random.Range(0.8f, 1.2f)), ForceMode.Impulse);
-        glowstickWorldItem.UseGlowstick(_chosenColour);
-        Destroy(_myInventoryItem.gameObject);
+        if (_toolController.debugMode)
+        {
+            Debug.Log($"Using Glowstick: {_myInventoryItem.itemData.itemName} | That is colour: {_myInventoryItem.GetColour()}");
+        }
+
+        ThrowGlowstick(_myInventoryItem, _chosenColour);
         SetToolEnabled(false);
         _toolController.ResetTools();
     }
@@ -61,5 +60,23 @@ public class GlowstickTool : ToolsParent
     public override void CancelUseTool()
     {
         
+    }
+
+    public void ThrowGlowstick(II_Glowstick glowstick, Color chosenColour)
+    {
+        if (_toolController.debugMode)
+        {
+            Debug.Log($"Throwing Glowstick: {glowstick.itemData.itemName} | That is colour: {chosenColour}");
+        }
+
+        Transform worldItemParent = FindFirstObjectByType<WorldItemsTag>().transform;
+        WI_Glowstick glowstickWorldItem = Instantiate(glowstick.itemData.worldObject, worldItemParent, true).GetComponent<WI_Glowstick>();
+        glowstickWorldItem.transform.position = transform.position;
+        glowstickWorldItem.transform.rotation = transform.rotation;
+        glowstickWorldItem.GetComponent<Rigidbody>().AddForce(transform.forward * (_throwForce * Random.Range(0.8f, 1.2f)), ForceMode.Impulse);
+        glowstickWorldItem.GetComponent<Rigidbody>().AddTorque(transform.up * (_throwForce / 2 * Random.Range(0.8f, 1.2f)), ForceMode.Impulse);
+        glowstickWorldItem.UseGlowstick(chosenColour);
+        _toolController.RemoveTool(glowstick);
+        Destroy(glowstick.gameObject);
     }
 }

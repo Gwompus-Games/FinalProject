@@ -28,6 +28,8 @@ public class UIManager : ManagedByGameManager
         PAUSE
     }
 
+    public UIToDisplay currentUIState { get; private set; }
+
     private void Awake()
     {
         //crtShader = GameObject.Find("CRT_PostProcess_Prefab").GetComponent<Volume>();
@@ -92,7 +94,9 @@ public class UIManager : ManagedByGameManager
         RepairManager repairManager = null;
         crtShader.weight = crtShaderWeight;
 
-        switch (ui)
+        currentUIState = ui;
+
+        switch (currentUIState)
         {
             case UIToDisplay.GAME:
                 crtShader.weight = 0f;

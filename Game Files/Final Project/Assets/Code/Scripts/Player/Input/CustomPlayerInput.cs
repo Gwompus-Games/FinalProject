@@ -17,7 +17,8 @@ public class CustomPlayerInput : ManagedByGameManager
     public static Action Interact;
     public static Action<bool> UpdateRunning;
     public static Action<int> SwapTool;
-    public static Action<CustomInputData> UseTool; 
+    public static Action<CustomInputData> UseTool;
+    public static Action QuickUseGlowstick;
 
     public enum CustomInputData
     {
@@ -145,6 +146,14 @@ public class CustomPlayerInput : ManagedByGameManager
         if (context.canceled)
         {
             UseTool?.Invoke(CustomInputData.RELEASED);
+        }
+    }
+
+    public void QuickUseGlowstickInput(InputAction.CallbackContext context)
+    {
+        if (context.canceled)
+        {
+            QuickUseGlowstick?.Invoke();
         }
     }
 }
