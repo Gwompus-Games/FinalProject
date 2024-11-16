@@ -370,6 +370,10 @@ public class PlayerController : ManagedByGameManager
 
     public void MovePlayer(Vector3 motion)
     {
+        if (!_controller.enabled)
+        {
+            return;
+        }
         if (_debugMode)
         {
             Debug.Log($"Player moved in direction: {motion}");

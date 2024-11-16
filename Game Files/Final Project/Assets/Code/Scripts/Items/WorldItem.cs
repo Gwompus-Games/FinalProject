@@ -75,7 +75,6 @@ public class WorldItem : InteractableObject
         {
             Vector3 direction = (transform.position - other.transform.position).normalized;
             Vector3 force = direction * _pushForce;
-            Debug.Log(force);
             _rigidbody.AddForce(force);
         }
     }

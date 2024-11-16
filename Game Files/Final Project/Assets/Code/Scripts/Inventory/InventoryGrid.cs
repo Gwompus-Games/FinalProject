@@ -25,6 +25,8 @@ public class InventoryGrid : ManagedObject
 
     private bool _initialized = false;
 
+    [SerializeField] private bool _debugMode = false;
+
     public override void Init()
     {
         base.Init();
@@ -120,11 +122,23 @@ public class InventoryGrid : ManagedObject
     
     public InventoryItem PickupItem(Vector2Int gridPosition)
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Trying to pickup from grid position: {gridPosition}");
+        }
         if (CheckIfSlotAvailable(gridPosition))
         {
+            if (_debugMode)
+            {
+                Debug.Log($"No item in slot {gridPosition}");
+            }
             return null;
         }
         InventoryItem item = GetItemInSlot(gridPosition);
+        if (_debugMode)
+        {
+            Debug.Log($"Picking up: {item.name}");
+        }
         item.ItemRemovedFromInventory();
         ClearItemInSlot(gridPosition);
         return item;
@@ -143,12 +157,18 @@ public class InventoryGrid : ManagedObject
 
         if (gridPosition.x >= gridSizeWidth || gridPosition.y >= gridSizeHeight)
         {
-            Debug.LogWarning("Cannot place on a space bigger than the grid size!");
+            if (_debugMode)
+            {
+                Debug.LogWarning("Cannot place on a space bigger than the grid size!");
+            }
             return false;
         }
         if (gridPosition.x < 0 || gridPosition.y < 0)
         {
-            Debug.LogWarning("Cannot place on a negative space.");
+            if (_debugMode)
+            {
+                Debug.LogWarning("Cannot place on a negative space.");
+            }
             return false;
         }
         if (!CheckIfSlotsAvailable(gridPosition, inventoryItem.tilesUsed.ToArray()))
@@ -156,12 +176,18 @@ public class InventoryGrid : ManagedObject
             List<InventoryItem> itemsInSlots = GetItemsInSlots(gridPosition, inventoryItem.tilesUsed.ToArray());
             if (itemsInSlots == null)
             {
-                Debug.LogWarning("Tried to place in a bad spot.");
+                if (_debugMode)
+                {
+                    Debug.LogWarning("Tried to place in a bad spot.");
+                }
                 return false;
             }
             if (itemsInSlots.Count > 1)
             {
-                Debug.LogWarning("Too many items blocking spaces");
+                if (_debugMode)
+                {
+                    Debug.LogWarning("Too many items blocking spaces");
+                }
                 return false;
             }
             if (itemsInSlots.Count <= 0)
@@ -188,6 +214,12 @@ public class InventoryGrid : ManagedObject
         position.y = -((float)gridPosition.y * globalItemData.tileHeight + globalItemData.tileHeight / 2f);
 
         rectTransform.localPosition = position;
+
+        if (_debugMode)
+        {
+            Debug.Log($"Placed {inventoryItem.name} in slot {gridPosition}");
+        }
+
         return true;
     }
 
@@ -212,19 +244,44 @@ public class InventoryGrid : ManagedObject
     private bool CheckIfSlotAvailable(Vector2Int gridTile)
     {
         InitGrid(gridSizeWidth, gridSizeHeight);
+        if (_debugMode)
+        {
+            Debug.Log($"Checking slot: {gridTile}");
+        }
         if (gridTile.x < 0 || gridTile.y < 0)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"One or both grid tile positions are negative!");
+            }
             return false;
         }
         if (gridTile.x >= gridSizeWidth || gridTile.y >= gridSizeHeight)
         {
+            if (_debugMode)
+            {
+                Debug.Log("One or both grid tile positions are outside the size of the grid!");
+            }
             return false;
+        }
+        if (_debugMode)
+        {
+            Debug.Log($"Item in slot: {inventoryItemSlot[gridTile.x, gridTile.y]}");
         }
         if (inventoryItemSlot[gridTile.x, gridTile.y] != null)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"Item found at: {gridTile}");
+            }
             return false;
         }
 
+        if (_debugMode)
+        {
+            Debug.Log($"No item found!");
+        }
+        
         return true;
     }
     
@@ -269,12 +326,18 @@ public class InventoryGrid : ManagedObject
             Vector2Int gridTile = origin + tileCoordinates[t];
             if (gridTile.x < 0 || gridTile.y < 0)
             {
-                Debug.LogWarning("Tried to access a negative slot.");
+                if (_debugMode)
+                {
+                    Debug.LogWarning("Tried to access a negative slot.");
+                }
                 return null;
             }
             if (gridTile.x >= gridSizeWidth || gridTile.y >= gridSizeHeight)
             {
-                Debug.LogWarning("Tried to access a slot greater than the grid size.");
+                if (_debugMode)
+                {
+                    Debug.LogWarning("Tried to access a slot greater than the grid size.");
+                }
                 return null;
             }
             if (inventoryItemSlot[gridTile.x, gridTile.y] != null && !items.Contains(inventoryItemSlot[gridTile.x, gridTile.y]))
@@ -288,6 +351,10 @@ public class InventoryGrid : ManagedObject
 
     private void SetItemSlots(Vector2Int origin, Vector2Int[] tileCoordinates, InventoryItem item)
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Trying to place item: {item.name} in origin slot {origin}");
+        }
         for (int t = 0; t < tileCoordinates.Length; t++)
         {
             Vector2Int gridTile = origin + tileCoordinates[t];
@@ -304,6 +371,10 @@ public class InventoryGrid : ManagedObject
         {
             Vector2Int gridTile = origin + tileCoordinates[t];
             inventoryItemSlot[gridTile.x, gridTile.y] = item;
+            if (_debugMode)
+            {
+                Debug.Log($"Setting {gridTile} to equal {item.name}");
+            }
         }
     }
 
@@ -312,7 +383,10 @@ public class InventoryGrid : ManagedObject
         InventoryItem item = GetItemInSlot(origin);
         if (item == null)
         {
-            Debug.LogWarning("No item to clear.");
+            if (_debugMode)
+            {
+                Debug.LogWarning("No item to clear.");
+            }
             return;
         }
         for (int t = 0; t < tileCoordinates.Length; t++)
@@ -333,6 +407,11 @@ public class InventoryGrid : ManagedObject
             inventoryItemSlot[gridTile.x, gridTile.y] = null;
         }
         item.originTile = new Vector2Int(-1, -1);
+
+        if (_debugMode)
+        {
+            Debug.Log($"Clearing {item.name} from inventory");
+        }
     }
 
     private void ClearItemInSlot(Vector2Int gridPosition)
@@ -340,13 +419,29 @@ public class InventoryGrid : ManagedObject
         InventoryItem item = GetItemInSlot(gridPosition);
         if (item == null)
         {
-            Debug.LogError("No item in slot that is attempting to be cleared");
+            if (_debugMode)
+            {
+                Debug.LogWarning("No item in slot that is attempting to be cleared");
+            }
         }
         ClearItemSlots(item.originTile, item.tilesUsed.ToArray());
     }
 
+    internal void ClearHoveredItem()
+    {
+        _hoveredItem = null;
+    }
+
     private void ClearSlotsWithItem(InventoryItem item)
     {
+        if (item == null)
+        {
+            return;
+        }
+        if (GetItemInSlot(item.originTile) != item)
+        {
+            return;
+        }
         ClearItemSlots(item.originTile, item.tilesUsed.ToArray());
     }
 
@@ -446,11 +541,14 @@ public class InventoryGrid : ManagedObject
         popupUI.DisablePopup();
     }
 
-    public void RemoveItem(InventoryItem item)
+    public void RemoveItem(InventoryItem item, bool calledFromItemDestroy = false)
     {
         ClearSlotsWithItem(item);
         item.ItemRemovedFromInventory();
-        Destroy(item.gameObject);
+        if (!calledFromItemDestroy)
+        {
+            Destroy(item.gameObject);
+        }
     }
 
     public void RemoveItem(Vector2Int gridPosition)

@@ -583,6 +583,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 51fc87e7-b7e5-4d83-8f84-2e83c62097c1
     m_ActionName: Player/Pause[/Keyboard/backquote]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5864806220124439931}
+        m_TargetAssemblyTypeName: CustomPlayerInput, Assembly-CSharp
+        m_MethodName: QuickUseGlowstickInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0047081e-473e-414e-831a-6fdd4cd0f8c5
+    m_ActionName: PlayerInput/Quick Drop Glowstick[/Keyboard/g]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerInput
@@ -667,7 +683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _starterOxygenTank: {fileID: 11400000, guid: 3f867d3391e94f040865196b26eb2d98, type: 2}
   _numberOfStartingOxygenTanks: 2
-  _debugMode: 1
+  _debugMode: 0
 --- !u!114 &8716103006985781635
 MonoBehaviour:
   m_ObjectHideFlags: 0

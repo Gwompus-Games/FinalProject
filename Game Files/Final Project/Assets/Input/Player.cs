@@ -134,6 +134,15 @@ public partial class @Player: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quick Use Glowstick"",
+                    ""type"": ""Button"",
+                    ""id"": ""0047081e-473e-414e-831a-6fdd4cd0f8c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -334,6 +343,17 @@ public partial class @Player: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a242a5e5-ef35-42cb-b7a5-0988b7187832"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""Quick Use Glowstick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -371,6 +391,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
         m_PlayerInput_SwapTool = m_PlayerInput.FindAction("Swap Tool", throwIfNotFound: true);
         m_PlayerInput_UseTool = m_PlayerInput.FindAction("Use Tool", throwIfNotFound: true);
         m_PlayerInput_Pause = m_PlayerInput.FindAction("Pause", throwIfNotFound: true);
+        m_PlayerInput_QuickUseGlowstick = m_PlayerInput.FindAction("Quick Use Glowstick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -444,6 +465,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerInput_SwapTool;
     private readonly InputAction m_PlayerInput_UseTool;
     private readonly InputAction m_PlayerInput_Pause;
+    private readonly InputAction m_PlayerInput_QuickUseGlowstick;
     public struct PlayerInputActions
     {
         private @Player m_Wrapper;
@@ -460,6 +482,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
         public InputAction @SwapTool => m_Wrapper.m_PlayerInput_SwapTool;
         public InputAction @UseTool => m_Wrapper.m_PlayerInput_UseTool;
         public InputAction @Pause => m_Wrapper.m_PlayerInput_Pause;
+        public InputAction @QuickUseGlowstick => m_Wrapper.m_PlayerInput_QuickUseGlowstick;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -505,6 +528,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @QuickUseGlowstick.started += instance.OnQuickUseGlowstick;
+            @QuickUseGlowstick.performed += instance.OnQuickUseGlowstick;
+            @QuickUseGlowstick.canceled += instance.OnQuickUseGlowstick;
         }
 
         private void UnregisterCallbacks(IPlayerInputActions instance)
@@ -545,6 +571,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @QuickUseGlowstick.started -= instance.OnQuickUseGlowstick;
+            @QuickUseGlowstick.performed -= instance.OnQuickUseGlowstick;
+            @QuickUseGlowstick.canceled -= instance.OnQuickUseGlowstick;
         }
 
         public void RemoveCallbacks(IPlayerInputActions instance)
@@ -585,5 +614,6 @@ public partial class @Player: IInputActionCollection2, IDisposable
         void OnSwapTool(InputAction.CallbackContext context);
         void OnUseTool(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnQuickUseGlowstick(InputAction.CallbackContext context);
     }
 }
