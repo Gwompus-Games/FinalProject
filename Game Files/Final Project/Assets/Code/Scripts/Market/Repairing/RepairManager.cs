@@ -51,6 +51,7 @@ public class RepairManager : MonoBehaviour
     private Dictionary<RepairTypes, RepairValues> _repairs = new Dictionary<RepairTypes, RepairValues>();
     private SuitSystem _suitSystem;
     private RepairSection[] _repairSections;
+    public bool debugMode = false;
 
     public int repairCount
     {

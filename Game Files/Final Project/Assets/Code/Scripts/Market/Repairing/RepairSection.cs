@@ -8,7 +8,7 @@ public class RepairSection : MonoBehaviour
 {
     [SerializeField] private Image _buttonImage;
     [SerializeField] private TMP_Text _buttonText;
-    [SerializeField] private TMP_Text _sectionTitle;
+    [SerializeField] private TMP_Text _sectionTitleText;
     [SerializeField] private TMP_Text _costText;
     private RepairManager.RepairValues _repairValues;
     private PlayerController _playerController;
@@ -81,6 +81,27 @@ public class RepairSection : MonoBehaviour
         _suitSystem = GameManager.Instance.GetManagedComponent<SuitSystem>();
         ShopUIManager shopUIManager = GameManager.Instance.GetManagedComponent<ShopUIManager>();
 
+        //Debug Warnings
+        if (_repairManager.debugMode)
+        {
+            if (_buttonImage == null)
+            {
+                Debug.LogWarning($"No button image assigned for repair section: {gameObject.name}");
+            }
+            if (_buttonText == null)
+            {
+                Debug.LogWarning($"No button text assigned for repair section: {gameObject.name}");
+            }
+            if (_sectionTitleText == null)
+            {
+                Debug.LogWarning($"No section title text assigned for repair section: {gameObject.name}");
+            }
+            if (_costText == null)
+            {
+                Debug.LogWarning($"No cost text assigned for repair section: {gameObject.name}");
+            }
+        }
+
         //Set up colours
         _ableToAffordBackgroundColour = shopUIManager.ableToBuyBackgroundColour;
         _ableToAffordTextColour = shopUIManager.ableToBuyTextColour;
@@ -95,7 +116,10 @@ public class RepairSection : MonoBehaviour
         //Assign values and colours
         _repairValues.SetupValues(values);
         UpdateRepairValues(0);
-        _sectionTitle.text = values.nameString;
+        if (_sectionTitleText.text != null)
+        {
+            _sectionTitleText.text = values.nameString;
+        }
         _repairManager.RepairMade += UpdateRepairValues;
     }
 
@@ -113,7 +137,10 @@ public class RepairSection : MonoBehaviour
         }
         _repairValues = values;
         //Debug.Log($"Updating repair values for {_repairValues.nameString}");
-        _costText.text = $"${values.currentPrice}";
+        if (_costText != null)
+        {
+            _costText.text = $"${values.currentPrice}";
+        }
         CheckIfCanAfford();
         CheckIfCanBuy();
     }
@@ -128,20 +155,38 @@ public class RepairSection : MonoBehaviour
     {
         if (!_canBuy)
         {
-            _buttonImage.color = _cannotPurchaseBackgroundColour;
-            _buttonText.color = _cannotPurchaseTextColour;
+            if (_buttonImage != null)
+            {
+                _buttonImage.color = _cannotPurchaseBackgroundColour;
+            }
+            if (_buttonText != null)
+            {
+                _buttonText.color = _cannotPurchaseTextColour;
+            }
             return;
         }
 
         if (_canAfford)
         {
-            _buttonImage.color = _ableToAffordBackgroundColour;
-            _buttonText.color = _ableToAffordTextColour;
+            if (_buttonImage != null)
+            {
+                _buttonImage.color = _ableToAffordBackgroundColour;
+            }
+            if (_buttonText != null)
+            {
+                _buttonText.color = _ableToAffordTextColour;
+            }
         }
         else
         {
-            _buttonImage.color = _unableToAffordBackgroundColour;
-            _buttonText.color = _unableToAffordTextColour;
+            if (_buttonImage != null)
+            {
+                _buttonImage.color = _unableToAffordBackgroundColour;
+            }
+            if (_buttonText != null)
+            {
+                _buttonText.color = _unableToAffordTextColour;
+            }
         }
     }
 
