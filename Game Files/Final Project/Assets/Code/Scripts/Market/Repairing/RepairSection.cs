@@ -115,6 +115,15 @@ public class RepairSection : MonoBehaviour
 
         //Assign values and colours
         _repairValues.SetupValues(values);
+
+        if (_buttonImage != null)
+        {
+            if (_repairValues.buttonSprite != null)
+            {
+                _buttonImage.sprite = _repairValues.buttonSprite;
+            }
+        }
+
         UpdateRepairValues(0);
         if (_sectionTitleText.text != null)
         {
@@ -136,7 +145,12 @@ public class RepairSection : MonoBehaviour
             return;
         }
         _repairValues = values;
-        //Debug.Log($"Updating repair values for {_repairValues.nameString}");
+
+        if (_repairManager.debugMode)
+        {
+            Debug.Log($"Updating repair values for {_repairValues.nameString}");
+        }
+
         if (_costText != null)
         {
             _costText.text = $"${values.currentPrice}";
