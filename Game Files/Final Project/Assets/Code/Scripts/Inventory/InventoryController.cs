@@ -274,8 +274,11 @@ public class InventoryController : ManagedByGameManager
         if (!_inventory.CheckIfSlotsAvailable(gridPosition, inventoryItem.tilesUsed.ToArray()))
         {
             Debug.LogWarning("Tried to add to a specific slot that isn't free!");
+            Destroy(inventoryItem.gameObject);
             return AddItemToInventory(itemData);
         }
+
+        inventoryItem.InitializeInventoryItem(itemData);
 
         return PlaceItem(inventoryItem, gridPosition);
     }
@@ -295,6 +298,9 @@ public class InventoryController : ManagedByGameManager
             inventoryItem = inventoryObject.GetComponent<InventoryItem>();
             inventoryItem.FindExtremes(out minSpaceDistance, out maxSpaceDistance);
         }
+
+        inventoryItem.InitializeInventoryItem(itemData);
+
         if (_inventory == null)
         {
             return false;
