@@ -238,15 +238,18 @@ public class RepairSection : MonoBehaviour
             return;
         }
 
-        if (!CheckIfCanAfford())
-        {
-            return;
-        }
-
         if (!CheckIfCanBuy())
         {
             return;
         }
+
+        if (!CheckIfCanAfford())
+        {
+            //Add deny buying sound effect
+            return;
+        }
+        
+        //Add repair sound effect
 
         _playerController.SpendMoney(_repairValues.currentPrice);
         _repairManager.RepairBought(_repairValues.type);
