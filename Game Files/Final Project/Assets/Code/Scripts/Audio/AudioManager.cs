@@ -11,9 +11,10 @@ public class AudioManager : MonoBehaviour
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
 
-    private EventInstance heartbeatInstance;
+    public EventInstance heartbeatInstance;
     private EventInstance bgmInstance, menuInstance;
 
+    #region Scene_Vars
     public string endScene, menuScene, gameScene;
     public enum SceneName
     {
@@ -22,7 +23,9 @@ public class AudioManager : MonoBehaviour
         End
     }
     public SceneName currentScene;
-    
+    #endregion
+
+    #region Volume_Bus
     public enum VolumeBus
     {
         Master,
@@ -45,6 +48,7 @@ public class AudioManager : MonoBehaviour
     private Bus musicBus;
     private Bus sfxBus;
     private Bus uiBus;
+    #endregion
 
     private void Awake()
     {
@@ -67,7 +71,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        heartbeatInstance = CreateEventInstance(FMODEvents.Instance.heartbeat); 
+        //heartbeatInstance = CreateEventInstance(FMODEvents.Instance.heartbeat); 
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
         bgmInstance = CreateEventInstance(FMODEvents.Instance.bgm);

@@ -154,6 +154,7 @@ public class PlayerController : ManagedByGameManager
 
         playerFootsteps = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.footsteps);
         playerHeartbeat = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.heartbeat);
+        AudioManager.Instance.heartbeatInstance = playerHeartbeat;
 
         TeleportPlayer(_playerSpawnPoint.transform.position);
         Camera.main.gameObject.GetComponent<StudioListener>().attenuationObject = gameObject;
