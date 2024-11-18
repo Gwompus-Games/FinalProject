@@ -65,11 +65,12 @@ public class SuitSystem : ManagedByGameManager, IDamageable
                 }
             }
         }
-
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.X))
         {
             DebugTakeDamage();
         }
+#endif
     }
 
     public void DebugTakeDamage()
@@ -91,6 +92,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         currentSectionDurability -= damage;
         if (screenShake)
         {
+            //Add player getting hit sound effect
             StartCoroutine(camShake.ShakeUrBooty(.15f, .4f));
         }
         UpdateUI();
