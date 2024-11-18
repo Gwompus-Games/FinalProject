@@ -127,13 +127,25 @@ public class BuyingManager : ManagedByGameManager
     {
         if (_ableToAffordFreedom)
         {
-            _freedomButtonImage.color = _ableToAffordBackgroundColour;
-            _freedomButtonText.color = _ableToAffordTextColour;
+            if (_freedomButtonImage != null)
+            {
+                _freedomButtonImage.color = _ableToAffordBackgroundColour;
+            }
+            if (_freedomButtonText != null)
+            {
+                _freedomButtonText.color = _ableToAffordTextColour;
+            }
         }
         else
         {
-            _freedomButtonImage.color = _unableToAffordBackgroundColour;
-            _freedomButtonText.color = _unableToAffordTextColour;
+            if (_freedomButtonImage != null)
+            {
+                _freedomButtonImage.color = _unableToAffordBackgroundColour;
+            }
+            if (_freedomButtonText != null)
+            {
+                _freedomButtonText.color = _unableToAffordTextColour;
+            }
         }
     }
 
