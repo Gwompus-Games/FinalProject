@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class BuyingManager : ManagedByGameManager
 {
+    [Header("Debug Settings")]
+    [SerializeField] private bool _debugMode = false;
     [field: SerializeField] public ToolListSO toolList { get; private set; }
     public static Action UpdateBuySections;
     
@@ -102,9 +104,17 @@ public class BuyingManager : ManagedByGameManager
     {
         if (_playerController.money < toolToBuy.buyValue)
         {
-            Debug.LogWarning("Player doesn't have enough money to buy this tool.");
+            //Add buying denyed sound effect here
+
+            if (_debugMode)
+            {
+                Debug.LogWarning("Player doesn't have enough money to buy this tool.");
+            }
             return;
         }
+
+        //Add buying sound effect here
+
         _playerController.SpendMoney(toolToBuy.buyValue);
         OxygenTankSO oxygenTank = toolToBuy as OxygenTankSO;
         if (oxygenTank != null)

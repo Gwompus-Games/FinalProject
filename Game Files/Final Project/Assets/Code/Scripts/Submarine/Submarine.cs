@@ -133,6 +133,8 @@ public class Submarine : ManagedByGameManager
 
         float distance = Vector3.Distance(transform.position, target);
 
+        //Start submarine sound effect
+
         if (distance != 0)
         {
             float timeTakenForAnimation = distance / _speed;
@@ -166,6 +168,8 @@ public class Submarine : ManagedByGameManager
                 yield return null;
             }
         }
+
+        //Stop submarine sound effect
 
         if (transform.position == _landedTransform.position)
         {
