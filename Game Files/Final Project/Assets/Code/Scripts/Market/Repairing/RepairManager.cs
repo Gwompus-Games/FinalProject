@@ -17,7 +17,7 @@ public class RepairManager : MonoBehaviour
     [Serializable]
     public struct RepairValues
     {
-        public void SetupValues(RepairTypes repairTypes, string name, int assignedBasePrice, int assignedScaleAdditive, float assignedMinPercentToBuy)
+        public void SetupValues(RepairTypes repairTypes, string name, int assignedBasePrice, int assignedScaleAdditive, float assignedMinPercentToBuy, Sprite buyButtonSprite)
         {
             type = repairTypes;
             nameString = name;
@@ -25,6 +25,7 @@ public class RepairManager : MonoBehaviour
             currentPrice = basePrice;
             scaleAdditive = assignedScaleAdditive;
             minimumPercentToBuy = assignedMinPercentToBuy;
+            buttonSprite = buyButtonSprite;
         }
 
         public void SetupValues(RepairValues values)
@@ -35,6 +36,7 @@ public class RepairManager : MonoBehaviour
             currentPrice = basePrice;
             scaleAdditive = values.scaleAdditive;
             minimumPercentToBuy = values.minimumPercentToBuy;
+            buttonSprite = values.buttonSprite;
         }
 
         public RepairTypes type;
@@ -44,6 +46,7 @@ public class RepairManager : MonoBehaviour
         public int currentPrice;
         public int scaleAdditive;
         [Range(0f, 100f)] public float minimumPercentToBuy;
+        public Sprite buttonSprite;
     }
 
     [SerializeField] private RepairValues[] _repairValues;
@@ -51,6 +54,7 @@ public class RepairManager : MonoBehaviour
     private Dictionary<RepairTypes, RepairValues> _repairs = new Dictionary<RepairTypes, RepairValues>();
     private SuitSystem _suitSystem;
     private RepairSection[] _repairSections;
+    public bool debugMode = false;
 
     public int repairCount
     {
