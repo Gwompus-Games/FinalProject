@@ -534,7 +534,7 @@ public class InventoryGrid : ManagedObject
                     {
                         popupUI.UpdatePopup(_cursorPos);
                     }
-                    yield return new WaitForSeconds(0.15f);
+                    yield return null;
                 } while (_hoveredItem == item);
             }
         }

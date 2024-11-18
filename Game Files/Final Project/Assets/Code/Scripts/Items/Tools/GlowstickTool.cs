@@ -69,6 +69,8 @@ public class GlowstickTool : ToolsParent
             Debug.Log($"Throwing Glowstick: {glowstick.itemData.itemName} | That is colour: {chosenColour}");
         }
 
+        //Add glowstick sound effect here
+
         Transform worldItemParent = FindFirstObjectByType<WorldItemsTag>().transform;
         WI_Glowstick glowstickWorldItem = Instantiate(glowstick.itemData.worldObject, worldItemParent, true).GetComponent<WI_Glowstick>();
         glowstickWorldItem.transform.position = transform.position;
