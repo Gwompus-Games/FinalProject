@@ -3,6 +3,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -11,8 +12,14 @@ public class AudioManager : MonoBehaviour
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
 
-    public EventInstance heartbeatInstance;
     private EventInstance bgmInstance, menuInstance;
+    public enum Ground
+    {
+        Sand,
+        Metal
+    }
+    public Ground currentGround;
+
 
     #region Scene_Vars
     public string endScene, menuScene, gameScene;
@@ -134,10 +141,34 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetHeartbeatParameter(string name, float value)
+    public void SetInstanceParameter(EventInstance eventInstance, string name, float value)
     {
-        heartbeatInstance.setParameterByName(name, value);
+        eventInstance.setParameterByName(name, value);
     }
+
+    public void SetInstanceParameter(EventInstance eventInstance, Ground ground)
+    {
+        if(currentGround == ground)
+            return; 
+
+        currentGround = ground;
+        int value = 0;
+        if(currentGround == Ground.Sand)
+        {
+            value = 1;
+        }
+        else if(currentGround == Ground.Metal)
+        {
+            value = 0;
+        }
+        else
+        {
+            Debug.LogError("Wrong layer");
+            return;
+        }
+        eventInstance.setParameterByName("Ground", value);
+    }
+
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == endScene)
