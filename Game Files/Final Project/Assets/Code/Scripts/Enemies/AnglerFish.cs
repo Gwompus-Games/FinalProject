@@ -8,7 +8,8 @@ public class AnglerFish : Enemy
 {
     [SerializeField] private float _heartbeatRange = 30;
     private string parameterName = "Heartbeat_Intensity";
-    private float parameterIntensity = 0f, distanceFromPlayer;  
+    private float parameterIntensity = 0f, distanceFromPlayer;
+    private PlayerController player;
 
     protected override void Awake()
     {
@@ -18,6 +19,7 @@ public class AnglerFish : Enemy
     public override void SetupEnemy()
     {
         base.SetupEnemy();
+        player = GameManager.Instance.GetManagedComponent<PlayerController>();
     }
 
     private void Update()
@@ -32,7 +34,7 @@ public class AnglerFish : Enemy
 
                 //set parameter intensity in fmod
                 parameterIntensity = ((_heartbeatRange - distanceFromPlayer)/_heartbeatRange);
-                AudioManager.Instance.SetHeartbeatParameter(parameterName, parameterIntensity);
+                AudioManager.Instance.SetInstanceParameter(player.playerHeartbeat, parameterName, parameterIntensity);
             }
             else
             {
