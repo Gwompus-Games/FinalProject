@@ -585,6 +585,7 @@ public class PlayerController : ManagedByGameManager
     public void RespawnPlayer()
     {
         TeleportPlayer(_playerSpawnPoint.position);
+        suitSystem.ResetSuitDurability();
         DisableDeath();
     }
 
