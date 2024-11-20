@@ -536,6 +536,9 @@ public class PlayerController : ManagedByGameManager
         {
             return;
         }
+
+        //Add suffocating sound effect
+
         _outOfOxygen = true;
         _oxygenOutCoroutine = StartCoroutine(OxygenOutTimer());
     }
@@ -546,6 +549,9 @@ public class PlayerController : ManagedByGameManager
         {
             return;
         }
+
+        //Add regained oxygen sound effect
+
         _outOfOxygen = false;
         if (_oxygenOutCoroutine != null)
         {

@@ -6,8 +6,6 @@ public class FlashlightTool : ToolsParent
 {
     private Light _light;
     private ToolController _controller;
-    [SerializeField] private AudioSource _flashlightSource;
-    [SerializeField] private AudioClip _flashlightClick;
 
     public override void Init()
     {
@@ -30,17 +28,17 @@ public class FlashlightTool : ToolsParent
     public override void UseTool()
     {
         _light.enabled = !_light.enabled;
+        //Add sound effect here
+
         if (_controller.debugMode)
         {
             if (_light.enabled)
             {
                 Debug.Log("Flashlight turned on!");
-                _flashlightSource.PlayOneShot(_flashlightClick);
             }
             else
             {
                 Debug.Log("Flashlight turned off!");
-                _flashlightSource.PlayOneShot(_flashlightClick);
             }
             
         }
