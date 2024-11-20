@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640d9e7e81e78ab469a03311bd17945a, type: 3}
-  m_Name: TestTube
+  m_Name: MetalPlates
   m_EditorClassIdentifier: 
-  itemName: Test Tube
-  itemDescription: What is that inside? Oh well, not my problem.
+  itemName: Metal Plates
+  itemDescription: 
   usedForSelling: 1
-  worldObject: {fileID: 6064690173841897909, guid: a42f21e4ea06a834db7f06bc73041505,
+  worldObject: {fileID: 2897010577747203443, guid: 60db37b94fe2b8d4f92f06f3ba37fade,
     type: 3}
-  density: 1
-  drag: 26.7
-  angularDrag: 0.5
+  density: 2
+  drag: 7.3
+  angularDrag: 0.15
   floatingItem: 0
-  inventoryObject: {fileID: 6380158574222543350, guid: d19f0a8dde9525c4bbfd308ca0f29ac2,
+  inventoryObject: {fileID: 7321413618863218979, guid: 265f830ea11f1d34ab137d55f1e627c6,
     type: 3}
   inventoryItemSprite: {fileID: 0}
-  baseValue: 250
-  rarity: 2
-  spawnChancePoints: 15
+  baseValue: 20
+  rarity: 0
+  spawnChancePoints: 125

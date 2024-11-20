@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using UnityEngine;
+
 public class II_Tool : InventoryItem
 {
     protected HoldableToolSO _holdableToolData;
@@ -35,6 +38,28 @@ public class II_Tool : InventoryItem
         if (transform.parent.TryGetComponent<ToolBarGridScript>(out ToolBarGridScript toolBarGrid))
         {
             toolBarGrid.RemoveItemFromTools(this);
+            ToolDeselected();
         }
+    }
+
+    public void ToolSelected()
+    {
+        if (_toolController.debugMode)
+        {
+            UnityEngine.Debug.Log($"{gameObject.name} selected!");
+        }
+
+        StopInvalidPlacementFlashing();
+        ChangeTileColours(InventoryGrid.globalItemData.selectedToolTileColour, InventoryGrid.globalItemData.tileAlpha);
+    }
+    public void ToolDeselected()
+    {
+        if (_toolController.debugMode)
+        {
+            UnityEngine.Debug.Log($"{gameObject.name} deselected!");
+        }
+
+        StopInvalidPlacementFlashing();
+        ChangeTileColours(InventoryGrid.globalItemData.normalTileColour, InventoryGrid.globalItemData.tileAlpha);
     }
 }
