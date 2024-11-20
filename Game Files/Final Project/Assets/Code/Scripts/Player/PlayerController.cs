@@ -97,8 +97,8 @@ public class PlayerController : ManagedByGameManager
     public DeathHandler deathHandler { get; private set; }
 
 
-    private EventInstance playerFootsteps;
-    private EventInstance playerHeartbeat;
+    public EventInstance playerFootsteps { get; private set; }
+    public EventInstance playerHeartbeat {  get; private set; }
 
     private Coroutine _oxygenOutCoroutine;
     private Coroutine _dyingCoroutine;
@@ -294,13 +294,16 @@ public class PlayerController : ManagedByGameManager
         }
 
         currentState = newState;
+        print(currentState);
     }
 
     private void MovementInput()
     {
         bool oldIsGrounded = isGrounded;
 
+        RaycastHit hit;
         isGrounded = Physics.CheckSphere(_groundCheck.position, _groundCheckRadius, _groundMask);
+        Physics.Raycast(_groundCheck.position, Vector3.down, out hit, _groundCheckRadius);        
 
         if (isGrounded != oldIsGrounded)
         {
@@ -321,6 +324,18 @@ public class PlayerController : ManagedByGameManager
             _lastMoveDirection = _movement;
         }
         _movement = (transform.right * _movementInput.x + transform.forward * _movementInput.y);
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.CompareTag("Sand"))
+            {
+                AudioManager.Instance.SetInstanceParameter(playerFootsteps, AudioManager.Ground.Sand);
+            }
+            else
+            {
+                AudioManager.Instance.SetInstanceParameter(playerFootsteps, AudioManager.Ground.Metal);
+            }
+        }
     }
 
     private void CalculateMoveSpeed()

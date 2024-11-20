@@ -27,6 +27,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-6051916788532116592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footsteps/Ground
+  m_EditorClassIdentifier: 
+  Name: Ground
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3527230289
+    data2: 2577514269
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Metal
+  - Sand
+  Exists: 1
 --- !u!114 &-5944788337534518842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,11 +95,38 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638671990528132859
+  lastModified: 638671850443744123
   FileSizes:
   - Name: Desktop
     Value: 3263104
   Exists: 1
+--- !u!114 &-5784805356586822315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/World/Facility/GeneratorLoop
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/World/Facility/GeneratorLoop
+  Guid:
+    Data1: -924456486
+    Data2: 1280883413
+    Data3: 1852683925
+    Data4: 695875771
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 39648
 --- !u!114 &-4980424513565775766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +196,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Ambient.bank
   Name: Ambient
   StudioPath: bank:/Ambient
-  lastModified: 638675249162668520
+  lastModified: 638674900503799394
   FileSizes:
   - Name: Desktop
     Value: 1406752
@@ -215,10 +268,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638675249162668520
+  lastModified: 638674900503910519
   FileSizes:
   - Name: Desktop
-    Value: 2476
+    Value: 2720
   Exists: 1
 --- !u!114 &-3972785387697842041
 MonoBehaviour:
@@ -410,6 +463,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 15000
+--- !u!114 &-802538366961192714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Player/SandWalk
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Player/SandWalk
+  Guid:
+    Data1: 1416424409
+    Data2: 1313886807
+    Data3: -656773998
+    Data4: 1701272903
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 4133805706349888191}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1000
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,7 +524,6 @@ MonoBehaviour:
   - {fileID: -4980424513565775766}
   - {fileID: -6151127608777213502}
   - {fileID: -3290517241655217942}
-  - {fileID: 5608964511913096313}
   - {fileID: -3719410588425883054}
   - {fileID: 8433272738919330893}
   - {fileID: -2516880228229050242}
@@ -459,13 +539,44 @@ MonoBehaviour:
   - {fileID: -2468151091465373508}
   - {fileID: 6874304775784193223}
   - {fileID: 6879165693817464885}
+  - {fileID: 287738740574092068}
+  - {fileID: -802538366961192714}
+  - {fileID: -5784805356586822315}
+  - {fileID: 2458392863834767697}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1103463962044765846}
   StringsBanks:
   - {fileID: -4134072461434040205}
-  cacheTime: 638675249162898445
+  cacheTime: 638674900506331087
   cacheVersion: 131619
+--- !u!114 &287738740574092068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Player/Breathing with Bubbles
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Player/Breathing with Bubbles
+  Guid:
+    Data1: -1126936048
+    Data2: 1247970660
+    Data3: -1363754103
+    Data4: 530991072
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 42000
 --- !u!114 &592160500565049240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,11 +619,38 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638671990527931402
+  lastModified: 638674900503890504
   FileSizes:
   - Name: Desktop
     Value: 1486
   Exists: 1
+--- !u!114 &2458392863834767697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/World/Facility/EntranceAura
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/World/Facility/EntranceAura
+  Guid:
+    Data1: 848043243
+    Data2: 1321191797
+    Data3: 1275916160
+    Data4: -1132999820
+  Banks:
+  - {fileID: 2487468919654298586}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 7984
 --- !u!114 &2487468919654298586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,10 +666,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638675249162898445
+  lastModified: 638674900506331087
   FileSizes:
   - Name: Desktop
-    Value: 494
+    Value: 93920
   Exists: 1
 --- !u!114 &3315727328136035172
 MonoBehaviour:
@@ -560,6 +698,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &4133805706349888191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/SandWalk/SandRand
+  m_EditorClassIdentifier: 
+  Name: SandRand
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1100894665
+    data2: 1188096033
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &4447552540449763100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,38 +764,11 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638675249162889039
+  lastModified: 638674900506049007
   FileSizes:
   - Name: Desktop
-    Value: 3922016
+    Value: 3929504
   Exists: 1
---- !u!114 &5608964511913096313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/SFX/Player/WalkingOnSand
-  m_EditorClassIdentifier: 
-  Path: event:/SFX/Player/WalkingOnSand
-  Guid:
-    Data1: 951574354
-    Data2: 1284511414
-    Data3: -519157586
-    Data4: 1933492433
-  Banks:
-  - {fileID: 4495579087837898468}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &5643550884384233831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -738,10 +873,11 @@ MonoBehaviour:
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
-  Parameters: []
+  Parameters:
+  - {fileID: -6051916788532116592}
   MinDistance: 1
   MaxDistance: 20
-  Length: 1640
+  Length: 0
 --- !u!114 &6874304775784193223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -987,4 +1123,4 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 100000
+  Length: 84000
