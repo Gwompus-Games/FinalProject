@@ -28,6 +28,10 @@ public class II_Tool : InventoryItem
         if (transform.parent.TryGetComponent<ToolBarGridScript>(out ToolBarGridScript toolBarGrid))
         {
             toolBarGrid.AddItemToTools(this, _holdableToolData, originTile);
+            if (_toolController.debugMode)
+            {
+                UnityEngine.Debug.Log($"{gameObject.name} added to hotbar!");
+            }
         }
     }
 
@@ -39,6 +43,10 @@ public class II_Tool : InventoryItem
         {
             toolBarGrid.RemoveItemFromTools(this);
             ToolDeselected();
+            if (_toolController.debugMode)
+            {
+                UnityEngine.Debug.Log($"{gameObject.name} removed from hotbar!");
+            }
         }
     }
 
