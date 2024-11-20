@@ -504,6 +504,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8477502541321220011}
     m_Modifications:
+    - target: {fileID: 1869479580671942411, guid: 7ef5132a797c3db4b9852ea2f46c928b,
+        type: 3}
+      propertyPath: m_PreferredHeight
+      value: 75
+      objectReference: {fileID: 0}
     - target: {fileID: 4341017236037965075, guid: 7ef5132a797c3db4b9852ea2f46c928b,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -642,7 +647,12 @@ PrefabInstance:
     - target: {fileID: 6972633454700593496, guid: 7ef5132a797c3db4b9852ea2f46c928b,
         type: 3}
       propertyPath: m_fontSize
-      value: 23.6
+      value: 17.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972633454700593496, guid: 7ef5132a797c3db4b9852ea2f46c928b,
+        type: 3}
+      propertyPath: m_margin.w
+      value: -0.74645996
       objectReference: {fileID: 0}
     - target: {fileID: 8104380859684704720, guid: 7ef5132a797c3db4b9852ea2f46c928b,
         type: 3}
@@ -673,6 +683,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384130746075599367, guid: 7ef5132a797c3db4b9852ea2f46c928b,
+        type: 3}
+      propertyPath: m_PreferredHeight
+      value: 75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
