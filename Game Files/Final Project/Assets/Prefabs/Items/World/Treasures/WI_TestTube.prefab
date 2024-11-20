@@ -16,17 +16,17 @@ PrefabInstance:
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 50.000004
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 50.000004
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 50.000004
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
@@ -46,7 +46,7 @@ PrefabInstance:
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
@@ -61,12 +61,12 @@ PrefabInstance:
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 8032116557064219073, guid: bd1e50e2f9afcc648a76f60d1c563880,
         type: 3}
@@ -226,6 +226,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6474243702529287300, guid: c71a5e059f0a0a74dbeb0af1df163bb3,
+        type: 3}
+      propertyPath: _itemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 4717347f82f145245a4555ff2ba3d2eb,
+        type: 2}
     - target: {fileID: 6691850998253781904, guid: c71a5e059f0a0a74dbeb0af1df163bb3,
         type: 3}
       propertyPath: m_fontSize

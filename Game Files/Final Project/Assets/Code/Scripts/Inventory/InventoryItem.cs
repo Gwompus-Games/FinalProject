@@ -81,8 +81,17 @@ public class InventoryItem : MonoBehaviour
 
     public void InitializeInventoryItem(ItemDataSO data)
     {
+        if (data == null)
+        {
+            return;
+        }
+
         itemData = data;
         sellValue = itemData.baseValue;
+        if (itemData.inventoryItemSprite != null)
+        {
+            _itemImage.sprite = itemData.inventoryItemSprite;
+        }
     }
 
     protected void ResizeForScreen()
@@ -92,7 +101,7 @@ public class InventoryItem : MonoBehaviour
 
     public virtual void ItemPlacedInInventory()
     {
-        
+        _removedFromInventory = false;
     }
 
     public virtual void ItemRemovedFromInventory()
