@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
+using FMOD.Studio;
 
 
 public class AnglerFish : Enemy
@@ -26,18 +27,27 @@ public class AnglerFish : Enemy
     {
         if (_playerController != null)
         {
-            distanceFromPlayer = Vector3.Distance(transform.position, _playerController.transform.position);
-            if (distanceFromPlayer <= _heartbeatRange)
+            //set parameter intensity in fmod
+            bool playHeartbeat = false;         
+            if(player.currentState == PlayerController.PlayerState.Dying)
             {
-                //uh
-                AddHeartbeat();
+                AudioManager.Instance.SetInstanceParameter(player.playerHeartbeat, parameterName, 0);
+                player.playerHeartbeat.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                playHeartbeat = false;
+                return;
+            }
+            distanceFromPlayer = Vector3.Distance(transform.position, _playerController.transform.position);
+            parameterIntensity = ((_heartbeatRange - distanceFromPlayer) / _heartbeatRange);
+            playHeartbeat = distanceFromPlayer <= _heartbeatRange ? true : false;
 
-                //set parameter intensity in fmod
-                parameterIntensity = ((_heartbeatRange - distanceFromPlayer)/_heartbeatRange);
+            if (playHeartbeat)
+            {
                 AudioManager.Instance.SetInstanceParameter(player.playerHeartbeat, parameterName, parameterIntensity);
+                AddHeartbeat();                
             }
             else
             {
+                AudioManager.Instance.SetInstanceParameter(player.playerHeartbeat, parameterName, 0);
                 RemoveHeartbeat();
             }
         }
