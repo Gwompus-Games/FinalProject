@@ -146,6 +146,14 @@ public class AudioManager : MonoBehaviour
         eventInstance.setParameterByName(name, value);
     }
 
+    public void StopAllInstances()
+    {
+        foreach(EventInstance eventInstance in eventInstances)
+        {
+            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        }
+    }
+
     public void SetInstanceParameter(EventInstance eventInstance, Ground ground)
     {
         if(currentGround == ground)
