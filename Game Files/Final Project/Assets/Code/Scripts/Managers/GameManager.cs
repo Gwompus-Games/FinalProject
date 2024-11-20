@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     private DungeonGenerator _dungeonGenerator;
 
+    private SuitSystem _suitSystem;
+
     private bool _waitingForSubmarineAnimation = false;
 
     private Coroutine _deathSequence;
@@ -156,10 +158,6 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log($"{managedScript.GetType().Name} found");
             }
-            if (managedScript.GetType() == typeof(DungeonGenerator))
-            {
-                _dungeonGenerator = managedScript as DungeonGenerator;
-            }
             Setup(managedScript, managersParent);
         }
 
@@ -177,6 +175,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"{_managedObjects[o].GetType().Name} initialized");
             }
         }
+
+        _dungeonGenerator = GetManagedComponent<DungeonGenerator>();
+        _suitSystem = GetManagedComponent<SuitSystem>();
     }
 
     private void Start()
@@ -305,6 +306,7 @@ public class GameManager : MonoBehaviour
         }
 
         _dungeonGenerator.StartGeneration();
+        _suitSystem.UpdateSectionOnDive();
 
         if (!takingSubmarine)
         {
