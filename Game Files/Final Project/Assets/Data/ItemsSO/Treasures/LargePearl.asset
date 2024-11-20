@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640d9e7e81e78ab469a03311bd17945a, type: 3}
-  m_Name: TestTube
+  m_Name: LargePearl
   m_EditorClassIdentifier: 
-  itemName: Test Tube
-  itemDescription: What is that inside? Oh well, not my problem.
+  itemName: Large Pearl
+  itemDescription: 
   usedForSelling: 1
-  worldObject: {fileID: 6064690173841897909, guid: a42f21e4ea06a834db7f06bc73041505,
+  worldObject: {fileID: 8769722126191261093, guid: 9127afe8ef0f12c4c8e4517c8a293a59,
     type: 3}
   density: 1
-  drag: 26.7
-  angularDrag: 0.5
+  drag: 12.3
+  angularDrag: 0.15
   floatingItem: 0
-  inventoryObject: {fileID: 6380158574222543350, guid: d19f0a8dde9525c4bbfd308ca0f29ac2,
+  inventoryObject: {fileID: 9096973035820259072, guid: 66ed034950b47e746987be0f3d3830d6,
     type: 3}
-  inventoryItemSprite: {fileID: 0}
-  baseValue: 250
-  rarity: 2
-  spawnChancePoints: 15
+  inventoryItemSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  baseValue: 500
+  rarity: 3
+  spawnChancePoints: 3
