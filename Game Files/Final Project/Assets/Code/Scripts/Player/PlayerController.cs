@@ -507,9 +507,10 @@ public class PlayerController : ManagedByGameManager
         }
         _controller.enabled = false;
         lockedInput = true;
-        ChangeState(PlayerState.Dying);
         CameraLook cameraLook = GetComponentInChildren<CameraLook>();
         cameraLook.enabled = false;
+        ChangeUIState(UIManager.UIToDisplay.GAME);
+        ChangeState(PlayerState.Dying);
     }
 
     public void DisableDeath()
@@ -609,7 +610,6 @@ public class PlayerController : ManagedByGameManager
     private IEnumerator DeathRoutine(DeathObject.DeathType deathType)
     {
         SetupDeath();
-        ChangeUIState(UIManager.UIToDisplay.GAME);
         yield return null;
 
         //add code for any animations and sounds

@@ -10,18 +10,29 @@ public class ToolController : ManagedByGameManager
 {
     public struct ToolData
     {
-        public ToolData(HoldableToolSO htd, Vector2Int gPos, II_Tool iTool, int tIndex = -1)
+        public void SetValues(HoldableToolSO htd, Vector2Int gPos, II_Tool iTool, int tIndex, int eIndex)
         {
             holdableToolData = htd;
             gridOriginPosition = gPos;
             inventoryTool = iTool;
             toolIndex = tIndex;
+            equippedIndex = eIndex;
+        }
+
+        public void SetValues(ToolData toolData)
+        {
+            holdableToolData = toolData.holdableToolData;
+            gridOriginPosition = toolData.gridOriginPosition;
+            inventoryTool = toolData.inventoryTool;
+            toolIndex = toolData.toolIndex;
+            equippedIndex = toolData.equippedIndex;
         }
 
         public HoldableToolSO holdableToolData;
         public Vector2Int gridOriginPosition;
         public II_Tool inventoryTool;
         public int toolIndex;
+        public int equippedIndex;
     }
 
     private HandPositionController _handPositionController;
@@ -77,6 +88,15 @@ public class ToolController : ManagedByGameManager
 
     public void SwapTool(int direction = 0)
     {
+        if (_uiManager.currentUIState != UIManager.UIToDisplay.GAME)
+        {
+            if (debugMode)
+            {
+                Debug.Log("Not currently on game view!");
+            }
+            return;
+        }
+
         if (direction == 0)
         {
             if (debugMode)
@@ -89,6 +109,22 @@ public class ToolController : ManagedByGameManager
             if (debugMode)
             {
                 Debug.Log($"Deactivating tool: {_tools[_toolsOrder[_equippedTool]].name} | In position: {_equippedTool}");
+            }
+            ToolData toolData = _equippedTools.Values.FirstOrDefault(t => t.toolIndex == _equippedTool);
+
+            if (debugMode)
+            {
+                Debug.Log($"Found {toolData} as for tool data! {toolData.inventoryTool} is found for the inventory tool!");
+            }
+
+            if (toolData.inventoryTool != null)
+            {
+                if (debugMode)
+                {
+                    Debug.Log($"{toolData.inventoryTool.name} being deselected.");
+                }
+
+                toolData.inventoryTool.ToolDeselected();
             }
             _tools[_toolsOrder[_equippedTool]].SetToolEnabled(false);
         }
@@ -119,6 +155,11 @@ public class ToolController : ManagedByGameManager
         if (_equippedTool != -1)
         {
             int toolEquiped = _toolsOrder[_equippedTool];
+            ToolData toolData = _equippedTools.Values.FirstOrDefault(t => t.toolIndex == _equippedTool);
+            if (toolData.inventoryTool != null)
+            {
+                toolData.inventoryTool.ToolSelected();
+            }
             _tools[toolEquiped].SetToolEnabled(true);
             if (_glowstickPositions.ContainsKey(_equippedTool))
             {
@@ -191,6 +232,16 @@ public class ToolController : ManagedByGameManager
     /// </summary>
     public void UseNextGlowstickFromQueue()
     {
+        //Exit out if we aren't in game view
+        if (_uiManager.currentUIState != UIManager.UIToDisplay.GAME)
+        {
+            if (debugMode)
+            {
+                Debug.Log("Not currently on game view!");
+            }
+            return;
+        }
+
         //Exit out if glowsticks count is 0
         if (_glowsticksToUse.Count == 0)
         {
@@ -311,9 +362,10 @@ public class ToolController : ManagedByGameManager
             }
             return;
         }
-        int index = _tools.IndexOf(_tools.Find(x => x.GetToolData() == holdableToolData));
+        int toolIndex = _tools.IndexOf(_tools.Find(x => x.GetToolData() == holdableToolData));
 
-        ToolData toolData = new ToolData(holdableToolData, gridOriginPos, tool, index);
+        ToolData toolData = new ToolData();
+        toolData.SetValues(holdableToolData, gridOriginPos, tool, toolIndex, -1);
         
         _equippedTools.Add(tool, toolData);
 
@@ -345,12 +397,18 @@ public class ToolController : ManagedByGameManager
         _toolsOrder.Clear();
         _glowstickPositions.Clear();
         List<II_Tool> tools;
+        ToolData toolData = new ToolData();
+
         switch (_equippedTools.Count)
         {
             case 0:
                 break;
             case 1:
                 tools = new List<II_Tool>(_equippedTools.Keys);
+                toolData.SetValues(_equippedTools[tools[0]]);
+                toolData.equippedIndex = 0;
+                toolData.inventoryTool = tools[0];
+                _equippedTools[tools[0]].SetValues(toolData);
                 HoldableToolSO holdableToolData = tools[0].itemData as HoldableToolSO;
                 if (holdableToolData == null)
                 {
@@ -396,6 +454,12 @@ public class ToolController : ManagedByGameManager
                 for (int i = 0; i < orderedTools.Count; i++)
                 {
                     _toolsOrder.Add(_tools.IndexOf(_tools.Find(x => x.GetToolData() == orderedTools[i].itemData)));
+
+                    toolData.SetValues(_equippedTools[orderedTools[i]]);
+                    toolData.equippedIndex = i;
+                    toolData.inventoryTool = orderedTools[i];
+                    _equippedTools[orderedTools[i]].SetValues(toolData);
+
                     II_Glowstick iGlowstick = orderedTools[i] as II_Glowstick;
                     if (iGlowstick != null)
                     {
