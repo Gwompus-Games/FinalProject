@@ -58,20 +58,24 @@ MonoBehaviour:
     currentPrice: 0
     scaleAdditive: 50
     minimumPercentToBuy: 85
+    buttonSprite: {fileID: 21300000, guid: 2f4ce359ce1a1fe45acb009aadb1c0e6, type: 3}
   - type: 1
     nameString: Refurbish
     basePrice: 1000
     currentPrice: 0
     scaleAdditive: 500
     minimumPercentToBuy: 0
+    buttonSprite: {fileID: 21300000, guid: faed6795e014ae642947078960cd7368, type: 3}
   - type: 2
     nameString: Replace
-    basePrice: 7500
+    basePrice: 2000
     currentPrice: 0
     scaleAdditive: 0
     minimumPercentToBuy: 0
+    buttonSprite: {fileID: 21300000, guid: 15eeb2af33072a04186cc44ee04591fe, type: 3}
   _repairSectionPrefab: {fileID: 6957279943354495806, guid: ae9569aad5c5af94c94bd86a28d36506,
     type: 3}
+  debugMode: 0
 --- !u!222 &502741492785775698
 CanvasRenderer:
   m_ObjectHideFlags: 0
