@@ -10,39 +10,37 @@ public class TaskAttack : Node
     private Transform _transform;
     private Animator _animator;
 
-    private float _attackTime = 1f;
-    private float _attackCounter = 0f;
+    private bool _isAttacking;
 
     public TaskAttack(Enemy enemyScript)
     {
         _enemyScript = enemyScript;
         _transform = _enemyScript.transform;
         _animator = enemyScript.animator;
+        _enemyScript.SetIsAttacking(true);
     }
 
     public override NodeState Evaluate()
     {
-        Transform target = (Transform)GetData("target");
+        object t = GetData("target");
+        if (t == null)
+        {
+            state = NodeState.FAILURE;
+            return state;
+        }
 
-        _attackCounter += Time.deltaTime;
-        if (_attackCounter >= _attackTime)
+        if (_isAttacking)
+        {
+            
+        }
+
+        Transform target = (Transform)t;
+        if (Vector3.Distance(_transform.position, target.position) <= 1f)
         {
             GameManager.Instance.GetManagedComponent<SuitSystem>().TakeDamage(50);
+            Debug.Log("Take Damage");
 
-            _attackCounter = 0;
-            _attackTime = 2;
-
-            //bool enemyIsDead = _playerController.TakeHit();
-            //if (enemyIsDead)
-            //{
-            //    ClearData("target");
-            //    _animator.SetBool("Attacking", false);
-            //    _animator.SetBool("Walking", true);
-            //}
-            //else
-            //{
-            //    _attackCounter = 0f;
-            //}
+            _enemyScript.SetIsStunned(true);
         }
 
         state = NodeState.RUNNING;

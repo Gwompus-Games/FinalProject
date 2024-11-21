@@ -9,13 +9,20 @@ public class Enemy : MonoBehaviour, IHeartbeat
     protected PlayerController _playerController;
     private NavMeshAgent agent;
 
-    [Header("Settings")]
+    [Header("Movement Settings")]
     public float moveSpeed = 3f;
     public float acceleration = 6;
     public float turnSpeed = 80;
     public float patrolRadius = 20f;
     public float fovRadius = 6f;
+
+    [Header("Attack Settings")]
     public float attackRadius = 1f;
+    public float attackSpeed = 10f;
+    public float attackCooldown = 5f;
+    public float attackStunTime = 2f;
+
+    [Header("Audio Settings")]
     public float minAudioTime = 30f, maxAudioTime = 60f;
     public float minSpotTime = 5f, currentSpotTime = 0f;
 
@@ -33,12 +40,16 @@ public class Enemy : MonoBehaviour, IHeartbeat
     private EventInstance AFSpotted;
     private EventInstance AFAttacking;
 
+    private bool _isStunned = false;
+    private bool _isAttacking = false;
+
     public enum EnemyState
     {
         Patrolling,
         Searching,
         Spotted,
-        Attacking
+        Attacking,
+        Idle
     }
     public EnemyState currentEnemyState;
 
@@ -161,6 +172,14 @@ public class Enemy : MonoBehaviour, IHeartbeat
     {
         agent.isStopped = true;
     }
+
+    public void SetIsStunned(bool isStunned) { _isStunned = isStunned; }
+
+    public bool IsStunned() { return _isStunned; }
+
+    public void SetIsAttacking(bool isAttacking) { _isAttacking = isAttacking; }
+
+    public bool IsAttacking() { return _isAttacking; }
 
     private void UpdateNavMeshAgentSettings()
     {

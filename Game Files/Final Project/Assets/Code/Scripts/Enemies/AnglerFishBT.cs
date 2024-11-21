@@ -16,6 +16,11 @@ public class AnglerFishBT : Tree
         {
             new Sequence(new List<Node>
             {
+                new CheckIsStunned(_anglerFish),
+                new TaskIdle(_anglerFish),
+            }),
+            new Sequence(new List<Node>
+            {
                 new CheckPlayerInAttackRange(_anglerFish),
                 new TaskAttack(_anglerFish),
             }),
