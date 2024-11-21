@@ -11,8 +11,11 @@ public class AudioManager : MonoBehaviour
 
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
-
+    //Music
     private EventInstance bgmInstance, menuInstance;
+    //Ambiance
+    private EventInstance bark, bells, choir, station;
+
     public enum Ground
     {
         Sand,
@@ -23,13 +26,13 @@ public class AudioManager : MonoBehaviour
 
     #region Scene_Vars
     public string endScene, menuScene, gameScene;
-    public enum SceneName
-    {
-        Menu,
-        Game,
-        End
-    }
-    public SceneName currentScene;
+    //public enum SceneName
+    //{
+    //    Menu,
+    //    Game,
+    //    End
+    //}
+    private int currentSceneIndex;
     #endregion
 
     #region Volume_Bus
@@ -78,13 +81,20 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        //heartbeatInstance = CreateEventInstance(FMODEvents.Instance.heartbeat); 
+        //Initialize lists 
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
+        //Music
         bgmInstance = CreateEventInstance(FMODEvents.Instance.bgm);
         menuInstance = CreateEventInstance(FMODEvents.Instance.menuMusic);
-        //menuInstance.start();
-        UpdateBGM(SceneName.Menu);
+        //Ambiance
+        bark = CreateEventInstance(FMODEvents.Instance.bark);
+        bells = CreateEventInstance(FMODEvents.Instance.bells);
+        choir = CreateEventInstance(FMODEvents.Instance.choir);
+        station = CreateEventInstance(FMODEvents.Instance.station);
+
+        UpdateBGM(SceneManager.GetActiveScene().buildIndex);
+        InvokeRepeating(nameof(PlayAmbiance), 30f, 30f);
     }
 
     public void ChangeVolume(VolumeBus bus, float value)
@@ -112,6 +122,34 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void PlayAmbiance()
+    {
+        bark.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        bells.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        choir.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        station.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+        int rand = Random.Range(0, 4);
+        switch(rand)
+        {
+            case 0:
+                bark.start();
+                break; 
+            case 1:
+                bells.start();
+                break;             
+            case 2: 
+                choir.start();
+                break; 
+            case 3: 
+                station.start();
+                break;
+            default:
+                choir.start();
+                break;
+        }
+    }
+
     public void OnHover()
     {
         PlayOneShot(FMODEvents.Instance.hover, transform.position);
@@ -122,21 +160,35 @@ public class AudioManager : MonoBehaviour
         PlayOneShot(FMODEvents.Instance.click, transform.position);
     }
 
-    public void UpdateBGM(SceneName scene)
+    public void OnDenied()
     {
-        switch (scene)
+        PlayOneShot(FMODEvents.Instance.denied, transform.position);
+    }
+    
+    public void OnPickup()
+    {
+        PlayOneShot(FMODEvents.Instance.pickup, transform.position);
+    }
+
+    public void UpdateBGM(int sceneIndex)
+    {
+        switch (sceneIndex)
         {
-            case SceneName.Menu:
+            case 0:
                 bgmInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 menuInstance.start();
                 break;
-            case SceneName.Game:
+            case 1:
                 menuInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 bgmInstance.start();
                 break;
-            case SceneName.End:
+            case 2:
                 bgmInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 menuInstance.start();
+                break;
+            default:
+                menuInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                bgmInstance.start();
                 break;
         }
     }
@@ -179,19 +231,19 @@ public class AudioManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == endScene)
+        switch(scene.buildIndex)
         {
-            currentScene = SceneName.End;
-        }
-        if (scene.name == gameScene)
-        {
-            currentScene = SceneName.Game;
-        }
-        if (scene.name == menuScene)
-        {
-            currentScene = SceneName.Menu;
-        }
-        UpdateBGM(currentScene);
+            case 0:
+                currentSceneIndex = 0;
+                break;
+            case 1:
+                currentSceneIndex = 1;
+                break;
+            case 2:
+                currentSceneIndex = 2;
+                break;
+        }        
+        UpdateBGM(currentSceneIndex);
     }
 
     private void OnEnable()

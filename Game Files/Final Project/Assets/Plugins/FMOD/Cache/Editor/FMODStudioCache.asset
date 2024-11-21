@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6461033624110499292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Submarine/Ramp
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Submarine/Ramp
+  Guid:
+    Data1: -1889294256
+    Data2: 1265616531
+    Data3: 74072996
+    Data4: 1332284738
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6151127608777213502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +122,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638673495180937257
+  lastModified: 638671850443744123
   FileSizes:
   - Name: Desktop
     Value: 3263104
@@ -196,7 +223,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Ambient.bank
   Name: Ambient
   StudioPath: bank:/Ambient
-  lastModified: 638677141071631708
+  lastModified: 638677335068438924
   FileSizes:
   - Name: Desktop
     Value: 1406752
@@ -268,10 +295,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638677141071641720
+  lastModified: 638677473524842021
   FileSizes:
   - Name: Desktop
-    Value: 2720
+    Value: 2854
   Exists: 1
 --- !u!114 &-3972785387697842041
 MonoBehaviour:
@@ -543,12 +570,15 @@ MonoBehaviour:
   - {fileID: -802538366961192714}
   - {fileID: -5784805356586822315}
   - {fileID: 2458392863834767697}
+  - {fileID: 8662527957982619081}
+  - {fileID: -6461033624110499292}
+  - {fileID: 5638205964587653824}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1103463962044765846}
   StringsBanks:
   - {fileID: -4134072461434040205}
-  cacheTime: 638677141071931820
+  cacheTime: 638677475427471581
   cacheVersion: 131619
 --- !u!114 &287738740574092068
 MonoBehaviour:
@@ -619,7 +649,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638673495180697133
+  lastModified: 638677473524811938
   FileSizes:
   - Name: Desktop
     Value: 1486
@@ -666,7 +696,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638677141071931820
+  lastModified: 638677335244388327
   FileSizes:
   - Name: Desktop
     Value: 93920
@@ -764,11 +794,38 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638677141071901807
+  lastModified: 638677475427471581
   FileSizes:
   - Name: Desktop
-    Value: 3929504
+    Value: 4846688
   Exists: 1
+--- !u!114 &5638205964587653824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Submarine/Landed
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Submarine/Landed
+  Guid:
+    Data1: 2124513009
+    Data2: 1094824513
+    Data3: 1489417146
+    Data4: -1406065486
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5643550884384233831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1062,6 +1119,33 @@ MonoBehaviour:
   Banks:
   - {fileID: 4495579087837898468}
   IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8662527957982619081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Submarine/Submarine
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Submarine/Submarine
+  Guid:
+    Data1: 770656512
+    Data2: 1197587056
+    Data3: -1319828347
+    Data4: 1972001414
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
   Is3D: 0
   IsOneShot: 1
   Parameters: []
