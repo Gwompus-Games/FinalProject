@@ -20,6 +20,11 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference AFSpotted { get; private set; }
     [field: SerializeField] public EventReference AFAttacking { get; private set; }
 
+    [field: Header("Submarine")]
+    [field: SerializeField] public EventReference submarine{ get; private set; }
+    [field: SerializeField] public EventReference ramp { get; private set; }
+    [field: SerializeField] public EventReference landed { get; private set; }
+
     [field: Header("Object SFX")]
     [field: SerializeField] public EventReference generatorLooping { get; private set; }
     [field: SerializeField] public EventReference entranceAura { get; private set; }
@@ -32,6 +37,11 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference hover { get; private set; }
     [field: SerializeField] public EventReference click { get; private set; }
     [field: SerializeField] public EventReference denied { get; private set; }
+    
+    [field: Header("Shop")]
+    [field: SerializeField] public EventReference buying { get; private set; }
+    [field: SerializeField] public EventReference selling { get; private set; }
+    [field: SerializeField] public EventReference broke { get; private set; }
 
     [field: Header("Ambiance")]
     [field: SerializeField] public EventReference bells { get; private set; }
