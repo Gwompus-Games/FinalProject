@@ -40,6 +40,7 @@ public class SellingPoint : InteractableObject
 
     public override void Interact()
     {
+        AudioManager.Instance.OnClick();
         GameManager.Instance.GetManagedComponent<PlayerController>().ChangeUIState(UIManager.UIToDisplay.SHOP);
     }
 }

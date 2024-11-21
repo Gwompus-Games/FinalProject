@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
     private EventInstance bgmInstance, menuInstance;
     //Ambiance
     private EventInstance bark, bells, choir, station;
+    public float ambianceTime = 60f;
 
     public enum Ground
     {
@@ -94,7 +95,7 @@ public class AudioManager : MonoBehaviour
         station = CreateEventInstance(FMODEvents.Instance.station);
 
         UpdateBGM(SceneManager.GetActiveScene().buildIndex);
-        InvokeRepeating(nameof(PlayAmbiance), 30f, 30f);
+        InvokeRepeating(nameof(PlayAmbiance), ambianceTime, ambianceTime);
     }
 
     public void ChangeVolume(VolumeBus bus, float value)
@@ -150,6 +151,8 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    #region Public_Functions
+    #region UI
     public void OnHover()
     {
         PlayOneShot(FMODEvents.Instance.hover, transform.position);
@@ -164,11 +167,28 @@ public class AudioManager : MonoBehaviour
     {
         PlayOneShot(FMODEvents.Instance.denied, transform.position);
     }
-    
+    #endregion
+    #region Shop
+    public void BuySound()
+    {
+        PlayOneShot(FMODEvents.Instance.buying, transform.position);
+    }
+    public void SellSound()
+    {
+        PlayOneShot(FMODEvents.Instance.selling, transform.position);
+    }
+    public void BrokeSound()
+    {
+        PlayOneShot(FMODEvents.Instance.broke, transform.position);
+    }
+    #endregion
+    #region Player
     public void OnPickup()
     {
         PlayOneShot(FMODEvents.Instance.pickup, transform.position);
     }
+    #endregion
+    #endregion
 
     public void UpdateBGM(int sceneIndex)
     {

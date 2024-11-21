@@ -1,5 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9131397101957745298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/BuySell/Sell
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/BuySell/Sell
+  Guid:
+    Data1: -1536377912
+    Data2: 1096950110
+    Data3: -949284732
+    Data4: 263205708
+  Banks:
+  - {fileID: 2487468919654298586}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-8957823095830894067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/3D/AFDistantInside
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/3D/AFDistantInside
+  Guid:
+    Data1: 913677521
+    Data2: 1172310523
+    Data3: 1495668154
+    Data4: 1845038691
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6461033624110499292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,7 +100,7 @@ MonoBehaviour:
     Data3: -1023524947
     Data4: -1361881631
   Banks:
-  - {fileID: 4495579087837898468}
+  - {fileID: 2487468919654298586}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -80,33 +134,6 @@ MonoBehaviour:
   - Metal
   - Sand
   Exists: 1
---- !u!114 &-5944788337534518842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/AnglerFish/AFAttacking
-  m_EditorClassIdentifier: 
-  Path: event:/AnglerFish/AFAttacking
-  Guid:
-    Data1: 112835786
-    Data2: 1134620111
-    Data3: -2108524401
-    Data4: -981101093
-  Banks:
-  - {fileID: 4495579087837898468}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-5808176966122681779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,10 +149,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638671850443744123
+  lastModified: 638677536161735596
   FileSizes:
   - Name: Desktop
-    Value: 3263104
+    Value: 4670624
   Exists: 1
 --- !u!114 &-5784805356586822315
 MonoBehaviour:
@@ -208,26 +235,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-4571520766657300560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Ambient.bank
-  m_EditorClassIdentifier: 
-  Path: ../../FMOD/biodread/Build/Desktop/Ambient.bank
-  Name: Ambient
-  StudioPath: bank:/Ambient
-  lastModified: 638677335068438924
-  FileSizes:
-  - Name: Desktop
-    Value: 1406752
-  Exists: 1
 --- !u!114 &-4414811923776134987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,10 +302,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638677473524842021
+  lastModified: 638677536160575838
   FileSizes:
   - Name: Desktop
-    Value: 2854
+    Value: 3118
   Exists: 1
 --- !u!114 &-3972785387697842041
 MonoBehaviour:
@@ -381,6 +388,87 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3284875682029398469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/3D/AFDistantOutside
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/3D/AFDistantOutside
+  Guid:
+    Data1: -1817565478
+    Data2: 1183436203
+    Data3: -1373715543
+    Data4: 1096584152
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2936891746119632408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/3D/AFSpotted
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/3D/AFSpotted
+  Guid:
+    Data1: -530939084
+    Data2: 1145832042
+    Data3: 1092800143
+    Data4: -1477852850
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2772616698159985673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/2D/Attack
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/2D/Attack
+  Guid:
+    Data1: -1477473739
+    Data2: 1288090729
+    Data3: -165996874
+    Data4: 981123111
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-2516880228229050242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,33 +491,6 @@ MonoBehaviour:
   - {fileID: 4495579087837898468}
   IsStream: 0
   Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-2468151091465373508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/AnglerFish/AFDistantOutside
-  m_EditorClassIdentifier: 
-  Path: event:/AnglerFish/AFDistantOutside
-  Guid:
-    Data1: -1817565478
-    Data2: 1183436203
-    Data3: -1373715543
-    Data4: 1096584152
-  Banks:
-  - {fileID: 4495579087837898468}
-  IsStream: 1
-  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -462,6 +523,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 199541
+--- !u!114 &-1565574970221399971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/2D/Inside
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/2D/Inside
+  Guid:
+    Data1: -1113947063
+    Data2: 1115158411
+    Data3: -1563100240
+    Data4: -1899025862
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-921979250206117442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/2D/Outside
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/2D/Outside
+  Guid:
+    Data1: -1697528342
+    Data2: 1153394229
+    Data3: 625498498
+    Data4: 48648791
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-830847443230136306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,7 +596,7 @@ MonoBehaviour:
     Data3: -1596784743
     Data4: -1251248435
   Banks:
-  - {fileID: -4571520766657300560}
+  - {fileID: -5808176966122681779}
   - {fileID: 4495579087837898468}
   IsStream: 1
   Is3D: 0
@@ -489,7 +604,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 15000
+  Length: 30000
 --- !u!114 &-802538366961192714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,7 +650,6 @@ MonoBehaviour:
   - {fileID: 1103463962044765846}
   - {fileID: 4495579087837898468}
   - {fileID: -5808176966122681779}
-  - {fileID: -4571520766657300560}
   - {fileID: 2487468919654298586}
   EditorEvents:
   - {fileID: 9107569807790351953}
@@ -547,23 +661,18 @@ MonoBehaviour:
   - {fileID: -4317235268765727127}
   - {fileID: 7478894566903470246}
   - {fileID: 6065319954663596880}
-  - {fileID: 5643550884384233831}
   - {fileID: -4980424513565775766}
   - {fileID: -6151127608777213502}
   - {fileID: -3290517241655217942}
   - {fileID: -3719410588425883054}
   - {fileID: 8433272738919330893}
   - {fileID: -2516880228229050242}
-  - {fileID: 7674990585569359148}
   - {fileID: 592160500565049240}
   - {fileID: 5662314274265487815}
   - {fileID: 3315727328136035172}
   - {fileID: 7211512370064604616}
   - {fileID: 6564118636050218344}
   - {fileID: -4616613502323061906}
-  - {fileID: -5944788337534518842}
-  - {fileID: 4447552540449763100}
-  - {fileID: -2468151091465373508}
   - {fileID: 6874304775784193223}
   - {fileID: 6879165693817464885}
   - {fileID: 287738740574092068}
@@ -573,13 +682,52 @@ MonoBehaviour:
   - {fileID: 8662527957982619081}
   - {fileID: -6461033624110499292}
   - {fileID: 5638205964587653824}
+  - {fileID: 139972108526423352}
+  - {fileID: 8625771098446730669}
+  - {fileID: -9131397101957745298}
+  - {fileID: 3165772552072559342}
+  - {fileID: -2936891746119632408}
+  - {fileID: -2772616698159985673}
+  - {fileID: -1565574970221399971}
+  - {fileID: 7710019596122595066}
+  - {fileID: 8086183359633485904}
+  - {fileID: -8957823095830894067}
+  - {fileID: -3284875682029398469}
+  - {fileID: -921979250206117442}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1103463962044765846}
   StringsBanks:
   - {fileID: -4134072461434040205}
-  cacheTime: 638677475427471581
+  cacheTime: 638677542266311718
   cacheVersion: 131619
+--- !u!114 &139972108526423352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/BuySell/Denied
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/BuySell/Denied
+  Guid:
+    Data1: 1336710937
+    Data2: 1291583268
+    Data3: -1137322570
+    Data4: -1268616103
+  Banks:
+  - {fileID: 2487468919654298586}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &287738740574092068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,7 +797,7 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638677473524811938
+  lastModified: 638677536160565767
   FileSizes:
   - Name: Desktop
     Value: 1486
@@ -696,11 +844,38 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638677335244388327
+  lastModified: 638677536162517587
   FileSizes:
   - Name: Desktop
-    Value: 93920
+    Value: 169760
   Exists: 1
+--- !u!114 &3165772552072559342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/2D/Spot
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/2D/Spot
+  Guid:
+    Data1: 1629494056
+    Data2: 1158896290
+    Data3: 665303484
+    Data4: -451583267
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &3315727328136035172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,7 +895,7 @@ MonoBehaviour:
     Data3: -1779319924
     Data4: 2103919965
   Banks:
-  - {fileID: 4495579087837898468}
+  - {fileID: 2487468919654298586}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -752,33 +927,6 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &4447552540449763100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/AnglerFish/AFDistantInside
-  m_EditorClassIdentifier: 
-  Path: event:/AnglerFish/AFDistantInside
-  Guid:
-    Data1: 913677521
-    Data2: 1172310523
-    Data3: 1495668154
-    Data4: 1845038691
-  Banks:
-  - {fileID: 4495579087837898468}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &4495579087837898468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,10 +942,10 @@ MonoBehaviour:
   Path: ../../FMOD/biodread/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638677475427471581
+  lastModified: 638677542266311718
   FileSizes:
   - Name: Desktop
-    Value: 4846688
+    Value: 4825280
   Exists: 1
 --- !u!114 &5638205964587653824
 MonoBehaviour:
@@ -821,33 +969,6 @@ MonoBehaviour:
   - {fileID: 4495579087837898468}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &5643550884384233831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/AnglerFish/AFSpotted
-  m_EditorClassIdentifier: 
-  Path: event:/AnglerFish/AFSpotted
-  Guid:
-    Data1: -530939084
-    Data2: 1145832042
-    Data3: 1092800143
-    Data4: -1477852850
-  Banks:
-  - {fileID: 4495579087837898468}
-  IsStream: 0
-  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -1035,7 +1156,7 @@ MonoBehaviour:
     Data3: 1901256380
     Data4: -1252072327
   Banks:
-  - {fileID: 4495579087837898468}
+  - {fileID: 2487468919654298586}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -1062,7 +1183,7 @@ MonoBehaviour:
     Data3: 1892284049
     Data4: 1397216055
   Banks:
-  - {fileID: -4571520766657300560}
+  - {fileID: -5808176966122681779}
   - {fileID: 4495579087837898468}
   IsStream: 1
   Is3D: 0
@@ -1070,8 +1191,8 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 64000
---- !u!114 &7674990585569359148
+  Length: 35000
+--- !u!114 &7710019596122595066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1081,9 +1202,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/AnglerFish/AFProximity
+  m_Name: event:/AnglerFish/3D/AFProximity
   m_EditorClassIdentifier: 
-  Path: event:/AnglerFish/AFProximity
+  Path: event:/AnglerFish/3D/AFProximity
   Guid:
     Data1: -666540425
     Data2: 1104971273
@@ -1093,6 +1214,33 @@ MonoBehaviour:
   - {fileID: 4495579087837898468}
   IsStream: 1
   Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8086183359633485904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/AnglerFish/3D/AFAttacking
+  m_EditorClassIdentifier: 
+  Path: event:/AnglerFish/3D/AFAttacking
+  Guid:
+    Data1: 112835786
+    Data2: 1134620111
+    Data3: -2108524401
+    Data4: -981101093
+  Banks:
+  - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -1118,6 +1266,33 @@ MonoBehaviour:
     Data4: -1303433093
   Banks:
   - {fileID: 4495579087837898468}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8625771098446730669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/BuySell/Buy
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/BuySell/Buy
+  Guid:
+    Data1: -1755943878
+    Data2: 1190109415
+    Data3: -298482018
+    Data4: 1227348123
+  Banks:
+  - {fileID: 2487468919654298586}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1171,7 +1346,7 @@ MonoBehaviour:
     Data3: 889467041
     Data4: -964887456
   Banks:
-  - {fileID: -4571520766657300560}
+  - {fileID: -5808176966122681779}
   - {fileID: 4495579087837898468}
   IsStream: 1
   Is3D: 0
@@ -1199,7 +1374,7 @@ MonoBehaviour:
     Data3: -370616408
     Data4: -2115800923
   Banks:
-  - {fileID: -4571520766657300560}
+  - {fileID: -5808176966122681779}
   - {fileID: 4495579087837898468}
   IsStream: 1
   Is3D: 0
@@ -1207,4 +1382,4 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 84000
+  Length: 32000

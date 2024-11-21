@@ -37,6 +37,11 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference hover { get; private set; }
     [field: SerializeField] public EventReference click { get; private set; }
     [field: SerializeField] public EventReference denied { get; private set; }
+    
+    [field: Header("Shop")]
+    [field: SerializeField] public EventReference buying { get; private set; }
+    [field: SerializeField] public EventReference selling { get; private set; }
+    [field: SerializeField] public EventReference broke { get; private set; }
 
     [field: Header("Ambiance")]
     [field: SerializeField] public EventReference bells { get; private set; }

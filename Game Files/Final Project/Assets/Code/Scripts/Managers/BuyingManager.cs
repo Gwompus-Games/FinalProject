@@ -104,7 +104,8 @@ public class BuyingManager : ManagedByGameManager
     {
         if (_playerController.money < toolToBuy.buyValue)
         {
-            //Add buying denyed sound effect here
+            //Add buying denied sound effect here
+            AudioManager.Instance.BrokeSound();
 
             if (_debugMode)
             {
@@ -114,6 +115,7 @@ public class BuyingManager : ManagedByGameManager
         }
 
         //Add buying sound effect here
+        AudioManager.Instance.BuySound();
 
         _playerController.SpendMoney(toolToBuy.buyValue);
         OxygenTankSO oxygenTank = toolToBuy as OxygenTankSO;

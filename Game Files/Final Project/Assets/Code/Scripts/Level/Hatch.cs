@@ -21,6 +21,13 @@ public class Hatch : InteractableObject
     {
         base.Awake();
     }
+    
+    protected override void Start()
+    {
+        base.Start();
+        ramp = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.ramp);
+        complete = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.landed);
+    }
 
     public override void Interact()
     {
