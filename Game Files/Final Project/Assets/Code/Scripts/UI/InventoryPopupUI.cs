@@ -13,7 +13,7 @@ public class InventoryPopupUI : MonoBehaviour
     public float popupHoverTimeInSeconds { get; private set; } = 1f;
     private Vector2 _popupPositionOffset;
     private LayoutElement _spriteLayoutElement;
-    private float _spriteScale = 3f;
+    private float _spriteTargetHeight = -1f;
 
     [Serializable]
     public struct PopupInfo
@@ -92,6 +92,8 @@ public class InventoryPopupUI : MonoBehaviour
         }
         popup.itemImage.color = item.GetItemColour();
         popup.itemDescription.text = item.itemData.itemDescription;
+
+        ResizeSprite(popup);
     }
     
     private void PopulatePopup(OxygenTankPopupInfo oxygenPopup, II_OxygenTank oxygenItem)
@@ -111,11 +113,24 @@ public class InventoryPopupUI : MonoBehaviour
             }
         }
 
+        if (_spriteTargetHeight == -1f)
+        {
+            _spriteTargetHeight = _spriteLayoutElement.preferredHeight;
+        }
+
+        if (popup.itemImage.sprite == null)
+        {
+            _spriteLayoutElement.preferredWidth = _spriteTargetHeight;
+            return;
+        }
+
         float x = popup.itemImage.sprite.rect.x;
         float y = popup.itemImage.sprite.rect.y;
 
+        float scale = _spriteTargetHeight / y;
+        x *= scale;
+
         _spriteLayoutElement.preferredWidth = x;
-        _spriteLayoutElement.preferredHeight = y;
     }
 
     public void UpdatePopup(Vector2 position)
