@@ -3,17 +3,31 @@ using UnityEngine;
 
 public class FMODEvents : MonoBehaviour
 {
-    [field: Header ("Heartbeat SFX")]
+    [field: Header ("Player SFX")]
     [field: SerializeField] public EventReference heartbeat { get; private set; }
-    
-    [field: Header ("Footsteps SFX")]
     [field: SerializeField] public EventReference footsteps { get; private set; }
+    [field: SerializeField] public EventReference breathing { get; private set; }
+    [field: SerializeField] public EventReference suffocating { get; private set; }
+    [field: SerializeField] public EventReference pickup { get; private set; }
 
-    [field: Header ("Angler Fish SFX")]
+    [field: Header("Tools SFX")]
+    [field: SerializeField] public EventReference flashlight { get; private set; }
+    [field: SerializeField] public EventReference radio { get; private set; }
+
+    [field: Header ("Enemy SFX")]
     [field: SerializeField] public EventReference AFDistantOutside { get; private set; }
     [field: SerializeField] public EventReference AFDistantInside { get; private set; }
     [field: SerializeField] public EventReference AFSpotted { get; private set; }
     [field: SerializeField] public EventReference AFAttacking { get; private set; }
+
+    [field: Header("Submarine")]
+    [field: SerializeField] public EventReference submarine{ get; private set; }
+    [field: SerializeField] public EventReference ramp { get; private set; }
+    [field: SerializeField] public EventReference landed { get; private set; }
+
+    [field: Header("Object SFX")]
+    [field: SerializeField] public EventReference generatorLooping { get; private set; }
+    [field: SerializeField] public EventReference entranceAura { get; private set; }
 
     [field: Header("BGM")]
     [field: SerializeField] public EventReference bgm { get; private set; }
@@ -22,6 +36,18 @@ public class FMODEvents : MonoBehaviour
     [field: Header("UI")]
     [field: SerializeField] public EventReference hover { get; private set; }
     [field: SerializeField] public EventReference click { get; private set; }
+    [field: SerializeField] public EventReference denied { get; private set; }
+    
+    [field: Header("Shop")]
+    [field: SerializeField] public EventReference buying { get; private set; }
+    [field: SerializeField] public EventReference selling { get; private set; }
+    [field: SerializeField] public EventReference broke { get; private set; }
+
+    [field: Header("Ambiance")]
+    [field: SerializeField] public EventReference bells { get; private set; }
+    [field: SerializeField] public EventReference bark { get; private set; }
+    [field: SerializeField] public EventReference choir { get; private set; }
+    [field: SerializeField] public EventReference station { get; private set; }
 
 
     public static FMODEvents Instance;

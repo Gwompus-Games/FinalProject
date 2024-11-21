@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{ac80ed30-3d57-4a2c-b3dc-d924f2b9b3ae}">
+		<property name="name">
+			<value>SandRand</value>
+		</property>
+		<relationship name="folder">
+			<destination>{a2c393bf-89ef-45a8-87ae-8d900b7a7f6e}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{5bcbcc43-21df-4e4e-80a3-4c18893ad1bd}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{5bcbcc43-21df-4e4e-80a3-4c18893ad1bd}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

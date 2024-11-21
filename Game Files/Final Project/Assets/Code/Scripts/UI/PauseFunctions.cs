@@ -21,6 +21,7 @@ public class PauseFunctions : MonoBehaviour
     public void Logout()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(mainMenuScene);
+        Time.timeScale = 1;
     }
 
     public void Resume()

@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     private DungeonGenerator _dungeonGenerator;
 
+    private SuitSystem _suitSystem;
+
     private bool _waitingForSubmarineAnimation = false;
 
     private Coroutine _deathSequence;
@@ -72,6 +74,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1;
+
         isPaused = false;
         if (Instance != null && Instance != this)
         {
@@ -156,10 +160,6 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log($"{managedScript.GetType().Name} found");
             }
-            if (managedScript.GetType() == typeof(DungeonGenerator))
-            {
-                _dungeonGenerator = managedScript as DungeonGenerator;
-            }
             Setup(managedScript, managersParent);
         }
 
@@ -177,6 +177,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"{_managedObjects[o].GetType().Name} initialized");
             }
         }
+
+        _dungeonGenerator = GetManagedComponent<DungeonGenerator>();
+        _suitSystem = GetManagedComponent<SuitSystem>();
     }
 
     private void Start()
@@ -186,9 +189,18 @@ public class GameManager : MonoBehaviour
 
     private void StartGameScene()
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Starting {_managedObjects.Count} Objects!");
+        }
+
         //Call all managed objects' Custom Start Function
         for (int i = 0; i < _managedObjects.Count; i++)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"{_managedObjects[i].GetType().Name} Started!");
+            }
             _managedObjects[i].CustomStart();
         }
     }
@@ -251,7 +263,7 @@ public class GameManager : MonoBehaviour
         _managedObjects.Find(x => x.TryGetComponent<T>(out managedObject));
         if (_debugMode && managedObject != null)
         {
-            Debug.Log($"{managedObject.GetType()} gotten!");
+            //Debug.Log($"{managedObject.GetType()} gotten!");
         }
         return managedObject;
     }
@@ -305,6 +317,7 @@ public class GameManager : MonoBehaviour
         }
 
         _dungeonGenerator.StartGeneration();
+        _suitSystem.UpdateSectionOnDive();
 
         if (!takingSubmarine)
         {

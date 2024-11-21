@@ -58,34 +58,104 @@ MonoBehaviour:
       Data3: 1966231682
       Data4: -260619525
     Path: event:/SFX/Player/Footsteps
+  <breathing>k__BackingField:
+    Guid:
+      Data1: -1126936048
+      Data2: 1247970660
+      Data3: -1363754103
+      Data4: 530991072
+    Path: event:/SFX/Player/Breathing with Bubbles
+  <suffocating>k__BackingField:
+    Guid:
+      Data1: 370360132
+      Data2: 1307900975
+      Data3: 362011571
+      Data4: -1963178041
+    Path: event:/SFX/Player/Suffocating
+  <pickup>k__BackingField:
+    Guid:
+      Data1: 799148417
+      Data2: 1206803588
+      Data3: -1067220814
+      Data4: 601674900
+    Path: event:/SFX/Player/PickingUp
+  <flashlight>k__BackingField:
+    Guid:
+      Data1: 945288549
+      Data2: 1150393932
+      Data3: 1745692321
+      Data4: 1303131552
+    Path: event:/SFX/Items/Flashlight
+  <radio>k__BackingField:
+    Guid:
+      Data1: 423772309
+      Data2: 1133323279
+      Data3: 278552993
+      Data4: 1441810367
+    Path: event:/SFX/Items/Radio
   <AFDistantOutside>k__BackingField:
     Guid:
-      Data1: -1817565478
-      Data2: 1183436203
-      Data3: -1373715543
-      Data4: 1096584152
-    Path: event:/AnglerFish/AFDistantOutside
+      Data1: -1697528342
+      Data2: 1153394229
+      Data3: 625498498
+      Data4: 48648791
+    Path: event:/AnglerFish/2D/Outside
   <AFDistantInside>k__BackingField:
     Guid:
-      Data1: 913677521
-      Data2: 1172310523
-      Data3: 1495668154
-      Data4: 1845038691
-    Path: event:/AnglerFish/AFDistantInside
+      Data1: -1113947063
+      Data2: 1115158411
+      Data3: -1563100240
+      Data4: -1899025862
+    Path: event:/AnglerFish/2D/Inside
   <AFSpotted>k__BackingField:
     Guid:
-      Data1: -530939084
-      Data2: 1145832042
-      Data3: 1092800143
-      Data4: -1477852850
-    Path: event:/AnglerFish/AFSpotted
+      Data1: 1629494056
+      Data2: 1158896290
+      Data3: 665303484
+      Data4: -451583267
+    Path: event:/AnglerFish/2D/Spot
   <AFAttacking>k__BackingField:
     Guid:
-      Data1: 112835786
-      Data2: 1134620111
-      Data3: -2108524401
-      Data4: -981101093
-    Path: event:/AnglerFish/AFAttacking
+      Data1: -1477473739
+      Data2: 1288090729
+      Data3: -165996874
+      Data4: 981123111
+    Path: event:/AnglerFish/2D/Attack
+  <submarine>k__BackingField:
+    Guid:
+      Data1: 770656512
+      Data2: 1197587056
+      Data3: -1319828347
+      Data4: 1972001414
+    Path: event:/SFX/Submarine/submarine
+  <ramp>k__BackingField:
+    Guid:
+      Data1: -1889294256
+      Data2: 1265616531
+      Data3: 74072996
+      Data4: 1332284738
+    Path: event:/SFX/Submarine/ramp
+  <landed>k__BackingField:
+    Guid:
+      Data1: 2124513009
+      Data2: 1094824513
+      Data3: 1489417146
+      Data4: -1406065486
+    Path: event:/SFX/Submarine/landed
+  <generatorLooping>k__BackingField:
+    Guid:
+      Data1: -924456486
+      Data2: 1280883413
+      Data3: 1852683925
+      Data4: 695875771
+    Path: event:/SFX/World/Facility/GeneratorLoop
+  <entranceAura>k__BackingField:
+    Guid:
+      Data1: 848043243
+      Data2: 1321191797
+      Data3: 1275916160
+      Data4: -1132999820
+    Path: event:/SFX/World/Facility/EntranceAura
   <bgm>k__BackingField:
     Guid:
       Data1: 68901413
@@ -114,3 +184,59 @@ MonoBehaviour:
       Data3: -1779319924
       Data4: 2103919965
     Path: event:/SFX/UI/UIButtonClick
+  <denied>k__BackingField:
+    Guid:
+      Data1: -1520832968
+      Data2: 1240433493
+      Data3: -1023524947
+      Data4: -1361881631
+    Path: event:/SFX/UI/UIButtonDenied
+  <buying>k__BackingField:
+    Guid:
+      Data1: -1755943878
+      Data2: 1190109415
+      Data3: -298482018
+      Data4: 1227348123
+    Path: event:/SFX/BuySell/Buy
+  <selling>k__BackingField:
+    Guid:
+      Data1: -1536377912
+      Data2: 1096950110
+      Data3: -949284732
+      Data4: 263205708
+    Path: event:/SFX/BuySell/Sell
+  <broke>k__BackingField:
+    Guid:
+      Data1: 1336710937
+      Data2: 1291583268
+      Data3: -1137322570
+      Data4: -1268616103
+    Path: event:/SFX/BuySell/Denied
+  <bells>k__BackingField:
+    Guid:
+      Data1: -385758775
+      Data2: 1113671047
+      Data3: 889467041
+      Data4: -964887456
+    Path: event:/SFX/World/Ambient/Ambient_Bells
+  <bark>k__BackingField:
+    Guid:
+      Data1: -2045251093
+      Data2: 1150136404
+      Data3: -1596784743
+      Data4: -1251248435
+    Path: event:/SFX/World/Ambient/Ambient_Bark
+  <choir>k__BackingField:
+    Guid:
+      Data1: -1932177752
+      Data2: 1101458725
+      Data3: 1892284049
+      Data4: 1397216055
+    Path: event:/SFX/World/Ambient/Ambient_Choir
+  <station>k__BackingField:
+    Guid:
+      Data1: -249641111
+      Data2: 1228416155
+      Data3: -370616408
+      Data4: -2115800923
+    Path: event:/SFX/World/Ambient/Ambient_NumberStation

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640d9e7e81e78ab469a03311bd17945a, type: 3}
+  m_Name: LargePearl
+  m_EditorClassIdentifier: 
+  itemName: Large Pearl
+  itemDescription: Wow that is a really large pearl.
+  usedForSelling: 1
+  worldObject: {fileID: 8769722126191261093, guid: 9127afe8ef0f12c4c8e4517c8a293a59,
+    type: 3}
+  density: 1
+  drag: 12.3
+  angularDrag: 0.15
+  floatingItem: 0
+  inventoryObject: {fileID: 9096973035820259072, guid: 66ed034950b47e746987be0f3d3830d6,
+    type: 3}
+  inventoryItemSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  baseValue: 500
+  rarity: 3
+  spawnChancePoints: 3
