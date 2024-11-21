@@ -37,6 +37,7 @@ public class TaskAttack : Node
         Transform target = (Transform)t;
         if (Vector3.Distance(_transform.position, target.position) <= 1f)
         {
+            _animator.SetBool("Walking", false);
             GameManager.Instance.GetManagedComponent<SuitSystem>().TakeDamage(50);
             Debug.Log("Take Damage");
 
