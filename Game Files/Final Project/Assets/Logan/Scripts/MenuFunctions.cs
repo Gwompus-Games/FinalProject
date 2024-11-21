@@ -14,17 +14,11 @@ public class MenuFunctions : MonoBehaviour
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private string PlayButtonTargetScene = "";
     [SerializeField] private Volume CRT;
-    private PlayerController _playerController;
 
 
     public void StartGame()
-    {
-        
+    {  
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(PlayButtonTargetScene);
-        if (_playerController.PlayerState !=)
-        {
-
-        }
     }
 
     public void SwapActivePanelsMM()
