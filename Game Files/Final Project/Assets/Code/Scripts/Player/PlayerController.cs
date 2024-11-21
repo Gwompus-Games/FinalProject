@@ -294,7 +294,6 @@ public class PlayerController : ManagedByGameManager
         }
 
         currentState = newState;
-        print(currentState);
     }
 
     private void MovementInput()
