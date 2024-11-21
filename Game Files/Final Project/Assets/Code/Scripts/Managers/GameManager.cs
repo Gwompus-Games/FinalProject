@@ -74,6 +74,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1;
+
         isPaused = false;
         if (Instance != null && Instance != this)
         {
@@ -187,9 +189,18 @@ public class GameManager : MonoBehaviour
 
     private void StartGameScene()
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Starting {_managedObjects.Count} Objects!");
+        }
+
         //Call all managed objects' Custom Start Function
         for (int i = 0; i < _managedObjects.Count; i++)
         {
+            if (_debugMode)
+            {
+                Debug.Log($"{_managedObjects[i].GetType().Name} Started!");
+            }
             _managedObjects[i].CustomStart();
         }
     }
@@ -252,7 +263,7 @@ public class GameManager : MonoBehaviour
         _managedObjects.Find(x => x.TryGetComponent<T>(out managedObject));
         if (_debugMode && managedObject != null)
         {
-            Debug.Log($"{managedObject.GetType()} gotten!");
+            //Debug.Log($"{managedObject.GetType()} gotten!");
         }
         return managedObject;
     }
