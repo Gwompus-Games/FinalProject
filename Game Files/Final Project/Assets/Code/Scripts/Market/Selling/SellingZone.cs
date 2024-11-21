@@ -29,6 +29,7 @@ public class SellingZone : MonoBehaviour
         }
 
         //Add sound effect for selling here
+        AudioManager.Instance.SellSound();
 
         GameManager.Instance.GetManagedComponent<PlayerController>().GainMoney(itemToSell.sellValue);
         _uiComponent.UpdateUI(0);

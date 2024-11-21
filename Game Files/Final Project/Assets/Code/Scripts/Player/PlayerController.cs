@@ -96,9 +96,11 @@ public class PlayerController : ManagedByGameManager
     public UIManager uiManager { get; private set; }
     public DeathHandler deathHandler { get; private set; }
 
-
+    //FMOD Event Instances
     public EventInstance playerFootsteps { get; private set; }
-    public EventInstance playerHeartbeat {  get; private set; }
+    public EventInstance playerHeartbeat {  get; private set; } 
+    public EventInstance breathing { get; private set; }
+    public EventInstance suffocating {  get; private set; }
 
     private Coroutine _oxygenOutCoroutine;
     private Coroutine _dyingCoroutine;
@@ -152,8 +154,11 @@ public class PlayerController : ManagedByGameManager
         money = _startingMoney;
         _outOfOxygen = false;
 
+        //Create fmod event instances in audio manager
         playerFootsteps = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.footsteps);
         playerHeartbeat = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.heartbeat);
+        breathing = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.breathing);
+        suffocating = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.suffocating);
 
         TeleportPlayer(_playerSpawnPoint.transform.position);
         Camera.main.gameObject.GetComponent<StudioListener>().attenuationObject = gameObject;
@@ -206,6 +211,7 @@ public class PlayerController : ManagedByGameManager
 
     private void UpdateSound()
     {
+        #region Footsteps
         playerFootsteps.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         if (_movement.magnitude != 0 && isGrounded)
         {
@@ -220,7 +226,9 @@ public class PlayerController : ManagedByGameManager
         {
             playerFootsteps.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
+        #endregion
 
+        #region Heartbeat
         playerHeartbeat.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         if (_debugMode)
         {
@@ -239,6 +247,36 @@ public class PlayerController : ManagedByGameManager
                 playerHeartbeat.start();
             }
         }
+        #endregion
+
+        #region Breathing
+        breathing.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        suffocating.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (_debugMode)
+        {
+            Debug.Log($"Player has oxygen: {!_outOfOxygen}");
+        }
+        if (_outOfOxygen)
+        {
+            PLAYBACK_STATE playbackState;
+            suffocating.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                suffocating.start();
+            }
+            breathing.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+        else
+        {
+            PLAYBACK_STATE playbackState;
+            breathing.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                breathing.start();
+            }
+            suffocating.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+        #endregion
     }
 
     private void UpdateState()
@@ -478,6 +516,7 @@ public class PlayerController : ManagedByGameManager
             UnityEngine.Debug.LogWarning("Gaining $0!");
         }
         money += income;
+
     }
 
     public bool SpendMoney(int cost)
