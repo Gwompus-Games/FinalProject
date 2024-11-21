@@ -2,14 +2,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FacilityEntrance : MonoBehaviour, IInteractable
+public class FacilityEntrance : InteractableObject
 {
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         transform.tag = "Interactable";
     }
 
-    public void Interact()
+    public override void Interact()
     {
         GameManager.Instance.isPlayerInsideFacility = true;
         GameManager.Instance.GetManagedComponent<PlayerController>().TeleportPlayer(GameManager.Instance.GetManagedComponent<DungeonGenerator>().transform.position);

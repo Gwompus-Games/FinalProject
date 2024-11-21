@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +20,9 @@ public class Submarine : ManagedByGameManager
     [SerializeField] private AnimationCurves _takeOffCurves;
     [SerializeField] private float _speed = 0.25f;
     [SerializeField] private Camera _deadCamera;
+
+    //Submarine Sound Effect
+    [SerializeField] private EventInstance submarineSFX;
 
     [Header("Debug Settings")]
     [SerializeField] private bool _debugMode = false;
@@ -65,6 +69,7 @@ public class Submarine : ManagedByGameManager
     {
         base.CustomStart();
         _playerController = GameManager.Instance.GetManagedComponent<PlayerController>();
+        submarineSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.submarine);
     }
 
 
@@ -76,8 +81,10 @@ public class Submarine : ManagedByGameManager
         GetComponentInChildren<Hatch>().CloseHatch();
         if (_inTransit)
         {
+            AudioManager.Instance.OnDenied();
             return;
         }
+        AudioManager.Instance.OnClick();
         _inTransit = true;
         StartCoroutine(WaitForAnimation());
     }
@@ -134,6 +141,7 @@ public class Submarine : ManagedByGameManager
         float distance = Vector3.Distance(transform.position, target);
 
         //Start submarine sound effect
+        submarineSFX.start();
 
         if (distance != 0)
         {
@@ -170,6 +178,7 @@ public class Submarine : ManagedByGameManager
         }
 
         //Stop submarine sound effect
+        submarineSFX.stop(STOP_MODE.ALLOWFADEOUT);
 
         if (transform.position == _landedTransform.position)
         {

@@ -61,6 +61,7 @@ public class WorldItem : InteractableObject
 
     public override void Interact()
     {
+        AudioManager.Instance.OnPickup();
         GameManager.Instance.GetManagedComponent<InventoryController>().AddItemToInventory(_itemData);
         if (_pickupEffect != null)
         {

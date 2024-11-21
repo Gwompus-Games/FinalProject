@@ -33,6 +33,7 @@ public class AnglerFish : Enemy
             {
                 AudioManager.Instance.SetInstanceParameter(player.playerHeartbeat, parameterName, 0);
                 player.playerHeartbeat.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                player.playerFootsteps.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
                 playHeartbeat = false;
                 return;
             }

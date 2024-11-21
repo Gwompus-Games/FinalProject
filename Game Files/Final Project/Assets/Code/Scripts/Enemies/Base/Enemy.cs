@@ -16,11 +16,12 @@ public class Enemy : MonoBehaviour, IHeartbeat
     public float patrolRadius = 20f;
     public float fovRadius = 6f;
     public float attackRadius = 1f;
-    public float minAudioTime = 30f, maxAudioTime = 60f;
-    public float minSpotTime = 5f, currentSpotTime = 0f;
 
-    private float audioPlaytime, currentAudioTime;
-    private bool playSpotSFX = true;
+    //public float minAudioTime = 30f, maxAudioTime = 60f;
+    //public float minSpotTime = 5f, currentSpotTime = 0f;
+
+    //private float audioPlaytime, currentAudioTime;
+    //private bool playSpotSFX = true;
 
     [Header("Assign")]
     public Animator animator;
@@ -32,6 +33,8 @@ public class Enemy : MonoBehaviour, IHeartbeat
     private EventInstance AFDistantOutside;
     private EventInstance AFSpotted;
     private EventInstance AFAttacking;
+    private bool canPlayAmbiance = true;
+    private float ambiancePlayTime = 60f;
 
     public enum EnemyState
     {
@@ -51,97 +54,73 @@ public class Enemy : MonoBehaviour, IHeartbeat
 
     protected virtual void Start()
     {
-        ResetAudioTimes();
-
         AFDistantInside = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFDistantInside);
         AFDistantOutside = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFDistantOutside);
         AFSpotted = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFSpotted);
         AFAttacking = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.AFAttacking);
     }
 
-    private void Update()
-    {
-        currentAudioTime += Time.deltaTime;
-    }
-
     public void ChangeEnemyState(EnemyState state)
     {
-        if (currentEnemyState == state)
-            return;
-
+        //if (currentEnemyState == state)
+        //    return;
         currentEnemyState = state;
-        PLAYBACK_STATE PSInside, PSOutside, PSSpotted, PSAttacking;
-        AFSpotted.getPlaybackState(out PSSpotted);
-        AFAttacking.getPlaybackState(out PSAttacking);
-        AFDistantInside.getPlaybackState(out PSInside);
-        AFDistantOutside.getPlaybackState(out PSOutside);
+        PLAYBACK_STATE ps;
 
         switch (state)
         {
             case EnemyState.Attacking:
-                AFAttacking.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                if (PSAttacking.Equals(PLAYBACK_STATE.STOPPED))
+                AFAttacking.getPlaybackState(out ps);
+                if(ps.Equals(PLAYBACK_STATE.STOPPED))
                 {
-                    if (PSSpotted.Equals(PLAYBACK_STATE.PLAYING))
-                        AFSpotted.stop(STOP_MODE.ALLOWFADEOUT);
                     AFAttacking.start();
+                    return;
                 }
                 break;
             case EnemyState.Spotted:
-                if(playSpotSFX)
+                AFSpotted.getPlaybackState(out ps);
+                if (ps.Equals(PLAYBACK_STATE.STOPPED))
                 {
-                    AFSpotted.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                    if (PSSpotted.Equals(PLAYBACK_STATE.STOPPED))
-                    {
-                        if (PSAttacking.Equals(PLAYBACK_STATE.PLAYING))
-                            return;
-                        AFSpotted.start();
-                    }
+                    AFSpotted.start();
+                    return;
                 }
                 break;
             case EnemyState.Patrolling:
-                if (currentAudioTime < audioPlaytime || PSAttacking.Equals(PLAYBACK_STATE.PLAYING) || PSSpotted.Equals(PLAYBACK_STATE.PLAYING))
+                if (!canPlayAmbiance)
                     return;
-                AFDistantInside.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-                if(GameManager.Instance.isPlayerInsideFacility)
-                {
-                    if (PSInside.Equals(PLAYBACK_STATE.STOPPED))
-                    {
-                        if (PSOutside.Equals(PLAYBACK_STATE.PLAYING))
-                            AFDistantOutside.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                        AFDistantInside.start();
-                        ResetAudioTimes();
-                    }        
-                }
-                else
-                {
-                    if (PSOutside.Equals(PLAYBACK_STATE.STOPPED))
-                    {
-                        if (PSInside.Equals(PLAYBACK_STATE.PLAYING))
-                            AFDistantInside.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                        AFDistantOutside.start();
-                        ResetAudioTimes();
-                    }
-                }
+                StartCoroutine(PlayAmbiance());
+                return; ;
+            default:
+                if (!canPlayAmbiance)
+                    return;
+                StartCoroutine(PlayAmbiance());
                 break;
         }
     }
 
-    private IEnumerator ResetSpotTime()
+    private IEnumerator PlayAmbiance()
     {
-        playSpotSFX = false;
-        while(currentSpotTime < minSpotTime)
+        if(GameManager.Instance.isPlayerInsideFacility)
         {
-            currentSpotTime += Time.deltaTime;
-            yield return null;
+            PLAYBACK_STATE ps;
+            AFDistantInside.getPlaybackState(out ps);
+            if (ps.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                AFDistantInside.start();
+            }
         }
-        playSpotSFX = true;
-    }
-
-    private void ResetAudioTimes()
-    {
-        audioPlaytime = Random.Range(minAudioTime, maxAudioTime);
-        currentAudioTime = 0;
+        else
+        {
+            PLAYBACK_STATE ps;
+            AFDistantOutside.getPlaybackState(out ps);
+            if (ps.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                AFDistantOutside.start();
+            }
+        }
+        canPlayAmbiance = false;
+        yield return new WaitForSeconds(ambiancePlayTime);
+        canPlayAmbiance = true;
     }
 
     public virtual void SetupEnemy()
