@@ -181,6 +181,11 @@ public class InventoryItem : MonoBehaviour
         return _itemImage.sprite;
     }
 
+    public Color GetItemColour()
+    {
+        return _itemImage.color;
+    }
+
     private void OnDestroy()
     {
         if (_removedFromInventory)
