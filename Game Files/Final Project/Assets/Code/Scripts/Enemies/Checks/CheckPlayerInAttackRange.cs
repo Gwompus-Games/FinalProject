@@ -26,10 +26,19 @@ public class CheckPlayerInAttackRange : Node
             return state;
         }
 
+        if (_enemyScript.IsAttacking())
+        {
+            state = NodeState.SUCCESS;
+            _enemyScript.ChangeEnemyState(Enemy.EnemyState.Spotted);
+            return state;
+        }
+
         Transform target = (Transform)t;
         if (Vector3.Distance(_transform.position, target.position) <= _enemyScript.attackRadius)
         {
-            _animator.SetBool("Attacking", true);
+            _enemyScript.SetAttackTargetPos(target.position);
+            _enemyScript.SetIsAttacking(true);
+            _animator.SetTrigger("Attacking");
             _animator.SetBool("Walking", false);
 
             state = NodeState.SUCCESS;

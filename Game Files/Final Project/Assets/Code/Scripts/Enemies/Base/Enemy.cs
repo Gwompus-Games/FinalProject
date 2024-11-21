@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour, IHeartbeat
 
     private bool _isStunned = false;
     private bool _isAttacking = false;
+    private Vector3 _attackTargetPos;
 
     public enum EnemyState
     {
@@ -155,12 +156,13 @@ public class Enemy : MonoBehaviour, IHeartbeat
     }
 
     public void SetIsStunned(bool isStunned) { _isStunned = isStunned; }
-
     public bool IsStunned() { return _isStunned; }
 
     public void SetIsAttacking(bool isAttacking) { _isAttacking = isAttacking; }
-
     public bool IsAttacking() { return _isAttacking; }
+
+    public void SetAttackTargetPos(Vector3 attackTargetPos) { _attackTargetPos = attackTargetPos; }
+    public Vector3 AttackTargetPos() { return _attackTargetPos; }
 
     private void UpdateNavMeshAgentSettings()
     {
