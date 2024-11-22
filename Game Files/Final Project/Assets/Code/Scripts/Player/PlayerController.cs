@@ -96,6 +96,8 @@ public class PlayerController : ManagedByGameManager
     public UIManager uiManager { get; private set; }
     public DeathHandler deathHandler { get; private set; }
 
+    private ToolBarUI _toolBarUI;
+
     //FMOD Event Instances
     public EventInstance playerFootsteps { get; private set; }
     public EventInstance playerHeartbeat {  get; private set; } 
@@ -153,6 +155,8 @@ public class PlayerController : ManagedByGameManager
         CloseInventory();
         money = _startingMoney;
         _outOfOxygen = false;
+
+        _toolBarUI = FindFirstObjectByType<ToolBarUI>();
 
         //Create fmod event instances in audio manager
         playerFootsteps = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.footsteps);
@@ -564,6 +568,14 @@ public class PlayerController : ManagedByGameManager
         cameraLook.enabled = false;
         ChangeUIState(UIManager.UIToDisplay.GAME);
         ChangeState(PlayerState.Dying);
+
+        if (_toolBarUI != null)
+        {
+            if (_toolBarUI.TryGetComponent<CanvasGroup>(out CanvasGroup canvasGroup))
+            {
+                canvasGroup.alpha = 0;
+            }
+        }
     }
 
     public void DisableDeath()
@@ -578,6 +590,14 @@ public class PlayerController : ManagedByGameManager
         CameraLook cameraLook = GetComponentInChildren<CameraLook>();
         cameraLook.enabled = true;
         ChangeState(PlayerState.Idle);
+
+        if (_toolBarUI != null)
+        {
+            if (_toolBarUI.TryGetComponent<CanvasGroup>(out CanvasGroup canvasGroup))
+            {
+                canvasGroup.alpha = 1;
+            }
+        }
     }
 
     public void NoOxygenLeft()

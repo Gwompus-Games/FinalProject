@@ -7,4 +7,5 @@ public class MasterTreasureListSO : TreasureListSO
 {
     [Header("Master Treasure List Settings")]
     public bool useWeightedSpawning = true;
+    [Range(0f, 100f)] public float chanceForNoItem;
 }
