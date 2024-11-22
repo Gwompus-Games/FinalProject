@@ -32,19 +32,18 @@ public class CheckPlayerInFOVRange : Node
 
         object t = GetData("target");
 
-        Debug.Log(colliders.Length);
-
         if (colliders.Length > 0)
         {
             if (t == null) 
             {
                 RaycastHit hit;
 
-                if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, (colliders[0].transform.position + Vector3.up * 1.5f) - (_transform.position + Vector3.up * 1.5f), out hit, _enemyScript.fovRadius))
+                if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, (colliders[0].transform.position + Vector3.up * 1.5f) - (_transform.position + Vector3.up * 1.5f), out hit, _enemyScript.fovRadius, _enemyScript.raycastMask))
                 {
+                    Debug.Log(hit.transform.name);
                     if (hit.transform == colliders[0].transform)
                     {
-                        Debug.Log("found player");
+                        _enemyScript.StartCoroutine(_enemyScript.AttackCooldown());
                         parent.parent.SetData("target", colliders[0].transform);
                         _animator.SetBool("Walking", true);
                         state = NodeState.SUCCESS;
@@ -55,15 +54,16 @@ public class CheckPlayerInFOVRange : Node
         }
         else 
         {
-            Debug.Log("Delete target");
-            parent.parent.SetData("target", null);
+            if (t != null) 
+            {
+                parent.parent.SetData("target", null);
+            }
             state = NodeState.FAILURE;
             return state;
         }
 
         if (t != null) 
         {
-            Debug.Log("in fov range");
             state = NodeState.SUCCESS;
             return state;
         }

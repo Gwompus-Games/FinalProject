@@ -40,7 +40,7 @@ public class CheckPlayerInAttackRange : Node
 
         RaycastHit hit;
             
-        if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, target.position - (_transform.position + Vector3.up * 1), out hit, _enemyScript.attackRadius))
+        if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, target.position + Vector3.up * 1.5f - (_transform.position + Vector3.up * 1), out hit, _enemyScript.attackRadius, _enemyScript.raycastMask))
         {
             if (hit.transform == target.transform)
             {

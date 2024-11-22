@@ -31,15 +31,13 @@ public class TaskAttack : Node
 
         Transform target = (Transform)t;
 
-        Debug.Log(TimeManagement());
-
-        if (TimeManagement() >= 1) 
+        if (_currentTime >= _enemyScript.attackDuration || Vector3.Distance(_transform.position, target.position) <= 2f) 
         {
             _enemyScript.StartCoroutine(_enemyScript.AttackCooldown());
             _enemyScript.SetIsStunned(true);
             _currentTime = 0;
             
-            if (Vector3.Distance(target.position, _enemyScript.AttackTargetPos()) <= 0.5f)
+            if (Vector3.Distance(target.position, _enemyScript.AttackTargetPos()) <= 1f)
             {
                 GameManager.Instance.GetManagedComponent<SuitSystem>().TakeDamage(50);
                 _enemyScript.SetIsAttacking(false);
@@ -52,7 +50,7 @@ public class TaskAttack : Node
         else 
         {
             _currentTime += Time.deltaTime;
-            MoveToTarget();
+            MoveToTarget(target);
         }
 
         state = NodeState.RUNNING;
@@ -60,12 +58,15 @@ public class TaskAttack : Node
         return state;
     }
 
-    private void MoveToTarget() 
+    private void MoveToTarget(Transform target) 
     {
-        _transform.position = Vector3.MoveTowards(
-            _enemyScript.AttackStartPos(), _enemyScript.AttackTargetPos(), 
-            _enemyScript.attackCurve.Evaluate(TimeManagement())
-            );
+        _transform.position = Vector3.Lerp(_enemyScript.AttackStartPos(), _enemyScript.AttackTargetPos(), _enemyScript.attackCurve.Evaluate(TimeManagement()));
+
+        var lookPos = target.position - _transform.position;
+        lookPos.y = 0;
+        var rotation = Quaternion.LookRotation(lookPos);
+        
+        _transform.rotation = Quaternion.Slerp(_transform.rotation, rotation, _enemyScript.attackCurve.Evaluate(TimeManagement()));
     }
 
     private float TimeManagement() 

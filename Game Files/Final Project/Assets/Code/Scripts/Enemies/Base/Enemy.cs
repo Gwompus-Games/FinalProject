@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour, IHeartbeat
     public float fovRadius = 8f;
 
     [Header("Attack Settings")]
+    public LayerMask raycastMask;
     public AnimationCurve attackCurve;
     public float attackRadius = 5f;
     public float attackDuration = 0.5f;
@@ -153,14 +154,11 @@ public class Enemy : MonoBehaviour, IHeartbeat
             agent.isStopped = false;
 
         agent.destination = pos;
-
-        Debug.Log("Move!");
     }
 
     public void StopMoving()
     {
         agent.isStopped = true;
-        Debug.Log("Stop Moving");
     }
 
     public void SetIsStunned(bool isStunned) { _isStunned = isStunned; Debug.Log("stunned " + isStunned); }

@@ -459,8 +459,8 @@ Transform:
   m_GameObject: {fileID: 2623995051758291915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.75, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalScale: {x: 0.47, y: 0.45, z: 0.45}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3652848814755545067}
@@ -816,11 +816,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2453d5426368aa4e8f997484cda57f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  moveSpeed: 1.75
   acceleration: 4
-  turnSpeed: 90
+  turnSpeed: 100
   patrolRadius: 50
-  fovRadius: 12
+  fovRadius: 18
+  raycastMask:
+    serializedVersion: 2
+    m_Bits: 1073741897
   attackCurve:
     serializedVersion: 2
     m_Curve:
@@ -836,17 +839,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: -1.5068675
-      outSlope: -1.5068675
+      inSlope: 0.0082375035
+      outSlope: 0.0082375035
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.054166675
+      inWeight: 0.21249998
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  attackRadius: 7
-  attackDuration: 0.2
+  attackRadius: 6
+  attackDuration: 0.5
   attackCooldown: 10
   attackStunTime: 5
   minAudioTime: 30
