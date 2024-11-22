@@ -31,7 +31,7 @@ public class CheckPlayerInFOVRange : Node
             {
                 RaycastHit hit;
 
-                if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, (colliders[0].transform.position + Vector3.up * 1.5f) - (_transform.position + Vector3.up * 1.5f), out hit, _enemyScript.fovRadius))
+                if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, (colliders[0].transform.position - (_transform.position + Vector3.up * 1)), out hit, _enemyScript.fovRadius))
                 {
                     if (hit.transform == colliders[0].transform)
                     {
