@@ -68,6 +68,8 @@ public class PlayerController : ManagedByGameManager
     [SerializeField] private float _bufferSecondsFromNoOxygen = 10f;
     private bool _outOfOxygen = false;
 
+    private OxygenTankSO _cheapestOxygen;
+
     public PlayerState currentState { get; private set; } = PlayerState.Idle;
     public bool isGrounded { get; private set; }
     public float moveSpeed { get; private set; }
@@ -95,6 +97,8 @@ public class PlayerController : ManagedByGameManager
     public InventoryController inventoryController { get; private set; }
     public UIManager uiManager { get; private set; }
     public DeathHandler deathHandler { get; private set; }
+
+    private ToolBarUI _toolBarUI;
 
     //FMOD Event Instances
     public EventInstance playerFootsteps { get; private set; }
@@ -154,6 +158,8 @@ public class PlayerController : ManagedByGameManager
         money = _startingMoney;
         _outOfOxygen = false;
 
+        _toolBarUI = FindFirstObjectByType<ToolBarUI>();
+
         //Create fmod event instances in audio manager
         playerFootsteps = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.footsteps);
         playerHeartbeat = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.heartbeat);
@@ -162,6 +168,29 @@ public class PlayerController : ManagedByGameManager
 
         TeleportPlayer(_playerSpawnPoint.transform.position);
         Camera.main.gameObject.GetComponent<StudioListener>().attenuationObject = gameObject;
+
+        ToolListSO masterToolList = GameManager.Instance.GetManagedComponent<BuyingManager>().toolList;
+
+        if (masterToolList.tools.Count > 0)
+        {
+            for (int t = 0; t < masterToolList.tools.Count; t++)
+            {
+                OxygenTankSO oxygenTank = masterToolList.tools[t] as OxygenTankSO;
+                if (oxygenTank != null)
+                {
+                    if (_cheapestOxygen == null)
+                    {
+                        _cheapestOxygen = oxygenTank;
+                        continue;
+                    }
+
+                    if (oxygenTank.buyValue < _cheapestOxygen.buyValue)
+                    {
+                        _cheapestOxygen = oxygenTank;
+                    }
+                }
+            }
+        }
     }
 
     private void Update()
@@ -211,11 +240,11 @@ public class PlayerController : ManagedByGameManager
 
     private void UpdateSound()
     {
+        PLAYBACK_STATE playbackState;
         #region Footsteps
         playerFootsteps.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         if (_movement.magnitude != 0 && isGrounded)
         {
-            PLAYBACK_STATE playbackState;
             playerFootsteps.getPlaybackState(out playbackState);
             if(playbackState.Equals(PLAYBACK_STATE.STOPPED))
             {
@@ -240,7 +269,6 @@ public class PlayerController : ManagedByGameManager
         }
         else
         {
-            PLAYBACK_STATE playbackState;
             playerHeartbeat.getPlaybackState(out playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
             {
@@ -252,29 +280,23 @@ public class PlayerController : ManagedByGameManager
         #region Breathing
         breathing.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         suffocating.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        if (_debugMode)
+
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
         {
-            Debug.Log($"Player has oxygen: {!_outOfOxygen}");
-        }
-        if (_outOfOxygen)
-        {
-            PLAYBACK_STATE playbackState;
-            suffocating.getPlaybackState(out playbackState);
-            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            breathing.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
             {
-                suffocating.start();
+                breathing.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
-            breathing.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         else
         {
-            PLAYBACK_STATE playbackState;
             breathing.getPlaybackState(out playbackState);
-            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED) && currentState != PlayerState.Dying)
             {
                 breathing.start();
             }
-            suffocating.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         #endregion
     }
@@ -564,6 +586,14 @@ public class PlayerController : ManagedByGameManager
         cameraLook.enabled = false;
         ChangeUIState(UIManager.UIToDisplay.GAME);
         ChangeState(PlayerState.Dying);
+
+        if (_toolBarUI != null)
+        {
+            if (_toolBarUI.TryGetComponent<CanvasGroup>(out CanvasGroup canvasGroup))
+            {
+                canvasGroup.alpha = 0;
+            }
+        }
     }
 
     public void DisableDeath()
@@ -578,6 +608,14 @@ public class PlayerController : ManagedByGameManager
         CameraLook cameraLook = GetComponentInChildren<CameraLook>();
         cameraLook.enabled = true;
         ChangeState(PlayerState.Idle);
+
+        if (_toolBarUI != null)
+        {
+            if (_toolBarUI.TryGetComponent<CanvasGroup>(out CanvasGroup canvasGroup))
+            {
+                canvasGroup.alpha = 1;
+            }
+        }
     }
 
     public void NoOxygenLeft()
@@ -605,6 +643,12 @@ public class PlayerController : ManagedByGameManager
         }
 
         //Add regained oxygen sound effect
+        PLAYBACK_STATE playbackState;
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
+        {
+            suffocating.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
 
         _outOfOxygen = false;
         if (_oxygenOutCoroutine != null)
@@ -637,9 +681,26 @@ public class PlayerController : ManagedByGameManager
 
     public void RespawnPlayer()
     {
+        if (!CheckIfCanAffordMoreOxygen())
+        {
+            GameManager.Instance.EndScene(EndScreenManager.EndState.NoMoneyLeft);
+            return;
+        }
+
         TeleportPlayer(_playerSpawnPoint.position);
         suitSystem.ResetSuitDurability();
+        inventoryController.RemoveAllItems();
         DisableDeath();
+    }
+
+    private bool CheckIfCanAffordMoreOxygen()
+    {
+        if (money < _cheapestOxygen.buyValue)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private IEnumerator OxygenOutTimer()
@@ -650,6 +711,14 @@ public class PlayerController : ManagedByGameManager
         }
         yield return null;
         //add code for any animations and sounds
+
+        PLAYBACK_STATE playbackState;
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+        {
+            suffocating.start();
+        }
+        breathing.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
         yield return new WaitForSeconds(_bufferSecondsFromNoOxygen);
         //add any code for things happening after player runs out of buffer seconds
@@ -674,6 +743,13 @@ public class PlayerController : ManagedByGameManager
             yield return null;
         }
 
+        PLAYBACK_STATE playbackState;
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
+        {
+            suffocating.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+
         //add any code for doing things after player dies
         if (deathType == DeathObject.DeathType.Won)
         {
@@ -690,6 +766,7 @@ public class PlayerController : ManagedByGameManager
         if (other.TryGetComponent<Submarine>(out Submarine sub))
         {
             onSub = true;
+            OxygenRegained();
             //transform.SetParent(sub.transform);
         }
     }
@@ -765,25 +842,29 @@ public class PlayerController : ManagedByGameManager
     public void ChangeUIState(UIManager.UIToDisplay ui)
     {
         uiManager.SetUI(ui);
-        bool enabled = false;
+        bool inventoryEnabled = false;
+        bool movementLocked = false;
         switch (ui)
         {
             case UIManager.UIToDisplay.GAME:
                 ChangeState(PlayerState.Idle);
-                enabled = false;
+                inventoryEnabled = false;
+                movementLocked = false;
                 break;
             case UIManager.UIToDisplay.PAUSE:
                 ChangeState(PlayerState.Paused);
-                enabled = false;
+                inventoryEnabled = false;
+                movementLocked = true;
                 break;
             default:
                 ChangeState(PlayerState.Inventory);
-                enabled = true;
+                inventoryEnabled = true;
+                movementLocked = true;
                 break;
         }
-        GetComponentInChildren<InventoryController>().enabled = enabled;
-        GetComponentInChildren<CameraLook>().enabled = !enabled;
-        if (!enabled)
+        GetComponentInChildren<InventoryController>().enabled = inventoryEnabled;
+        GetComponentInChildren<CameraLook>().enabled = !movementLocked;
+        if (!inventoryEnabled)
         {
             inventoryController.InventoryClosing();
         }

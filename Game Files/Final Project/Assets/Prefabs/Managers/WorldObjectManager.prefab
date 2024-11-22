@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7408942097520144193}
   - component: {fileID: 4994433835250245110}
+  - component: {fileID: 4779191240826742163}
   m_Layer: 0
-  m_Name: WorldItems
+  m_Name: WorldObjectManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,5 +43,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49f8c8002761c1e4892dad71cfee7ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4779191240826742163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9060285053733357587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 576af5a4250eb6c4e90236f957d01003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

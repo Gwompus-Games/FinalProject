@@ -176,11 +176,6 @@ public class InventoryItem : MonoBehaviour
         ChangeTileColours(InventoryGrid.globalItemData.normalTileColour, InventoryGrid.globalItemData.tileAlpha);
     }
 
-    public Sprite GetItemSprite()
-    {
-        return _itemImage.sprite;
-    }
-
     public Color GetItemColour()
     {
         return _itemImage.color;

@@ -86,10 +86,6 @@ public class InventoryPopupUI : MonoBehaviour
         {
             popup.itemImage.sprite = item.itemData.inventoryItemSprite;
         }
-        else
-        {
-            popup.itemImage.sprite = item.GetItemSprite();
-        }
         popup.itemImage.color = item.GetItemColour();
         popup.itemDescription.text = item.itemData.itemDescription;
 
@@ -124,8 +120,10 @@ public class InventoryPopupUI : MonoBehaviour
             return;
         }
 
-        float x = popup.itemImage.sprite.rect.x;
-        float y = popup.itemImage.sprite.rect.y;
+        Debug.Log(popup.itemImage.sprite.name);
+
+        float x = popup.itemImage.sprite.rect.width;
+        float y = popup.itemImage.sprite.rect.height;
 
         float scale = _spriteTargetHeight / y;
         x *= scale;
