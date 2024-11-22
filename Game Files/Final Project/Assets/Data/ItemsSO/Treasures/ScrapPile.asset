@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 640d9e7e81e78ab469a03311bd17945a, type: 3}
-  m_Name: LargePearl
+  m_Name: ScrapPile
   m_EditorClassIdentifier: 
-  itemName: Large Pearl
-  itemDescription: Wow that is a really large pearl.
+  itemName: Scrap Pile
+  itemDescription: Some junk in a pile.
   usedForSelling: 1
-  worldObject: {fileID: 8769722126191261093, guid: 9127afe8ef0f12c4c8e4517c8a293a59,
+  worldObject: {fileID: 596640609014525411, guid: fe5d22d2039fa0241bac6a2dca2e59d2,
     type: 3}
   density: 1
-  drag: 12.3
+  drag: 7.4
   angularDrag: 0.15
   floatingItem: 0
-  inventoryObject: {fileID: 9096973035820259072, guid: 66ed034950b47e746987be0f3d3830d6,
+  inventoryObject: {fileID: 2780283971866376982, guid: 6fd9200eda841ee4fb43afbee6db9032,
     type: 3}
-  inventoryItemSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  baseValue: 1000
-  rarity: 3
-  spawnChancePoints: 3
+  inventoryItemSprite: {fileID: 0}
+  baseValue: 26
+  rarity: 0
+  spawnChancePoints: 110

@@ -251,6 +251,8 @@ public class AudioManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        CleanUp();
+
         switch(scene.buildIndex)
         {
             case 0:
