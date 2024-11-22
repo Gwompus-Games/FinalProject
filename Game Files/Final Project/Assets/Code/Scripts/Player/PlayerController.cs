@@ -215,11 +215,11 @@ public class PlayerController : ManagedByGameManager
 
     private void UpdateSound()
     {
+        PLAYBACK_STATE playbackState;
         #region Footsteps
         playerFootsteps.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         if (_movement.magnitude != 0 && isGrounded)
         {
-            PLAYBACK_STATE playbackState;
             playerFootsteps.getPlaybackState(out playbackState);
             if(playbackState.Equals(PLAYBACK_STATE.STOPPED))
             {
@@ -244,7 +244,6 @@ public class PlayerController : ManagedByGameManager
         }
         else
         {
-            PLAYBACK_STATE playbackState;
             playerHeartbeat.getPlaybackState(out playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
             {
@@ -256,29 +255,23 @@ public class PlayerController : ManagedByGameManager
         #region Breathing
         breathing.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         suffocating.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        if (_debugMode)
+
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
         {
-            Debug.Log($"Player has oxygen: {!_outOfOxygen}");
-        }
-        if (_outOfOxygen)
-        {
-            PLAYBACK_STATE playbackState;
-            suffocating.getPlaybackState(out playbackState);
-            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            breathing.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
             {
-                suffocating.start();
+                breathing.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             }
-            breathing.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         else
         {
-            PLAYBACK_STATE playbackState;
             breathing.getPlaybackState(out playbackState);
-            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED) && currentState != PlayerState.Dying)
             {
                 breathing.start();
             }
-            suffocating.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         #endregion
     }
@@ -625,6 +618,12 @@ public class PlayerController : ManagedByGameManager
         }
 
         //Add regained oxygen sound effect
+        PLAYBACK_STATE playbackState;
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
+        {
+            suffocating.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
 
         _outOfOxygen = false;
         if (_oxygenOutCoroutine != null)
@@ -671,6 +670,14 @@ public class PlayerController : ManagedByGameManager
         yield return null;
         //add code for any animations and sounds
 
+        PLAYBACK_STATE playbackState;
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+        {
+            suffocating.start();
+        }
+        breathing.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
         yield return new WaitForSeconds(_bufferSecondsFromNoOxygen);
         //add any code for things happening after player runs out of buffer seconds
         if (_outOfOxygen && 
@@ -694,6 +701,13 @@ public class PlayerController : ManagedByGameManager
             yield return null;
         }
 
+        PLAYBACK_STATE playbackState;
+        suffocating.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
+        {
+            suffocating.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+
         //add any code for doing things after player dies
         if (deathType == DeathObject.DeathType.Won)
         {
@@ -710,6 +724,7 @@ public class PlayerController : ManagedByGameManager
         if (other.TryGetComponent<Submarine>(out Submarine sub))
         {
             onSub = true;
+            OxygenRegained();
             //transform.SetParent(sub.transform);
         }
     }
