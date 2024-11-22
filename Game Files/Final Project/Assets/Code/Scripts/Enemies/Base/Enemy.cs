@@ -9,13 +9,24 @@ public class Enemy : MonoBehaviour, IHeartbeat
     protected PlayerController _playerController;
     private NavMeshAgent agent;
 
-    [Header("Settings")]
+    [Header("Movement Settings")]
     public float moveSpeed = 3f;
     public float acceleration = 6;
     public float turnSpeed = 80;
     public float patrolRadius = 20f;
-    public float fovRadius = 6f;
-    public float attackRadius = 1f;
+    public float fovRadius = 8f;
+
+    [Header("Attack Settings")]
+    public LayerMask raycastMask;
+    public AnimationCurve attackCurve;
+    public float attackRadius = 5f;
+    public float attackDuration = 0.5f;
+    public float attackCooldown = 5f;
+    public float attackStunTime = 2f;
+
+    [Header("Audio Settings")]
+    public float minAudioTime = 30f, maxAudioTime = 60f;
+    public float minSpotTime = 5f, currentSpotTime = 0f;
 
     //public float minAudioTime = 30f, maxAudioTime = 60f;
     //public float minSpotTime = 5f, currentSpotTime = 0f;
@@ -36,12 +47,19 @@ public class Enemy : MonoBehaviour, IHeartbeat
     private bool canPlayAmbiance = true;
     private float ambiancePlayTime = 60f;
 
+    private bool _isStunned = false;
+    private bool _isAttacking = false;
+    private Vector3 _attackTargetPos;
+    private bool _attackOnCooldown = false;
+    private Vector3 _attackStartPos;
+
     public enum EnemyState
     {
         Patrolling,
         Searching,
         Spotted,
-        Attacking
+        Attacking,
+        Idle
     }
     public EnemyState currentEnemyState;
 
@@ -90,10 +108,12 @@ public class Enemy : MonoBehaviour, IHeartbeat
                     return;
                 StartCoroutine(PlayAmbiance());
                 return; ;
-            default:
+            case EnemyState.Searching:
                 if (!canPlayAmbiance)
                     return;
                 StartCoroutine(PlayAmbiance());
+                break;
+            default:
                 break;
         }
     }
@@ -141,6 +161,29 @@ public class Enemy : MonoBehaviour, IHeartbeat
         agent.isStopped = true;
     }
 
+    public void SetIsStunned(bool isStunned) { _isStunned = isStunned; Debug.Log("stunned " + isStunned); }
+    public bool IsStunned() { return _isStunned; }
+
+    public void SetIsAttacking(bool isAttacking) { _isAttacking = isAttacking; }
+    public bool IsAttacking() { return _isAttacking; }
+
+    public void SetAttackTargetPos(Vector3 attackTargetPos) { _attackTargetPos = attackTargetPos; }
+    public Vector3 AttackTargetPos() { return _attackTargetPos; }
+
+    public void SetAttackStartPos(Vector3 attackStartPos) { _attackStartPos = attackStartPos; }
+    public Vector3 AttackStartPos() { return _attackStartPos; }
+
+    public bool IsAttackOnCooldown() { return _attackOnCooldown; }
+
+    public IEnumerator AttackCooldown() 
+    {
+        _attackOnCooldown = true;
+
+        yield return new WaitForSeconds(attackCooldown);
+
+        _attackOnCooldown = false;
+    }
+
     private void UpdateNavMeshAgentSettings()
     {
         agent.speed = moveSpeed;
@@ -152,7 +195,7 @@ public class Enemy : MonoBehaviour, IHeartbeat
     {
         NavMeshPath navMeshPath = new NavMeshPath();
         agent.CalculatePath(targetPos, navMeshPath);
-        
+
         if (navMeshPath.status != NavMeshPathStatus.PathComplete)
         {
             if (_debugMode)
