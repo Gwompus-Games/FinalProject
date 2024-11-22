@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3611064578252941075}
   - component: {fileID: 3338849799816167419}
   - component: {fileID: 3317561554910517701}
+  - component: {fileID: 3407514767090697795}
   m_Layer: 0
   m_Name: SM_Bathrom
   m_TagString: Untagged
@@ -87,3 +88,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3407514767090697795
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8947160122798580256}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.035327684, y: 0.01923811, z: 0.029999994}
+  m_Center: {x: 0.017663846, y: 0.009619055, z: 0.014999997}
