@@ -459,8 +459,8 @@ Transform:
   m_GameObject: {fileID: 2623995051758291915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalPosition: {x: 0, y: -0.75, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3652848814755545067}
@@ -820,17 +820,41 @@ MonoBehaviour:
   acceleration: 4
   turnSpeed: 90
   patrolRadius: 50
-  fovRadius: 4
-  attackRadius: 1.5
-  attackSpeed: 10
-  attackCooldown: 5
-  attackStunTime: 2
+  fovRadius: 12
+  attackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -1.5068675
+      outSlope: -1.5068675
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.054166675
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attackRadius: 7
+  attackDuration: 0.2
+  attackCooldown: 10
+  attackStunTime: 5
   minAudioTime: 30
   maxAudioTime: 60
   minSpotTime: 5
   currentSpotTime: 0
-  animator: {fileID: 5829206917758833173}
-  _debugMode: 0
+  animator: {fileID: 5756185793527488523}
+  _debugMode: 1
   currentEnemyState: 0
   _heartbeatRange: 30
 --- !u!114 &3387660441205239120

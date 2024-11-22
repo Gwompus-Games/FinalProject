@@ -21,20 +21,30 @@ public class CheckPlayerInFOVRange : Node
 
     public override NodeState Evaluate()
     {
-        object t = GetData("target");
-        if (t == null)
+        if (_enemyScript.IsStunned())
         {
-            Collider[] colliders = Physics.OverlapSphere(
+            state = NodeState.FAILURE;
+            return state;
+        }
+
+        Collider[] colliders = Physics.OverlapSphere(
                 _transform.position, _enemyScript.fovRadius, _playerLayerMask);
 
-            if (colliders.Length > 0)
+        object t = GetData("target");
+
+        Debug.Log(colliders.Length);
+
+        if (colliders.Length > 0)
+        {
+            if (t == null) 
             {
                 RaycastHit hit;
 
-                if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, (colliders[0].transform.position - (_transform.position + Vector3.up * 1)), out hit, _enemyScript.fovRadius))
+                if (Physics.Raycast(_transform.position + Vector3.up * 1.5f, (colliders[0].transform.position + Vector3.up * 1.5f) - (_transform.position + Vector3.up * 1.5f), out hit, _enemyScript.fovRadius))
                 {
                     if (hit.transform == colliders[0].transform)
                     {
+                        Debug.Log("found player");
                         parent.parent.SetData("target", colliders[0].transform);
                         _animator.SetBool("Walking", true);
                         state = NodeState.SUCCESS;
@@ -42,12 +52,23 @@ public class CheckPlayerInFOVRange : Node
                     }
                 }
             }
-
+        }
+        else 
+        {
+            Debug.Log("Delete target");
+            parent.parent.SetData("target", null);
             state = NodeState.FAILURE;
             return state;
         }
 
-        state = NodeState.SUCCESS;
+        if (t != null) 
+        {
+            Debug.Log("in fov range");
+            state = NodeState.SUCCESS;
+            return state;
+        }
+
+        state = NodeState.FAILURE;
         return state;
     }
 
