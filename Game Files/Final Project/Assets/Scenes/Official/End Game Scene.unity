@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 4
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 236620915}
   - component: {fileID: 236620914}
   - component: {fileID: 236620916}
+  - component: {fileID: 236620917}
   m_Layer: 5
   m_Name: EndManagement
   m_TagString: Untagged
@@ -220,6 +221,18 @@ MonoBehaviour:
   m_FlexibleWidth: 0
   m_FlexibleHeight: 0
   m_LayoutPriority: 1
+--- !u!114 &236620917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236620912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2717743964249d143bb905f5c403a12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &257976568
 GameObject:
   m_ObjectHideFlags: 0
