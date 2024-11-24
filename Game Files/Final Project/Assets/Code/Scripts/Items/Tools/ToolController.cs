@@ -120,7 +120,10 @@ public class ToolController : ManagedByGameManager
             Debug.Log($"Swapping from tool {_equippedTool}");
         }
 
-        direction = -(int)Mathf.Sign(direction);
+        if (direction != 0)
+        {
+            direction = -(int)Mathf.Sign(direction);
+        }
         _equippedTool += direction;
 
 
@@ -374,10 +377,6 @@ public class ToolController : ManagedByGameManager
 
     public void RemoveTool(II_Tool tool)
     {
-        if (_equippedTool > -1 && _equippedTool < _toolsOrder.Count)
-        {
-            _equippedTools[_toolsOrder[_equippedTool]].inventoryTool.SetToolEnabled(false);
-        }
         if (!_equippedTools.ContainsKey(tool))
         {
             if (debugMode)
@@ -386,6 +385,12 @@ public class ToolController : ManagedByGameManager
             }
             return;
         }
+
+        if (_equippedTool > -1 && _equippedTool < _toolsOrder.Count)
+        {
+            _equippedTools[_toolsOrder[_equippedTool]].inventoryTool.SetToolEnabled(false);
+        }
+
         _equippedTools.Remove(tool);
 
         if (debugMode)
@@ -393,7 +398,14 @@ public class ToolController : ManagedByGameManager
             Debug.Log($"{tool.gameObject.name} removed from tools list!");
         }
 
-        SetToolOrder();
+        if (_toolsOrder[_equippedTool] == tool)
+        {
+            SetToolOrder();
+        }
+        else
+        {
+            ResetTools();
+        }
     }
 
     private void SetToolOrder()
@@ -471,10 +483,10 @@ public class ToolController : ManagedByGameManager
 
     public void ResetTools()
     {
-        int equipedTool = _equippedTool;
+        II_Tool equipedTool = _toolsOrder[_equippedTool];
         SetToolOrder();
-        _equippedTool = equipedTool;
-        SwapTool(1);
+        _equippedTool = _toolsOrder.IndexOf(equipedTool);
+        SwapTool();
     }
 
     private void OnEnable()
