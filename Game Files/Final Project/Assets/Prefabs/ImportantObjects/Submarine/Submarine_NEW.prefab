@@ -346,6 +346,7 @@ GameObject:
   - component: {fileID: 8742155149837752931}
   - component: {fileID: 4928574214324077012}
   - component: {fileID: 8859783976327625562}
+  - component: {fileID: 4135758923771106402}
   m_Layer: 0
   m_Name: SM_Door_Back
   m_TagString: Untagged
@@ -419,6 +420,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &4135758923771106402
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002700936862104186}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 31358b1fa2830eb4fa405dc860ead812, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2637098189600787627
 GameObject:
   m_ObjectHideFlags: 0
