@@ -1195,7 +1195,7 @@ GameObject:
   - component: {fileID: 5649161103458479573}
   - component: {fileID: 1042135943873290035}
   m_Layer: 0
-  m_Name: Spot Light
+  m_Name: FloodLightR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1209,13 +1209,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5666218263250048785}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.43955043, y: 0.12027031, z: -0.88813704, w: -0.0595233}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.099600494, y: 0.8067073, z: -0.14224425, w: 0.56486255}
+  m_LocalPosition: {x: 9.943, y: 0, z: -1.745}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2752420599392229316}
-  m_LocalEulerAnglesHint: {x: 164.576, y: 232.663, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: 110, z: 0}
 --- !u!108 &5649161103458479573
 Light:
   m_ObjectHideFlags: 0
@@ -2237,7 +2237,7 @@ GameObject:
   - component: {fileID: 1349647070152613520}
   - component: {fileID: 3622070801462100489}
   m_Layer: 0
-  m_Name: Spot Light (1)
+  m_Name: FloodLightL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2251,13 +2251,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8569816286061655948}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.8479183, y: 0.06945094, z: -0.51286125, w: -0.11482388}
-  m_LocalPosition: {x: -91.240005, y: 205.5, z: -34.09575}
+  m_LocalRotation: {x: 0.14224426, y: 0.5648625, z: -0.09960049, w: 0.8067074}
+  m_LocalPosition: {x: 10.018, y: 0, z: 2.082}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2752420599392229316}
-  m_LocalEulerAnglesHint: {x: 164.576, y: 215, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: 70, z: 0}
 --- !u!108 &1349647070152613520
 Light:
   m_ObjectHideFlags: 0
