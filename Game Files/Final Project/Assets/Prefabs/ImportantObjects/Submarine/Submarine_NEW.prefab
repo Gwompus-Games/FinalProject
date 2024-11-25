@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4691831299240748082}
   - component: {fileID: 7543447148091223159}
   - component: {fileID: 4718613352333823435}
-  - component: {fileID: 7755061941834916666}
+  - component: {fileID: 7636299322492780098}
   m_Layer: 0
   m_Name: SM_Ramp
   m_TagString: Untagged
@@ -172,8 +172,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7755061941834916666
-BoxCollider:
+--- !u!64 &7636299322492780098
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -190,9 +190,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.06952339, y: 0.03570195, z: 0.0021486103}
-  m_Center: {x: 0.034761686, y: 0.0000020992006, z: 0.000015315014}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7475346708079534618, guid: 2836912435306a549bf3d287972a8384, type: 3}
 --- !u!1 &1285931782434288118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,7 +1505,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.059642117, y: 0.028920963, z: 0.0014413623}
   m_Center: {x: 0, y: 0.000000007450581, z: -0.00020766859}
