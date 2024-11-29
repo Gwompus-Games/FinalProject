@@ -8,6 +8,7 @@ public class Hatch : InteractableObject
     //public Transform teleport;
     public Animator anim;
     public EventInstance ramp, complete;
+    public float hatchAnimTime = 7.75f;
 
     public enum HatchState
     {
@@ -60,7 +61,7 @@ public class Hatch : InteractableObject
         ramp.start();
         currentState = HatchState.INBETWEEN;
 
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(hatchAnimTime);
         ramp.stop(STOP_MODE.ALLOWFADEOUT);
         complete.start();
 

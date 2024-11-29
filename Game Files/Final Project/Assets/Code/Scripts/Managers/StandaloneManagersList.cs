@@ -16,6 +16,7 @@ public class StandaloneManagersList : MonoBehaviour
             Debug.Log("Setting Up Standalone managers");
         }
         standaloneManagers = new List<Type>();
+        standaloneManagers.Add(typeof(WorldObjectManager));
 
         managedComponents = Assembly.GetAssembly(typeof(ManagedByGameManager)).GetTypes().Where(t => t.IsSubclassOf(typeof(ManagedByGameManager))).ToList();
         if (_debugMode)

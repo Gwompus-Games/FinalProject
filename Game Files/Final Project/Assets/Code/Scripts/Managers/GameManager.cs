@@ -356,10 +356,10 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameState.InBetweenFacitilies:
+                GetManagedComponent<WorldObjectManager>().DestroyAllItems();
                 TreasureSpawnPoint.ResetUniqueTreasures();
                 break;
             case GameState.LandedAtFacility:
-                
                 break;
         }
     }

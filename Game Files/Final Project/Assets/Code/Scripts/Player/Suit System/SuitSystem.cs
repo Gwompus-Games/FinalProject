@@ -95,7 +95,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         if (screenShake)
         {
             //Add player getting hit sound effect
-            StartCoroutine(camShake.ShakeUrBooty(.15f, .4f));
+            StartCoroutine(camShake.ShakeUrBooty(.1f, .3f));
         }
         UpdateUI();
     }

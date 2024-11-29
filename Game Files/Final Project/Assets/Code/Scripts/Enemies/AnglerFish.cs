@@ -23,7 +23,7 @@ public class AnglerFish : Enemy
         player = GameManager.Instance.GetManagedComponent<PlayerController>();
     }
 
-    private void Update()
+    protected void Update()
     {
         if (_playerController != null)
         {
