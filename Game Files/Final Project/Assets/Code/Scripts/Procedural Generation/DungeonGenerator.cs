@@ -58,8 +58,6 @@ public class DungeonGenerator : ManagedByGameManager
 
     public void StartGeneration()
     {
-        Debug.Log("test1");
-
         if (generatedRooms.Count > 0 || enemies.Count > 0)
         {
             Despawn();
@@ -75,7 +73,7 @@ public class DungeonGenerator : ManagedByGameManager
                 Debug.Log(generatedRooms.Count);
             }
 
-            if (tries > 100)
+            if (tries > 200)
             {
                 Debug.LogError("Reached maximum generation attempts without success!");
                 return;

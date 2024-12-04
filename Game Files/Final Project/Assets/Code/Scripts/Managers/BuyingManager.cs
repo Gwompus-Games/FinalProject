@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class BuyingManager : ManagedByGameManager
 {
+    [Header("Debug Settings")]
+    [SerializeField] private bool _debugMode = false;
     [field: SerializeField] public ToolListSO toolList { get; private set; }
     public static Action UpdateBuySections;
     
@@ -102,9 +104,19 @@ public class BuyingManager : ManagedByGameManager
     {
         if (_playerController.money < toolToBuy.buyValue)
         {
-            Debug.LogWarning("Player doesn't have enough money to buy this tool.");
+            //Add buying denied sound effect here
+            AudioManager.Instance.BrokeSound();
+
+            if (_debugMode)
+            {
+                Debug.LogWarning("Player doesn't have enough money to buy this tool.");
+            }
             return;
         }
+
+        //Add buying sound effect here
+        AudioManager.Instance.BuySound();
+
         _playerController.SpendMoney(toolToBuy.buyValue);
         OxygenTankSO oxygenTank = toolToBuy as OxygenTankSO;
         if (oxygenTank != null)
@@ -127,13 +139,25 @@ public class BuyingManager : ManagedByGameManager
     {
         if (_ableToAffordFreedom)
         {
-            _freedomButtonImage.color = _ableToAffordBackgroundColour;
-            _freedomButtonText.color = _ableToAffordTextColour;
+            if (_freedomButtonImage != null)
+            {
+                _freedomButtonImage.color = _ableToAffordBackgroundColour;
+            }
+            if (_freedomButtonText != null)
+            {
+                _freedomButtonText.color = _ableToAffordTextColour;
+            }
         }
         else
         {
-            _freedomButtonImage.color = _unableToAffordBackgroundColour;
-            _freedomButtonText.color = _unableToAffordTextColour;
+            if (_freedomButtonImage != null)
+            {
+                _freedomButtonImage.color = _unableToAffordBackgroundColour;
+            }
+            if (_freedomButtonText != null)
+            {
+                _freedomButtonText.color = _unableToAffordTextColour;
+            }
         }
     }
 

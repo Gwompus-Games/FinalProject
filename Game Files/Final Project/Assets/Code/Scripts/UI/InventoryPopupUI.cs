@@ -12,6 +12,8 @@ public class InventoryPopupUI : MonoBehaviour
     private RectTransform _rectTransform;
     public float popupHoverTimeInSeconds { get; private set; } = 1f;
     private Vector2 _popupPositionOffset;
+    private LayoutElement _spriteLayoutElement;
+    private float _spriteTargetHeight = -1f;
 
     [Serializable]
     public struct PopupInfo
@@ -84,11 +86,10 @@ public class InventoryPopupUI : MonoBehaviour
         {
             popup.itemImage.sprite = item.itemData.inventoryItemSprite;
         }
-        else
-        {
-            popup.itemImage.sprite = item.GetItemSprite();
-        }
+        popup.itemImage.color = item.GetItemColour();
         popup.itemDescription.text = item.itemData.itemDescription;
+
+        ResizeSprite(popup);
     }
     
     private void PopulatePopup(OxygenTankPopupInfo oxygenPopup, II_OxygenTank oxygenItem)
@@ -96,6 +97,38 @@ public class InventoryPopupUI : MonoBehaviour
         PopulatePopup(oxygenPopup.popupInfo, oxygenItem);
         oxygenPopup.fillPercentUI.text = $"Fill Percent: {oxygenItem.oxygenLeftPercent.Split(".")[0]}%";
         oxygenPopup.oxygenFillBar.fillAmount = oxygenItem.oxygenFillAmount;
+    }
+
+    private void ResizeSprite(PopupInfo popup)
+    {
+        if (_spriteLayoutElement == null)
+        {
+            if (!popup.itemImage.TryGetComponent<LayoutElement>(out _spriteLayoutElement))
+            {
+                throw new Exception("Error with getting sprite's layout element.");
+            }
+        }
+
+        if (_spriteTargetHeight == -1f)
+        {
+            _spriteTargetHeight = _spriteLayoutElement.preferredHeight;
+        }
+
+        if (popup.itemImage.sprite == null)
+        {
+            _spriteLayoutElement.preferredWidth = _spriteTargetHeight;
+            return;
+        }
+
+        Debug.Log(popup.itemImage.sprite.name);
+
+        float x = popup.itemImage.sprite.rect.width;
+        float y = popup.itemImage.sprite.rect.height;
+
+        float scale = _spriteTargetHeight / y;
+        x *= scale;
+
+        _spriteLayoutElement.preferredWidth = x;
     }
 
     public void UpdatePopup(Vector2 position)

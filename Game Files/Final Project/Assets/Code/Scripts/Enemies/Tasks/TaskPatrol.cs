@@ -30,6 +30,12 @@ public class TaskPatrol : Node
 
     public override NodeState Evaluate()
     {
+        if (_enemyScript.IsStunned())
+        {
+            state = NodeState.FAILURE;
+            return state;
+        }
+        
         if (_waiting)
         {
             _waitCounter += Time.deltaTime;
@@ -54,7 +60,8 @@ public class TaskPatrol : Node
             }
             else
             {
-                _enemyScript.MoveToPoint(currentRoom.position);
+                
+                //_enemyScript.MoveToPoint(currentRoom.position);
             }
         }
 

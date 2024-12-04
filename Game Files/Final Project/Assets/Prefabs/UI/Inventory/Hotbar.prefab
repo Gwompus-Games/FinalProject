@@ -636,6 +636,10 @@ PrefabInstance:
         type: 3}
       insertIndex: 1
       addedObject: {fileID: 7424889731220555456}
+    - targetCorrespondingSourceObject: {fileID: 5079689670859933393, guid: d5e7997e00f200547aeb697835e53bea,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4967943265679711635}
     - targetCorrespondingSourceObject: {fileID: 8222149129229736053, guid: d5e7997e00f200547aeb697835e53bea,
         type: 3}
       insertIndex: 3
@@ -659,6 +663,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a8bfbf0d6195540a6a3d37d1b5264d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &4967943265679711635
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6778212502240507503}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 1
 --- !u!1 &7671129477878737099 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8222149129229736053, guid: d5e7997e00f200547aeb697835e53bea,
@@ -679,4 +695,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _globalData: {fileID: 11400000, guid: 9d58b878e24bac345aac93b0679f2b07, type: 2}
   <gridSizeWidth>k__BackingField: 10
-  <gridSizeHeight>k__BackingField: 2
+  <gridSizeHeight>k__BackingField: 1
+  _debugMode: 0

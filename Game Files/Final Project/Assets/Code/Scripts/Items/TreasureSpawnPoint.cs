@@ -44,6 +44,7 @@ public class TreasureSpawnPoint : MonoBehaviour
                 treasuresByRarity[staticMasterTreasureList.treasures[t].rarity].Add(staticMasterTreasureList.treasures[t]);
             }
         }
+        _treasureSpawned = false;
     }
 
     public static void ResetUniqueTreasures()
@@ -56,6 +57,15 @@ public class TreasureSpawnPoint : MonoBehaviour
         if (_treasureSpawned)
         {
             return;
+        }
+
+        if (_masterTreasureList.chanceForNoItem > 0f)
+        {
+            if (Random.Range(0f,100f) <= _masterTreasureList.chanceForNoItem)
+            {
+                _treasureSpawned = true;
+                return;
+            }
         }
 
         if (_masterTreasureList.treasures.Length == 0)

@@ -7,6 +7,7 @@ public class InventoryGlobalDataSO : ScriptableObject
 {
     public Color normalTileColour;
     public Color[] invalidTileColours;
+    public Color selectedToolTileColour;
     public int numberOfInvalidFlashes = 5;
     public float flashingDuration = 3f;
     public float tileWidth = 50f;

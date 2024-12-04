@@ -17,7 +17,7 @@ public class MenuFunctions : MonoBehaviour
 
 
     public void StartGame()
-    {
+    {  
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(PlayButtonTargetScene);
     }
 

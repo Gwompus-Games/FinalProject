@@ -445,6 +445,19 @@ public class InventoryGrid : ManagedObject
         ClearItemSlots(item.originTile, item.tilesUsed.ToArray());
     }
 
+    public void ClearAllItems()
+    {
+        InventoryItem[] inventoryItems = GetAllInventoryItems();
+        if (inventoryItems.Length == 0)
+        {
+            return;
+        }
+        for (int i = 0; i < inventoryItems.Length; i++)
+        {
+            ClearSlotsWithItem(inventoryItems[i]);
+        }
+    }
+
     public InventoryItem[] GetAllInventoryItems()
     {
         List<InventoryItem> items = new List<InventoryItem>();
@@ -534,7 +547,7 @@ public class InventoryGrid : ManagedObject
                     {
                         popupUI.UpdatePopup(_cursorPos);
                     }
-                    yield return new WaitForSeconds(0.15f);
+                    yield return null;
                 } while (_hoveredItem == item);
             }
         }

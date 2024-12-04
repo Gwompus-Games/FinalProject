@@ -12,7 +12,8 @@ public class InventoryController : ManagedByGameManager
     [HideInInspector]
     public SellingZone selectedSellingZone;
     private InventoryItem _itemToPlace;
-    [SerializeField] private InventoryGrid _inventory;
+    [SerializeField] private InventoryGrid _inventoryGrid;
+    private ToolBarGridScript _toolBarGrid;
 
     [SerializeField] GameObject testInventoryItemPrefab;
     [SerializeField] GameObject testInventoryItemPrefab2;
@@ -24,6 +25,7 @@ public class InventoryController : ManagedByGameManager
     private List<ManagedObject> _managedObjects = new List<ManagedObject>();
     public InventoryUI inventoryUI { get; private set; }
 
+
     public override void Init()
     {
         base.Init();
@@ -34,7 +36,12 @@ public class InventoryController : ManagedByGameManager
         InventoryGrid inventoryGrid = FindObjectOfType<InventoryTag>().GetComponent<InventoryGrid>();
         if (inventoryGrid != null)
         {
-            _inventory = inventoryGrid;
+            _inventoryGrid = inventoryGrid;
+        }
+        ToolBarGridScript toolBarGrid = FindObjectOfType<ToolBarGridScript>();
+        if (toolBarGrid != null)
+        {
+            _toolBarGrid = toolBarGrid;
         }
 
         inventoryUI = FindFirstObjectByType<InventoryUI>();
@@ -271,18 +278,21 @@ public class InventoryController : ManagedByGameManager
     public InventoryItem AddItemToInventory(ItemDataSO itemData, Vector2Int gridPosition)
     {
         InventoryItem inventoryItem = Instantiate(itemData.inventoryObject).GetComponent<InventoryItem>();
-        if (!_inventory.CheckIfSlotsAvailable(gridPosition, inventoryItem.tilesUsed.ToArray()))
+        if (!_inventoryGrid.CheckIfSlotsAvailable(gridPosition, inventoryItem.tilesUsed.ToArray()))
         {
             Debug.LogWarning("Tried to add to a specific slot that isn't free!");
+            Destroy(inventoryItem.gameObject);
             return AddItemToInventory(itemData);
         }
+
+        inventoryItem.InitializeInventoryItem(itemData);
 
         return PlaceItem(inventoryItem, gridPosition);
     }
 
     private bool CheckInventorySpaceAvailable(ItemDataSO itemData, out InventoryItem inventoryItem)
     {
-        GameObject inventoryObject = Instantiate(itemData.inventoryObject, _inventory.transform);
+        GameObject inventoryObject = Instantiate(itemData.inventoryObject, _inventoryGrid.transform);
         Vector2Int minSpaceDistance, maxSpaceDistance;
         if (inventoryObject.TryGetComponent<II_OxygenTank>(out II_OxygenTank oxygenTankItem))
         {
@@ -295,26 +305,29 @@ public class InventoryController : ManagedByGameManager
             inventoryItem = inventoryObject.GetComponent<InventoryItem>();
             inventoryItem.FindExtremes(out minSpaceDistance, out maxSpaceDistance);
         }
-        if (_inventory == null)
+
+        inventoryItem.InitializeInventoryItem(itemData);
+
+        if (_inventoryGrid == null)
         {
             return false;
         }
-        for (int x = 0; x < _inventory.gridSizeWidth; x++)
+        for (int x = 0; x < _inventoryGrid.gridSizeWidth; x++)
         {
             if (x + minSpaceDistance.x < 0  ||
-                x + maxSpaceDistance.x > _inventory.gridSizeWidth)
+                x + maxSpaceDistance.x > _inventoryGrid.gridSizeWidth)
             {
                 continue;
             }
-            for (int y = 0; y < _inventory.gridSizeHeight; y++)
+            for (int y = 0; y < _inventoryGrid.gridSizeHeight; y++)
             {
                 Vector2Int coordinate = new Vector2Int(x, y);
                 if (y + minSpaceDistance.y < 0 ||
-                    y + maxSpaceDistance.y > _inventory.gridSizeHeight)
+                    y + maxSpaceDistance.y > _inventoryGrid.gridSizeHeight)
                 {
                     continue;
                 }
-                if (_inventory.CheckIfSlotsAvailable(coordinate, inventoryItem.tilesUsed.ToArray()))
+                if (_inventoryGrid.CheckIfSlotsAvailable(coordinate, inventoryItem.tilesUsed.ToArray()))
                 {
                     PlaceItem(inventoryItem, coordinate);
                     return true;
@@ -327,9 +340,9 @@ public class InventoryController : ManagedByGameManager
 
     private InventoryItem PlaceItem(InventoryItem item, Vector2Int placementPosition)
     {
-        _inventory.PlaceItem(item, placementPosition);
+        _inventoryGrid.PlaceItem(item, placementPosition);
         RectTransform rectTransform = item.GetComponent<RectTransform>();
-        rectTransform.SetParent(_inventory.GetComponent<RectTransform>());
+        rectTransform.SetParent(_inventoryGrid.GetComponent<RectTransform>());
         Vector2 position = new Vector2();
         position.x = (float)placementPosition.x * InventoryGrid.globalItemData.tileWidth + InventoryGrid.globalItemData.tileWidth / 2f;
         position.y = -((float)placementPosition.y * InventoryGrid.globalItemData.tileHeight + InventoryGrid.globalItemData.tileHeight / 2f);
@@ -341,12 +354,12 @@ public class InventoryController : ManagedByGameManager
 
     public void RemoveItemFromInventory(InventoryItem itemToRemove)
     {
-        _inventory.RemoveItem(itemToRemove);
+        _inventoryGrid.RemoveItem(itemToRemove);
     }
 
     public void RemoveItemFromInventory(Vector2Int gridPosToRemove)
     {
-        _inventory.RemoveItem(gridPosToRemove);
+        _inventoryGrid.RemoveItem(gridPosToRemove);
     }
 
     private void DropItemIntoWorld()
@@ -417,5 +430,17 @@ public class InventoryController : ManagedByGameManager
         }
 
         popup.DisablePopup();
+    }
+
+    public void RemoveAllItems()
+    {
+        if (_inventoryGrid != null)
+        {
+            _inventoryGrid.ClearAllItems();
+        }
+        if (_toolBarGrid != null)
+        {
+            _toolBarGrid.ClearAllItems();
+        }
     }
 }

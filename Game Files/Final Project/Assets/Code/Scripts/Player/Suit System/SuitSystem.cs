@@ -15,7 +15,9 @@ public class SuitSystem : ManagedByGameManager, IDamageable
 
     public int maxSectionDurabitity => suitStats.maxDurabilityForSections;
 
-    private OxygenDrainer suitOxygenDrainer;
+    private int _sectionOnDive;
+
+    private OxygenDrainer _suitOxygenDrainer;
 
     private PlayerController _playerController;
 
@@ -37,9 +39,9 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         currentSection = 0;
         currentSectionDurability = suitStats.maxDurabilityForSections;
 
-        suitOxygenDrainer = (OxygenDrainer) gameObject.AddComponent(typeof(OxygenDrainer));
-        suitOxygenDrainer.SetDrainMultiplier(suitStats.oxygenDrainMultiplierForSections[currentSection]);
-        suitOxygenDrainer.ActivateDrainer();
+        _suitOxygenDrainer = (OxygenDrainer) gameObject.AddComponent(typeof(OxygenDrainer));
+        _suitOxygenDrainer.SetDrainMultiplier(suitStats.oxygenDrainMultiplierForSections[currentSection]);
+        _suitOxygenDrainer.ActivateDrainer();
         UpdateUI();
     }
 
@@ -65,11 +67,12 @@ public class SuitSystem : ManagedByGameManager, IDamageable
                 }
             }
         }
-
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.X))
         {
             DebugTakeDamage();
         }
+#endif
     }
 
     public void DebugTakeDamage()
@@ -91,7 +94,8 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         currentSectionDurability -= damage;
         if (screenShake)
         {
-            StartCoroutine(camShake.ShakeUrBooty(.15f, .4f));
+            //Add player getting hit sound effect
+            StartCoroutine(camShake.ShakeUrBooty(.1f, .3f));
         }
         UpdateUI();
     }
@@ -109,7 +113,7 @@ public class SuitSystem : ManagedByGameManager, IDamageable
         remainderDamage = Mathf.Max(damage - currentSectionDurability, 0);
         currentSectionDurability = suitStats.maxDurabilityForSections;
         int nextSectionToUse = Mathf.Min(currentSection, suitStats.oxygenDrainMultiplierForSections.Length - 1);
-        suitOxygenDrainer.SetDrainMultiplier(suitStats.oxygenDrainMultiplierForSections[nextSectionToUse]);
+        _suitOxygenDrainer.SetDrainMultiplier(suitStats.oxygenDrainMultiplierForSections[nextSectionToUse]);
     }
 
     public void UpdateUI()
@@ -118,6 +122,20 @@ public class SuitSystem : ManagedByGameManager, IDamageable
                              numberOfSections,
                              currentSectionDurability,
                              maxSectionDurabitity);
+    }
+
+    public void UpdateSectionOnDive()
+    {
+        _sectionOnDive = currentSection;
+    }
+
+    public void ResetSuitDurability()
+    {
+        currentSection = _sectionOnDive + 1;
+        if (currentSection >= numberOfSections)
+        {
+            currentSection = numberOfSections - 1;
+        }
     }
 
     public void Repair(RepairManager.RepairTypes repairType)

@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,7 @@ public class FlashlightTool : ToolsParent
 {
     private Light _light;
     private ToolController _controller;
-    [SerializeField] private AudioSource _flashlightSource;
-    [SerializeField] private AudioClip _flashlightClick;
+    private EventInstance flashlightSound;
 
     public override void Init()
     {
@@ -25,22 +25,27 @@ public class FlashlightTool : ToolsParent
     public override void CustomStart()
     {
         base.CustomStart();
+        flashlightSound = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.flashlight);
     }
 
     public override void UseTool()
     {
         _light.enabled = !_light.enabled;
+        //FMOD
+        //PLAYBACK_STATE ps;
+        //flashlightSound.getPlaybackState(out ps);
+        //if(ps.Equals(PLAYBACK_STATE.STOPPED))
+        flashlightSound.start();
+
         if (_controller.debugMode)
         {
             if (_light.enabled)
             {
                 Debug.Log("Flashlight turned on!");
-                _flashlightSource.PlayOneShot(_flashlightClick);
             }
             else
             {
                 Debug.Log("Flashlight turned off!");
-                _flashlightSource.PlayOneShot(_flashlightClick);
             }
             
         }
