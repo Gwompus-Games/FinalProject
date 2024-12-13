@@ -301,6 +301,11 @@ public class PlayerController : ManagedByGameManager
         #endregion
     }
 
+    private void OnDestroy()
+    {
+        breathing.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+    }
+
     private void UpdateState()
     {
         if (currentState == PlayerState.Inventory ||

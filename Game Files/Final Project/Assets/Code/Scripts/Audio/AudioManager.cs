@@ -176,7 +176,6 @@ public class AudioManager : MonoBehaviour
                 bloops.start();
                 break;
             default:
-                Debug.Log("huh");
                 break;
         }
     }
@@ -235,10 +234,9 @@ public class AudioManager : MonoBehaviour
             case 2:
                 bgmInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 menuInstance.start();
+                Cursor.lockState = CursorLockMode.None;
                 break;
             default:
-                menuInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                bgmInstance.start();
                 break;
         }
     }
@@ -279,10 +277,9 @@ public class AudioManager : MonoBehaviour
         eventInstance.setParameterByName("Ground", value);
     }
 
-    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         CleanUp();
-
         switch(scene.buildIndex)
         {
             case 0:
@@ -346,7 +343,7 @@ public class AudioManager : MonoBehaviour
             foreach(EventInstance eventInstance in eventInstances)
             {
                 eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                eventInstance.release();
+                //eventInstance.release();
             }
         }
         if(eventEmitters.Count > 0)
