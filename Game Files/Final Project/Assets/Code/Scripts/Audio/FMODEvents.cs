@@ -48,7 +48,12 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference bark { get; private set; }
     [field: SerializeField] public EventReference choir { get; private set; }
     [field: SerializeField] public EventReference station { get; private set; }
-
+    [field: SerializeField] public EventReference quake { get; private set; }
+    [field: SerializeField] public EventReference piano { get; private set; }
+    [field: SerializeField] public EventReference winds { get; private set; }
+    [field: SerializeField] public EventReference clang { get; private set; }
+    [field: SerializeField] public EventReference bleeps { get; private set; }
+    [field: SerializeField] public EventReference bloops { get; private set; }
 
     public static FMODEvents Instance;
     private void Awake()
