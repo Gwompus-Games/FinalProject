@@ -14,7 +14,7 @@ public class AudioManager : MonoBehaviour
     //Music
     private EventInstance bgmInstance, menuInstance;
     //Ambiance
-    private EventInstance bark, bells, choir, station;
+    private EventInstance bark, bells, choir, station, quake, piano, winds, clang, bleeps, bloops;
     public float ambianceTime = 60f;
 
     public enum Ground
@@ -93,9 +93,15 @@ public class AudioManager : MonoBehaviour
         bells = CreateEventInstance(FMODEvents.Instance.bells);
         choir = CreateEventInstance(FMODEvents.Instance.choir);
         station = CreateEventInstance(FMODEvents.Instance.station);
+        quake = CreateEventInstance(FMODEvents.Instance.quake);
+        winds = CreateEventInstance(FMODEvents.Instance.winds);
+        bleeps = CreateEventInstance(FMODEvents.Instance.bleeps);
+        bloops = CreateEventInstance(FMODEvents.Instance.bloops);
+        clang = CreateEventInstance(FMODEvents.Instance.clang);
+        piano = CreateEventInstance(FMODEvents.Instance.piano);
 
         UpdateBGM(SceneManager.GetActiveScene().buildIndex);
-        InvokeRepeating(nameof(PlayAmbiance), ambianceTime, ambianceTime);
+        //InvokeRepeating(nameof(PlayAmbiance), ambianceTime, ambianceTime);
     }
 
     public void ChangeVolume(VolumeBus bus, float value)
@@ -129,8 +135,14 @@ public class AudioManager : MonoBehaviour
         bells.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         choir.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         station.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        quake.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        clang.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        bleeps.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        bloops.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        winds.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        piano.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
-        int rand = Random.Range(0, 4);
+        int rand = Random.Range(0, 10);
         switch(rand)
         {
             case 0:
@@ -145,8 +157,25 @@ public class AudioManager : MonoBehaviour
             case 3: 
                 station.start();
                 break;
+            case 4: 
+                quake.start();
+                break;
+            case 5: 
+                piano.start();
+                break;
+            case 6: 
+                winds.start();
+                break;
+            case 7: 
+                clang.start();
+                break;
+            case 8: 
+                bleeps.start();
+                break;
+            case 9: 
+                bloops.start();
+                break;
             default:
-                choir.start();
                 break;
         }
     }
@@ -205,10 +234,9 @@ public class AudioManager : MonoBehaviour
             case 2:
                 bgmInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
                 menuInstance.start();
+                Cursor.lockState = CursorLockMode.None;
                 break;
             default:
-                menuInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                bgmInstance.start();
                 break;
         }
     }
@@ -249,10 +277,9 @@ public class AudioManager : MonoBehaviour
         eventInstance.setParameterByName("Ground", value);
     }
 
-    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         CleanUp();
-
         switch(scene.buildIndex)
         {
             case 0:
@@ -316,7 +343,7 @@ public class AudioManager : MonoBehaviour
             foreach(EventInstance eventInstance in eventInstances)
             {
                 eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                eventInstance.release();
+                //eventInstance.release();
             }
         }
         if(eventEmitters.Count > 0)

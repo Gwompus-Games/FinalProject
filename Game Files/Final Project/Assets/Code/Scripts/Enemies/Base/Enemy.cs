@@ -68,6 +68,7 @@ public class Enemy : MonoBehaviour, IHeartbeat
         agent = GetComponent<NavMeshAgent>();
 
         UpdateNavMeshAgentSettings();
+        ambiancePlayTime = AudioManager.Instance.ambianceTime;
     }
 
     protected virtual void Start()
@@ -104,13 +105,9 @@ public class Enemy : MonoBehaviour, IHeartbeat
                 }
                 break;
             case EnemyState.Patrolling:
-                if (!canPlayAmbiance)
-                    return;
                 StartCoroutine(PlayAmbiance());
                 return; ;
-            case EnemyState.Searching:
-                if (!canPlayAmbiance)
-                    return;
+            case EnemyState.Searching:                
                 StartCoroutine(PlayAmbiance());
                 break;
             default:
@@ -120,27 +117,38 @@ public class Enemy : MonoBehaviour, IHeartbeat
 
     private IEnumerator PlayAmbiance()
     {
-        if(GameManager.Instance.isPlayerInsideFacility)
+        if (canPlayAmbiance)
         {
-            PLAYBACK_STATE ps;
-            AFDistantInside.getPlaybackState(out ps);
-            if (ps.Equals(PLAYBACK_STATE.STOPPED))
+            if (Random.value < 0.5f)
             {
-                AFDistantInside.start();
+                AudioManager.Instance.PlayAmbiance();
             }
-        }
-        else
-        {
-            PLAYBACK_STATE ps;
-            AFDistantOutside.getPlaybackState(out ps);
-            if (ps.Equals(PLAYBACK_STATE.STOPPED))
+            else
             {
-                AFDistantOutside.start();
+                if (GameManager.Instance.isPlayerInsideFacility)
+                {
+                    PLAYBACK_STATE ps;
+                    AFDistantInside.getPlaybackState(out ps);
+                    if (ps.Equals(PLAYBACK_STATE.STOPPED))
+                    {
+                        AFDistantInside.start();
+                    }
+                }
+                else
+                {
+                    PLAYBACK_STATE ps;
+                    AFDistantOutside.getPlaybackState(out ps);
+                    if (ps.Equals(PLAYBACK_STATE.STOPPED))
+                    {
+                        AFDistantOutside.start();
+                    }
+                }
             }
-        }
-        canPlayAmbiance = false;
-        yield return new WaitForSeconds(ambiancePlayTime);
-        canPlayAmbiance = true;
+
+            canPlayAmbiance = false;
+            yield return new WaitForSeconds(ambiancePlayTime);
+            canPlayAmbiance = true;
+        }        
     }
 
     public virtual void SetupEnemy()
