@@ -378,9 +378,12 @@ public class InventoryController : ManagedByGameManager
             DropOxygenTank(oxygenTank);
             return;
         }
+
+        PlayerController player = GameManager.Instance.GetManagedComponent<PlayerController>();
+
         WorldItem worldItemWO = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WorldItem>();
         worldItemWO.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        Vector3 spawnPoint = GameManager.Instance.GetManagedComponent<PlayerController>().transform.position + (GameManager.Instance.GetManagedComponent<PlayerController>().transform.forward * 1.25f);
+        Vector3 spawnPoint = player.transform.position + (player.transform.forward * 1.25f);
         worldItemWO.SpawnItem(spawnPoint, _itemToPlace.itemData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);
@@ -392,9 +395,12 @@ public class InventoryController : ManagedByGameManager
         {
             Debug.Log($"Dropping OxygenTank: {oxygenTankToPlace}");
         }
+
+        PlayerController player = GameManager.Instance.GetManagedComponent<PlayerController>();
+
         WI_OxygenTank wI_OxygenTank = Instantiate(_itemToPlace.itemData.worldObject).GetComponent<WI_OxygenTank>();
         wI_OxygenTank.transform.parent = FindObjectOfType<WorldItemsTag>().transform;
-        Vector3 spawnPoint = GameManager.Instance.GetManagedComponent<PlayerController>().transform.position + (GameManager.Instance.GetManagedComponent<PlayerController>().transform.forward * 1.25f);
+        Vector3 spawnPoint = player.transform.position + (player.transform.forward * 1.25f);
         wI_OxygenTank.SpawnItem(spawnPoint, oxygenTankToPlace.oxygenLeft, oxygenTankToPlace.oxygenTankData);
         Destroy(_itemToPlace.gameObject);
         SwapItemInHand(null);

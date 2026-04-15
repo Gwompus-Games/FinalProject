@@ -50,7 +50,8 @@ public class PlayerController : ManagedByGameManager
 
     [Header("Money Settings")]
     [SerializeField] private int _startingMoney;
-    [SerializeField] public int money
+    
+    public int money
     {
         get
         {
@@ -299,6 +300,11 @@ public class PlayerController : ManagedByGameManager
             }
         }
         #endregion
+    }
+
+    private void OnDestroy()
+    {
+        breathing.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
     private void UpdateState()
