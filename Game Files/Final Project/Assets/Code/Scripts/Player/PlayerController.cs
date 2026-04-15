@@ -50,7 +50,8 @@ public class PlayerController : ManagedByGameManager
 
     [Header("Money Settings")]
     [SerializeField] private int _startingMoney;
-    [SerializeField] public int money
+    
+    public int money
     {
         get
         {

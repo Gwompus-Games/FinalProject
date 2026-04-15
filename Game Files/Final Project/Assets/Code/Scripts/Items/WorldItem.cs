@@ -43,8 +43,8 @@ public class WorldItem : InteractableObject
     {
         _itemData = itemData;
         _rigidbody.mass = _itemData.density;
-        _rigidbody.drag = _itemData.drag;
-        _rigidbody.angularDrag = _itemData.angularDrag;
+        _rigidbody.linearDamping = _itemData.drag;
+        _rigidbody.angularDamping = _itemData.angularDrag;
         _rigidbody.useGravity = !_itemData.floatingItem;
         _pushForce = 80f / (_itemData.density * _itemData.drag);
     }
