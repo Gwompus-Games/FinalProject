@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using BehaviorTree;
 
-public class AnglerFishBT : Tree
+public class AnglerFishBT : BehaviorTree.BehaviorTree
 {
     private AnglerFish _anglerFish;
 
