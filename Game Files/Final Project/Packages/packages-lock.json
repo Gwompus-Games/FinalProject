@@ -6,6 +6,14 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.occasoftware.buto": {
+      "version": "file:com.occasoftware.buto",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "14.0.7"
+      }
+    },
     "com.shadercrew.the-toon-shader.3d": {
       "version": "file:com.shadercrew.the-toon-shader.3d",
       "depth": 0,

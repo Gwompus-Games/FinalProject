@@ -21,16 +21,20 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 01_Hatching_FinelinerRedBase_TTS_RefMat
-  m_Shader: {fileID: 4800000, guid: cdb1479f619aff740b0cea7a60a84201, type: 3}
+  m_Shader: {fileID: 4800000, guid: aef19de831fba0648a6eb5c4487ea286, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _SHADING_COLOR
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -315,7 +319,7 @@ Material:
     - _StylingDFStartingDistance: 1.76
     - _StylingDistanceFadeValue: 0.026
     - _StylingOvermodelingFactor: 0.999
-    - _StylingRimAffectedArea: 1
+    - _StylingRimAffectedArea: 2
     - _StylingRimBlending: 0
     - _StylingRimDensity: 197.13
     - _StylingRimHalftonesOffset: 1
@@ -407,3 +411,4 @@ Material:
     - _StylingRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _StylingSpecularColor: {r: 1, g: 0.96504843, b: 0.7877358, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

@@ -21,17 +21,22 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: NoStyling_03_PBRCell_TTS_RefMat
-  m_Shader: {fileID: 4800000, guid: 1c6b3902befc80643a83432be8825adc, type: 3}
+  m_Shader: {fileID: 4800000, guid: f50e98b37244d14499bf85f7bbf776a4, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _SHADING_PBR
-  m_InvalidKeywords:
-  - _OUTLINECONSTANTSCREENWIDTH_ON
+  - _SPECULARHIGHLIGHTS_OFF
+  - _SPECULAR_COLOR
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -408,3 +413,4 @@ Material:
     - _StylingRimColor: {r: 0, g: 0.22719002, b: 1, a: 1}
     - _StylingSpecularColor: {r: 1, g: 0.9744728, b: 0.8915094, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3634342881464219521
+--- !u!114 &-4303066138793818563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -27,9 +27,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: DunGen::DunGen.DunGenSettings
   BoundsCalculationsIgnoreSprites: 0
   BoundsCalculator:
-    rid: 752282901888368855
+    rid: 752282936265932802
   BroadphaseSettings:
-    rid: 752282901888368856
+    rid: 752282936265932803
   RecalculateTileBoundsOnSave: 1
   EnableTilePooling: 0
   DisplayFailureReportWindow: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 752282901888368855
+    - rid: 752282936265932802
       type: {class: DefaultTileBoundsCalculator, ns: DunGen.TileBounds, asm: DunGen}
       data:
         IncludeRenderers: 1
@@ -55,7 +55,7 @@ MonoBehaviour:
         LayerMask:
           serializedVersion: 2
           m_Bits: 4294967295
-    - rid: 752282901888368856
+    - rid: 752282936265932803
       type: {class: SpatialHashBroadphaseSettings, ns: DunGen.Collision, asm: DunGen}
       data:
         CellSize: 40
