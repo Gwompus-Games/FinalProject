@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -25,6 +26,17 @@ public class HDRPMaterialConverter : EditorWindow
 
     private readonly List<Material> previewMaterials = new List<Material>();
     private Vector2 scrollPos;
+
+    private sealed class ConversionPlanEntry
+    {
+        public Material material;
+        public MaterialData sourceData;
+        public string sourceShaderName;
+        public string assetPath;
+        public Material parentMaterial;
+        public bool isVariant;
+        public int hierarchyDepth;
+    }
 
     [MenuItem("Tools/Materials/Convert Selected HDRP Materials")]
     public static void ShowWindowForSelected()
@@ -157,40 +169,51 @@ public class HDRPMaterialConverter : EditorWindow
             return;
         }
 
+        List<ConversionPlanEntry> conversionPlan = BuildConversionPlan(previewMaterials);
+        if (conversionPlan.Count == 0)
+        {
+            EditorUtility.DisplayDialog("No Materials Found", "There are no supported HDRP materials to convert.", "OK");
+            return;
+        }
+
         int converted = 0;
         int skipped = 0;
 
-        Undo.RecordObjects(previewMaterials.ToArray(), "Convert HDRP Materials");
+        if (!dryRun)
+            Undo.RecordObjects(previewMaterials.ToArray(), "Convert HDRP Materials");
 
-        foreach (var mat in previewMaterials)
+        foreach (var entry in conversionPlan)
         {
+            Material mat = entry.material;
             if (mat == null)
             {
                 skipped++;
                 continue;
             }
 
-            if (!LooksLikeHDRPMaterial(mat) || !CanConvertMaterial(mat))
-            {
-                Log($"Skipping '{mat.name}' because it no longer appears to be a supported HDRP material.");
-                skipped++;
-                continue;
-            }
-
             if (dryRun)
             {
-                Log($"[Dry Run] Would convert '{mat.name}' from '{mat.shader.name}' to '{GetTargetShaderName()}'.");
+                string variantLabel = entry.isVariant ? " (variant)" : string.Empty;
+                Log($"[Dry Run] Would convert '{mat.name}'{variantLabel} from '{entry.sourceShaderName}' to '{GetTargetShaderName()}'.");
                 converted++;
                 continue;
             }
 
-            if (ConvertMaterial(mat, targetPipeline))
+            try
             {
-                EditorUtility.SetDirty(mat);
-                converted++;
+                if (ConvertMaterial(entry, targetPipeline))
+                {
+                    EditorUtility.SetDirty(mat);
+                    converted++;
+                }
+                else
+                {
+                    skipped++;
+                }
             }
-            else
+            catch (Exception ex)
             {
+                Debug.LogError($"[HDRP Material Converter] Failed to convert '{mat.name}': {ex.Message}");
                 skipped++;
             }
         }
@@ -208,13 +231,39 @@ public class HDRPMaterialConverter : EditorWindow
     private List<Material> GetSelectedMaterials()
     {
         var result = new List<Material>();
+        var seen = new HashSet<Material>();
 
-        foreach (var obj in Selection.objects)
+        foreach (var mat in Selection.GetFiltered<Material>(SelectionMode.DeepAssets))
         {
-            if (obj is Material mat)
+            if (mat != null && seen.Add(mat))
                 result.Add(mat);
         }
 
+        foreach (var obj in Selection.objects)
+        {
+            if (obj == null)
+                continue;
+
+            if (obj is GameObject go)
+            {
+                AddRendererMaterials(go, result, seen);
+                continue;
+            }
+
+            string path = AssetDatabase.GetAssetPath(obj);
+            if (string.IsNullOrEmpty(path) || !AssetDatabase.IsValidFolder(path))
+                continue;
+
+            foreach (string guid in AssetDatabase.FindAssets("t:Material", new[] { path }))
+            {
+                string materialPath = AssetDatabase.GUIDToAssetPath(guid);
+                var mat = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+                if (mat != null && seen.Add(mat))
+                    result.Add(mat);
+            }
+        }
+
+        AddVariantDescendants(result, seen);
         return result;
     }
 
@@ -276,8 +325,9 @@ public class HDRPMaterialConverter : EditorWindow
         return true;
     }
 
-    private bool ConvertMaterial(Material sourceMat, TargetPipeline target)
+    private bool ConvertMaterial(ConversionPlanEntry entry, TargetPipeline target)
     {
+        Material sourceMat = entry.material;
         Shader targetShader = Shader.Find(target == TargetPipeline.URP
             ? "Universal Render Pipeline/Lit"
             : "Standard");
@@ -288,17 +338,15 @@ public class HDRPMaterialConverter : EditorWindow
             return false;
         }
 
-        var data = ExtractSourceData(sourceMat);
-        string oldShader = sourceMat.shader != null ? sourceMat.shader.name : "<null>";
-
         sourceMat.shader = targetShader;
 
         if (target == TargetPipeline.URP)
-            ApplyToURP(sourceMat, data);
+            ApplyToURP(sourceMat, entry.sourceData);
         else
-            ApplyToBuiltIn(sourceMat, data);
+            ApplyToBuiltIn(sourceMat, entry.sourceData);
 
-        Log($"Converted '{sourceMat.name}' from '{oldShader}' to '{sourceMat.shader.name}'");
+        string variantLabel = entry.isVariant ? " (variant)" : string.Empty;
+        Log($"Converted '{sourceMat.name}'{variantLabel} from '{entry.sourceShaderName}' to '{sourceMat.shader.name}'");
         return true;
     }
 
@@ -327,6 +375,8 @@ public class HDRPMaterialConverter : EditorWindow
         public float occlusionStrength = 1f;
 
         public Texture detailMask;
+        public bool alphaClipEnabled;
+        public float alphaCutoff;
     }
 
     private MaterialData ExtractSourceData(Material mat)
@@ -387,10 +437,26 @@ public class HDRPMaterialConverter : EditorWindow
             data.emissionColor = mat.GetColor("_EmissionColor");
             data.emissionEnabled = data.emissionColor.maxColorComponent > 0.0001f;
         }
+        else if (mat.HasProperty("_EmissiveColor"))
+        {
+            data.emissionColor = mat.GetColor("_EmissiveColor");
+            data.emissionEnabled = data.emissionColor.maxColorComponent > 0.0001f;
+        }
+        else if (mat.HasProperty("_EmissiveColorLDR"))
+        {
+            data.emissionColor = mat.GetColor("_EmissiveColorLDR");
+            data.emissionEnabled = data.emissionColor.maxColorComponent > 0.0001f;
+        }
 
         if (mat.HasProperty("_EmissionMap"))
         {
             data.emissionMap = mat.GetTexture("_EmissionMap");
+            if (data.emissionMap != null)
+                data.emissionEnabled = true;
+        }
+        else if (mat.HasProperty("_EmissiveColorMap"))
+        {
+            data.emissionMap = mat.GetTexture("_EmissiveColorMap");
             if (data.emissionMap != null)
                 data.emissionEnabled = true;
         }
@@ -407,6 +473,18 @@ public class HDRPMaterialConverter : EditorWindow
 
         if (mat.HasProperty("_DetailMask"))
             data.detailMask = mat.GetTexture("_DetailMask");
+
+        if (mat.HasProperty("_AlphaCutoffEnable"))
+            data.alphaClipEnabled = mat.GetFloat("_AlphaCutoffEnable") > 0.5f;
+        else if (mat.HasProperty("_AlphaClip"))
+            data.alphaClipEnabled = mat.GetFloat("_AlphaClip") > 0.5f;
+        else if (mat.IsKeywordEnabled("_ALPHATEST_ON"))
+            data.alphaClipEnabled = true;
+
+        if (mat.HasProperty("_AlphaCutoff"))
+            data.alphaCutoff = mat.GetFloat("_AlphaCutoff");
+        else if (mat.HasProperty("_Cutoff"))
+            data.alphaCutoff = mat.GetFloat("_Cutoff");
 
         return data;
     }
@@ -435,6 +513,8 @@ public class HDRPMaterialConverter : EditorWindow
 
     private void ApplyToURP(Material mat, MaterialData data)
     {
+        mat.shaderKeywords = Array.Empty<string>();
+
         SetColorIfExists(mat, "_BaseColor", data.baseColor);
         SetTextureIfExists(mat, "_BaseMap", data.baseMap);
         SetTexSTIfExists(mat, "_BaseMap", data.baseMapScale, data.baseMapOffset);
@@ -455,28 +535,33 @@ public class HDRPMaterialConverter : EditorWindow
         if (data.occlusionMap != null)
             mat.EnableKeyword("_OCCLUSIONMAP");
 
-        if (preserveEmission)
+        if (preserveEmission && (data.emissionEnabled || data.emissionMap != null))
         {
             SetColorIfExists(mat, "_EmissionColor", data.emissionColor);
             SetTextureIfExists(mat, "_EmissionMap", data.emissionMap);
-
-            if (data.emissionEnabled || data.emissionMap != null)
-            {
-                mat.EnableKeyword("_EMISSION");
-                MaterialGlobalIlluminationFlags flags = mat.globalIlluminationFlags;
-                flags &= ~MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-                mat.globalIlluminationFlags = flags;
-            }
+            mat.EnableKeyword("_EMISSION");
+            MaterialGlobalIlluminationFlags flags = mat.globalIlluminationFlags;
+            flags &= ~MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+            mat.globalIlluminationFlags = flags;
+        }
+        else
+        {
+            mat.DisableKeyword("_EMISSION");
+            mat.globalIlluminationFlags |= MaterialGlobalIlluminationFlags.EmissiveIsBlack;
         }
 
         if (data.transparent)
             ConfigureURPTransparent(mat);
         else
             ConfigureURPOpaque(mat);
+
+        ApplyAlphaClipToURP(mat, data);
     }
 
     private void ApplyToBuiltIn(Material mat, MaterialData data)
     {
+        mat.shaderKeywords = Array.Empty<string>();
+
         SetColorIfExists(mat, "_Color", data.baseColor);
         SetTextureIfExists(mat, "_MainTex", data.baseMap);
         SetTexSTIfExists(mat, "_MainTex", data.baseMapScale, data.baseMapOffset);
@@ -495,31 +580,33 @@ public class HDRPMaterialConverter : EditorWindow
         SetTextureIfExists(mat, "_OcclusionMap", data.occlusionMap);
         SetFloatIfExists(mat, "_OcclusionStrength", data.occlusionStrength);
 
-        if (preserveEmission)
+        if (preserveEmission && (data.emissionEnabled || data.emissionMap != null))
         {
             SetColorIfExists(mat, "_EmissionColor", data.emissionColor);
             SetTextureIfExists(mat, "_EmissionMap", data.emissionMap);
-
-            if (data.emissionEnabled || data.emissionMap != null)
-            {
-                mat.EnableKeyword("_EMISSION");
-                MaterialGlobalIlluminationFlags flags = mat.globalIlluminationFlags;
-                flags &= ~MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-                mat.globalIlluminationFlags = flags;
-            }
+            mat.EnableKeyword("_EMISSION");
+            MaterialGlobalIlluminationFlags flags = mat.globalIlluminationFlags;
+            flags &= ~MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+            mat.globalIlluminationFlags = flags;
+        }
+        else
+        {
+            mat.DisableKeyword("_EMISSION");
+            mat.globalIlluminationFlags |= MaterialGlobalIlluminationFlags.EmissiveIsBlack;
         }
 
         if (data.transparent)
             ConfigureStandardTransparent(mat);
         else
             ConfigureStandardOpaque(mat);
+
+        ApplyAlphaClipToBuiltIn(mat, data);
     }
 
     private void ConfigureURPTransparent(Material mat)
     {
         SetFloatIfExists(mat, "_Surface", 1f);
         SetFloatIfExists(mat, "_Blend", 0f);
-        SetFloatIfExists(mat, "_AlphaClip", 0f);
 
         mat.SetOverrideTag("RenderType", "Transparent");
         mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
@@ -535,7 +622,6 @@ public class HDRPMaterialConverter : EditorWindow
     private void ConfigureURPOpaque(Material mat)
     {
         SetFloatIfExists(mat, "_Surface", 0f);
-        SetFloatIfExists(mat, "_AlphaClip", 0f);
 
         mat.SetOverrideTag("RenderType", "Opaque");
         mat.renderQueue = -1;
@@ -582,6 +668,39 @@ public class HDRPMaterialConverter : EditorWindow
         mat.renderQueue = -1;
     }
 
+    private void ApplyAlphaClipToURP(Material mat, MaterialData data)
+    {
+        if (data.alphaClipEnabled)
+        {
+            SetFloatIfExists(mat, "_AlphaClip", 1f);
+            SetFloatIfExists(mat, "_Cutoff", data.alphaCutoff);
+            mat.EnableKeyword("_ALPHATEST_ON");
+        }
+        else
+        {
+            SetFloatIfExists(mat, "_AlphaClip", 0f);
+            SetFloatIfExists(mat, "_Cutoff", data.alphaCutoff);
+            mat.DisableKeyword("_ALPHATEST_ON");
+        }
+    }
+
+    private void ApplyAlphaClipToBuiltIn(Material mat, MaterialData data)
+    {
+        SetFloatIfExists(mat, "_Cutoff", data.alphaCutoff);
+
+        if (data.alphaClipEnabled)
+        {
+            if (mat.HasProperty("_Mode"))
+                mat.SetFloat("_Mode", 1f);
+
+            mat.SetOverrideTag("RenderType", "TransparentCutout");
+            mat.EnableKeyword("_ALPHATEST_ON");
+            mat.DisableKeyword("_ALPHABLEND_ON");
+            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
+        }
+    }
+
     private void SetColorIfExists(Material mat, string propertyName, Color value)
     {
         if (mat.HasProperty(propertyName))
@@ -613,5 +732,109 @@ public class HDRPMaterialConverter : EditorWindow
     {
         if (logDetails)
             Debug.Log("[HDRP Material Converter] " + message);
+    }
+
+    private void AddRendererMaterials(GameObject root, List<Material> result, HashSet<Material> seen)
+    {
+        foreach (var renderer in root.GetComponentsInChildren<Renderer>(true))
+        {
+            foreach (var mat in renderer.sharedMaterials)
+            {
+                if (mat != null && AssetDatabase.Contains(mat) && seen.Add(mat))
+                    result.Add(mat);
+            }
+        }
+    }
+
+    private void AddVariantDescendants(List<Material> result, HashSet<Material> seen)
+    {
+        if (result.Count == 0)
+            return;
+
+        var selectedRoots = new HashSet<Material>(result);
+        string[] guids = AssetDatabase.FindAssets("t:Material", new[] { "Assets" });
+
+        foreach (string guid in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (mat == null || seen.Contains(mat))
+                continue;
+
+            Material currentParent = GetParentMaterial(mat);
+            while (currentParent != null)
+            {
+                if (selectedRoots.Contains(currentParent))
+                {
+                    seen.Add(mat);
+                    result.Add(mat);
+                    break;
+                }
+
+                currentParent = GetParentMaterial(currentParent);
+            }
+        }
+    }
+
+    private List<ConversionPlanEntry> BuildConversionPlan(List<Material> materials)
+    {
+        var plan = new List<ConversionPlanEntry>(materials.Count);
+
+        foreach (var mat in materials)
+        {
+            if (mat == null || !LooksLikeHDRPMaterial(mat) || !CanConvertMaterial(mat))
+                continue;
+
+            Material parent = GetParentMaterial(mat);
+            plan.Add(new ConversionPlanEntry
+            {
+                material = mat,
+                sourceData = ExtractSourceData(mat),
+                sourceShaderName = mat.shader != null ? mat.shader.name : "<null>",
+                assetPath = AssetDatabase.GetAssetPath(mat),
+                parentMaterial = parent,
+                isVariant = parent != null,
+                hierarchyDepth = GetVariantDepth(mat)
+            });
+        }
+
+        plan.Sort((a, b) =>
+        {
+            int depthComparison = a.hierarchyDepth.CompareTo(b.hierarchyDepth);
+            if (depthComparison != 0)
+                return depthComparison;
+
+            return string.CompareOrdinal(a.assetPath, b.assetPath);
+        });
+
+        return plan;
+    }
+
+    private int GetVariantDepth(Material mat)
+    {
+        int depth = 0;
+        var visited = new HashSet<Material>();
+        Material current = GetParentMaterial(mat);
+
+        while (current != null && visited.Add(current))
+        {
+            depth++;
+            current = GetParentMaterial(current);
+        }
+
+        return depth;
+    }
+
+    private Material GetParentMaterial(Material mat)
+    {
+        if (mat == null)
+            return null;
+
+        var serializedObject = new SerializedObject(mat);
+        SerializedProperty parentProperty = serializedObject.FindProperty("m_Parent");
+        if (parentProperty == null)
+            return null;
+
+        return parentProperty.objectReferenceValue as Material;
     }
 }
