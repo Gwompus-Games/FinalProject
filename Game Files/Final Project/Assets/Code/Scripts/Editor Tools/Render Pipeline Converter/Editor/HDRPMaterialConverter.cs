@@ -10,78 +10,159 @@ public class HDRPMaterialConverter : EditorWindow
         URP
     }
 
+    private enum ScopeMode
+    {
+        Selected,
+        AllHDRPInProject
+    }
+
     private TargetPipeline targetPipeline = TargetPipeline.URP;
+    private ScopeMode scopeMode = ScopeMode.Selected;
     private bool logDetails = true;
     private bool preserveTransparency = true;
     private bool preserveEmission = true;
     private bool dryRun = false;
 
+    private readonly List<Material> previewMaterials = new List<Material>();
+    private Vector2 scrollPos;
+
     [MenuItem("Tools/Materials/Convert Selected HDRP Materials")]
-    public static void ShowWindow()
+    public static void ShowWindowForSelected()
     {
         var window = GetWindow<HDRPMaterialConverter>("HDRP Material Converter");
-        window.minSize = new Vector2(420, 240);
+        window.minSize = new Vector2(460, 320);
+        window.Initialize(ScopeMode.Selected);
+    }
+
+    [MenuItem("Tools/Materials/Convert All HDRP Materials")]
+    public static void ShowWindowForAll()
+    {
+        var window = GetWindow<HDRPMaterialConverter>("HDRP Material Converter");
+        window.minSize = new Vector2(460, 320);
+        window.Initialize(ScopeMode.AllHDRPInProject);
+    }
+
+    private void Initialize(ScopeMode mode)
+    {
+        scopeMode = mode;
+        RefreshPreviewList();
+    }
+
+    private void OnFocus()
+    {
+        RefreshPreviewList();
+    }
+
+    private void OnSelectionChange()
+    {
+        if (scopeMode == ScopeMode.Selected)
+        {
+            RefreshPreviewList();
+            Repaint();
+        }
     }
 
     private void OnGUI()
     {
-        EditorGUILayout.LabelField("Convert Selected HDRP Materials", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Convert HDRP Materials", EditorStyles.boldLabel);
         EditorGUILayout.Space();
 
         EditorGUILayout.HelpBox(
-            "Select one or more Material assets in the Project window, then convert them to Built-in Standard or URP Lit.\n\n" +
-            "This tool preserves common data where possible: color, albedo, normals, metallic/smoothness, emission, tiling/offset, and basic transparency.",
+            "Convert HDRP materials to Built-in Standard or URP Lit.\n\n" +
+            "Use the menu item you opened this window with to choose whether to process the currently selected materials or every supported HDRP material in the project.",
             MessageType.Info);
 
-        targetPipeline = (TargetPipeline)EditorGUILayout.EnumPopup("Target Pipeline", targetPipeline);
-        preserveTransparency = EditorGUILayout.Toggle("Preserve Transparency", preserveTransparency);
-        preserveEmission = EditorGUILayout.Toggle("Preserve Emission", preserveEmission);
-        logDetails = EditorGUILayout.Toggle("Verbose Log", logDetails);
-        dryRun = EditorGUILayout.Toggle("Dry Run Only", dryRun);
+        using (new EditorGUI.DisabledScope(true))
+        {
+            EditorGUILayout.EnumPopup("Scope", scopeMode);
+        }
+
+        targetPipeline = (TargetPipeline)EditorGUILayout.EnumPopup(new GUIContent("Target Pipeline", "Select the shader type to convert materials to (URP Lit or Built-in Standard)."), targetPipeline);
+        preserveTransparency = EditorGUILayout.Toggle(new GUIContent("Preserve Transparency", "Attempts to keep materials transparent based on HDRP settings and alpha values."), preserveTransparency);
+        preserveEmission = EditorGUILayout.Toggle(new GUIContent("Preserve Emission", "Preserves emission color and maps so glowing materials remain emissive."), preserveEmission);
+        logDetails = EditorGUILayout.Toggle(new GUIContent("Verbose Log", "Outputs detailed conversion info to the Console for debugging."), logDetails);
+        dryRun = EditorGUILayout.Toggle(new GUIContent("Dry Run Only", "Simulates conversion without modifying any materials."), dryRun);
+
+        EditorGUILayout.HelpBox("Tip: Use 'Dry Run Only' before converting large batches to preview changes safely.", MessageType.None);
 
         EditorGUILayout.Space();
 
-        using (new EditorGUI.DisabledScope(Selection.objects == null || Selection.objects.Length == 0))
+        const float actionButtonHeight = 24f;
+        using (new EditorGUILayout.HorizontalScope())
         {
-            if (GUILayout.Button("Convert Selected Materials", GUILayout.Height(32)))
+            if (GUILayout.Button("Refresh List", GUILayout.Height(actionButtonHeight)))
             {
-                ConvertSelection();
+                RefreshPreviewList();
+            }
+
+            using (new EditorGUI.DisabledScope(previewMaterials.Count == 0))
+            {
+                if (GUILayout.Button(scopeMode == ScopeMode.Selected ? "Convert Selected Materials" : "Convert All Listed Materials", GUILayout.Height(actionButtonHeight)))
+                {
+                    ConvertCurrentList();
+                }
             }
         }
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Selected Materials", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField($"Materials To Convert ({previewMaterials.Count})", EditorStyles.boldLabel);
 
-        var materials = GetSelectedMaterials();
-        if (materials.Count == 0)
+        if (previewMaterials.Count == 0)
         {
-            EditorGUILayout.LabelField("No material assets selected.");
+            EditorGUILayout.LabelField(scopeMode == ScopeMode.Selected
+                ? "No supported HDRP materials found in the current selection."
+                : "No supported HDRP materials found in the project.");
+            return;
+        }
+
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        foreach (var mat in previewMaterials)
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.ObjectField(mat, typeof(Material), false);
+                EditorGUILayout.LabelField(mat.shader != null ? mat.shader.name : "<no shader>");
+            }
+        }
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void RefreshPreviewList()
+    {
+        previewMaterials.Clear();
+
+        if (scopeMode == ScopeMode.Selected)
+        {
+            foreach (var mat in GetSelectedMaterials())
+            {
+                if (mat != null && LooksLikeHDRPMaterial(mat) && CanConvertMaterial(mat))
+                    previewMaterials.Add(mat);
+            }
         }
         else
         {
-            foreach (var mat in materials)
+            foreach (var mat in GetAllConvertibleHDRPMaterialsInProject())
             {
-                EditorGUILayout.LabelField("• " + mat.name);
+                if (mat != null)
+                    previewMaterials.Add(mat);
             }
         }
     }
 
-    private void ConvertSelection()
+    private void ConvertCurrentList()
     {
-        var materials = GetSelectedMaterials();
-
-        if (materials.Count == 0)
+        if (previewMaterials.Count == 0)
         {
-            EditorUtility.DisplayDialog("No Materials Selected", "Please select one or more material assets in the Project window.", "OK");
+            EditorUtility.DisplayDialog("No Materials Found", "There are no supported HDRP materials to convert.", "OK");
             return;
         }
 
         int converted = 0;
         int skipped = 0;
 
-        Undo.RecordObjects(materials.ToArray(), "Convert HDRP Materials");
+        Undo.RecordObjects(previewMaterials.ToArray(), "Convert HDRP Materials");
 
-        foreach (var mat in materials)
+        foreach (var mat in previewMaterials)
         {
             if (mat == null)
             {
@@ -89,9 +170,9 @@ public class HDRPMaterialConverter : EditorWindow
                 continue;
             }
 
-            if (!LooksLikeHDRPMaterial(mat))
+            if (!LooksLikeHDRPMaterial(mat) || !CanConvertMaterial(mat))
             {
-                Log($"Skipping '{mat.name}' because it does not appear to use a supported HDRP shader.");
+                Log($"Skipping '{mat.name}' because it no longer appears to be a supported HDRP material.");
                 skipped++;
                 continue;
             }
@@ -116,6 +197,7 @@ public class HDRPMaterialConverter : EditorWindow
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+        RefreshPreviewList();
 
         EditorUtility.DisplayDialog(
             "Material Conversion Complete",
@@ -130,11 +212,37 @@ public class HDRPMaterialConverter : EditorWindow
         foreach (var obj in Selection.objects)
         {
             if (obj is Material mat)
-            {
                 result.Add(mat);
-            }
         }
 
+        return result;
+    }
+
+    private List<Material> GetAllConvertibleHDRPMaterialsInProject()
+    {
+        var result = new List<Material>();
+        string[] guids = AssetDatabase.FindAssets("t:Material", new[] { "Assets" });
+
+        foreach (var guid in guids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if (!path.StartsWith("Assets/"))
+                continue;
+
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (mat == null)
+                continue;
+
+            if (!LooksLikeHDRPMaterial(mat))
+                continue;
+
+            if (!CanConvertMaterial(mat))
+                continue;
+
+            result.Add(mat);
+        }
+
+        result.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
         return result;
     }
 
@@ -151,13 +259,21 @@ public class HDRPMaterialConverter : EditorWindow
             return false;
 
         string shaderName = mat.shader.name;
+        return shaderName.StartsWith("HDRP/");
+    }
 
-        return shaderName.StartsWith("HDRP/")
-               || shaderName.Contains("High Definition Render Pipeline")
-               || shaderName.Contains("HDRenderPipeline")
-               || shaderName.Contains("Lit")
-               || mat.HasProperty("_BaseColorMap")
-               || mat.HasProperty("_BaseColor");
+    private bool CanConvertMaterial(Material mat)
+    {
+        if (mat == null || mat.shader == null)
+            return false;
+
+        // Intentionally limited to common Lit-style HDRP materials this tool can map reasonably well.
+        string shaderName = mat.shader.name;
+
+        if (shaderName.Contains("Unlit"))
+            return false;
+
+        return true;
     }
 
     private bool ConvertMaterial(Material sourceMat, TargetPipeline target)
@@ -172,9 +288,7 @@ public class HDRPMaterialConverter : EditorWindow
             return false;
         }
 
-        // Capture HDRP values before swapping shader.
         var data = ExtractSourceData(sourceMat);
-
         string oldShader = sourceMat.shader != null ? sourceMat.shader.name : "<null>";
 
         sourceMat.shader = targetShader;
@@ -219,7 +333,6 @@ public class HDRPMaterialConverter : EditorWindow
     {
         var data = new MaterialData();
 
-        // Base color
         if (mat.HasProperty("_BaseColor"))
             data.baseColor = mat.GetColor("_BaseColor");
         else if (mat.HasProperty("_Color"))
@@ -227,7 +340,6 @@ public class HDRPMaterialConverter : EditorWindow
 
         data.alpha = data.baseColor.a;
 
-        // Base texture
         if (mat.HasProperty("_BaseColorMap"))
         {
             data.baseMap = mat.GetTexture("_BaseColorMap");
@@ -247,7 +359,6 @@ public class HDRPMaterialConverter : EditorWindow
             data.baseMapOffset = mat.GetTextureOffset("_MainTex");
         }
 
-        // Normal
         if (mat.HasProperty("_NormalMap"))
             data.normalMap = mat.GetTexture("_NormalMap");
         else if (mat.HasProperty("_BumpMap"))
@@ -258,7 +369,6 @@ public class HDRPMaterialConverter : EditorWindow
         else if (mat.HasProperty("_BumpScale"))
             data.normalScale = mat.GetFloat("_BumpScale");
 
-        // Metallic / smoothness
         if (mat.HasProperty("_Metallic"))
             data.metallic = mat.GetFloat("_Metallic");
 
@@ -267,12 +377,11 @@ public class HDRPMaterialConverter : EditorWindow
         else if (mat.HasProperty("_MetallicMap"))
             data.metallicMap = mat.GetTexture("_MetallicMap");
         else if (mat.HasProperty("_MaskMap"))
-            data.metallicMap = mat.GetTexture("_MaskMap"); // approximation only
+            data.metallicMap = mat.GetTexture("_MaskMap");
 
         if (mat.HasProperty("_Smoothness"))
             data.smoothness = mat.GetFloat("_Smoothness");
 
-        // Emission
         if (mat.HasProperty("_EmissionColor"))
         {
             data.emissionColor = mat.GetColor("_EmissionColor");
@@ -286,19 +395,16 @@ public class HDRPMaterialConverter : EditorWindow
                 data.emissionEnabled = true;
         }
 
-        // Occlusion (best effort)
         if (mat.HasProperty("_OcclusionMap"))
             data.occlusionMap = mat.GetTexture("_OcclusionMap");
         else if (mat.HasProperty("_MaskMap"))
-            data.occlusionMap = mat.GetTexture("_MaskMap"); // approximation only
+            data.occlusionMap = mat.GetTexture("_MaskMap");
 
         if (mat.HasProperty("_OcclusionStrength"))
             data.occlusionStrength = mat.GetFloat("_OcclusionStrength");
 
-        // Transparency inference
         data.transparent = InferTransparency(mat, data);
 
-        // Detail mask if present
         if (mat.HasProperty("_DetailMask"))
             data.detailMask = mat.GetTexture("_DetailMask");
 
@@ -310,7 +416,6 @@ public class HDRPMaterialConverter : EditorWindow
         if (!preserveTransparency)
             return false;
 
-        // HDRP usually has _SurfaceType: 0 = Opaque, 1 = Transparent
         if (mat.HasProperty("_SurfaceType"))
         {
             float surfaceType = mat.GetFloat("_SurfaceType");
@@ -318,7 +423,6 @@ public class HDRPMaterialConverter : EditorWindow
                 return true;
         }
 
-        // Fallback: alpha below 1 suggests transparency
         if (data.alpha < 0.999f)
             return true;
 
@@ -331,31 +435,26 @@ public class HDRPMaterialConverter : EditorWindow
 
     private void ApplyToURP(Material mat, MaterialData data)
     {
-        // Base color + map
         SetColorIfExists(mat, "_BaseColor", data.baseColor);
         SetTextureIfExists(mat, "_BaseMap", data.baseMap);
         SetTexSTIfExists(mat, "_BaseMap", data.baseMapScale, data.baseMapOffset);
 
-        // Normal
         SetTextureIfExists(mat, "_BumpMap", data.normalMap);
         SetFloatIfExists(mat, "_BumpScale", data.normalScale);
         if (data.normalMap != null)
             mat.EnableKeyword("_NORMALMAP");
 
-        // Metallic / smoothness
         SetFloatIfExists(mat, "_Metallic", data.metallic);
         SetFloatIfExists(mat, "_Smoothness", data.smoothness);
         SetTextureIfExists(mat, "_MetallicGlossMap", data.metallicMap);
         if (data.metallicMap != null)
             mat.EnableKeyword("_METALLICSPECGLOSSMAP");
 
-        // Occlusion
         SetTextureIfExists(mat, "_OcclusionMap", data.occlusionMap);
         SetFloatIfExists(mat, "_OcclusionStrength", data.occlusionStrength);
         if (data.occlusionMap != null)
             mat.EnableKeyword("_OCCLUSIONMAP");
 
-        // Emission
         if (preserveEmission)
         {
             SetColorIfExists(mat, "_EmissionColor", data.emissionColor);
@@ -370,7 +469,6 @@ public class HDRPMaterialConverter : EditorWindow
             }
         }
 
-        // Transparency
         if (data.transparent)
             ConfigureURPTransparent(mat);
         else
@@ -379,29 +477,24 @@ public class HDRPMaterialConverter : EditorWindow
 
     private void ApplyToBuiltIn(Material mat, MaterialData data)
     {
-        // Base color + map
         SetColorIfExists(mat, "_Color", data.baseColor);
         SetTextureIfExists(mat, "_MainTex", data.baseMap);
         SetTexSTIfExists(mat, "_MainTex", data.baseMapScale, data.baseMapOffset);
 
-        // Normal
         SetTextureIfExists(mat, "_BumpMap", data.normalMap);
         SetFloatIfExists(mat, "_BumpScale", data.normalScale);
         if (data.normalMap != null)
             mat.EnableKeyword("_NORMALMAP");
 
-        // Metallic / smoothness
         SetFloatIfExists(mat, "_Metallic", data.metallic);
         SetFloatIfExists(mat, "_Glossiness", data.smoothness);
         SetTextureIfExists(mat, "_MetallicGlossMap", data.metallicMap);
         if (data.metallicMap != null)
             mat.EnableKeyword("_METALLICGLOSSMAP");
 
-        // Occlusion
         SetTextureIfExists(mat, "_OcclusionMap", data.occlusionMap);
         SetFloatIfExists(mat, "_OcclusionStrength", data.occlusionStrength);
 
-        // Emission
         if (preserveEmission)
         {
             SetColorIfExists(mat, "_EmissionColor", data.emissionColor);
@@ -416,7 +509,6 @@ public class HDRPMaterialConverter : EditorWindow
             }
         }
 
-        // Transparency
         if (data.transparent)
             ConfigureStandardTransparent(mat);
         else
@@ -425,9 +517,8 @@ public class HDRPMaterialConverter : EditorWindow
 
     private void ConfigureURPTransparent(Material mat)
     {
-        // These values match URP Lit conventions closely enough for editor conversion.
-        SetFloatIfExists(mat, "_Surface", 1f); // Transparent
-        SetFloatIfExists(mat, "_Blend", 0f);   // Alpha
+        SetFloatIfExists(mat, "_Surface", 1f);
+        SetFloatIfExists(mat, "_Blend", 0f);
         SetFloatIfExists(mat, "_AlphaClip", 0f);
 
         mat.SetOverrideTag("RenderType", "Transparent");
@@ -443,7 +534,7 @@ public class HDRPMaterialConverter : EditorWindow
 
     private void ConfigureURPOpaque(Material mat)
     {
-        SetFloatIfExists(mat, "_Surface", 0f); // Opaque
+        SetFloatIfExists(mat, "_Surface", 0f);
         SetFloatIfExists(mat, "_AlphaClip", 0f);
 
         mat.SetOverrideTag("RenderType", "Opaque");
@@ -459,9 +550,8 @@ public class HDRPMaterialConverter : EditorWindow
 
     private void ConfigureStandardTransparent(Material mat)
     {
-        // Built-in Standard transparent mode.
         if (mat.HasProperty("_Mode"))
-            mat.SetFloat("_Mode", 3f); // Transparent
+            mat.SetFloat("_Mode", 3f);
 
         mat.SetOverrideTag("RenderType", "Transparent");
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -478,7 +568,7 @@ public class HDRPMaterialConverter : EditorWindow
     private void ConfigureStandardOpaque(Material mat)
     {
         if (mat.HasProperty("_Mode"))
-            mat.SetFloat("_Mode", 0f); // Opaque
+            mat.SetFloat("_Mode", 0f);
 
         mat.SetOverrideTag("RenderType", "");
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
