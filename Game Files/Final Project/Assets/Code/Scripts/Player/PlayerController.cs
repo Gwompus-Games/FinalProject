@@ -485,7 +485,7 @@ public class PlayerController : ManagedByGameManager
         }
         else
         {
-            _controller.stepOffset = 0;
+            _controller.stepOffset = 0.1f;
         }
     }
 
