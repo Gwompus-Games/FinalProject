@@ -342,7 +342,7 @@ public class HDRPMaterialConverter : EditorWindow
             return false;
         }
 
-        if (entry.isVariant && !DetachVariant(sourceMat))
+        if (sourceMat.isVariant && !DetachVariant(sourceMat))
         {
             Debug.LogError($"[HDRP Material Converter] Failed to detach material variant '{sourceMat.name}' before shader conversion.");
             return false;
@@ -853,20 +853,18 @@ public class HDRPMaterialConverter : EditorWindow
         if (mat == null)
             return false;
 
-        var serializedObject = new SerializedObject(mat);
-        SerializedProperty parentProperty = serializedObject.FindProperty("m_Parent");
-        if (parentProperty == null || parentProperty.objectReferenceValue == null)
+        if (!mat.isVariant)
             return true;
 
-        parentProperty.objectReferenceValue = null;
-        bool applied = serializedObject.ApplyModifiedPropertiesWithoutUndo();
+        mat.parent = null;
+        EditorUtility.SetDirty(mat);
 
-        if (applied)
+        if (!mat.isVariant)
         {
             Log($"Detached variant parent from '{mat.name}' so it can be converted into a standalone material.");
             return true;
         }
 
-        return parentProperty.objectReferenceValue == null;
+        return false;
     }
 }
